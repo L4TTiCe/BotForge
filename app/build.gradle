@@ -64,4 +64,7 @@ dependencies {
 
     // Scale units as DH (Device Height) and DW (Device Width)
     implementation 'com.github.slaviboy:JetpackComposePercentageUnits:1.0.0'
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }

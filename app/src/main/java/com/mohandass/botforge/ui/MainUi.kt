@@ -12,14 +12,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mohandass.botforge.ui.theme.BotForgeTheme
+import androidx.navigation.NavController
 import com.slaviboy.composeunits.dw
 
 @Composable
-fun MainUi() {
+fun MainUi(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,10 +58,10 @@ fun TopBar(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MainUiPreview() {
-    BotForgeTheme {
-        MainUi()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MainUiPreview() {
+//    BotForgeTheme {
+//        MainUi()
+//    }
+//}
