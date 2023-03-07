@@ -35,7 +35,9 @@ fun SplashUi(navController: NavController) {
         )
 
         delay(1000)
-        navController.navigate(Screen.Landing.route)
+        navController.navigate(Screen.Landing.route) {
+            popUpTo(Screen.Splash.route) { inclusive = true }
+        }
     }
 
     Box (
