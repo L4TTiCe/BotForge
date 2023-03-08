@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">BotForge</string>
     <string name="logo_cd">App logo.</string>
+    <string name="web_client_id">866749677206–7bdjsu70ajrt0vokkvnm89q8jqogft0u.apps.googleusercontent.com</string>
+
+    <string name="generic_error">Something wrong happened. Please try again.</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="reset">Reset</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="email_required">Email is required.</string>
+    <string name="password_required">Password is required.</string>
+    <string name="confirm_password_required">Confirm Password is required.</string>
+    <string name="passwords_not_match">Passwords do not match.</string>
+    <string name="email_invalid">Email is invalid.</string>
+    <string name="password_invalid">Password is too short!</string>
+    <string name="wrong_credentials">Wrong credentials!</string>
 </resources>

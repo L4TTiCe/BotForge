@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.navigation.Screen
+import com.mohandass.botforge.Screen
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashUi(navController: NavController) {
+fun SplashUi(appState: AppState?) {
     val scale =  remember {
         Animatable(0f)
     }
@@ -35,7 +35,7 @@ fun SplashUi(navController: NavController) {
         )
 
         delay(1000)
-        navController.navigate(Screen.Landing.route) {
+        appState?.navController?.navigate(Screen.Landing.route) {
             popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }
