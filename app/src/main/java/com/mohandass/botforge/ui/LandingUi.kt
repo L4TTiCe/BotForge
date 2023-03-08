@@ -3,24 +3,24 @@ package com.mohandass.botforge.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.mohandass.botforge.navigation.Screen
+import com.mohandass.botforge.AppState
+import com.mohandass.botforge.Screen
+import com.mohandass.botforge.ui.components.SkipSignInButton
+
+import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.slaviboy.composeunits.dh
 
 @Composable
-fun LandingUi(modifier: Modifier = Modifier, navController: NavController) {
+fun LandingUi(modifier: Modifier = Modifier, appState: AppState?) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -34,8 +34,7 @@ fun LandingUi(modifier: Modifier = Modifier, navController: NavController) {
         Text(
             text = "BotForge",
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            fontSize = 24.sp,
+            style = MaterialTheme.typography.headlineLarge,
         )
 
         Spacer(modifier = Modifier.size(0.05.dh))
@@ -48,23 +47,29 @@ fun LandingUi(modifier: Modifier = Modifier, navController: NavController) {
 
         Spacer(modifier = Modifier.size(0.15.dh))
 
-        Button(
+        FilledTonalButton (
             onClick = {
-                // Navigate to Main Activity
-                navController.navigate(Screen.Main.route)
-            },
-            modifier = Modifier.padding(top = 16.dp)
+                appState?.navController?.navigate(Screen.SignIn.route)
+            }
         ) {
-            Text(text = "Skip Login")
+            Text(
+                text = "Sign In / Sign Up",
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+        SkipSignInButton {
+            // Navigate to Main Activity
+            appState?.navController?.navigate(Screen.Main.route)
         }
 
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun LandingUiPreview() {
-//    BotForgeTheme {
-//        LandingUi()
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun LandingUiPreview() {
+    BotForgeTheme {
+        LandingUi(appState = null)
+    }
+}

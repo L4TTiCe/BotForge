@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "866749677206",
+    "project_id": "botforge-v2",
+    "storage_bucket": "botforge-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866749677206:android:98118fba3417a5c5668cb7",
+        "android_client_info": {
+          "package_name": "com.mohandass.botforge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866749677206-l4tp5bd30g5p7tpm1uve1ri8bdr35mdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2Blqw_Rk6L4rhNu66HndfygIMGdMOI1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866749677206-l4tp5bd30g5p7tpm1uve1ri8bdr35mdg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
