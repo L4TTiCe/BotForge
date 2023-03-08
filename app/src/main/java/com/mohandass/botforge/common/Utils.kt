@@ -1,4 +1,4 @@
-package com.mohandass.botforge.model
+package com.mohandass.botforge.common
 
 class Utils {
     companion object {

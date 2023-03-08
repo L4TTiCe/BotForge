@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.Screen
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.SignUpViewModel
 import com.slaviboy.composeunits.dh
@@ -111,7 +111,13 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         Spacer(modifier = Modifier.size(0.03.dh))
 
         FilledTonalButton(
-            onClick = { },
+            onClick = {
+                viewModel.onSignUp {
+                    appState?.navController?.navigate(AppRoutes.Main.route) {
+                        popUpTo(AppRoutes.SignUp.route) { inclusive = true }
+                    }
+                }
+            },
             modifier = Modifier
         ) {
             Text(
@@ -122,8 +128,8 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         Spacer(modifier = Modifier.size(0.01.dh))
         TextButton(
             onClick = {
-                appState?.navController?.navigate(Screen.SignIn.route) {
-                    popUpTo(Screen.SignUp.route) { inclusive = true }
+                appState?.navController?.navigate(AppRoutes.SignIn.route) {
+                    popUpTo(AppRoutes.SignUp.route) { inclusive = true }
                 }
             },
             modifier = Modifier

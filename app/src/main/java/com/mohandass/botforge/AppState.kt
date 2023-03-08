@@ -27,4 +27,8 @@ class AppState(
         }
     }
 
+    fun navigateTo(route: String) {
+        navController.navigate(route)
+    }
+
 }

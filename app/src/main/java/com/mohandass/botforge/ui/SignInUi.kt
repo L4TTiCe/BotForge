@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.Screen
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.SignInViewModel
 import com.slaviboy.composeunits.dh
@@ -96,8 +96,8 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         FilledTonalButton(
             onClick = {
                 viewModel.signIn {
-                    appState?.navController?.navigate(Screen.Main.route) {
-                        popUpTo(Screen.SignIn.route) { inclusive = true }
+                    appState?.navController?.navigate(AppRoutes.Main.route) {
+                        popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                     }
                 }
             },
@@ -111,8 +111,8 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         Spacer(modifier = Modifier.size(0.01.dh))
         TextButton(
             onClick = {
-                appState?.navController?.navigate(Screen.SignUp.route) {
-                    popUpTo(Screen.SignIn.route) { inclusive = true }
+                appState?.navController?.navigate(AppRoutes.SignUp.route) {
+                    popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                 }
             },
             modifier = Modifier
@@ -124,13 +124,12 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         }
         TextButton(
             onClick = {
-                viewModel.onEmailChange("")
-                viewModel.onPasswordChange("")
+                viewModel.sendRecoveryEmail()
             },
             modifier = Modifier
         ) {
             Text(
-                text = stringResource(id = AppText.reset),
+                text = stringResource(id = AppText.forgot_password),
                 modifier = Modifier.padding(4.dp)
             )
         }

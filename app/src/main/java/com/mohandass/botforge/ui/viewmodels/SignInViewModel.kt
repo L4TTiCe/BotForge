@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.model.Utils
+import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.model.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -47,6 +47,36 @@ class SignInViewModel @Inject constructor(
             }
             Log.v("SignInViewModel", "signIn() Authenticated")
             onSuccess()
+        }
+    }
+
+    fun sendRecoveryEmail() {
+        Log.v("SignInViewModel", "sendRecoveryEmail()")
+
+        _email.value = _email.value.trim()
+
+        if (Utils.validateEmail(email).not()) {
+            SnackbarManager.showMessage(AppText.email_invalid)
+            Log.v("SignInViewModel", "sendRecoveryEmail() email invalid")
+            return
+        }
+
+        viewModelScope.launch {
+            if (Utils.validateEmail(email).not()) {
+                SnackbarManager.showMessage(AppText.email_invalid)
+                Log.v("SignInViewModel", "sendRecoveryEmail() email invalid")
+                return@launch
+            }
+            Log.v("SignInViewModel", "sendRecoveryEmail() Sending recovery email...")
+            try {
+                accountService.sendRecoveryEmail(email)
+            } catch (e: Exception) {
+                Log.v("SignInViewModel", "sendRecoveryEmail() Sending recovery email failed")
+                SnackbarManager.showMessage(AppText.generic_error)
+                return@launch
+            }
+            Log.v("SignInViewModel", "sendRecoveryEmail() Recovery email sent")
+            SnackbarManager.showMessage(AppText.recovery_email_sent)
         }
     }
 

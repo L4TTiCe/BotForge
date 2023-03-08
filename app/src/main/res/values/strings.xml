@@ -8,6 +8,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="reset">Reset</string>
+    <string name="forgot_password">Forgot password?</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -20,4 +21,6 @@
     <string name="email_invalid">Email is invalid.</string>
     <string name="password_invalid">Password is too short!</string>
     <string name="wrong_credentials">Wrong credentials!</string>
+
+    <string name="recovery_email_sent">Recovery email sent!</string>
 </resources>
