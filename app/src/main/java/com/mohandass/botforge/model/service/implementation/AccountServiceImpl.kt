@@ -1,5 +1,6 @@
 package com.mohandass.botforge.model.service.implementation
 
+import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.mohandass.botforge.model.User
@@ -30,23 +31,28 @@ class AccountServiceImpl @Inject constructor(
         }
 
     override suspend fun authenticate(email: String, password: String) {
+        Log.v("AccountServiceImpl", "authenticate()")
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
     override suspend fun sendRecoveryEmail(email: String) {
+        Log.v("AccountServiceImpl", "sendRecoveryEmail()")
         auth.sendPasswordResetEmail(email).await()
     }
 
     override suspend fun createAnonymousAccount() {
+        Log.v("AccountServiceImpl", "createAnonymousAccount()")
         auth.signInAnonymously().await()
     }
 
     override suspend fun linkAccount(email: String, password: String) {
+        Log.v("AccountServiceImpl", "linkAccount()")
         val credential = EmailAuthProvider.getCredential(email, password)
         auth.currentUser!!.linkWithCredential(credential).await()
     }
 
     override suspend fun deleteAccount() {
+        Log.v("AccountServiceImpl", "deleteAccount()")
         auth.currentUser!!.delete().await()
     }
 
@@ -55,8 +61,9 @@ class AccountServiceImpl @Inject constructor(
             auth.currentUser!!.delete()
         }
         auth.signOut()
+        Log.v("AccountServiceImpl", "signOut()")
 
         // Sign the user back in anonymously.
-        createAnonymousAccount()
+//        createAnonymousAccount()
     }
 }

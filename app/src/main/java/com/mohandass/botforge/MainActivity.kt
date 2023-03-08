@@ -75,20 +75,20 @@ fun resources(): Resources {
 
 @Composable
 fun Navigation(modifier: Modifier, appState: AppState) {
-    NavHost(modifier = modifier, navController = appState.navController, startDestination = Screen.Splash.route) {
-        composable(Screen.Splash.route) {
+    NavHost(modifier = modifier, navController = appState.navController, startDestination = AppRoutes.Splash.route) {
+        composable(AppRoutes.Splash.route) {
             SplashUi(appState = appState)
         }
-        composable(Screen.Landing.route) {
+        composable(AppRoutes.Landing.route) {
             LandingUi(appState = appState)
         }
-        composable(Screen.Main.route) {
+        composable(AppRoutes.Main.route) {
             MainUi(appState = appState)
         }
-        composable(Screen.SignUp.route) {
+        composable(AppRoutes.SignUp.route) {
             SignUpUi(appState = appState)
         }
-        composable(Screen.SignIn.route) {
+        composable(AppRoutes.SignIn.route) {
             SignInUi(appState = appState)
         }
     }

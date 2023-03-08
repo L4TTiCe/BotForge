@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.Screen
+import com.mohandass.botforge.AppRoutes
 import kotlinx.coroutines.delay
 
 @Composable
@@ -35,8 +35,8 @@ fun SplashUi(appState: AppState?) {
         )
 
         delay(1000)
-        appState?.navController?.navigate(Screen.Landing.route) {
-            popUpTo(Screen.Splash.route) { inclusive = true }
+        appState?.navController?.navigate(AppRoutes.Landing.route) {
+            popUpTo(AppRoutes.Splash.route) { inclusive = true }
         }
     }
 
