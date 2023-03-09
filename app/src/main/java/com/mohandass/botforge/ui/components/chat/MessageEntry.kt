@@ -3,6 +3,7 @@ package com.mohandass.botforge.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -49,7 +50,7 @@ fun MessageEntry(
     Column {
         Text(
             text = roles[if (isUser) 0 else 1],
-            modifier = modifier
+            modifier = modifier.fillMaxWidth()
                 .clickable {
                     isUser = !isUser
                     viewModel.updateMessage(Message(messageContent,
@@ -59,7 +60,7 @@ fun MessageEntry(
             color = colors[if (isUser) 0 else 1]
         )
 
-        Row {
+        Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
                 value = messageContent,
                 onValueChange = {
@@ -67,7 +68,7 @@ fun MessageEntry(
                     viewModel.updateMessage(Message(messageContent,
                         if (isUser) Role.USER else Role.BOT, message.uuid))
                 },
-                modifier = modifier,
+                modifier = modifier.fillMaxWidth(0.85f),
                 trailingIcon = {
                     IconButton(onClick = { isUser = !isUser }) {
                         Icon(

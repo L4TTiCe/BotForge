@@ -1,11 +1,15 @@
 package com.mohandass.botforge.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -36,12 +42,12 @@ import com.mohandass.botforge.R.string as AppText
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainUi(appState: AppState?) {
+fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
 
     Scaffold(
         topBar = {
-            TopBar(appState = appState)
+            TopBar(appState = appState, viewModel = viewModel)
         },
         content = {
             Surface(
@@ -53,7 +59,7 @@ fun MainUi(appState: AppState?) {
                         startDestination = AppRoutes.MainRoutes.Default.route
                     ) {
                         composable(AppRoutes.MainRoutes.Default.route) {
-                            DefaultMainUi()
+                            CreateNewPersona(viewModel = viewModel)
                         }
                     }
                 }
@@ -65,9 +71,8 @@ fun MainUi(appState: AppState?) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
+fun CreateNewPersona(viewModel: AppViewModel) {
 
-//    val sheetScrollState = rememberScrollState()
     val scrollState = rememberScrollState()
 
     val personaName by viewModel.personaName
@@ -119,8 +124,6 @@ fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
 
                     Spacer(modifier = Modifier.height(0.15.dh))
 
-
-
                 }
 
             }
@@ -156,8 +159,12 @@ fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
                 value = personaName,
                 onValueChange = { viewModel.updatePersonaName(it) },
                 label = { Text(text = "Persona Name") },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Text),
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
+                    .fillMaxSize()
             )
 
             Spacer(modifier = Modifier.height(0.02.dh))
@@ -165,7 +172,7 @@ fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
             Text(
                 text = "System Message",
                 modifier = Modifier.padding(horizontal = 10.dp),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
 
             OutlinedTextField(
@@ -175,15 +182,42 @@ fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
                     .sizeIn(minHeight = 0.3.dh, maxHeight = 0.5.dh)
+                    .fillMaxSize()
             )
 
             Spacer(modifier = Modifier.height(0.02.dh))
 
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(horizontal = 10.dp)) {
-                Text(text = "Share")
+            Row(horizontalArrangement = Arrangement.SpaceAround) {
+                Button(
+                    onClick = { /*TODO*/
+                              viewModel.fetchPersonas()
+                    },
+                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                    Text(text = "Share")
+                }
+
+                Button(
+                    onClick = { viewModel.savePersona() },
+                ) {
+                    Text(text = "Save")
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = { /*TODO*/
+                              Log.v("_personas", viewModel.personas.toString())
+                    },
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                    Spacer(modifier = Modifier.width(0.01.dw))
+                    Text(text = "Delete")
+                }
             }
+
+
 
             Spacer(modifier = Modifier.height(0.2.dh))
         }
@@ -191,14 +225,14 @@ fun DefaultMainUi(viewModel: AppViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun TopBar(appState: AppState?) {
+fun TopBar(appState: AppState?, viewModel: AppViewModel) {
     Surface(
         tonalElevation = 4.dp,
     ) {
         Column {
-            Header(appState = appState)
+            Header(appState = appState, viewModel = viewModel)
 
-            AvatarsBar()
+            AvatarsBar(viewModel = viewModel)
 
             Spacer(modifier = Modifier.height(0.01.dh))
         }
@@ -206,7 +240,7 @@ fun TopBar(appState: AppState?) {
 }
 
 @Composable
-fun Header(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltViewModel(), appState: AppState?) {
+fun Header(modifier: Modifier = Modifier, viewModel: AppViewModel, appState: AppState?) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
 
     Row(

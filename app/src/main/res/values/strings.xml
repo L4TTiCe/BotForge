@@ -23,4 +23,8 @@
     <string name="wrong_credentials">Wrong credentials!</string>
 
     <string name="recovery_email_sent">Recovery email sent!</string>
+
+    <string name="persona_name_empty">Please name your persona before saving!</string>
+    <string name="using_default_system_message">Saved. Using default System message!</string>
+    <string name="saved_persona">Saved</string>
 </resources>
