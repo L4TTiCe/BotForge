@@ -4,15 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.ui.viewmodels.AppViewModel
 
 @Composable
-fun AvatarsBar(modifier: Modifier = Modifier) {
-    val avatars = remember { listOf("A", "Bc", "De.", "❤️", "\uD83D\uDD25", "F", "\uD83D\uDC80", "H", "I", "J") }
+fun AvatarsBar(modifier: Modifier = Modifier, viewModel: AppViewModel) {
+    val personas by viewModel.personas.observeAsState(listOf())
 
     LazyRow(modifier = modifier) {
         item {
@@ -35,15 +36,17 @@ fun AvatarsBar(modifier: Modifier = Modifier) {
                 )
             }
         }
-        items(avatars.size) { index ->
-//            RoundedIcon(
-//                image = painterResource(id = R.drawable.logo),
-//                modifier = Modifier
-//                    .size(90.dp)
-//                    .padding(6.dp)
-//            )
-            RoundedIconFromString(text = avatars[index], modifier = Modifier
-                .size(90.dp))
+        personas?.let {
+            items(it.size) { index ->
+    //            RoundedIcon(
+    //                image = painterResource(id = R.drawable.logo),
+    //                modifier = Modifier
+    //                    .size(90.dp)
+    //                    .padding(6.dp)
+    //            )
+                RoundedIconFromString(text = personas!![index].name, modifier = Modifier
+                    .size(90.dp))
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
 
     LazyColumn(modifier = modifier) {
         items(messagesList, key = {it.uuid}) { item ->
-            MessageEntry(message = item)
+            MessageEntry(modifier=Modifier, message = item)
 
             Spacer(modifier = modifier.height(10.dp))
         }
