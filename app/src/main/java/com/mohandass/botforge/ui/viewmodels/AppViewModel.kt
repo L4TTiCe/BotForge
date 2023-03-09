@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 import com.mohandass.botforge.R.string as AppText
 
@@ -75,12 +76,12 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun savePersona(persona: Persona) {
+    private fun savePersona(persona: Persona): Boolean {
         var customMessage = true
 
         if (_personaName.value.isEmpty()) {
             SnackbarManager.showMessage(AppText.persona_name_empty)
-            return
+            return false
         }
         if (_personaSystemMessage.value.trim().isEmpty()) {
             customMessage = false
@@ -98,6 +99,7 @@ class AppViewModel @Inject constructor(
                 fetchPersonas()
             }
         }
+        return true
     }
 
     fun saveAsNewPersona() {
@@ -128,12 +130,17 @@ class AppViewModel @Inject constructor(
 
         if (persona.uuid.isEmpty()) {
             Log.v("AppViewModel", "savePersona() new persona")
-            savePersona(
+            val uuid = UUID.randomUUID().toString()
+            val isSuccess = savePersona(
                 Persona(
+                    uuid = uuid,
                     name = _personaName.value,
                     systemMessage = _personaSystemMessage.value,
                 )
             )
+            if (isSuccess) {
+                _personaSelected.value = uuid
+            }
             return
         }
 
@@ -143,6 +150,23 @@ class AppViewModel @Inject constructor(
                 SnackbarManager.showMessage(AppText.saved_persona)
                 fetchPersonas()
             }
+        }
+    }
+
+    fun deletePersona() {
+        val persona = _personas.value?.find { it.uuid == _personaSelected.value }
+        if (persona != null) {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    personaService.deletePersona(persona)
+                    Log.v("AppViewModel", "deletePersona() _personas: ${persona.name}")
+                    SnackbarManager.showMessage(AppText.delete_persona_success, persona.name)
+                    fetchPersonas()
+                }
+            }
+            newPersona()
+        } else {
+            SnackbarManager.showMessage(AppText.generic_error)
         }
     }
 
@@ -159,6 +183,7 @@ class AppViewModel @Inject constructor(
     val activeChat: MutableState<List<Message>> = _activeChat
 
     fun autoAddMessage() {
+        Log.v("AppViewModel", "autoAddMessage()")
         val message = if (_activeChat.value.isEmpty()) {
             Message("", Role.USER)
         } else {
@@ -187,6 +212,14 @@ class AppViewModel @Inject constructor(
             it.uuid != message.uuid
         }
         Log.v("AppViewModel", "Messages: ${activeChat.value}")
+    }
+
+    fun clearMessages() {
+        Log.v("AppViewModel", "clearMessages()")
+        while (_activeChat.value.isNotEmpty()) {
+            deleteMessage(_activeChat.value.last())
+        }
+        autoAddMessage()
     }
 
     // Account

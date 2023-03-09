@@ -9,6 +9,7 @@ data class Persona(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val name: String = "",
     val systemMessage: String = "",
+
     val createdAt: Long = System.currentTimeMillis(),
     val lastUsed: Long = System.currentTimeMillis(),
 ) {

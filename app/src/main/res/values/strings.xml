@@ -24,7 +24,14 @@
 
     <string name="recovery_email_sent">Recovery email sent!</string>
 
+    <string name="no_personas_yet">Your personas will appear here, Once you have them.</string>
     <string name="persona_name_empty">Please name your persona before saving!</string>
     <string name="using_default_system_message">Saved. Using default System message!</string>
     <string name="saved_persona">Saved</string>
+
+    <string name="delete_persona">Delete Persona</string>
+    <string name="delete_persona_message">Are you sure you want to delete this persona?</string>
+    <string name="delete_persona_success">%1$s Persona deleted!</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>
