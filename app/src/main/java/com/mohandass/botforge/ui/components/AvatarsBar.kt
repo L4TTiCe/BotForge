@@ -4,7 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +21,8 @@ fun AvatarsBar(modifier: Modifier = Modifier, viewModel: AppViewModel) {
             AddAvatar(
                 modifier = Modifier
                     .size(90.dp)
-                    .padding(6.dp)
+                    .padding(6.dp),
+                onClick = { viewModel.newPersona() }
             )
             Box(
                 modifier = Modifier
@@ -44,8 +46,11 @@ fun AvatarsBar(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     //                    .size(90.dp)
     //                    .padding(6.dp)
     //            )
-                RoundedIconFromString(text = personas!![index].name, modifier = Modifier
-                    .size(90.dp))
+                RoundedIconFromString(
+                    text = personas!![index].name,
+                    modifier = Modifier.size(90.dp),
+                    onClick = { viewModel.selectPersona(personas!![index].uuid) }
+                )
             }
         }
     }
