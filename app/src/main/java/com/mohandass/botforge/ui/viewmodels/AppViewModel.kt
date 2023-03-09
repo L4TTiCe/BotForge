@@ -26,12 +26,20 @@ class AppViewModel @Inject constructor(
 )
 : ViewModel() {
 
+    // Persona
+
     private val _personas = MutableLiveData<List<Persona>>()
-
-
-    // getters
     val personas: MutableLiveData<List<Persona>>
         get() = _personas
+
+    private val _personaName = mutableStateOf("")
+    val personaName: MutableState<String> = _personaName
+
+    private val _personaSystemMessage = mutableStateOf("")
+    val personaSystemMessage: MutableState<String> = _personaSystemMessage
+
+    private val _personaSelected = mutableStateOf("")
+    val personaSelected: MutableState<String> = _personaSelected
 
     init {
         Log.v("AppViewModel", "init()")
@@ -47,7 +55,27 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun savePersona() {
+    fun newPersona() {
+        Log.v("AppViewModel", "newPersona()")
+        _personaName.value = ""
+        _personaSystemMessage.value = ""
+        _personaSelected.value = ""
+    }
+
+    fun selectPersona(uuid: String) {
+        Log.v("AppViewModel", "selectPersona() persona: $uuid")
+
+        val persona = _personas.value?.find { it.uuid == uuid }
+        if (persona != null) {
+            personaName.value = persona.name
+            personaSystemMessage.value = persona.systemMessage
+            _personaSelected.value = persona.uuid
+        } else {
+            SnackbarManager.showMessage(AppText.generic_error)
+        }
+    }
+
+    private fun savePersona(persona: Persona) {
         var customMessage = true
 
         if (_personaName.value.isEmpty()) {
@@ -57,11 +85,6 @@ class AppViewModel @Inject constructor(
         if (_personaSystemMessage.value.trim().isEmpty()) {
             customMessage = false
         }
-
-        val persona = Persona(
-            name = _personaName.value,
-            systemMessage = _personaSystemMessage.value
-        )
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -77,20 +100,63 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private val _personaName = mutableStateOf("")
-    val personaName: MutableState<String> = _personaName
+    fun saveAsNewPersona() {
+        var newName = _personaName.value
 
-    private val _personaSystemMessage = mutableStateOf("")
-    val personaSystemMessage: MutableState<String> = _personaSystemMessage
+        // If name ends with a number, increment it
+        if (newName.last().isDigit()) {
+            val number = newName.last().toString().toInt()
+            val name = newName.substring(0, newName.length - 1)
+            newName= "$name${number + 1}"
+        } else {
+            newName = "$newName v2"
+        }
 
-    private val _activeChat = mutableStateOf(listOf(Message()))
-    val activeChat: MutableState<List<Message>> = _activeChat
+        val persona = Persona(
+            name = newName,
+            systemMessage = _personaSystemMessage.value,
+        )
+        savePersona(persona)
+    }
+
+    fun saveNewPersona() {
+        val persona = Persona(
+            uuid = _personaSelected.value,
+            name = _personaName.value,
+            systemMessage = _personaSystemMessage.value,
+        )
+
+        if (persona.uuid.isEmpty()) {
+            Log.v("AppViewModel", "savePersona() new persona")
+            savePersona(
+                Persona(
+                    name = _personaName.value,
+                    systemMessage = _personaSystemMessage.value,
+                )
+            )
+            return
+        }
+
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                personaService.updatePersona(persona)
+                SnackbarManager.showMessage(AppText.saved_persona)
+                fetchPersonas()
+            }
+        }
+    }
+
     fun updatePersonaName(name: String) {
         _personaName.value = name
     }
     fun updatePersonaSystemMessage(message: String) {
         _personaSystemMessage.value = message
     }
+
+    // Message
+
+    private val _activeChat = mutableStateOf(listOf(Message()))
+    val activeChat: MutableState<List<Message>> = _activeChat
 
     fun autoAddMessage() {
         val message = if (_activeChat.value.isEmpty()) {
@@ -122,6 +188,8 @@ class AppViewModel @Inject constructor(
         }
         Log.v("AppViewModel", "Messages: ${activeChat.value}")
     }
+
+    // Account
 
     fun signOut(onSuccess: () -> Unit) {
         viewModelScope.launch {

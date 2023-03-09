@@ -197,27 +197,35 @@ fun CreateNewPersona(viewModel: AppViewModel) {
                 }
 
                 Button(
-                    onClick = { viewModel.savePersona() },
+                    onClick = { viewModel.saveNewPersona() },
                 ) {
                     Text(text = "Save")
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Button(
-                    onClick = { /*TODO*/
-                              Log.v("_personas", viewModel.personas.toString())
-                    },
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                    Spacer(modifier = Modifier.width(0.01.dw))
-                    Text(text = "Delete")
+                if (viewModel.personaSelected.value != "") {
+                    Button(
+                        onClick = { /*TODO*/
+                            Log.v("_personas", viewModel.personas.toString())
+                        },
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    ) {
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                        Spacer(modifier = Modifier.width(0.01.dw))
+                        Text(text = "Delete")
+                    }
                 }
             }
 
-
+            if (viewModel.personaSelected.value != "") {
+                Button(
+                    onClick = { viewModel.saveAsNewPersona() },
+                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                    Text(text = "Make Copy")
+                }
+            }
 
             Spacer(modifier = Modifier.height(0.2.dh))
         }

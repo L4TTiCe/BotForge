@@ -12,4 +12,8 @@ class PersonaServiceImpl(private val PersonaService: PersonaService)  {
     suspend fun addPersona(persona: Persona) {
         PersonaService.addPersona(persona)
     }
+
+    suspend fun updatePersona(persona: Persona) {
+        PersonaService.updatePersona(persona)
+    }
 }
