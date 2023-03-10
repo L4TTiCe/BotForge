@@ -25,7 +25,7 @@ import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 
 @Composable
-fun Header(
+fun MainHeader(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel,
     appState: AppState? = null
