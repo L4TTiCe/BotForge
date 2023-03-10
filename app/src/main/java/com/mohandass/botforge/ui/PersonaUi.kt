@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components
+package com.mohandass.botforge.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
+import com.mohandass.botforge.ui.components.AvatarsBar
 import com.mohandass.botforge.ui.components.chat.MessageList
 import com.mohandass.botforge.ui.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh

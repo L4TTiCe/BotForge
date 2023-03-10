@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

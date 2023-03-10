@@ -20,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.*
+import com.mohandass.botforge.ui.auth.SignInUi
+import com.mohandass.botforge.ui.auth.SignUpUi
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint

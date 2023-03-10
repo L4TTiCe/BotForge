@@ -13,7 +13,7 @@ fun TopBar(appState: AppState?, viewModel: AppViewModel) {
         tonalElevation = 4.dp,
     ) {
         Column {
-            Header(
+            MainHeader(
                 appState = appState,
                 viewModel = viewModel
             )

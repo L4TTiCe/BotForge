@@ -268,4 +268,15 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    fun deleteAccount(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                accountService.deleteAccount()
+            }
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
+        }
+    }
+
 }
