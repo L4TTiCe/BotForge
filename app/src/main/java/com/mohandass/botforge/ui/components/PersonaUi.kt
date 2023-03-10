@@ -216,7 +216,7 @@ fun PersonaUi(viewModel: AppViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                if (viewModel.personaSelected.value != "") {
+                if (viewModel.selectedPersona.value != "") {
                     Button(
                         onClick = { openDeleteDialog.value = true },
                         modifier = Modifier.padding(horizontal = 10.dp),
@@ -229,7 +229,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 }
             }
 
-            if (viewModel.personaSelected.value != "") {
+            if (viewModel.selectedPersona.value != "") {
                 Button(
                     onClick = { viewModel.saveAsNewPersona() },
                     modifier = Modifier.padding(horizontal = 10.dp)) {
