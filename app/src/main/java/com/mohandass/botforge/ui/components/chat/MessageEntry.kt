@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components
+package com.mohandass.botforge.ui.components.chat
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import com.mohandass.botforge.ui.viewmodels.AppViewModel
 fun MessageEntry(
     modifier: Modifier = Modifier,
     message: Message = Message(),
-    viewModel: AppViewModel = hiltViewModel()
+    viewModel: AppViewModel
 ) {
     var messageContent by remember { mutableStateOf(message.text) }
     var isUser by remember { mutableStateOf(message.role.isUser()) }
@@ -100,6 +100,6 @@ fun MessageEntry(
 @Composable
 fun MessageEntryPreview() {
     BotForgeTheme {
-        MessageEntry()
+        MessageEntry(viewModel = hiltViewModel())
     }
 }
