@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.SignUpViewModel
 import com.slaviboy.composeunits.dh
@@ -60,7 +61,7 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         OutlinedTextField(
             value = viewModel.email,
             onValueChange = { viewModel.onEmailChange(it) },
-            label = { Text("Email") },
+            label = { Text(resources().getString(AppText.email)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -70,7 +71,7 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         OutlinedTextField(
             value = viewModel.password,
             onValueChange = { viewModel.onPasswordChange(it) },
-            label = { Text("Password") },
+            label = { Text(resources().getString(AppText.password)) },
             visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 if (viewModel.passwordVisibility) {
@@ -101,7 +102,7 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
             value = viewModel.confirmPassword,
             onValueChange = { viewModel.onConfirmPasswordChange(it) },
             visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-            label = { Text("Confirm Password") },
+            label = { Text(resources().getString(AppText.confirm_password)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password

@@ -13,12 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.R
 import com.mohandass.botforge.ui.components.SkipSignInButton
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.LandingViewModel
@@ -44,7 +46,7 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
         Spacer(modifier = Modifier.size(0.2.dh))
 
         Text(
-            text = "BotForge",
+            text = stringResource(id = R.string.app_name),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.headlineLarge,
         )
@@ -52,7 +54,7 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
         Spacer(modifier = Modifier.size(0.05.dh))
 
         Image(
-            painter = painterResource(id = com.mohandass.botforge.R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
             contentScale = ContentScale.Crop,
         )
@@ -65,7 +67,7 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
             }
         ) {
             Text(
-                text = "Sign In / Sign Up",
+                text = stringResource(id = R.string.sign_in_or_sign_up),
                 modifier = Modifier.padding(8.dp)
             )
         }
