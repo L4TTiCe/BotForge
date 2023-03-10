@@ -1,13 +1,12 @@
 package com.mohandass.botforge.ui.components
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
@@ -28,24 +27,48 @@ fun AvatarsBar(
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            TintedIconButton(
-                icon = R.drawable.plus,
-                modifier = Modifier
-                    .size(90.dp)
-                    .padding(6.dp),
-                onClick = { viewModel.newPersona() }
-            )
+            Column {
+                TintedIconButton(
+                    icon = R.drawable.plus,
+                    modifier = Modifier
+                        .size(90.dp)
+                        .padding(6.dp),
+                    onClick = { viewModel.newPersona() }
+                )
 
+                if (viewModel.selectedPersona.value == "") {
+                    ActiveIndicator()
+                }
+            }
             VerticalDivider()
 
         }
         personas?.let {
             items(it.size) { index ->
-                RoundedIconFromString(
-                    text = personas!![index].name,
-                    modifier = Modifier.size(90.dp),
-                    onClick = { viewModel.selectPersona(personas!![index].uuid) }
-                )
+
+                if (viewModel.selectedPersona.value == personas!![index].uuid) {
+
+                    Column(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        RoundedIconFromStringAnimated(
+                            text = personas!![index].name,
+                            modifier = Modifier.size(90.dp),
+                            onClick = { viewModel.selectPersona(personas!![index].uuid) }
+                        )
+
+                        ActiveIndicator()
+                    }
+
+                } else {
+                    RoundedIconFromString(
+                        text = personas!![index].name,
+                        modifier = Modifier.size(90.dp),
+                        onClick = { viewModel.selectPersona(personas!![index].uuid) }
+                    )
+                }
             }
         }
 

@@ -56,7 +56,7 @@ class AppViewModel @Inject constructor(
     val personaSystemMessage: MutableState<String> = _personaSystemMessage
 
     private val _personaSelected = mutableStateOf("")
-    val personaSelected: MutableState<String> = _personaSelected
+    val selectedPersona: MutableState<String> = _personaSelected
 
     init {
         Log.v("AppViewModel", "init()")

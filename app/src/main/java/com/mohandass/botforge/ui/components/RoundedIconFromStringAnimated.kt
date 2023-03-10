@@ -1,5 +1,6 @@
 package com.mohandass.botforge.ui.components
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,23 +11,46 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 
 @Composable
-fun RoundedIconFromString(
+fun RoundedIconFromStringAnimated(
     modifier: Modifier = Modifier,
     text : String,
-    borderColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit = { }
 ) {
+    val radialGradientColors = listOf(
+//        MaterialTheme.colorScheme.primary,
+//        MaterialTheme.colorScheme.onSecondaryContainer,
+//        MaterialTheme.colorScheme.onPrimaryContainer,
+        MaterialTheme.colorScheme.tertiary,
+        MaterialTheme.colorScheme.onTertiaryContainer,
+    )
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val rotateAnimation = infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1500,
+                easing = LinearEasing
+            )
+        )
+    )
+
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .clip(CircleShape)
-            .clickable { onClick() }.padding(6.dp),
+            .clickable { onClick() }
+            .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -35,14 +59,18 @@ fun RoundedIconFromString(
             modifier = modifier
                 .clip(CircleShape)
                 .drawBehind {
-                    drawCircle(
-                        color = borderColor,
-                        style = Stroke(width = 5.dp.toPx())
-                    )
+                    rotate(rotateAnimation.value) {
+                        drawCircle(
+                            Brush.verticalGradient(
+                                colors = radialGradientColors,
+                            ),
+                            style = Stroke(width = 5.dp.toPx())
+                        )
+                    }
                 }
                 .padding(top = 10.dp),
             style = MaterialTheme.typography.displaySmall,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            textAlign = TextAlign.Center,
             maxLines = 1,
         )
     }
@@ -50,7 +78,7 @@ fun RoundedIconFromString(
 
 @Preview(showBackground = true)
 @Composable
-fun RoundedIconFromStringPreview() {
+fun RoundedIconFromStringAnimatedPreview() {
     BotForgeTheme {
         RoundedIconFromString(text = "Ab", modifier = Modifier.size(70.dp))
     }
@@ -58,7 +86,7 @@ fun RoundedIconFromStringPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun RoundedIconFromStringPreviewEmoji() {
+fun RoundedIconFromStringAnimatedPreviewEmoji() {
     BotForgeTheme {
         RoundedIconFromString(text = "\uD83D\uDD25", modifier = Modifier.size(70.dp))
     }
@@ -66,7 +94,7 @@ fun RoundedIconFromStringPreviewEmoji() {
 
 @Preview(showBackground = true)
 @Composable
-fun RoundedIconFromStringPreviewEmoji2() {
+fun RoundedIconFromStringAnimatedPreviewEmoji2() {
     BotForgeTheme {
         RoundedIconFromString(text = "❤️", modifier = Modifier.size(70.dp))
     }
@@ -74,7 +102,7 @@ fun RoundedIconFromStringPreviewEmoji2() {
 
 @Preview(showBackground = true)
 @Composable
-fun RoundedIconFromStringPreviewEmoji3() {
+fun RoundedIconFromStringAnimatedPreviewEmoji3() {
     BotForgeTheme {
         RoundedIconFromString(text = "\uD83D\uDC80", modifier = Modifier.size(70.dp))
     }
