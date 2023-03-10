@@ -106,7 +106,6 @@ fun Header(
             DropdownMenuItem(
                 onClick = {
                     openDeleteConfirmationDialog.value = true
-                    displayOptionsMenu = false
                 },
                 text = {
                     Text(text = "Delete All Personas")
