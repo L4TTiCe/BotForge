@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -69,13 +70,29 @@ fun Header(
         DropdownMenu(
             expanded = displayOptionsMenu,
             onDismissRequest = { displayOptionsMenu = false },
-            offset =  DpOffset(0.8.dw, (-0.01).dh),
+            offset =  DpOffset(0.8.dw, (0.02).dh),
         ) {
+            DropdownMenuItem(
+                onClick = {
+                    viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                    displayOptionsMenu = false
+                },
+                text = {
+                    Text(text = "Preferences")
+                },
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = null)
+                }
+            )
+
             DropdownMenuItem(
                 onClick = {
                     viewModel.signOut {
                         appState?.navigateTo(AppRoutes.Landing.route)
                     }
+                    displayOptionsMenu = false
                 },
                 text = {
                     Text(text = "Sign Out")
@@ -89,6 +106,7 @@ fun Header(
             DropdownMenuItem(
                 onClick = {
                     openDeleteConfirmationDialog.value = true
+                    displayOptionsMenu = false
                 },
                 text = {
                     Text(text = "Delete All Personas")
@@ -142,5 +160,6 @@ fun Header(
                 )
             }
         }
+
     }
 }

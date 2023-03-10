@@ -38,4 +38,6 @@
     <string name="delete">Delete</string>
     <string name="delete_all">Delete</string>
     <string name="cancel">Cancel</string>
+
+    <string name="settings">Settings</string>
 </resources>

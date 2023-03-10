@@ -9,5 +9,6 @@ sealed class AppRoutes(val route: String) {
 
     sealed class MainRoutes(route: String): AppRoutes(route) {
         object Default: MainRoutes("main_default")
+        object Settings: MainRoutes("main_settings")
     }
 }

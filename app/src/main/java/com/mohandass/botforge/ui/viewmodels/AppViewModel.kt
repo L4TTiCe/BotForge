@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
@@ -26,6 +27,21 @@ class AppViewModel @Inject constructor(
     private val personaService: PersonaServiceImpl
 )
 : ViewModel() {
+    // Navigation
+    // NacController in MainUI.kt
+    private var _navController: NavController? = null
+    val navController: NavController
+        get() = _navController!!
+
+    fun setNavController(navController: NavController) {
+        Log.v("AppViewModel", "setNavController()")
+        _navController = navController
+    }
+
+    fun navigateTo(route: String) {
+        Log.v("AppViewModel", "navigateTo($route)")
+        navController.navigate(route)
+    }
 
     // Persona
 

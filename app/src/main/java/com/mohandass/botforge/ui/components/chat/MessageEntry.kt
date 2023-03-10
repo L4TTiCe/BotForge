@@ -1,6 +1,8 @@
 package com.mohandass.botforge.ui.components.chat
 
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,11 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.AppViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,53 +52,70 @@ fun MessageEntry(
         focusedIndicatorColor = MaterialTheme.colorScheme.tertiary
     )
 
-    Column {
-        Text(
-            text = roles[if (isUser) 0 else 1],
-            modifier = modifier.fillMaxWidth()
-                .clickable {
-                    isUser = !isUser
-                    viewModel.updateMessage(Message(messageContent,
-                        if (isUser) Role.USER else Role.BOT, message.uuid))
-                },
-            style = MaterialTheme.typography.labelMedium,
-            color = colors[if (isUser) 0 else 1]
-        )
+    // Visibility, used to animate the message entry and exit
+    var visibility by remember { mutableStateOf(false) }
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            TextField(
-                value = messageContent,
-                onValueChange = {
-                    messageContent = it
-                    viewModel.updateMessage(Message(messageContent,
-                        if (isUser) Role.USER else Role.BOT, message.uuid))
-                },
-                modifier = modifier.fillMaxWidth(0.85f),
-                trailingIcon = {
-                    IconButton(onClick = { isUser = !isUser }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.swap),
-                            modifier = Modifier.size(18.dp),
-                            contentDescription = null,
-                        )
-                    }
-                },
-                colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
-            )
-
-            // Delete button
-            IconButton(onClick = {
-                viewModel.deleteMessage(
-                    Message(messageContent,
-                    if (isUser) Role.USER else Role.BOT, message.uuid))
-            }) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-            }
-        }
-
+    LaunchedEffect(Unit) {
+        visibility = true
     }
 
+    fun handleDelete() {
+        visibility = false
 
+        // launch coroutine to delete message after animation
+        viewModel.viewModelScope.launch {
+            delay(500)
+            viewModel.deleteMessage(
+            Message(messageContent,
+                if (isUser) Role.USER else Role.BOT, message.uuid))
+        }
+    }
+
+    AnimatedVisibility(
+        visible = visibility,
+        enter = slideInHorizontally(initialOffsetX = { it + 200 }),
+        exit = slideOutHorizontally(targetOffsetX = { it + 200 }),
+    ) {
+        Column {
+            Text(
+                text = roles[if (isUser) 0 else 1],
+                modifier = modifier
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.labelMedium,
+                color = colors[if (isUser) 0 else 1]
+            )
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+                TextField(
+                    value = messageContent,
+                    onValueChange = {
+                        messageContent = it
+                        viewModel.updateMessage(Message(messageContent,
+                            if (isUser) Role.USER else Role.BOT, message.uuid))
+                    },
+                    modifier = modifier.fillMaxWidth(0.85f),
+                    trailingIcon = {
+                        IconButton(onClick = { isUser = !isUser }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.swap),
+                                modifier = Modifier.size(18.dp),
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
+                )
+
+                // Delete button
+                IconButton(onClick = {
+                    handleDelete()
+                }) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                }
+            }
+
+        }
+    }
 }
 
 @Preview(showBackground = true)
