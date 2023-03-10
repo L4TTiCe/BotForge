@@ -208,6 +208,13 @@ class AppViewModel @Inject constructor(
     private val _activeChat = mutableStateOf(listOf(Message()))
     val activeChat: MutableState<List<Message>> = _activeChat
 
+    private val _handleDelete = mutableStateOf(false)
+    val handleDelete: MutableState<Boolean> = _handleDelete
+
+    fun handleDelete(handle: Boolean) {
+        _handleDelete.value = handle
+    }
+
     fun autoAddMessage() {
         Log.v("AppViewModel", "autoAddMessage()")
         val message = if (_activeChat.value.isEmpty()) {

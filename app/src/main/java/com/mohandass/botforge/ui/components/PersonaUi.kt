@@ -75,11 +75,11 @@ fun PersonaUi(viewModel: AppViewModel) {
                         horizontalAlignment = Alignment.End,
                     ) {
                         FloatingActionButton(
-                            onClick = { viewModel.clearMessages() },
+                            onClick = { viewModel.handleDelete(true) },
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Delete,
+                                painter = painterResource(id = R.drawable.baseline_clear_all_24),
                                 contentDescription = null,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -146,17 +146,24 @@ fun PersonaUi(viewModel: AppViewModel) {
             .padding(10.dp)
             .fillMaxSize()
         ) {
-            Text(
-                text = "Customize Persona",
-                modifier = Modifier.padding(10.dp),
-                style = MaterialTheme.typography.headlineSmall
-            )
 
-            Text(
-                text = "Create a persona to represent your bot",
-                modifier = Modifier.padding(horizontal = 10.dp),
-                style = MaterialTheme.typography.bodySmall
-            )
+            Row {
+                Column {
+                    Text(
+                        text = "Customize Persona",
+                        modifier = Modifier.padding(10.dp),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+
+                    Text(
+                        text = "Create a persona to represent your bot",
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+
+            }
 
             Spacer(modifier = Modifier.height(0.02.dh))
 

@@ -1,6 +1,8 @@
 package com.mohandass.botforge.ui.components.chat
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Column
@@ -73,8 +75,20 @@ fun MessageEntry(
 
     AnimatedVisibility(
         visible = visibility,
-        enter = slideInHorizontally(initialOffsetX = { it + 200 }),
-        exit = slideOutHorizontally(targetOffsetX = { it + 200 }),
+        enter = slideInHorizontally(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow
+            ),
+            initialOffsetX = { it + 200 }
+        ),
+        exit = slideOutHorizontally(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow
+            ),
+            targetOffsetX = { it + 200 }
+        ),
     ) {
         Column {
             Text(
