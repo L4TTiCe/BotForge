@@ -188,7 +188,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 placeholder = { Text(text = "You are a helpful assistant") },
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 4.dp)
-                    .sizeIn(minHeight = 0.3.dh, maxHeight = 0.5.dh)
+                    .sizeIn(minHeight = 0.2.dh, maxHeight = 0.4.dh)
                     .fillMaxSize()
             )
 

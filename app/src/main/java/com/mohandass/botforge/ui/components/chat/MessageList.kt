@@ -13,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.ui.components.MessageEntry
 import com.mohandass.botforge.ui.viewmodels.AppViewModel
 
 @Composable
@@ -22,7 +21,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
 
     LazyColumn(modifier = modifier) {
         items(messagesList, key = {it.uuid}) { item ->
-            MessageEntry(modifier=Modifier, message = item)
+            MessageEntry(modifier=Modifier, message = item, viewModel = viewModel)
 
             Spacer(modifier = modifier.height(10.dp))
         }
