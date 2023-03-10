@@ -66,178 +66,194 @@ fun PersonaUi(viewModel: AppViewModel) {
         )
     }
 
-    BottomSheetScaffold(
-        sheetContent = {
-            Scaffold(modifier = Modifier
-                .fillMaxSize(),
-                floatingActionButton = {
+    Column {
+        Surface(
+            tonalElevation = 4.dp,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            AvatarsBar(
+                viewModel = viewModel
+            )
+
+            Spacer(
+                modifier = Modifier.height(0.01.dh)
+            )
+        }
+
+        BottomSheetScaffold(
+            sheetContent = {
+                Scaffold(modifier = Modifier
+                    .fillMaxSize(),
+                    floatingActionButton = {
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                        ) {
+                            FloatingActionButton(
+                                onClick = { viewModel.handleDelete(true) },
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_clear_all_24),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(15.dp))
+
+                            ExtendedFloatingActionButton(
+                                onClick = {
+                                    TODO("Not yet implemented")
+                                },
+                                modifier = Modifier,
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_send_24),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Text (
+                                    text = "Send",
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                )
+                            }
+                        }
+                    })
+                {
                     Column(
-                        horizontalAlignment = Alignment.End,
-                    ) {
-                        FloatingActionButton(
-                            onClick = { viewModel.handleDelete(true) },
-                            containerColor = MaterialTheme.colorScheme.errorContainer,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.baseline_clear_all_24),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(15.dp))
-
-                        ExtendedFloatingActionButton(
-                            onClick = {
-                                TODO("Not yet implemented")
-                            },
-                            modifier = Modifier,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.baseline_send_24),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
-                            Text (
-                                text = "Send",
-                                modifier = Modifier.padding(horizontal = 10.dp)
-                            )
-                        }
-                    }
-                })
-            {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                ) {
-
-                    Text(
-                        text = if (personaName != "") "Chat with $personaName" else "Chat",
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-
-                    MessageList(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 10.dp),
-                        viewModel = viewModel
-                    )
+                            .padding(10.dp)
+                    ) {
 
-                    Spacer(modifier = Modifier.height(0.15.dh))
+                        Text(
+                            text = if (personaName != "") "Chat with $personaName" else "Chat",
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+
+                        Spacer(modifier = Modifier.height(0.02.dh))
+
+                        MessageList(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 10.dp),
+                            viewModel = viewModel
+                        )
+
+                        Spacer(modifier = Modifier.height(0.15.dh))
+
+                    }
 
                 }
 
-            }
-
-        },
-        sheetPeekHeight = 0.15.dh,
-        sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
-        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-        sheetContentColor = MaterialTheme.colorScheme.onSurface,
-        sheetElevation = 4.dp,
-    ) {
-        Column(modifier = Modifier
-            .verticalScroll(scrollState)
-            .background(MaterialTheme.colorScheme.background)
-            .padding(10.dp)
-            .fillMaxSize()
+            },
+            sheetPeekHeight = 0.15.dh,
+            sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
+            sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+            sheetContentColor = MaterialTheme.colorScheme.onSurface,
+            sheetElevation = 4.dp,
         ) {
+            Column(modifier = Modifier
+                .verticalScroll(scrollState)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(10.dp)
+                .fillMaxSize()
+            ) {
 
-            Row {
-                Column {
-                    Text(
-                        text = "Customize Persona",
-                        modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
+                Row {
+                    Column {
+                        Text(
+                            text = "Customize Persona",
+                            modifier = Modifier.padding(10.dp),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
 
-                    Text(
-                        text = "Create a persona to represent your bot",
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                        Text(
+                            text = "Create a persona to represent your bot",
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+
+
                 }
 
+                Spacer(modifier = Modifier.height(0.02.dh))
 
-            }
+                OutlinedTextField(
+                    value = personaName,
+                    onValueChange = { viewModel.updatePersonaName(it) },
+                    label = {
+                        Text(text = "Persona Name")
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Text),
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxSize()
+                )
 
-            Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.dh))
 
-            OutlinedTextField(
-                value = personaName,
-                onValueChange = { viewModel.updatePersonaName(it) },
-                label = {
-                    Text(text = "Persona Name")
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Text),
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxSize()
-            )
+                Text(
+                    text = "System Message",
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                )
 
-            Spacer(modifier = Modifier.height(0.02.dh))
+                OutlinedTextField(
+                    value = personaSystemMessage,
+                    onValueChange = { viewModel.updatePersonaSystemMessage(it) },
+                    placeholder = { Text(text = "You are a helpful assistant") },
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .sizeIn(minHeight = 0.2.dh, maxHeight = 0.4.dh)
+                        .fillMaxSize()
+                )
 
-            Text(
-                text = "System Message",
-                modifier = Modifier.padding(horizontal = 10.dp),
-                style = MaterialTheme.typography.labelMedium,
-            )
+                Spacer(modifier = Modifier.height(0.02.dh))
 
-            OutlinedTextField(
-                value = personaSystemMessage,
-                onValueChange = { viewModel.updatePersonaSystemMessage(it) },
-                placeholder = { Text(text = "You are a helpful assistant") },
-                modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                    .sizeIn(minHeight = 0.2.dh, maxHeight = 0.4.dh)
-                    .fillMaxSize()
-            )
+                Row(horizontalArrangement = Arrangement.SpaceAround) {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.padding(horizontal = 10.dp)) {
+                        Text(text = "Share")
+                    }
 
-            Spacer(modifier = Modifier.height(0.02.dh))
+                    Button(
+                        onClick = { viewModel.saveNewPersona() },
+                    ) {
+                        Text(text = "Save")
+                    }
 
-            Row(horizontalArrangement = Arrangement.SpaceAround) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.padding(horizontal = 10.dp)) {
-                    Text(text = "Share")
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    if (viewModel.selectedPersona.value != "") {
+                        Button(
+                            onClick = { openDeleteDialog.value = true },
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                        ) {
+                            Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                            Spacer(modifier = Modifier.width(0.01.dw))
+                            Text(text = "Delete")
+                        }
+                    }
                 }
-
-                Button(
-                    onClick = { viewModel.saveNewPersona() },
-                ) {
-                    Text(text = "Save")
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
 
                 if (viewModel.selectedPersona.value != "") {
                     Button(
-                        onClick = { openDeleteDialog.value = true },
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                    ) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                        Spacer(modifier = Modifier.width(0.01.dw))
-                        Text(text = "Delete")
+                        onClick = { viewModel.saveAsNewPersona() },
+                        modifier = Modifier.padding(horizontal = 10.dp)) {
+                        Text(text = "Make Copy")
                     }
                 }
-            }
 
-            if (viewModel.selectedPersona.value != "") {
-                Button(
-                    onClick = { viewModel.saveAsNewPersona() },
-                    modifier = Modifier.padding(horizontal = 10.dp)) {
-                    Text(text = "Make Copy")
-                }
+                Spacer(modifier = Modifier.height(0.2.dh))
             }
-
-            Spacer(modifier = Modifier.height(0.2.dh))
         }
     }
 }
