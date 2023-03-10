@@ -1,5 +1,6 @@
 package com.mohandass.botforge.ui.components
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,6 +26,8 @@ fun AvatarsBar(
     LazyRow(modifier = modifier) {
         item {
 
+            Spacer(modifier = Modifier.size(10.dp))
+
             TintedIconButton(
                 icon = R.drawable.plus,
                 modifier = Modifier
@@ -34,6 +37,7 @@ fun AvatarsBar(
             )
 
             VerticalDivider()
+
         }
         personas?.let {
             items(it.size) { index ->
