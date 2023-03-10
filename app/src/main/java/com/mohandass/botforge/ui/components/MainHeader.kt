@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,9 +59,10 @@ fun Header(
 
         IconButton(onClick = { displayOptionsMenu = true }) {
             Icon(
-                painter = painterResource(id = R.drawable.vert_more),
+                imageVector = Icons.Default.MoreVert,
                 contentDescription = null,
-                tint = Color.Unspecified
+                modifier = modifier
+                    .size(0.05.dh)
             )
         }
 
@@ -70,7 +71,7 @@ fun Header(
         DropdownMenu(
             expanded = displayOptionsMenu,
             onDismissRequest = { displayOptionsMenu = false },
-            offset =  DpOffset(0.8.dw, (0.02).dh),
+            offset =  DpOffset(0.8.dw, (0.01).dh),
         ) {
             DropdownMenuItem(
                 onClick = {
