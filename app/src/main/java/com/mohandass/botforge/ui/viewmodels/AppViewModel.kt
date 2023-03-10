@@ -47,7 +47,7 @@ class AppViewModel @Inject constructor(
         fetchPersonas()
     }
 
-    fun fetchPersonas() {
+    private fun fetchPersonas() {
         Log.v("AppViewModel", "fetchPersonas()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -167,6 +167,16 @@ class AppViewModel @Inject constructor(
             newPersona()
         } else {
             SnackbarManager.showMessage(AppText.generic_error)
+        }
+    }
+
+    fun deleteAllPersonas() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                personaService.deleteAllPersonas()
+                SnackbarManager.showMessage(AppText.delete_all_personas_success)
+                fetchPersonas()
+            }
         }
     }
 

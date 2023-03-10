@@ -30,8 +30,12 @@
     <string name="saved_persona">Saved</string>
 
     <string name="delete_persona">Delete Persona</string>
+    <string name="delete_all_persona">Delete All Personas</string>
     <string name="delete_persona_message">Are you sure you want to delete this persona?</string>
+    <string name="delete_all_persona_message">Are you sure you want to delete all personas in this device?</string>
     <string name="delete_persona_success">%1$s Persona deleted!</string>
+    <string name="delete_all_personas_success">All Personas deleted!</string>
     <string name="delete">Delete</string>
+    <string name="delete_all">Delete</string>
     <string name="cancel">Cancel</string>
 </resources>
