@@ -94,7 +94,8 @@ fun PersonaUi(viewModel: AppViewModel) {
                                 containerColor = MaterialTheme.colorScheme.errorContainer,
                             ) {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.baseline_clear_all_24),
+                                    painter = painterResource(
+                                        id = R.drawable.baseline_clear_all_24),
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp)
                                 )
@@ -114,7 +115,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                                     modifier = Modifier.size(24.dp)
                                 )
                                 Text (
-                                    text = "Send",
+                                    text = stringResource(id = R.string.send),
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
                             }
@@ -128,7 +129,10 @@ fun PersonaUi(viewModel: AppViewModel) {
                     ) {
 
                         Text(
-                            text = if (personaName != "") "Chat with $personaName" else "Chat",
+                            text = if (personaName != "")
+                                stringResource(id = R.string.chat_with_persona_name, personaName)
+                            else
+                                stringResource(id = R.string.chat),
                             modifier = Modifier.padding(horizontal = 10.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -165,13 +169,13 @@ fun PersonaUi(viewModel: AppViewModel) {
                 Row {
                     Column {
                         Text(
-                            text = "Customize Persona",
+                            text = stringResource(id = R.string.customise_persona),
                             modifier = Modifier.padding(10.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
 
                         Text(
-                            text = "Create a persona to represent your bot",
+                            text = stringResource(id = R.string.create_persona_message),
                             modifier = Modifier.padding(horizontal = 10.dp),
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -186,7 +190,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                     value = personaName,
                     onValueChange = { viewModel.updatePersonaName(it) },
                     label = {
-                        Text(text = "Persona Name")
+                        Text(text = stringResource(id = R.string.persona_name))
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
@@ -199,7 +203,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 Spacer(modifier = Modifier.height(0.02.dh))
 
                 Text(
-                    text = "System Message",
+                    text = stringResource(id = R.string.system_message),
                     modifier = Modifier.padding(horizontal = 10.dp),
                     style = MaterialTheme.typography.labelMedium,
                 )
@@ -207,7 +211,11 @@ fun PersonaUi(viewModel: AppViewModel) {
                 OutlinedTextField(
                     value = personaSystemMessage,
                     onValueChange = { viewModel.updatePersonaSystemMessage(it) },
-                    placeholder = { Text(text = "You are a helpful assistant") },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.system_message_hint)
+                        )
+                    },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                         .sizeIn(minHeight = 0.2.dh, maxHeight = 0.4.dh)
@@ -220,13 +228,13 @@ fun PersonaUi(viewModel: AppViewModel) {
                     Button(
                         onClick = { /*TODO*/ },
                         modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(text = "Share")
+                        Text(text = stringResource(id = R.string.share))
                     }
 
                     Button(
                         onClick = { viewModel.saveNewPersona() },
                     ) {
-                        Text(text = "Save")
+                        Text(text = stringResource(id = R.string.save))
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -235,11 +243,13 @@ fun PersonaUi(viewModel: AppViewModel) {
                         Button(
                             onClick = { openDeleteDialog.value = true },
                             modifier = Modifier.padding(horizontal = 10.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.error
+                            )
                         ) {
                             Icon(imageVector = Icons.Default.Delete, contentDescription = null)
                             Spacer(modifier = Modifier.width(0.01.dw))
-                            Text(text = "Delete")
+                            Text(text = stringResource(id = R.string.delete))
                         }
                     }
                 }
@@ -248,7 +258,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                     Button(
                         onClick = { viewModel.saveAsNewPersona() },
                         modifier = Modifier.padding(horizontal = 10.dp)) {
-                        Text(text = "Make Copy")
+                        Text(text = stringResource(id = R.string.make_copy))
                     }
                 }
 

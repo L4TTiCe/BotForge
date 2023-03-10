@@ -5,6 +5,7 @@
 
     <string name="generic_error">Something wrong happened. Please try again.</string>
 
+    <string name="sign_in_or_sign_up">Sign In / Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="reset">Reset</string>
@@ -35,9 +36,28 @@
     <string name="delete_all_persona_message">Are you sure you want to delete all personas in this device?</string>
     <string name="delete_persona_success">%1$s Persona deleted!</string>
     <string name="delete_all_personas_success">All Personas deleted!</string>
+
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="make_copy">Make Copy</string>
     <string name="delete">Delete</string>
-    <string name="delete_all">Delete</string>
+    <string name="delete_all">Delete All</string>
     <string name="cancel">Cancel</string>
 
+    <string name="customise_persona">Customise Persona</string>
+    <string name="create_persona_message">Create a persona to represent your bot</string>
+
+    <string name="chat">Chat</string>
+    <string name="chat_with_persona_name">Chat with %1$s</string>
+    <string name="send">"Send"</string>
+
+    <string name="persona_name">Persona Name</string>
+    <string name="system_message">System Message</string>
+    <string name="system_message_hint">"You are a helpful assistant"</string>
+
     <string name="settings">Settings</string>
+    <string name="version">Version %1$s</string>
+    <string name="build">Build %1$s</string>
+
+    <string name="back_cd">Back</string>
 </resources>

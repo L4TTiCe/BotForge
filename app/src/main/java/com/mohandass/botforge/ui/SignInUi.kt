@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.ui.viewmodels.SignInViewModel
 import com.slaviboy.composeunits.dh
@@ -60,14 +61,14 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         OutlinedTextField(
             value = viewModel.email,
             onValueChange = { viewModel.onEmailChange(it)},
-            label = { Text("Email") },
+            label = { Text(resources().getString(AppText.email)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.size(0.02.dh))
         OutlinedTextField(
             value = viewModel.password,
             onValueChange = { viewModel.onPasswordChange(it)},
-            label = { Text("Password") },
+            label = { Text(resources().getString(AppText.password)) },
             visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 if (viewModel.passwordVisibility) {

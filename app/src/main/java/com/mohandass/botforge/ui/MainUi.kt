@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
+import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.components.PersonaUi
@@ -84,18 +86,18 @@ fun SettingsUi(viewModel: AppViewModel) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     modifier = Modifier.size(32.dp),
-                    contentDescription = "Back"
+                    contentDescription = stringResource(id = R.string.back_cd)
                 )
             }
         }
 
         Text(
-            text = "Version " + Utils.getAppVersion(),
+            text = resources().getString(AppText.version, Utils.getAppVersion()),
             modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.bodySmall
         )
         Text(
-            text = "Build " + Utils.getAppVersionCode(),
+            text = resources().getString(AppText.build, Utils.getAppVersionCode().toString()),
             modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.bodySmall
         )
