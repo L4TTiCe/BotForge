@@ -29,8 +29,12 @@ fun RoundedIconFromStringAnimated(
 //        MaterialTheme.colorScheme.primary,
 //        MaterialTheme.colorScheme.onSecondaryContainer,
 //        MaterialTheme.colorScheme.onPrimaryContainer,
+
+//        MaterialTheme.colorScheme.tertiary,
+//        MaterialTheme.colorScheme.onTertiaryContainer,
+
+        MaterialTheme.colorScheme.inversePrimary,
         MaterialTheme.colorScheme.tertiary,
-        MaterialTheme.colorScheme.onTertiaryContainer,
     )
 
     val infiniteTransition = rememberInfiniteTransition()
