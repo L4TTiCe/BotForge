@@ -108,7 +108,7 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
 
     val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-            append(resources().getString(R.string.tap_to_visit))
+            append(resources().getString(R.string.tap_to_visit) + " ")
         }
         // attach a string annotation that stores a URL to the text "Android Developers".
         addStringAnnotation(
