@@ -54,7 +54,12 @@ fun AvatarsBar(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         RoundedIconFromStringAnimated(
-                            text = personas!![index].name,
+                            text = (
+                                    if (personas!![index].alias != "")
+                                        personas!![index].alias
+                                    else
+                                        personas!![index].name
+                                    ),
                             modifier = Modifier.size(90.dp),
                             onClick = { viewModel.selectPersona(personas!![index].uuid) }
                         )
@@ -64,7 +69,12 @@ fun AvatarsBar(
 
                 } else {
                     RoundedIconFromString(
-                        text = personas!![index].name,
+                        text = (
+                                if (personas!![index].alias != "")
+                                    personas!![index].alias
+                                else
+                                    personas!![index].name
+                                ),
                         modifier = Modifier.size(90.dp),
                         onClick = { viewModel.selectPersona(personas!![index].uuid) }
                     )

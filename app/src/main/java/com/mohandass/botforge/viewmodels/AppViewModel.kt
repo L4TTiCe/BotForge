@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessage
+import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
@@ -32,14 +34,6 @@ class AppViewModel @Inject constructor(
 : ViewModel() {
 
     // OpenAI
-    fun logModel() {
-        Log.v("AppViewModel", "logModel()")
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                openAiService.logModels()
-            }
-        }
-    }
 
     fun getChatCompletion() {
         Log.v("AppViewModel", "getChatCompletion()")
@@ -59,9 +53,19 @@ class AppViewModel @Inject constructor(
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val completion = openAiService.getChatCompletion(messages)
-                Log.v("AppViewModel", "getChatCompletion() completion: $completion")
-                addMessage(completion)
+                try {
+                    val completion = openAiService.getChatCompletion(messages)
+                    Log.v("AppViewModel", "getChatCompletion() completion: $completion")
+                    addMessage(completion)
+                } catch (e: Throwable) {
+                    Log.e("AppViewModel", "getChatCompletion() error: $e")
+                    if (e.message != null) {
+                        SnackbarManager.showMessage(e.toSnackbarMessage())
+                    } else {
+                        val message = Utils.parseStackTraceForErrorMessage(e)
+                        SnackbarManager.showMessage(message.toSnackbarMessage())
+                    }
+                }
             }
         }
     }
@@ -92,6 +96,9 @@ class AppViewModel @Inject constructor(
     private val _personaName = mutableStateOf("")
     val personaName: MutableState<String> = _personaName
 
+    private val _personaAlias = mutableStateOf("")
+    val personaAlias: MutableState<String> = _personaAlias
+
     private val _personaSystemMessage = mutableStateOf("")
     val personaSystemMessage: MutableState<String> = _personaSystemMessage
 
@@ -115,6 +122,7 @@ class AppViewModel @Inject constructor(
     fun newPersona() {
         Log.v("AppViewModel", "newPersona()")
         _personaName.value = ""
+        _personaAlias.value = ""
         _personaSystemMessage.value = ""
         _personaSelected.value = ""
     }
@@ -125,6 +133,7 @@ class AppViewModel @Inject constructor(
         val persona = _personas.value?.find { it.uuid == uuid }
         if (persona != null) {
             personaName.value = persona.name
+            personaAlias.value = persona.alias
             personaSystemMessage.value = persona.systemMessage
             _personaSelected.value = persona.uuid
         } else {
@@ -172,15 +181,17 @@ class AppViewModel @Inject constructor(
 
         val persona = Persona(
             name = newName,
+            alias = _personaAlias.value,
             systemMessage = _personaSystemMessage.value,
         )
         savePersona(persona)
     }
 
-    fun saveNewPersona() {
+    fun saveUpdatePersona() {
         val persona = Persona(
             uuid = _personaSelected.value,
             name = _personaName.value,
+            alias = _personaAlias.value,
             systemMessage = _personaSystemMessage.value,
         )
 
@@ -191,6 +202,7 @@ class AppViewModel @Inject constructor(
                 Persona(
                     uuid = uuid,
                     name = _personaName.value,
+                    alias = _personaAlias.value,
                     systemMessage = _personaSystemMessage.value,
                 )
             )
@@ -238,6 +250,9 @@ class AppViewModel @Inject constructor(
 
     fun updatePersonaName(name: String) {
         _personaName.value = name
+    }
+    fun updatePersonaAlias(alias: String) {
+        _personaAlias.value = alias
     }
     fun updatePersonaSystemMessage(message: String) {
         _personaSystemMessage.value = message

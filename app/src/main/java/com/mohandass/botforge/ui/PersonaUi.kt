@@ -37,8 +37,10 @@ fun PersonaUi(viewModel: AppViewModel) {
 
     val scrollState = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }
+    val openAliasDialog = remember { mutableStateOf(false) }
 
     val personaName by viewModel.personaName
+    val personaAlias by viewModel.personaAlias
     val personaSystemMessage by viewModel.personaSystemMessage
 
     if (openDeleteDialog.value) {
@@ -62,6 +64,49 @@ fun PersonaUi(viewModel: AppViewModel) {
                     openDeleteDialog.value = false
                 }) {
                     Text(text = stringResource(id = R.string.cancel))
+                }
+            }
+        )
+    }
+
+    if (openAliasDialog.value) {
+        AlertDialog(onDismissRequest = { openAliasDialog.value = false },
+            title = {
+                Text(text = "Change Alias")
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                ) {
+                    OutlinedTextField(
+                        value = personaAlias,
+                        onValueChange = { viewModel.updatePersonaAlias(it) },
+                        label = { Text(text = "Alias") },
+                    )
+
+                    Spacer(modifier = Modifier.height(0.02.dh))
+
+                    Text(text = "Alias is what is shown in the App's Top Bar / Header")
+
+                    Spacer(modifier = Modifier.height(0.01.dh))
+
+                    Text(text = "Try emoji's like 🤖")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.saveUpdatePersona()
+                    openAliasDialog.value = false
+                }) {
+                    Text(text = stringResource(id = R.string.save))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    openAliasDialog.value = false
+                }) {
+                    Text(text = "Close")
                 }
             }
         )
@@ -187,6 +232,19 @@ fun PersonaUi(viewModel: AppViewModel) {
                         )
                     }
 
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = { openAliasDialog.value = true },
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_drive_file_rename_outline_24),
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+
 
                 }
 
@@ -238,7 +296,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                     }
 
                     Button(
-                        onClick = { viewModel.saveNewPersona() },
+                        onClick = { viewModel.saveUpdatePersona() },
                     ) {
                         Text(text = stringResource(id = R.string.save))
                     }
