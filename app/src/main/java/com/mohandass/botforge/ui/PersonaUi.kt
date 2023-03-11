@@ -123,32 +123,39 @@ fun PersonaUi(viewModel: AppViewModel) {
                         }
                     })
                 {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp)
+                    Surface(
+                        tonalElevation = 0.1.dp,
                     ) {
-
-                        Text(
-                            text = if (personaName != "")
-                                stringResource(id = R.string.chat_with_persona_name, personaName)
-                            else
-                                stringResource(id = R.string.chat),
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-
-                        Spacer(modifier = Modifier.height(0.02.dh))
-
-                        MessageList(
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 10.dp),
-                            viewModel = viewModel
-                        )
+                                .padding(10.dp)
+                        ) {
 
-                        Spacer(modifier = Modifier.height(0.15.dh))
+                            Text(
+                                text = if (personaName != "")
+                                    stringResource(
+                                        id = R.string.chat_with_persona_name,
+                                        personaName
+                                    )
+                                else
+                                    stringResource(id = R.string.chat),
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                style = MaterialTheme.typography.headlineSmall
+                            )
 
+                            Spacer(modifier = Modifier.height(0.02.dh))
+
+                            MessageList(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 10.dp),
+                                viewModel = viewModel
+                            )
+
+                            Spacer(modifier = Modifier.height(0.15.dh))
+
+                        }
                     }
 
                 }
@@ -156,8 +163,6 @@ fun PersonaUi(viewModel: AppViewModel) {
             },
             sheetPeekHeight = 0.15.dh,
             sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
-            sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-            sheetContentColor = MaterialTheme.colorScheme.onSurface,
             sheetElevation = 4.dp,
         ) {
             Column(modifier = Modifier
