@@ -69,6 +69,9 @@
         requests and incur charges.</string>
     <string name="api_key_info">You can get your API key from %1$s</string>
     <string name="api_key_link">https://platform.openai.com/account/api-keys</string>
+    <string name="tap_to_visit">Tap here to visit</string>
+    <string name="open_ai_api_website">OpenAI API page</string>
+    <string name="api_key_saved">API Key saved!</string>
 
     <string name="delete_account">Delete Account</string>
     <string name="delete_account_message">Are you sure you want to delete your account?</string>
