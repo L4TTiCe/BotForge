@@ -14,8 +14,8 @@ import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.model.User
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
-import com.mohandass.botforge.ui.viewmodels.SettingsViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.SettingsViewModel
 
 @Composable
 fun AccountSettings(
@@ -39,7 +39,6 @@ fun AccountSettings(
                     viewModel.deleteAccount {
                         appState?.navigateTo(AppRoutes.Landing.route)
                         openDeleteDialog.value = false
-                        SnackbarManager.showMessage(R.string.delete_account_success)
                     }
                 }) {
                     Text(
@@ -84,12 +83,16 @@ fun AccountSettings(
     )
 
     Row(modifier = Modifier.padding(10.dp)) {
-        OutlinedButton(onClick = { /*TODO*/
-            SnackbarManager.showMessage(R.string.not_implemented)
-        }) {
-            Text(text = "Link Account")
+        if (user.isAnonymous) {
+            OutlinedButton(onClick = { /*TODO*/
+                SnackbarManager.showMessage(R.string.not_implemented)
+            }) {
+                Text(text = "Link Account")
+            }
+
+            Spacer(modifier = Modifier.width(10.dp))
         }
-        Spacer(modifier = Modifier.width(10.dp))
+
         OutlinedButton(onClick = {
             viewModel.signOut {
                 appState?.navigateTo(AppRoutes.Landing.route)

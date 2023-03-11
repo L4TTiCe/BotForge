@@ -23,7 +23,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.ui.components.SkipSignInButton
 import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.ui.viewmodels.LandingViewModel
+import com.mohandass.botforge.viewmodels.LandingViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable

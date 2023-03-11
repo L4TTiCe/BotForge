@@ -20,8 +20,8 @@ import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
-import com.mohandass.botforge.ui.viewmodels.SettingsViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.SettingsViewModel
 
 @Composable
 fun SettingsUi(
@@ -64,7 +64,7 @@ fun SettingsUi(
             modifier = Modifier.height(10.dp)
         )
 
-        ApiSettings()
+        ApiSettings(settingsViewModel = settingsViewModel)
 
         Spacer(modifier = Modifier.height(10.dp))
 

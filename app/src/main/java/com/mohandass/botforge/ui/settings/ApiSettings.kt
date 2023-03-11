@@ -7,7 +7,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
@@ -16,12 +16,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
+import com.mohandass.botforge.viewmodels.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ApiSettings() {
+fun ApiSettings(settingsViewModel: SettingsViewModel) {
+    val apiKey = remember { mutableStateOf(settingsViewModel.getApiKey()) }
+
     Text(
-        text = "API Key",
+        text = resources().getString(R.string.api_key),
         modifier = Modifier.padding(10.dp),
         style = MaterialTheme.typography.titleMedium
     )
@@ -81,8 +84,10 @@ fun ApiSettings() {
     )
 
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = apiKey.value,
+        onValueChange = {
+            apiKey.value = it
+        },
         placeholder = {
             Text(
                 text = resources().getString(R.string.api_key_hint),
@@ -103,7 +108,7 @@ fun ApiSettings() {
 
     val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-            append("Tap here to visit ")
+            append(resources().getString(R.string.tap_to_visit))
         }
         // attach a string annotation that stores a URL to the text "Android Developers".
         addStringAnnotation(
@@ -113,7 +118,7 @@ fun ApiSettings() {
             end = length + resources().getString(R.string.api_key_link).length
         )
         withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-            append("OpenAI API")
+            append(resources().getString(R.string.open_ai_api_website))
         }
     }
 
@@ -135,4 +140,15 @@ fun ApiSettings() {
                 }
         }
     )
+
+    Spacer(modifier = Modifier.height(5.dp))
+
+    OutlinedButton(
+        modifier = Modifier.padding(horizontal = 10.dp),
+        onClick = {
+            settingsViewModel.setApiKey(apiKey.value)
+        }
+    ) {
+        Text(text = resources().getString(R.string.save))
+    }
 }

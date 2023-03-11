@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.viewmodels
+package com.mohandass.botforge.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
@@ -274,6 +275,7 @@ class AppViewModel @Inject constructor(
                 accountService.deleteAccount()
             }
             withContext(Dispatchers.Main) {
+                SnackbarManager.showMessage(R.string.delete_account_success)
                 onSuccess()
             }
         }

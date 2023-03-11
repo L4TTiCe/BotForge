@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 

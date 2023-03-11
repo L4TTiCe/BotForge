@@ -15,7 +15,7 @@ import com.mohandass.botforge.AppState
 import com.mohandass.botforge.ui.components.TopBar
 import com.mohandass.botforge.ui.settings.SettingsUi
 import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

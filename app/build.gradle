@@ -107,7 +107,11 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$room_version"
 
+    // LiveData
     implementation("androidx.compose.runtime:runtime-livedata:1.3.3")
+
+    // DataStore Preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
 
 // Dependency Injection with Hilt

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.components.buttons.TintedIconButton
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
 import com.mohandass.botforge.R.string as AppText
 
 @Composable
