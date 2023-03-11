@@ -13,6 +13,7 @@ import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
 import com.mohandass.botforge.model.service.AccountService
+import com.mohandass.botforge.model.service.implementation.OpenAiService
 import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +26,47 @@ import com.mohandass.botforge.R.string as AppText
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val accountService: AccountService,
-    private val personaService: PersonaServiceImpl
+    private val personaService: PersonaServiceImpl,
+    private val openAiService: OpenAiService
 )
 : ViewModel() {
+
+    // OpenAI
+    fun logModel() {
+        Log.v("AppViewModel", "logModel()")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                openAiService.logModels()
+            }
+        }
+    }
+
+    fun getChatCompletion() {
+        Log.v("AppViewModel", "getChatCompletion()")
+        val messages = mutableListOf<Message>()
+        if (_personaSystemMessage.value != "") {
+            messages.add(Message(_personaSystemMessage.value, Role.SYSTEM))
+        } else {
+            messages.add(Message("You are a helpful assistant.", Role.SYSTEM))
+        }
+
+        for (message in _activeChat.value) {
+            messages.add(message)
+            Log.v("AppViewModel", "getChatCompletion() message: $message")
+        }
+
+        Log.v("AppViewModel", "getChatCompletion() messages: $messages")
+
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val completion = openAiService.getChatCompletion(messages)
+                Log.v("AppViewModel", "getChatCompletion() completion: $completion")
+                addMessage(completion)
+            }
+        }
+    }
+
+
     // Navigation
     // NacController in MainUI.kt
     private var _navController: NavController? = null
@@ -226,6 +265,11 @@ class AppViewModel @Inject constructor(
                 if (_activeChat.value.last().role == Role.USER) Role.BOT else Role.USER
             )
         }
+        _activeChat.value = _activeChat.value + message
+    }
+
+    private fun addMessage(message: Message) {
+        Log.v("AppViewModel", "addMessage()")
         _activeChat.value = _activeChat.value + message
     }
 
