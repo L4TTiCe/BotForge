@@ -7,9 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessage
+import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
@@ -60,10 +61,16 @@ class AppViewModel @Inject constructor(
                 } catch (e: Throwable) {
                     Log.e("AppViewModel", "getChatCompletion() error: $e")
                     if (e.message != null) {
-                        SnackbarManager.showMessage(e.toSnackbarMessage())
+                        SnackbarManager.showMessage(
+                            e.toSnackbarMessageWithAction(R.string.settings) {
+                            navigateTo(AppRoutes.MainRoutes.Settings.route)
+                        })
                     } else {
                         val message = Utils.parseStackTraceForErrorMessage(e)
-                        SnackbarManager.showMessage(message.toSnackbarMessage())
+                        SnackbarManager.showMessage(
+                            message.toSnackbarMessageWithAction(R.string.settings) {
+                                navigateTo(AppRoutes.MainRoutes.Settings.route)
+                            })
                     }
                 }
             }

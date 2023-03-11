@@ -5,12 +5,10 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -34,6 +32,7 @@ fun MessageEntry(
     message: Message = Message(),
     viewModel: AppViewModel
 ) {
+    val showMetadata = remember { mutableStateOf(false) }
     var messageContent by remember { mutableStateOf(message.text) }
     var isUser by remember { mutableStateOf(message.role.isUser()) }
 
@@ -107,7 +106,9 @@ fun MessageEntry(
                         viewModel.updateMessage(Message(messageContent,
                             if (isUser) Role.USER else Role.BOT, message.uuid))
                     },
-                    modifier = modifier.fillMaxWidth(0.85f),
+                    modifier = modifier
+                        .fillMaxWidth(0.85f)
+                        .sizeIn(minHeight = 100.dp),
                     trailingIcon = {
                         IconButton(onClick = { isUser = !isUser }) {
                             Icon(
@@ -120,12 +121,74 @@ fun MessageEntry(
                     colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
                 )
 
-                // Delete button
-                IconButton(onClick = {
-                    handleDelete()
-                }) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                Column {
+                    // Delete button
+                    IconButton(onClick = {
+                        handleDelete()
+                    }) {
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                    }
+
+                    if (message.metadata != null) {
+                        // Metadata button
+                        IconButton(onClick = {
+                            showMetadata.value = !showMetadata.value
+                        }) {
+                            Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                        }
+                    }
                 }
+            }
+
+           AnimatedVisibility(visible = showMetadata.value) {
+               Column {
+                   Spacer(modifier = modifier.height(4.dp))
+
+                   Text(
+                       text = "Metadata",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelMedium,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+
+                   Spacer(modifier = modifier.height(4.dp))
+
+                   Text(text = "ID: ${message.metadata?.openAiId}",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelSmall,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+
+                   Text(text = "FinishReason: ${message.metadata?.finishReason}",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelSmall,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+
+                   Text(text = "PromptTokens: ${message.metadata?.promptTokens}",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelSmall,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+
+                   Text(text = "ResponseTokens: ${message.metadata?.completionTokens}",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelSmall,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+
+                   Text(text = "Tokens: ${message.metadata?.totalTokens}",
+                       modifier = modifier
+                           .fillMaxWidth(),
+                       style = MaterialTheme.typography.labelSmall,
+                       color = MaterialTheme.colorScheme.onSurface
+                   )
+               }
             }
 
         }
