@@ -106,7 +106,7 @@ fun PersonaUi(viewModel: AppViewModel) {
 
                             ExtendedFloatingActionButton(
                                 onClick = {
-                                    TODO("Not yet implemented")
+                                    viewModel.getChatCompletion()
                                 },
                                 modifier = Modifier,
                             ) {

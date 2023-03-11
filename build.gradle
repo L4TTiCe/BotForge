@@ -20,3 +20,8 @@ plugins {
     // Dependency Injection with Hilt
     id "com.google.dagger.hilt.android" version "2.44" apply false
 }
+configurations {
+    all {
+        exclude group: 'androidx.lifecycle', module: 'lifecycle-runtime-ktx'
+    }
+}

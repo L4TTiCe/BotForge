@@ -6,11 +6,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.model.service.AccountService
+import com.mohandass.botforge.model.service.DataStoreService
 import com.mohandass.botforge.model.service.PersonaService
-import com.mohandass.botforge.model.service.implementation.AccountServiceImpl
-import com.mohandass.botforge.model.service.implementation.DataStoreServiceImpl
-import com.mohandass.botforge.model.service.implementation.LocalDatabase
-import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
+import com.mohandass.botforge.model.service.implementation.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,4 +48,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDataStore(app: Application) = DataStoreServiceImpl.getInstance(app)
+
+    @Provides
+    @Singleton
+    fun provideOpenAiService(dataStoreService: DataStoreService) = OpenAiService.getInstance(dataStoreService)
 }
