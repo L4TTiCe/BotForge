@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.viewmodels
+package com.mohandass.botforge.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf

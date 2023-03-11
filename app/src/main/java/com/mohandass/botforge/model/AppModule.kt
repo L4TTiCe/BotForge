@@ -8,6 +8,7 @@ import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.PersonaService
 import com.mohandass.botforge.model.service.implementation.AccountServiceImpl
+import com.mohandass.botforge.model.service.implementation.DataStoreServiceImpl
 import com.mohandass.botforge.model.service.implementation.LocalDatabase
 import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
 import dagger.Module
@@ -45,4 +46,8 @@ class AppModule {
     @Provides
     @Singleton
     fun providePersonaServiceImpl(personaService: PersonaService) = PersonaServiceImpl(personaService)
+
+    @Provides
+    @Singleton
+    fun provideDataStore(app: Application) = DataStoreServiceImpl.getInstance(app)
 }

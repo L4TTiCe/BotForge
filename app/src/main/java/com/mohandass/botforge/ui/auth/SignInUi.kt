@@ -24,7 +24,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.ui.viewmodels.SignInViewModel
+import com.mohandass.botforge.viewmodels.SignInViewModel
 import com.slaviboy.composeunits.dh
 import com.mohandass.botforge.R.string as AppText
 

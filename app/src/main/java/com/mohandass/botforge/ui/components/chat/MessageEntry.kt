@@ -23,7 +23,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.ui.viewmodels.AppViewModel
+import com.mohandass.botforge.viewmodels.AppViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
