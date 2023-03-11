@@ -129,7 +129,8 @@ dependencies {
     implementation 'com.aallam.openai:openai-client'
     implementation 'io.ktor:ktor-client-okhttp'
 
-//    implementation "com.aallam.openai:openai-client:$openai_kotlin_version"
+    // gson
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 // Dependency Injection with Hilt

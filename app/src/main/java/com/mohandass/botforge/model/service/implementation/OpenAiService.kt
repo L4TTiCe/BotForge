@@ -14,14 +14,15 @@ import com.mohandass.botforge.model.service.DataStoreService
 class OpenAiService private constructor(private val dataStoreService: DataStoreService) {
 
     private fun getClient(): OpenAI {
-        return OpenAI(dataStoreService.getApiKey())
-    }
+        val apiKey = dataStoreService.getApiKey()
+        Log.v("OpenAiService", "getClient() |$apiKey|")
 
-    suspend fun logModels() {
-        val models = getClient().models()
-        for (model in models) {
-            Log.v("OpenAiService", "logModels() ${model.id}")
+        if (apiKey == "") {
+            Log.e("OpenAiService", "getClient() No API key found")
+            throw Throwable("No API key found")
         }
+
+        return OpenAI(apiKey)
     }
 
     @OptIn(BetaOpenAI::class)
@@ -41,22 +42,28 @@ class OpenAiService private constructor(private val dataStoreService: DataStoreS
             messages = chatMessages,
         )
 
-        val completion: ChatCompletion = getClient().chatCompletion(chatCompletionRequest)
-        Log.v("OpenAiService", "getChatCompletion() ${completion.choices[0].message?.content}")
+        try {
+            Log.v("OpenAiService", "getChatCompletion() start request")
+            val completion: ChatCompletion = getClient().chatCompletion(chatCompletionRequest)
+            Log.v("OpenAiService", "getChatCompletion() ${completion.choices[0].message?.content}")
 
-        val metadata = MessageMetadata(
-            openAiId = completion.id,
-            finishReason = completion.choices[0].finishReason,
-            promptTokens = completion.usage?.promptTokens,
-            completionTokens = completion.usage?.completionTokens,
-            totalTokens = completion.usage?.totalTokens,
-        )
+            val metadata = MessageMetadata(
+                openAiId = completion.id,
+                finishReason = completion.choices[0].finishReason,
+                promptTokens = completion.usage?.promptTokens,
+                completionTokens = completion.usage?.completionTokens,
+                totalTokens = completion.usage?.totalTokens,
+            )
 
-        return Message(
-            text = completion.choices[0].message?.content ?: "",
-            role = Role.BOT,
-            metadata = metadata,
-        )
+            return Message(
+                text = completion.choices[0].message?.content ?: "",
+                role = Role.BOT,
+                metadata = metadata,
+            )
+        } catch (e: Exception) {
+//            Log.v("OpenAiService", "getChatCompletion() ${e.printStackTrace()}")
+            throw e
+        }
     }
 
     companion object {

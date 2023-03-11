@@ -1,6 +1,7 @@
 package com.mohandass.botforge
 
 import android.content.res.Resources
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavHostController
@@ -22,7 +23,7 @@ class AppState(
         coroutineScope.launch {
             snackbarManager.snackbarMessages.filterNotNull().collect { snackbarMessage ->
                 val text = snackbarMessage.toMessage(resources)
-                snackbarHostState.showSnackbar(text)
+                snackbarHostState.showSnackbar(text, duration = SnackbarDuration.Short)
             }
         }
     }
