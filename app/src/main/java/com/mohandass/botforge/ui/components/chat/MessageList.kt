@@ -69,6 +69,8 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
                             modifier = Modifier.size(24.dp)
                         )
                     }
+
+                    Spacer(modifier = modifier.height(120.dp))
                 }
             }
         }
