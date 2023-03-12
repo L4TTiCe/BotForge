@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.viewmodels.SettingsViewModel
+import java.text.DecimalFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -313,8 +314,11 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = (resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens)
-                            * settingsViewModel.getUsageTokens().div(1000)).toString(),
+                    text = DecimalFormat("0.0000")
+                        .format(
+                            resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens) *
+                                    settingsViewModel.getUsageTokens().div(1000)
+                        ).toString(),
                     modifier = Modifier.padding(end = 10.dp),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.error
