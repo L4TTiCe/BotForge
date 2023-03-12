@@ -117,49 +117,27 @@ fun MessageEntry(
                 Column(
                     modifier = Modifier.fillMaxWidth(0.85f)
                 ) {
-                    if (isActive.value) {
-                        TextField(
-                            value = messageContent,
-                            onValueChange = {
-                                messageContent = it
-                                updateMessage()
-                            },
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .sizeIn(minHeight = 100.dp),
-                            trailingIcon = {
-                                IconButton(onClick = { isUser = !isUser }) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.swap),
-                                        modifier = Modifier.size(18.dp),
-                                        contentDescription = null,
-                                    )
-                                }
-                            },
-                            colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
-                        )
-                    } else {
-                        OutlinedTextField(
-                            value = messageContent,
-                            enabled = false,
-                            onValueChange = {
-                                messageContent = it
-                                updateMessage()
-                            },
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .sizeIn(minHeight = 100.dp),
-                            trailingIcon = {
-                                IconButton(onClick = { isUser = !isUser }) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.swap),
-                                        modifier = Modifier.size(18.dp),
-                                        contentDescription = null,
-                                    )
-                                }
+                    TextField(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .sizeIn(minHeight = 100.dp),
+                        value = messageContent,
+                        onValueChange = {
+                            messageContent = it
+                            updateMessage()
+                        },
+                        enabled = isActive.value,
+                        trailingIcon = {
+                            IconButton(onClick = { isUser = !isUser }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.swap),
+                                    modifier = Modifier.size(18.dp),
+                                    contentDescription = null,
+                                )
                             }
-                        )
-                    }
+                        },
+                        colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
+                    )
 
                     AnimatedVisibility(visible = showMetadata.value) {
                         MessageMetadata(modifier = modifier, message = message)
