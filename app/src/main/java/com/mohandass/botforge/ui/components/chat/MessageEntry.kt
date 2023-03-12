@@ -35,7 +35,6 @@ fun MessageEntry(
     val isActive  = remember { mutableStateOf(message.isActive) }
     val showAllIcons = remember { mutableStateOf(false) }
 
-
     var messageContent by remember { mutableStateOf(message.text) }
     var isUser by remember { mutableStateOf(message.role.isUser()) }
 

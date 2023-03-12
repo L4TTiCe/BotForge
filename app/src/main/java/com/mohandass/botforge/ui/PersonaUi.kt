@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -40,6 +41,8 @@ fun PersonaUi(viewModel: AppViewModel) {
     val scrollState = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openAliasDialog = remember { mutableStateOf(false) }
+
+    val hapticFeedback = LocalHapticFeedback.current
 
     val personaName by viewModel.personaName
     val personaAlias by viewModel.personaAlias
@@ -165,7 +168,7 @@ fun PersonaUi(viewModel: AppViewModel) {
 
                             ExtendedFloatingActionButton(
                                 onClick = {
-                                    viewModel.getChatCompletion()
+                                    viewModel.getChatCompletion(hapticFeedback)
                                 },
                             ) {
                                 Icon(
