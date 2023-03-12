@@ -43,7 +43,7 @@ fun MainHeader(
             contentDescription = null,
             contentScale = ContentScale.Inside,
             modifier = modifier
-                .size(0.25.dw)
+                .size(if (150.dp < 0.25.dw) 150.dp else 0.25.dw)
                 .padding(10.dp)
         )
 
