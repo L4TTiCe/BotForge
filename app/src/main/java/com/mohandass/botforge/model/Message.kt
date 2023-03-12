@@ -9,6 +9,7 @@ data class Message(
     val role: Role = Role.USER,
     val uuid: String = UUID.randomUUID().toString(),
     val timestamp: Long = System.currentTimeMillis(),
+    val isActive: Boolean = true,
     val metadata: MessageMetadata? = null,
 ) {
     override fun toString(): String {

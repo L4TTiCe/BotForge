@@ -46,8 +46,10 @@ class AppViewModel @Inject constructor(
         }
 
         for (message in _activeChat.value) {
-            messages.add(message)
-            Log.v("AppViewModel", "getChatCompletion() message: $message")
+            if (message.isActive) {
+                messages.add(message)
+                Log.v("AppViewModel", "getChatCompletion() message: $message")
+            }
         }
 
         Log.v("AppViewModel", "getChatCompletion() messages: $messages")

@@ -1,8 +1,6 @@
 package com.mohandass.botforge.ui.components.chat
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.*
@@ -34,8 +32,21 @@ fun MessageEntry(
     viewModel: AppViewModel
 ) {
     val showMetadata = remember { mutableStateOf(false) }
+    val isActive  = remember { mutableStateOf(message.isActive) }
     var messageContent by remember { mutableStateOf(message.text) }
     var isUser by remember { mutableStateOf(message.role.isUser()) }
+
+    fun updateMessage() {
+        viewModel.updateMessage(
+            Message(
+                text = messageContent,
+                role = if (isUser) Role.USER else Role.BOT,
+                uuid = message.uuid,
+                isActive = isActive.value,
+                metadata = message.metadata
+            )
+        )
+    }
 
     val roles by remember {
         mutableStateOf(listOf("User", "Bot"))
@@ -76,17 +87,17 @@ fun MessageEntry(
     AnimatedVisibility(
         visible = visibility,
         enter = slideInHorizontally(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessLow
-            ),
+//            animationSpec = spring(
+//                dampingRatio = Spring.DampingRatioLowBouncy,
+//                stiffness = Spring.StiffnessLow
+//            ),
             initialOffsetX = { it + 200 }
         ),
         exit = slideOutHorizontally(
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessLow
-            ),
+//            animationSpec = spring(
+//                dampingRatio = Spring.DampingRatioLowBouncy,
+//                stiffness = Spring.StiffnessLow
+//            ),
             targetOffsetX = { it + 200 }
         ),
     ) {
@@ -100,34 +111,79 @@ fun MessageEntry(
             )
 
             Row(modifier = Modifier.fillMaxWidth()) {
-                TextField(
-                    value = messageContent,
-                    onValueChange = {
-                        messageContent = it
-                        viewModel.updateMessage(Message(messageContent,
-                            if (isUser) Role.USER else Role.BOT, message.uuid))
-                    },
-                    modifier = modifier
-                        .fillMaxWidth(0.85f)
-                        .sizeIn(minHeight = 100.dp),
-                    trailingIcon = {
-                        IconButton(onClick = { isUser = !isUser }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.swap),
-                                modifier = Modifier.size(18.dp),
-                                contentDescription = null,
-                            )
+                if (isActive.value) {
+                    TextField(
+                        value = messageContent,
+                        onValueChange = {
+                            messageContent = it
+                            updateMessage()
+                        },
+                        modifier = modifier
+                            .fillMaxWidth(0.85f)
+                            .sizeIn(minHeight = 100.dp),
+                        trailingIcon = {
+                            IconButton(onClick = { isUser = !isUser }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.swap),
+                                    modifier = Modifier.size(18.dp),
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                        colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
+                    )
+                } else {
+                    OutlinedTextField(
+                        value = messageContent,
+                        enabled = false,
+                        onValueChange = {
+                            messageContent = it
+                            updateMessage()
+                        },
+                        modifier = modifier
+                            .fillMaxWidth(0.85f)
+                            .sizeIn(minHeight = 100.dp),
+                        trailingIcon = {
+                            IconButton(onClick = { isUser = !isUser }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.swap),
+                                    modifier = Modifier.size(18.dp),
+                                    contentDescription = null,
+                                )
+                            }
                         }
-                    },
-                    colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
-                )
+                    )
+                }
 
-                Column {
+                Column (
+                    modifier = modifier
+                        .fillMaxHeight()
+                ) {
                     // Delete button
                     IconButton(onClick = {
                         handleDelete()
                     }) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    val icon = if (isActive.value) R.drawable.show_eye else R.drawable.hide_eye
+
+                    if (message.text.isNotEmpty()) {
+                        IconButton(onClick = {
+                            isActive.value = !isActive.value
+                            updateMessage()
+                        }) {
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(id = icon),
+                                contentDescription = null
+                            )
+                        }
                     }
 
                     if (message.metadata != null) {
@@ -135,9 +191,14 @@ fun MessageEntry(
                         IconButton(onClick = {
                             showMetadata.value = !showMetadata.value
                         }) {
-                            Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = null
+                            )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
 
