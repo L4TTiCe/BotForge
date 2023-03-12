@@ -18,9 +18,9 @@ import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
+import com.mohandass.botforge.ui.components.MessageMetadata
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.AppViewModel
-import com.slaviboy.composeunits.dw
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -114,48 +114,56 @@ fun MessageEntry(
             )
 
             Row(modifier = Modifier.fillMaxWidth()) {
-                if (isActive.value) {
-                    TextField(
-                        value = messageContent,
-                        onValueChange = {
-                            messageContent = it
-                            updateMessage()
-                        },
-                        modifier = modifier
-                            .fillMaxWidth(0.85f)
-                            .sizeIn(minHeight = 100.dp),
-                        trailingIcon = {
-                            IconButton(onClick = { isUser = !isUser }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.swap),
-                                    modifier = Modifier.size(18.dp),
-                                    contentDescription = null,
-                                )
+                Column(
+                    modifier = Modifier.fillMaxWidth(0.85f)
+                ) {
+                    if (isActive.value) {
+                        TextField(
+                            value = messageContent,
+                            onValueChange = {
+                                messageContent = it
+                                updateMessage()
+                            },
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .sizeIn(minHeight = 100.dp),
+                            trailingIcon = {
+                                IconButton(onClick = { isUser = !isUser }) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.swap),
+                                        modifier = Modifier.size(18.dp),
+                                        contentDescription = null,
+                                    )
+                                }
+                            },
+                            colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
+                        )
+                    } else {
+                        OutlinedTextField(
+                            value = messageContent,
+                            enabled = false,
+                            onValueChange = {
+                                messageContent = it
+                                updateMessage()
+                            },
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .sizeIn(minHeight = 100.dp),
+                            trailingIcon = {
+                                IconButton(onClick = { isUser = !isUser }) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.swap),
+                                        modifier = Modifier.size(18.dp),
+                                        contentDescription = null,
+                                    )
+                                }
                             }
-                        },
-                        colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
-                    )
-                } else {
-                    OutlinedTextField(
-                        value = messageContent,
-                        enabled = false,
-                        onValueChange = {
-                            messageContent = it
-                            updateMessage()
-                        },
-                        modifier = modifier
-                            .fillMaxWidth(0.85f)
-                            .sizeIn(minHeight = 100.dp),
-                        trailingIcon = {
-                            IconButton(onClick = { isUser = !isUser }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.swap),
-                                    modifier = Modifier.size(18.dp),
-                                    contentDescription = null,
-                                )
-                            }
-                        }
-                    )
+                        )
+                    }
+
+                    AnimatedVisibility(visible = showMetadata.value) {
+                        MessageMetadata(modifier = modifier, message = message)
+                    }
                 }
 
                 Column (
@@ -172,15 +180,14 @@ fun MessageEntry(
                         )
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     val iconCount = 1 +
-                            if (message.metadata != null) 1 else 0 +
-                                    if (message.text.isNotEmpty()) 1 else 0
+                            (if (message.metadata != null) 1 else 0) +
+                            (if (message.text.isNotEmpty()) 1 else 0)
 
-                    if (!showAllIcons.value && iconCount > 1) {
+                    if (!showAllIcons.value && iconCount > 2) {
                         IconButton(onClick = {
                             showAllIcons.value = true
+                            showMetadata.value = true
                         }) {
                             Icon(
                                 modifier = Modifier.size(18.dp),
@@ -190,11 +197,29 @@ fun MessageEntry(
                         }
                     }
 
+                    val icon =
+                        if (isActive.value) R.drawable.show_eye else R.drawable.hide_eye
+
+                    if (!showAllIcons.value &&
+                        message.text.isNotEmpty() &&
+                        iconCount <= 2
+                    ) {
+                        Column {
+                            IconButton(onClick = {
+                                isActive.value = !isActive.value
+                                updateMessage()
+                            }) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = icon),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+
                     AnimatedVisibility(visible = showAllIcons.value) {
                         Column {
-                            val icon =
-                                if (isActive.value) R.drawable.show_eye else R.drawable.hide_eye
-
                             if (message.text.isNotEmpty()) {
                                 IconButton(onClick = {
                                     isActive.value = !isActive.value
@@ -223,6 +248,7 @@ fun MessageEntry(
                             if (showAllIcons.value) {
                                 IconButton(onClick = {
                                     showAllIcons.value = false
+                                    showMetadata.value = false
                                 }) {
                                     Icon(
                                         modifier = Modifier.size(18.dp),
@@ -237,91 +263,6 @@ fun MessageEntry(
                     Spacer(modifier = Modifier.height(4.dp))
                 }
             }
-
-           AnimatedVisibility(visible = showMetadata.value) {
-               Column {
-                   Spacer(modifier = modifier.height(4.dp))
-
-                   Text(
-                       text = "Metadata",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelMedium,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
-
-                   Spacer(modifier = modifier.height(4.dp))
-
-                   Text(text = "ID: ${message.metadata?.openAiId}",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelSmall,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
-
-                   Text(text = "FinishReason: ${message.metadata?.finishReason}",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelSmall,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
-
-                   Row {
-                       Column {
-                           Text(text = "PromptTokens: ${message.metadata?.promptTokens}",
-                               modifier = modifier,
-                               style = MaterialTheme.typography.labelSmall,
-                               color = MaterialTheme.colorScheme.onSurface
-                           )
-
-                           Text(text = "ResponseTokens: ${message.metadata?.completionTokens}",
-                               modifier = modifier,
-                               style = MaterialTheme.typography.labelSmall,
-                               color = MaterialTheme.colorScheme.onSurface
-                           )
-                       }
-
-                       Spacer(modifier = modifier.weight(1f))
-
-                       Column {
-                           Row {
-                               Icon(
-                                      painter = painterResource(id = R.drawable.baseline_token_24),
-                                      contentDescription = null,
-                                      modifier = modifier.size(18.dp)
-                                 )
-
-                               Spacer(modifier = modifier.width(4.dp))
-
-                               Text(text = "${message.metadata?.totalTokens}",
-                                   modifier = modifier,
-                                   style = MaterialTheme.typography.labelSmall,
-                                   color = MaterialTheme.colorScheme.onSurface
-                               )
-                           }
-//                           Row {
-//                               Icon(
-//                                   painter = painterResource(id = R.drawable.baseline_attach_money_24),
-//                                   contentDescription = null,
-//                                   modifier = modifier.size(18.dp),
-//                                   tint = MaterialTheme.colorScheme.error
-//                               )
-//
-//                               Text(
-//                                   text = (resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens)
-//                                                   * message.metadata?.totalTokens?.div(1000)!!).toString(),
-//                                   modifier = modifier,
-//                                   style = MaterialTheme.typography.labelSmall,
-//                                   color = MaterialTheme.colorScheme.error
-//                               )
-//                           }
-                       }
-
-                       Spacer(modifier = modifier.width(0.2.dw))
-                   }
-               }
-            }
-
         }
     }
 }
