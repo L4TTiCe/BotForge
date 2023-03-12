@@ -55,6 +55,9 @@ class OpenAiService private constructor(private val dataStoreService: DataStoreS
                 totalTokens = completion.usage?.totalTokens,
             )
 
+            // Update usage tokens
+            dataStoreService.incrementUsageTokens(completion.usage?.totalTokens ?: 0)
+
             return Message(
                 text = completion.choices[0].message?.content ?: "",
                 role = Role.BOT,

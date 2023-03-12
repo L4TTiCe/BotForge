@@ -73,6 +73,24 @@
     <string name="open_ai_api_website">OpenAI API page</string>
     <string name="api_key_saved">API Key saved!</string>
 
+    <string name="api_usage">Usage</string>
+    <string name="usage_quotas">Usage quotas</string>
+    <string name="usage_quotas_message">When you sign up, you’ll be granted an initial spend
+        limit, or quota, and OpenAI will increase that limit over time as you build a track record
+        with your application. If you need more tokens, you can always request a quota
+        increase.</string>
+
+    <string name="learn_more_pricing">To learn more visit</string>
+    <string name="open_ai_pricing">OpenAI Pricing</string>
+    <string name="open_ai_pricing_link">https://openai.com/pricing</string>
+    <string name="your_usage">Your Usage (Tokens)</string>
+    <string name="visit">Visit</string>
+    <string name="open_ai_usage">OpenAI Usage</string>
+    <string name="usage_summary">for a summary of your API Usage.</string>
+    <string name="open_ai_usage_link">https://platform.openai.com/account/usage</string>
+    <string name="reset_usage">Reset Usage</string>
+    <string name="usage_tokens_reset">Local token counter reset!</string>
+
     <string name="delete_account">Delete Account</string>
     <string name="delete_account_message">Are you sure you want to delete your account?</string>
     <string name="delete_account_success">Account deleted!</string>

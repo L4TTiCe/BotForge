@@ -13,8 +13,7 @@ class SettingsViewModel @Inject constructor(
     private val accountService: AccountService,
     private val dataStoreService: DataStoreService
 ) : ViewModel() {
-
-    fun getApiKey() = dataStoreService.getApiKey()
+    fun getApiKey(): String = dataStoreService.getApiKey()
 
     fun setApiKey(value: String) {
         dataStoreService.setAPIKey(value)
@@ -22,4 +21,13 @@ class SettingsViewModel @Inject constructor(
     }
     fun getCurrentUser() = accountService.currentUser
 
+    // Usage
+    fun getUsageTokens(): Long {
+        return dataStoreService.getUsageTokens()
+    }
+
+    fun resetUsageTokens() {
+        dataStoreService.resetUsageTokens()
+        SnackbarManager.showMessage(R.string.usage_tokens_reset)
+    }
 }

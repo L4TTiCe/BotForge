@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="gpt_3_5_turbo_cost_per_1k_tokens" type="dimen" format="float">0.0002</item>
+</resources>

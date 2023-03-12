@@ -15,6 +15,13 @@ data class Persona(
     val lastUsed: Long = System.currentTimeMillis(),
 ) {
     override fun toString(): String {
-        return "Persona(uuid='$uuid',alias='$alias', name='$name', systemMessage='$systemMessage', createdAt=$createdAt, lastUsed=$lastUsed)"
+        return "Persona(" +
+                "uuid='$uuid'," +
+                "alias='$alias', " +
+                "name='$name', " +
+                "systemMessage='$systemMessage', " +
+                "createdAt=$createdAt, " +
+                "lastUsed=$lastUsed" +
+                ")"
     }
 }
