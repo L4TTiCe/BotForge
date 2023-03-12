@@ -1,9 +1,12 @@
 package com.mohandass.botforge
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -14,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,9 +33,12 @@ import kotlinx.coroutines.CoroutineScope
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         initSize()
 
@@ -77,7 +84,18 @@ fun resources(): Resources {
 
 @Composable
 fun Navigation(modifier: Modifier, appState: AppState) {
-    NavHost(modifier = modifier, navController = appState.navController, startDestination = AppRoutes.Splash.route) {
+    NavHost(
+        modifier = modifier,
+        navController = appState.navController,
+        startDestination = AppRoutes.Splash.route) {
+        composable("test") {
+            Column(
+                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.tertiaryContainer)
+            ) {
+
+            }
+        }
+
         composable(AppRoutes.Splash.route) {
             SplashUi(appState = appState)
         }

@@ -145,6 +145,8 @@ fun PersonaUi(viewModel: AppViewModel) {
                     .fillMaxSize(),
                     floatingActionButton = {
                         Column(
+                            modifier = Modifier
+                                .imePadding(),
                             horizontalAlignment = Alignment.End,
                         ) {
                             FloatingActionButton(
@@ -165,7 +167,6 @@ fun PersonaUi(viewModel: AppViewModel) {
                                 onClick = {
                                     viewModel.getChatCompletion()
                                 },
-                                modifier = Modifier,
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.baseline_send_24),

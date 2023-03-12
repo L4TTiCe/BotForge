@@ -32,7 +32,7 @@ fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
         },
         content = {
             Surface(
-                modifier = Modifier.padding(it),
+                modifier = Modifier.padding(top = it.calculateTopPadding()),
             ) {
                 Column{
                     NavHost(
