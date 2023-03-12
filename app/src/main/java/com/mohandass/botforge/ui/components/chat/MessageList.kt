@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.viewmodels.AppViewModel
+import com.slaviboy.composeunits.dh
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,7 +71,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
                         )
                     }
 
-                    Spacer(modifier = modifier.height(120.dp))
+                    Spacer(modifier = modifier.height(0.4.dh))
                 }
             }
         }
