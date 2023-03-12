@@ -33,6 +33,9 @@ fun MessageEntry(
 ) {
     val showMetadata = remember { mutableStateOf(false) }
     val isActive  = remember { mutableStateOf(message.isActive) }
+    val showAllIcons = remember { mutableStateOf(false) }
+
+
     var messageContent by remember { mutableStateOf(message.text) }
     var isUser by remember { mutableStateOf(message.role.isUser()) }
 
@@ -171,30 +174,63 @@ fun MessageEntry(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    val icon = if (isActive.value) R.drawable.show_eye else R.drawable.hide_eye
+                    val iconCount = 1 +
+                            if (message.metadata != null) 1 else 0 +
+                                    if (message.text.isNotEmpty()) 1 else 0
 
-                    if (message.text.isNotEmpty()) {
+                    if (!showAllIcons.value && iconCount > 1) {
                         IconButton(onClick = {
-                            isActive.value = !isActive.value
-                            updateMessage()
+                            showAllIcons.value = true
                         }) {
                             Icon(
                                 modifier = Modifier.size(18.dp),
-                                painter = painterResource(id = icon),
+                                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
                                 contentDescription = null
                             )
                         }
                     }
 
-                    if (message.metadata != null) {
-                        // Metadata button
-                        IconButton(onClick = {
-                            showMetadata.value = !showMetadata.value
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Info,
-                                contentDescription = null
-                            )
+                    AnimatedVisibility(visible = showAllIcons.value) {
+                        Column {
+                            val icon =
+                                if (isActive.value) R.drawable.show_eye else R.drawable.hide_eye
+
+                            if (message.text.isNotEmpty()) {
+                                IconButton(onClick = {
+                                    isActive.value = !isActive.value
+                                    updateMessage()
+                                }) {
+                                    Icon(
+                                        modifier = Modifier.size(18.dp),
+                                        painter = painterResource(id = icon),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+
+                            if (message.metadata != null) {
+                                // Metadata button
+                                IconButton(onClick = {
+                                    showMetadata.value = !showMetadata.value
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+
+                            if (showAllIcons.value) {
+                                IconButton(onClick = {
+                                    showAllIcons.value = false
+                                }) {
+                                    Icon(
+                                        modifier = Modifier.size(18.dp),
+                                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
                         }
                     }
 
