@@ -60,6 +60,7 @@ class AppViewModel @Inject constructor(
                     addMessage(completion)
                 } catch (e: Throwable) {
                     Log.e("AppViewModel", "getChatCompletion() error: $e")
+                    e.printStackTrace()
                     if (e.message != null) {
                         SnackbarManager.showMessage(
                             e.toSnackbarMessageWithAction(R.string.settings) {

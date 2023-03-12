@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.components.AvatarsBar
 import com.mohandass.botforge.ui.components.chat.MessageList
 import com.mohandass.botforge.viewmodels.AppViewModel
@@ -69,6 +70,7 @@ fun PersonaUi(viewModel: AppViewModel) {
         )
     }
 
+    /*TODO Extract string to string.xml*/
     if (openAliasDialog.value) {
         AlertDialog(onDismissRequest = { openAliasDialog.value = false },
             title = {
@@ -290,7 +292,9 @@ fun PersonaUi(viewModel: AppViewModel) {
 
                 Row(horizontalArrangement = Arrangement.SpaceAround) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = { /*TODO*/
+                            SnackbarManager.showMessage(R.string.not_implemented)
+                        },
                         modifier = Modifier.padding(horizontal = 10.dp)) {
                         Text(text = stringResource(id = R.string.share))
                     }

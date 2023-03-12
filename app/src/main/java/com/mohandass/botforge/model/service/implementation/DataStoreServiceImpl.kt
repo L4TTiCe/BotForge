@@ -7,6 +7,7 @@ import com.mohandass.botforge.model.service.DataStoreService
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private const val API_KEY = "open_ai_api_key"
+private const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
 
 class DataStoreServiceImpl private constructor(context: Context) : DataStoreService{
 
@@ -27,6 +28,27 @@ class DataStoreServiceImpl private constructor(context: Context) : DataStoreServ
         Log.v("DataStoreImpl", "setAPIKey() $apiKey")
         sharedPreferences.edit {
             putString(API_KEY, apiKey)
+        }
+    }
+
+    override fun getUsageTokens(): Long {
+        return _usageTokens
+    }
+
+    private val _usageTokens: Long
+        get() {
+            return sharedPreferences.getLong(API_USAGE_AS_TOKENS, 0)
+        }
+
+    override fun incrementUsageTokens(tokens: Int) {
+        sharedPreferences.edit {
+            putLong(API_USAGE_AS_TOKENS, _usageTokens + tokens)
+        }
+    }
+
+    override fun resetUsageTokens() {
+        sharedPreferences.edit {
+            putLong(API_USAGE_AS_TOKENS, 0)
         }
     }
 

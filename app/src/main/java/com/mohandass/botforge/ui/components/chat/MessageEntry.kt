@@ -22,6 +22,7 @@ import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.AppViewModel
+import com.slaviboy.composeunits.dw
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -168,26 +169,59 @@ fun MessageEntry(
                        color = MaterialTheme.colorScheme.onSurface
                    )
 
-                   Text(text = "PromptTokens: ${message.metadata?.promptTokens}",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelSmall,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
+                   Row {
+                       Column {
+                           Text(text = "PromptTokens: ${message.metadata?.promptTokens}",
+                               modifier = modifier,
+                               style = MaterialTheme.typography.labelSmall,
+                               color = MaterialTheme.colorScheme.onSurface
+                           )
 
-                   Text(text = "ResponseTokens: ${message.metadata?.completionTokens}",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelSmall,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
+                           Text(text = "ResponseTokens: ${message.metadata?.completionTokens}",
+                               modifier = modifier,
+                               style = MaterialTheme.typography.labelSmall,
+                               color = MaterialTheme.colorScheme.onSurface
+                           )
+                       }
 
-                   Text(text = "Tokens: ${message.metadata?.totalTokens}",
-                       modifier = modifier
-                           .fillMaxWidth(),
-                       style = MaterialTheme.typography.labelSmall,
-                       color = MaterialTheme.colorScheme.onSurface
-                   )
+                       Spacer(modifier = modifier.weight(1f))
+
+                       Column {
+                           Row {
+                               Icon(
+                                      painter = painterResource(id = R.drawable.baseline_token_24),
+                                      contentDescription = null,
+                                      modifier = modifier.size(18.dp)
+                                 )
+
+                               Spacer(modifier = modifier.width(4.dp))
+
+                               Text(text = "${message.metadata?.totalTokens}",
+                                   modifier = modifier,
+                                   style = MaterialTheme.typography.labelSmall,
+                                   color = MaterialTheme.colorScheme.onSurface
+                               )
+                           }
+//                           Row {
+//                               Icon(
+//                                   painter = painterResource(id = R.drawable.baseline_attach_money_24),
+//                                   contentDescription = null,
+//                                   modifier = modifier.size(18.dp),
+//                                   tint = MaterialTheme.colorScheme.error
+//                               )
+//
+//                               Text(
+//                                   text = (resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens)
+//                                                   * message.metadata?.totalTokens?.div(1000)!!).toString(),
+//                                   modifier = modifier,
+//                                   style = MaterialTheme.typography.labelSmall,
+//                                   color = MaterialTheme.colorScheme.error
+//                               )
+//                           }
+                       }
+
+                       Spacer(modifier = modifier.width(0.2.dw))
+                   }
                }
             }
 
