@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,6 +44,7 @@ fun PersonaUi(viewModel: AppViewModel) {
     val personaName by viewModel.personaName
     val personaAlias by viewModel.personaAlias
     val personaSystemMessage by viewModel.personaSystemMessage
+    val isLoading by viewModel.isLoading
 
     if (openDeleteDialog.value) {
         AlertDialog(onDismissRequest = { openDeleteDialog.value = false },
@@ -120,13 +122,21 @@ fun PersonaUi(viewModel: AppViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AvatarsBar(
-                viewModel = viewModel
-            )
+            Column {
+                AvatarsBar(
+                    viewModel = viewModel
+                )
 
-            Spacer(
-                modifier = Modifier.height(0.01.dh)
-            )
+                Spacer(
+                    modifier = Modifier.height(0.01.dh)
+                )
+
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .alpha(if (isLoading) 0.9f else 0f)
+                        .fillMaxWidth(),
+                )
+            }
         }
 
         BottomSheetScaffold(
@@ -241,7 +251,9 @@ fun PersonaUi(viewModel: AppViewModel) {
                         modifier = Modifier.padding(10.dp)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_drive_file_rename_outline_24),
+                            painter = painterResource(
+                                id = R.drawable.baseline_drive_file_rename_outline_24
+                            ),
                             contentDescription = null,
                             modifier = Modifier.size(36.dp)
                         )

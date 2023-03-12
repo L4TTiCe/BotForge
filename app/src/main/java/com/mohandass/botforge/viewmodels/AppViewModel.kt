@@ -34,10 +34,20 @@ class AppViewModel @Inject constructor(
 )
 : ViewModel() {
 
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: MutableState<Boolean>
+        get() = _isLoading
+
+    fun setLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
     // OpenAI
 
     fun getChatCompletion() {
         Log.v("AppViewModel", "getChatCompletion()")
+        setLoading(true)
+
         val messages = mutableListOf<Message>()
         if (_personaSystemMessage.value != "") {
             messages.add(Message(_personaSystemMessage.value, Role.SYSTEM))
@@ -76,6 +86,7 @@ class AppViewModel @Inject constructor(
                             })
                     }
                 }
+                setLoading(false)
             }
         }
     }
