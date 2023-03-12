@@ -96,4 +96,12 @@
     <string name="delete_account_success">Account deleted!</string>
 
     <string name="back_cd">Back</string>
+    <string name="dismiss">Dismiss</string>
+
+    <string name="managing_tokens">Managing tokens</string>
+    <string name="managing_tokens_message">Language models read text in chunks called tokens.
+        These tokens are the units used for measuring usage and billing.</string>
+    <string name="learn_more_managing_tokens">To learn more visit</string>
+    <string name="open_ai_managing_tokens">OpenAI\'s Chat Completion Guide</string>
+    <string name="open_ai_managing_tokens_link">https://platform.openai.com/docs/guides/chat/managing-tokens</string>
 </resources>

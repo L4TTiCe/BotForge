@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -25,6 +26,59 @@ import com.mohandass.botforge.viewmodels.SettingsViewModel
 @Composable
 fun ApiSettings(settingsViewModel: SettingsViewModel) {
     val apiKey = remember { mutableStateOf(settingsViewModel.getApiKey()) }
+    val showTokenInfoDialog = remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    if (showTokenInfoDialog.value) {
+        AlertDialog(onDismissRequest = { showTokenInfoDialog.value = false },
+            title = {
+                Text(text = stringResource(id = R.string.managing_tokens))
+            },
+            text = {
+                Column {
+                    Text(text = stringResource(id = R.string.managing_tokens_message))
+
+                    val annotatedStringManagingTokens = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                            append(resources().getString(R.string.learn_more_managing_tokens) + " ")
+                        }
+                        addStringAnnotation(
+                            tag = "URL",
+                            annotation = resources().getString(R.string.open_ai_managing_tokens_link),
+                            start = length,
+                            end = length + resources().getString(R.string.open_ai_managing_tokens_link).length
+                        )
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                            append(resources().getString(R.string.open_ai_managing_tokens))
+                        }
+                    }
+
+                    ClickableText(
+                        text = annotatedStringManagingTokens,
+                        modifier = Modifier.padding(vertical = 10.dp),
+                        onClick = { offset ->
+                            annotatedStringManagingTokens.getStringAnnotations(tag = "URL", start = offset, end = offset)
+                                .firstOrNull()?.let { annotation ->
+                                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse(annotation.item)
+                                    }
+                                    context.startActivity(intent)
+                                }
+                        }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showTokenInfoDialog.value = false
+                }) {
+                    Text(text = stringResource(id = R.string.dismiss))
+                }
+            },
+            dismissButton = {}
+        )
+    }
 
     Text(
         text = resources().getString(R.string.api_key),
@@ -124,8 +178,6 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
         }
     }
 
-    val context = LocalContext.current
-
     ClickableText(
         text = annotatedString,
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
@@ -212,7 +264,9 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
             style = MaterialTheme.typography.labelMedium
         )
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = {
+            showTokenInfoDialog.value = true
+        }) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
