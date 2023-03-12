@@ -3,6 +3,8 @@ package com.mohandass.botforge.viewmodels
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,7 +46,7 @@ class AppViewModel @Inject constructor(
 
     // OpenAI
 
-    fun getChatCompletion() {
+    fun getChatCompletion(hapticFeedback: HapticFeedback) {
         Log.v("AppViewModel", "getChatCompletion()")
         setLoading(true)
 
@@ -86,6 +88,7 @@ class AppViewModel @Inject constructor(
                             })
                     }
                 }
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                 setLoading(false)
             }
         }
