@@ -22,6 +22,7 @@ import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.mohandass.botforge.viewmodels.SettingsViewModel
+import com.slaviboy.composeunits.dh
 
 @Composable
 fun SettingsUi(
@@ -60,15 +61,19 @@ fun SettingsUi(
 
         VersionInfo()
 
-        Spacer(
-            modifier = Modifier.height(10.dp)
-        )
+        Spacer(modifier = Modifier.height(10.dp))
 
         ApiSettings(settingsViewModel = settingsViewModel)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        AccountSettings(viewModel = viewModel, settingsViewModel = settingsViewModel, appState = appState)
+        AccountSettings(
+            viewModel = viewModel,
+            settingsViewModel = settingsViewModel,
+            appState = appState
+        )
+
+        Spacer(modifier = Modifier.height(0.2.dh))
     }
 }
 

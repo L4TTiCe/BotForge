@@ -206,7 +206,7 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
         Text(text = resources().getString(R.string.save))
     }
 
-    Spacer(modifier = Modifier.height(5.dp))
+    Spacer(modifier = Modifier.height(15.dp))
 
     Text(
         text = resources().getString(R.string.api_usage),
@@ -276,21 +276,53 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_token_24),
-            contentDescription = null,
-            modifier = Modifier.size(18.dp)
-        )
+        Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
 
-        Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_token_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
 
-        Text(
-            text = settingsViewModel.getUsageTokens().toString(),
-            modifier = Modifier.padding(10.dp),
-            style = MaterialTheme.typography.bodySmall
-        )
+                Spacer(modifier = Modifier.width(4.dp))
 
-        Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = settingsViewModel.getUsageTokens().toString(),
+                    modifier = Modifier.padding(10.dp),
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_attach_money_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.error
+                )
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = (resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens)
+                            * settingsViewModel.getUsageTokens().div(1000)).toString(),
+                    modifier = Modifier.padding(end = 10.dp),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+        }
     }
 
     val annotatedStringUsage = buildAnnotatedString {
