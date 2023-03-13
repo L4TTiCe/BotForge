@@ -43,13 +43,13 @@ fun MainHeader(
             contentDescription = null,
             contentScale = ContentScale.Inside,
             modifier = modifier
-                .size(if (150.dp < 0.25.dw) 150.dp else 0.25.dw)
+                .size(if (150.dp < 0.20.dw) 150.dp else 0.20.dw)
                 .padding(10.dp)
         )
 
         Text(
             // Apply H3 style
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineSmall,
             text = stringResource(R.string.app_name),
             fontWeight = FontWeight.Bold,
             modifier = modifier.padding(10.dp)

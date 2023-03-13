@@ -244,7 +244,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                         Text(
                             text = stringResource(id = R.string.create_persona_message),
                             modifier = Modifier.padding(horizontal = 10.dp),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
@@ -287,7 +287,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 Text(
                     text = stringResource(id = R.string.system_message),
                     modifier = Modifier.padding(horizontal = 10.dp),
-                    style = MaterialTheme.typography.labelMedium,
+                    style = MaterialTheme.typography.labelLarge,
                 )
 
                 OutlinedTextField(
@@ -300,7 +300,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                     },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .sizeIn(minHeight = 0.2.dh, maxHeight = 0.4.dh)
+                        .sizeIn(minHeight = 0.2.dh)
                         .fillMaxSize()
                 )
 
