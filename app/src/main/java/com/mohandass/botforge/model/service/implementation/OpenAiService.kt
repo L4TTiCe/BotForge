@@ -10,8 +10,9 @@ import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.MessageMetadata
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.service.DataStoreService
+import com.mohandass.botforge.model.service.OpenAiService
 
-class OpenAiService private constructor(private val dataStoreService: DataStoreService) {
+class OpenAiServiceImpl private constructor(private val dataStoreService: DataStoreService): OpenAiService {
 
     private fun getClient(): OpenAI {
         val apiKey = dataStoreService.getApiKey()
@@ -26,9 +27,9 @@ class OpenAiService private constructor(private val dataStoreService: DataStoreS
     }
 
     @OptIn(BetaOpenAI::class)
-    suspend fun getChatCompletion(
+    override suspend fun getChatCompletion(
         messages: List<Message>,
-        modelId: ModelId = ModelId("gpt-3.5-turbo")
+        modelId: ModelId
     ): Message {
         Log.v("OpenAiService", "getChatCompletion() ${messages.size}")
         val chatMessages = messages.map { it.toChatMessage() }
@@ -59,7 +60,7 @@ class OpenAiService private constructor(private val dataStoreService: DataStoreS
             dataStoreService.incrementUsageTokens(completion.usage?.totalTokens ?: 0)
 
             return Message(
-                text = completion.choices[0].message?.content ?: "",
+                text = completion.choices[0].message?.content?.trim() ?: "",
                 role = Role.BOT,
                 metadata = metadata,
             )
@@ -80,7 +81,7 @@ class OpenAiService private constructor(private val dataStoreService: DataStoreS
                 return tempInstance
             }
             synchronized(this) {
-                val instance = OpenAiService(dataStoreService)
+                val instance = OpenAiServiceImpl(dataStoreService)
                 INSTANCE = instance
                 return instance
             }

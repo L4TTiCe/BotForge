@@ -18,7 +18,7 @@ import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
 import com.mohandass.botforge.model.service.AccountService
-import com.mohandass.botforge.model.service.implementation.OpenAiService
+import com.mohandass.botforge.model.service.OpenAiService
 import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
