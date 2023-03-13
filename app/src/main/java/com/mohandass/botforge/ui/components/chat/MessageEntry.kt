@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -133,7 +134,8 @@ fun MessageEntry(
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(0.85f)
+                    modifier = Modifier
+                        .fillMaxWidth(0.88f)
                 ) {
                     TextField(
                         modifier = modifier
@@ -171,7 +173,8 @@ fun MessageEntry(
 
                 Column (
                     modifier = modifier
-                        .fillMaxHeight()
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Delete button
                     IconButton(onClick = {
@@ -242,6 +245,7 @@ fun MessageEntry(
                                     showMetadata.value = !showMetadata.value
                                 }) {
                                     Icon(
+                                        modifier = Modifier.size(18.dp),
                                         imageVector = Icons.Default.Info,
                                         contentDescription = null
                                     )
@@ -262,8 +266,6 @@ fun MessageEntry(
                             }
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(4.dp))
                 }
             }
         }

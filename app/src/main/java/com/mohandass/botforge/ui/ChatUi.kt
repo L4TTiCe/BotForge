@@ -314,7 +314,11 @@ fun ChatUi(viewModel: AppViewModel) {
 
                     Spacer(modifier = Modifier.height(0.02.dh))
 
-                    Divider()
+                    Divider(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth()
+                    )
 
                     Row (
                         modifier = Modifier.fillMaxWidth(),
@@ -355,7 +359,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         viewModel = viewModel
                     )
 
-                    Spacer(modifier = Modifier.height(0.1.dh))
+                    Spacer(modifier = Modifier.height(0.2.dh))
                 }
             }
         }
