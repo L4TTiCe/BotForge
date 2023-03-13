@@ -158,7 +158,7 @@ fun ChatUi(viewModel: AppViewModel) {
 
         Scaffold(
             floatingActionButton = {
-                ExtendedFloatingActionButton(
+                FloatingActionButton(
                     onClick = {
                         viewModel.getChatCompletion(hapticFeedback)
                     },
@@ -168,10 +168,11 @@ fun ChatUi(viewModel: AppViewModel) {
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
-                    Text(
-                        text = stringResource(id = R.string.send),
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
+                    // Text causes the UI to overlap with chat messages
+//                    Text(
+//                        text = stringResource(id = R.string.send),
+//                        modifier = Modifier.padding(horizontal = 10.dp)
+//                    )
                 }
             },
         )
