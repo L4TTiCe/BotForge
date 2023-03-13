@@ -322,11 +322,10 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun deleteMessage(message: Message) {
-        Log.v("AppViewModel", "Messages: ${activeChat.value}")
-        Log.v("AppViewModel", "Deleting message: ${message.uuid}")
+    fun deleteMessage(messageUuid: String) {
+        Log.v("AppViewModel", "Deleting message: $messageUuid")
         _activeChat.value = _activeChat.value.filter {
-            it.uuid != message.uuid
+            it.uuid != messageUuid
         }
         Log.v("AppViewModel", "Messages: ${activeChat.value}")
     }
@@ -334,7 +333,7 @@ class AppViewModel @Inject constructor(
     fun clearMessages() {
         Log.v("AppViewModel", "clearMessages()")
         while (_activeChat.value.isNotEmpty()) {
-            deleteMessage(_activeChat.value.last())
+            deleteMessage(_activeChat.value.last().uuid)
         }
         autoAddMessage()
     }

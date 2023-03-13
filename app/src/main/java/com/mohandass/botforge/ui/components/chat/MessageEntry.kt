@@ -36,13 +36,13 @@ fun MessageEntry(
     val showAllIcons = remember { mutableStateOf(false) }
 
     var messageContent by remember { mutableStateOf(message.text) }
-    var isUser by remember { mutableStateOf(message.role.isUser()) }
+    var role by remember { mutableStateOf(message.role) }
 
     fun updateMessage() {
         viewModel.updateMessage(
             Message(
                 text = messageContent,
-                role = if (isUser) Role.USER else Role.BOT,
+                role = role,
                 uuid = message.uuid,
                 isActive = isActive.value,
                 metadata = message.metadata
@@ -51,20 +51,27 @@ fun MessageEntry(
     }
 
     val roles by remember {
-        mutableStateOf(listOf("User", "Bot"))
+        mutableStateOf(listOf("User", "Bot", "System"))
     }
 
     val userColor = MaterialTheme.colorScheme.primary
     val botColor = MaterialTheme.colorScheme.tertiary
+    val systemColor = MaterialTheme.colorScheme.secondary
 
     val colors by remember {
-        mutableStateOf(listOf(userColor, botColor))
+        mutableStateOf(listOf(userColor, botColor, systemColor))
     }
 
     val botTextFieldColors = TextFieldDefaults.textFieldColors(
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
         cursorColor = MaterialTheme.colorScheme.tertiary,
         focusedIndicatorColor = MaterialTheme.colorScheme.tertiary
+    )
+
+    val systemTextFieldColors = TextFieldDefaults.textFieldColors(
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        cursorColor = MaterialTheme.colorScheme.secondary,
+        focusedIndicatorColor = MaterialTheme.colorScheme.secondary
     )
 
     // Visibility, used to animate the message entry and exit
@@ -80,9 +87,7 @@ fun MessageEntry(
         // launch coroutine to delete message after animation
         viewModel.viewModelScope.launch {
             delay(500)
-            viewModel.deleteMessage(
-            Message(messageContent,
-                if (isUser) Role.USER else Role.BOT, message.uuid))
+            viewModel.deleteMessage(message.uuid)
         }
     }
 
@@ -105,11 +110,25 @@ fun MessageEntry(
     ) {
         Column {
             Text(
-                text = roles[if (isUser) 0 else 1],
+                text = roles[when (role) {
+                    Role.USER -> 0
+                    Role.BOT -> 1
+                    Role.SYSTEM -> 2
+                    else -> {
+                        throw Exception("Invalid role")
+                    }
+                }],
                 modifier = modifier
                     .fillMaxWidth(),
-                style = MaterialTheme.typography.labelMedium,
-                color = colors[if (isUser) 0 else 1]
+                style = MaterialTheme.typography.labelLarge,
+                color = colors[when (role) {
+                    Role.USER -> 0
+                    Role.BOT -> 1
+                    Role.SYSTEM -> 2
+                    else -> {
+                        throw Exception("Invalid role")
+                    }
+                }]
             )
 
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -127,7 +146,7 @@ fun MessageEntry(
                         },
                         enabled = isActive.value,
                         trailingIcon = {
-                            IconButton(onClick = { isUser = !isUser }) {
+                            IconButton(onClick = { role = Role.values()[(role.ordinal + 1) % 3] }) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.swap),
                                     modifier = Modifier.size(18.dp),
@@ -135,7 +154,14 @@ fun MessageEntry(
                                 )
                             }
                         },
-                        colors = if (isUser) TextFieldDefaults.textFieldColors() else botTextFieldColors,
+                        colors = when (role) {
+                            Role.USER -> TextFieldDefaults.textFieldColors()
+                            Role.BOT -> botTextFieldColors
+                            Role.SYSTEM -> systemTextFieldColors
+                            else -> {
+                                throw Exception("Invalid role")
+                            }
+                        },
                     )
 
                     AnimatedVisibility(visible = showMetadata.value) {
