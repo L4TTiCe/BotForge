@@ -7,6 +7,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.DataStoreService
+import com.mohandass.botforge.model.service.OpenAiService
 import com.mohandass.botforge.model.service.PersonaService
 import com.mohandass.botforge.model.service.implementation.*
 import dagger.Module
@@ -51,5 +52,5 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOpenAiService(dataStoreService: DataStoreService) = OpenAiService.getInstance(dataStoreService)
+    fun provideOpenAiService(dataStoreService: DataStoreService): OpenAiService = OpenAiServiceImpl.getInstance(dataStoreService)
 }
