@@ -49,7 +49,7 @@
     <string name="create_persona_message">Create a persona to represent your bot</string>
 
     <string name="chat">Chat</string>
-    <string name="chat_with_persona_name">Chat with %1$s</string>
+    <string name="chat_with_persona_name">Chatting with %1$s</string>
     <string name="send">"Send"</string>
 
     <string name="persona_name">Persona Name</string>
