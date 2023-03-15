@@ -11,6 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,14 +32,28 @@ import kotlinx.coroutines.launch
 fun MessageEntry(
     modifier: Modifier = Modifier,
     message: Message = Message(),
-    viewModel: AppViewModel
+    viewModel: AppViewModel,
+    startWithFocus: Boolean = false
 ) {
     val showMetadata = remember { mutableStateOf(false) }
     val isActive  = remember { mutableStateOf(message.isActive) }
     val showAllIcons = remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
 
     var messageContent by remember { mutableStateOf(message.text) }
     var role by remember { mutableStateOf(message.role) }
+
+    LaunchedEffect(Unit) {
+        delay(200)
+        if (
+            message.isActive &&
+            message.text.isEmpty() &&
+            message.role == Role.USER &&
+            startWithFocus
+        ) {
+            focusRequester.requestFocus()
+        }
+    }
 
     fun updateMessage() {
         viewModel.updateMessage(
@@ -140,6 +156,7 @@ fun MessageEntry(
                     TextField(
                         modifier = modifier
                             .fillMaxWidth()
+                            .focusRequester(focusRequester)
                             .sizeIn(minHeight = 100.dp),
                         value = messageContent,
                         onValueChange = {
