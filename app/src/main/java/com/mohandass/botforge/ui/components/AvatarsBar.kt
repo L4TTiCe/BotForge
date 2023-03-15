@@ -34,6 +34,7 @@ fun AvatarsBar(
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
+                    isAnimated = viewModel.selectedPersona.value == "",
                     onClick = { viewModel.newPersona() }
                 )
 
