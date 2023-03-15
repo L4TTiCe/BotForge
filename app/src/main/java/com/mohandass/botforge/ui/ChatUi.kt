@@ -131,9 +131,7 @@ fun ChatUi(viewModel: AppViewModel) {
         )
     }
 
-    Column(
-        modifier = Modifier.imePadding()
-    ) {
+    Column {
         Surface(
             tonalElevation = 4.dp,
             modifier = Modifier
@@ -192,8 +190,10 @@ fun ChatUi(viewModel: AppViewModel) {
                 Column(
                     modifier = Modifier
                         .verticalScroll(scrollState)
-                        .padding(10.dp)
+                        .padding(horizontal = 10.dp)
                 ) {
+
+                    Spacer(modifier = Modifier.height(0.02.dh))
 
                     Text(
                         text = if (personaName != "")
