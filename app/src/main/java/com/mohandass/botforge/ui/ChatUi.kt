@@ -343,8 +343,20 @@ fun ChatUi(viewModel: AppViewModel) {
                         Spacer(modifier = Modifier.weight(1f))
 
                         IconButton(
+                            onClick = { viewModel.saveChat() },
+                        ) {
+                            Icon(
+                                painter = painterResource(
+                                    id = R.drawable.baseline_bookmark_add_24
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+
+                        IconButton(
                             onClick = { viewModel.handleDelete(true) },
-                            modifier = Modifier.padding(10.dp),
+                            modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp),
                             colors = IconButtonDefaults.iconButtonColors(
                                 contentColor = MaterialTheme.colorScheme.error
                             )
