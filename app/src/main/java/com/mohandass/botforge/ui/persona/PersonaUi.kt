@@ -16,12 +16,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.components.AvatarsBar
+import com.mohandass.botforge.ui.persona.HistoryUi
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable
 fun PersonaUi(viewModel: AppViewModel) {
     val navController = rememberNavController()
+    viewModel.setNavControllerPersona(navController)
+
     val isLoading by viewModel.isLoading
 
     Column {
@@ -53,6 +56,9 @@ fun PersonaUi(viewModel: AppViewModel) {
         ) {
             composable(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 ChatUi(viewModel = viewModel)
+            }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
+                HistoryUi(viewModel = viewModel)
             }
         }
     }

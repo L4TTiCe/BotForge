@@ -1,7 +1,10 @@
 package com.mohandass.botforge.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,6 +12,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
@@ -22,6 +28,7 @@ fun AvatarsBar(
     viewModel: AppViewModel,
 ) {
     val personas by viewModel.personas.observeAsState(listOf())
+    val chatType by viewModel.chatType
 
     LazyRow(modifier = modifier) {
         item {
@@ -34,11 +41,11 @@ fun AvatarsBar(
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
-                    isAnimated = viewModel.selectedPersona.value == "",
-                    onClick = { viewModel.newPersona() }
+                    isAnimated = chatType == AppViewModel.ChatType.CREATE,
+                    onClick = { viewModel.showCreate() }
                 )
 
-                if (viewModel.selectedPersona.value == "") {
+                if (chatType == AppViewModel.ChatType.CREATE) {
                     ActiveIndicator()
                 }
             }
@@ -106,6 +113,39 @@ fun AvatarsBar(
                     scale = 0.8f
                 )
             }
+        }
+
+        item {
+
+            Column {
+                Column(
+                    modifier = modifier.size(90.dp)
+                        .clip(CircleShape)
+                        .clickable { viewModel.showHistory() }.padding(6.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_bookmarks_24),
+                        contentDescription = null,
+                        modifier = modifier
+                            .size(90.dp)
+                            .aspectRatio(1f, matchHeightConstraintsFirst = true)
+                            .padding(10.dp)
+                            .clip(CircleShape)
+                            .scale(0.8f),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+
+                if (chatType == AppViewModel.ChatType.HISTORY) {
+                    ActiveIndicator()
+                } else {
+                    ActiveIndicator(modifier = Modifier.alpha(0f))
+                }
+            }
+
+            Spacer(modifier = Modifier.width(10.dp))
         }
     }
 }
