@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
@@ -46,13 +47,13 @@ fun AvatarsBar(
         personas?.let {
             items(it.size) { index ->
 
-                if (viewModel.selectedPersona.value == personas!![index].uuid) {
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
 
-                    Column(
-                        modifier = Modifier,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
+                    if (viewModel.selectedPersona.value == personas!![index].uuid) {
                         RoundedIconFromStringAnimated(
                             text = (
                                     if (personas!![index].alias != "")
@@ -65,20 +66,24 @@ fun AvatarsBar(
                         )
 
                         ActiveIndicator()
-                    }
 
-                } else {
-                    RoundedIconFromString(
-                        text = (
-                                if (personas!![index].alias != "")
-                                    personas!![index].alias
-                                else
-                                    personas!![index].name
-                                ),
-                        modifier = Modifier.size(90.dp),
-                        onClick = { viewModel.selectPersona(personas!![index].uuid) }
-                    )
+                    } else {
+                        RoundedIconFromString(
+                            text = (
+                                    if (personas!![index].alias != "")
+                                        personas!![index].alias
+                                    else
+                                        personas!![index].name
+                                    ),
+                            modifier = Modifier.size(90.dp),
+                            onClick = { viewModel.selectPersona(personas!![index].uuid) }
+                        )
+
+                        ActiveIndicator(modifier = Modifier.alpha(0f))
+
+                    }
                 }
+
             }
         }
 

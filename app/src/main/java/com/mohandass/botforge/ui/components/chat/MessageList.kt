@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.viewmodels.AppViewModel
@@ -18,7 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltViewModel()) {
+fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     val messagesList by viewModel.activeChat
     val handleDelete by viewModel.handleDelete
 
@@ -29,7 +28,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
         visibility = false
 
         viewModel.viewModelScope.launch {
-            delay(500)
+            delay(600)
             viewModel.clearMessages()
             visibility = true
         }
@@ -46,11 +45,13 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
         exit = slideOutHorizontally(targetOffsetX = { it + 200 }),
     ) {
         Column(modifier = modifier) {
-            messagesList.forEach { item ->
-                MessageEntry(modifier=Modifier, message = item, viewModel = viewModel)
-                Spacer(modifier = modifier.height(12.dp))
+            messagesList.forEach {
+                    item -> key(item.uuid) {
+                    // use the unique identifier of each message as a key
+                    MessageEntry(modifier=Modifier, message = item, viewModel = viewModel)
+                    Spacer(modifier = modifier.height(12.dp))
+                }
             }
-
 
             Column(
                 modifier = modifier
@@ -67,7 +68,6 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel = hiltVie
                     )
                 }
             }
-
         }
     }
 }
