@@ -296,14 +296,15 @@ class AppViewModel @Inject constructor(
 
     fun autoAddMessage() {
         Log.v("AppViewModel", "autoAddMessage()")
-        val message = if (_activeChat.value.isEmpty()) {
-            Message("", Role.USER)
-        } else {
-            Message(
-                "",
-                if (_activeChat.value.last().role == Role.USER) Role.BOT else Role.USER
-            )
-        }
+//        val message = if (_activeChat.value.isEmpty()) {
+//            Message("", Role.USER)
+//        } else {
+//            Message(
+//                "",
+//                if (_activeChat.value.last().role == Role.USER) Role.BOT else Role.USER
+//            )
+//        }
+        val message = Message("", Role.USER)
         _activeChat.value = _activeChat.value + message
     }
 
@@ -335,6 +336,7 @@ class AppViewModel @Inject constructor(
         while (_activeChat.value.isNotEmpty()) {
             deleteMessage(_activeChat.value.last().uuid)
         }
+
         autoAddMessage()
     }
 

@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActiveIndicator() {
+fun ActiveIndicator(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(18.dp) // Matches the height of other elements in the row
             .width(90.dp),
         contentAlignment = Alignment.Center // Centers its content vertically and horizontally
