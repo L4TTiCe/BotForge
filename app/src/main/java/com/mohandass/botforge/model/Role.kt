@@ -58,4 +58,8 @@ class Role(val ordinal: Int) {
     override fun hashCode(): Int {
         return ordinal.hashCode()
     }
+
+    override fun toString(): String {
+        return values.entries.find { it.value == this }?.key ?: "Unknown"
+    }
 }

@@ -165,7 +165,10 @@ fun MessageEntry(
                         },
                         enabled = isActive.value,
                         trailingIcon = {
-                            IconButton(onClick = { role = Role.values()[(role.ordinal + 1) % 3] }) {
+                            IconButton(onClick = {
+                                role = Role.values()[(role.ordinal + 1) % 3]
+                                updateMessage()
+                            }) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.swap),
                                     modifier = Modifier.size(18.dp),

@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mohandass.botforge.model.dao.ChatDao
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.DataStoreService
 import com.mohandass.botforge.model.service.OpenAiService
@@ -36,21 +37,43 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalDatabase(app: Application): LocalDatabase = LocalDatabase.getInstance(app)
+    fun provideLocalDatabase(
+        app: Application
+    ): LocalDatabase = LocalDatabase.getInstance(app)
 
     @Provides
     @Singleton
-    fun providePersonaService(localDatabase: LocalDatabase): PersonaService = localDatabase.personaService()
+    fun providePersonaService(
+        localDatabase: LocalDatabase
+    ): PersonaService = localDatabase.personaService()
 
     @Provides
     @Singleton
-    fun providePersonaServiceImpl(personaService: PersonaService) = PersonaServiceImpl(personaService)
+    fun providePersonaServiceImpl(
+        personaService: PersonaService
+    ) = PersonaServiceImpl(personaService)
 
     @Provides
     @Singleton
-    fun provideDataStore(app: Application) = DataStoreServiceImpl.getInstance(app)
+    fun provideDataStore(
+        app: Application
+    ) = DataStoreServiceImpl.getInstance(app)
 
     @Provides
     @Singleton
-    fun provideOpenAiService(dataStoreService: DataStoreService): OpenAiService = OpenAiServiceImpl.getInstance(dataStoreService)
+    fun provideOpenAiService(
+        dataStoreService: DataStoreService
+    ): OpenAiService = OpenAiServiceImpl.getInstance(dataStoreService)
+
+    @Provides
+    @Singleton
+    fun provideChatDao(
+        localDatabase: LocalDatabase
+    ): ChatDao = localDatabase.chatDao()
+
+    @Provides
+    @Singleton
+    fun provideChatServiceImpl(
+        chatDao: ChatDao
+    ) = ChatServiceImpl(chatDao)
 }

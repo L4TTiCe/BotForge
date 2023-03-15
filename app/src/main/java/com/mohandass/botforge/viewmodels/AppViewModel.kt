@@ -14,11 +14,13 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.model.Chat
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.OpenAiService
+import com.mohandass.botforge.model.service.implementation.ChatServiceImpl
 import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,8 @@ import com.mohandass.botforge.R.string as AppText
 class AppViewModel @Inject constructor(
     private val accountService: AccountService,
     private val personaService: PersonaServiceImpl,
-    private val openAiService: OpenAiService
+    private val openAiService: OpenAiService,
+    private val chatService: ChatServiceImpl
 )
 : ViewModel() {
 
@@ -338,6 +341,33 @@ class AppViewModel @Inject constructor(
         }
 
         autoAddMessage()
+    }
+
+    private val _chatName = mutableStateOf("testChat")
+    val chatName: MutableState<String> = _chatName
+
+    fun updateChatName(name: String) {
+        _chatName.value = name
+    }
+
+    fun saveChat() {
+        val chat = Chat(
+            uuid = UUID.randomUUID().toString(),
+            name = _chatName.value,
+            personaUuid = _personaSelected.value,
+            messages = _activeChat.value,
+        )
+
+        for (message in _activeChat.value) {
+            Log.v("AppViewModel", "saveChat() message: $message")
+        }
+
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                chatService.saveChat(chat)
+//                SnackbarManager.showMessage(AppText.saved_chat)
+            }
+        }
     }
 
     // Account
