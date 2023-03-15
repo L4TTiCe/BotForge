@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -46,7 +47,7 @@ class MainActivity : ComponentActivity() {
             BotForgeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().imePadding(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val snackbarHostState = remember { SnackbarHostState() }
