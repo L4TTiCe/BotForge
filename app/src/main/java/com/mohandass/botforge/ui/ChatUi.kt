@@ -160,8 +160,17 @@ fun ChatUi(viewModel: AppViewModel) {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        viewModel.getChatCompletion(hapticFeedback)
+                        if (!isLoading) {
+                            viewModel.getChatCompletion(hapticFeedback)
+                        } else {
+                            SnackbarManager.showMessage(R.string.please_wait)
+                        }
                     },
+                    containerColor =
+                        if (isLoading)
+                            MaterialTheme.colorScheme.errorContainer
+                        else
+                            MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_send_24),
