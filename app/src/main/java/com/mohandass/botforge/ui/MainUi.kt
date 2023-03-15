@@ -37,13 +37,10 @@ fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
                 Column{
                     NavHost(
                         navController = navController,
-                        startDestination = AppRoutes.MainRoutes.Chat.route
+                        startDestination = AppRoutes.MainRoutes.PersonaRoutes.Chat.route
                     ) {
-                        composable(AppRoutes.MainRoutes.Default.route) {
+                        composable(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                             PersonaUi(viewModel = viewModel)
-                        }
-                        composable(AppRoutes.MainRoutes.Chat.route) {
-                            ChatUi(viewModel = viewModel)
                         }
                         composable(AppRoutes.MainRoutes.Settings.route) {
                             SettingsUi(viewModel = viewModel, settingsViewModel = hiltViewModel(), appState = appState)

@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.ui.components.AvatarsBar
 import com.mohandass.botforge.ui.components.RoundedIconFromStringAnimated
 import com.mohandass.botforge.ui.components.chat.MessageList
 import com.mohandass.botforge.viewmodels.AppViewModel
@@ -132,27 +130,27 @@ fun ChatUi(viewModel: AppViewModel) {
     }
 
     Column {
-        Surface(
-            tonalElevation = 4.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Column {
-                AvatarsBar(
-                    viewModel = viewModel
-                )
-
-                Spacer(
-                    modifier = Modifier.height(0.01.dh)
-                )
-
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .alpha(if (isLoading) 0.9f else 0f)
-                        .fillMaxWidth(),
-                )
-            }
-        }
+//        Surface(
+//            tonalElevation = 4.dp,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//        ) {
+//            Column {
+//                AvatarsBar(
+//                    viewModel = viewModel
+//                )
+//
+//                Spacer(
+//                    modifier = Modifier.height(0.01.dh)
+//                )
+//
+//                LinearProgressIndicator(
+//                    modifier = Modifier
+//                        .alpha(if (isLoading) 0.9f else 0f)
+//                        .fillMaxWidth(),
+//                )
+//            }
+//        }
 
         Scaffold(
             floatingActionButton = {
