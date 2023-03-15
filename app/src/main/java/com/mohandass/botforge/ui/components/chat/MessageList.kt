@@ -1,6 +1,7 @@
 package com.mohandass.botforge.ui.components.chat
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
@@ -42,6 +43,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
 
     AnimatedVisibility(
         visible = visibility,
+        enter = slideInHorizontally(initialOffsetX = { it - 200 }),
         exit = slideOutHorizontally(targetOffsetX = { it + 200 }),
     ) {
         Column(modifier = modifier) {
