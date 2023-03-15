@@ -21,7 +21,7 @@ import com.mohandass.botforge.viewmodels.AppViewModel
 @Composable
 fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-    viewModel.setNavController(navController)
+    viewModel.setNavControllerMain(navController)
 
     Scaffold(
         topBar = {

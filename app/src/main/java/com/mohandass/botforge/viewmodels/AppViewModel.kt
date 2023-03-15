@@ -97,21 +97,65 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    // State
+
+    enum class ChatType {
+        CREATE,
+        CHAT,
+        HISTORY
+    }
+
+    private val _chatType = mutableStateOf(ChatType.CREATE)
+    val chatType: MutableState<ChatType>
+        get() = _chatType
+
+    fun setChatType(chatType: ChatType) {
+        _chatType.value = chatType
+    }
+
 
     // Navigation
     // NacController in MainUI.kt
-    private var _navController: NavController? = null
-    val navController: NavController
-        get() = _navController!!
+    private var _navControllerMain: NavController? = null
+    val navControllerMain: NavController
+        get() = _navControllerMain!!
 
-    fun setNavController(navController: NavController) {
-        Log.v("AppViewModel", "setNavController()")
-        _navController = navController
+    private var _navControllerPersona: NavController? = null
+    val navControllerPersona: NavController
+        get() = _navControllerPersona!!
+
+    fun setNavControllerMain(navController: NavController) {
+        Log.v("AppViewModel", "setNavControllerMain()")
+        _navControllerMain = navController
+    }
+
+    fun setNavControllerPersona(navController: NavController) {
+        Log.v("AppViewModel", "setNavControllerPersona()")
+        _navControllerPersona = navController
     }
 
     fun navigateTo(route: String) {
         Log.v("AppViewModel", "navigateTo($route)")
-        navController.navigate(route)
+        navControllerMain.navigate(route)
+    }
+
+    fun showHistory() {
+        Log.v("AppViewModel", "showHistory()")
+        clearSelection(create = false)
+        setChatType(ChatType.HISTORY)
+        if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
+            navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
+        }
+    }
+
+    fun showCreate() {
+        Log.v("AppViewModel", "showCreate()")
+        clearSelection(create = true)
+        setChatType(ChatType.CREATE)
+
+        if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+            navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+        }
     }
 
     // Persona
@@ -146,12 +190,16 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun newPersona() {
+    fun clearSelection(create:Boolean = true) {
         Log.v("AppViewModel", "newPersona()")
         _personaName.value = ""
         _personaAlias.value = ""
         _personaSystemMessage.value = ""
         _personaSelected.value = ""
+
+        if (create) {
+            chatType.value = ChatType.CREATE
+        }
     }
 
     fun selectPersona(uuid: String) {
@@ -163,6 +211,11 @@ class AppViewModel @Inject constructor(
             personaAlias.value = persona.alias
             personaSystemMessage.value = persona.systemMessage
             _personaSelected.value = persona.uuid
+
+            if (chatType.value != ChatType.CHAT) {
+                chatType.value = ChatType.CHAT
+                navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+            }
         } else {
             SnackbarManager.showMessage(AppText.generic_error)
         }
@@ -259,7 +312,7 @@ class AppViewModel @Inject constructor(
                     fetchPersonas()
                 }
             }
-            newPersona()
+            clearSelection()
         } else {
             SnackbarManager.showMessage(AppText.generic_error)
         }

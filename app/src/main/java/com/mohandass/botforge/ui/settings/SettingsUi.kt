@@ -49,7 +49,7 @@ fun SettingsUi(
             Spacer(modifier = Modifier.weight(1f))
 
             IconButton(onClick = {
-                viewModel.navController.popBackStack()
+                viewModel.navControllerMain.popBackStack()
             }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
