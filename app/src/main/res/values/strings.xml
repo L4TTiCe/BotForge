@@ -104,4 +104,6 @@
     <string name="learn_more_managing_tokens">To learn more visit</string>
     <string name="open_ai_managing_tokens">OpenAI\'s Chat Completion Guide</string>
     <string name="open_ai_managing_tokens_link">https://platform.openai.com/docs/guides/chat/managing-tokens</string>
+
+    <string name="please_wait">Please wait… Waiting for previous response.</string>
 </resources>
