@@ -1,6 +1,7 @@
 package com.mohandass.botforge.ui.components.buttons
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,8 +32,34 @@ fun TintedIconButton(
     scale: Float = 0.5f,
     outerCircleColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     iconTint: Color = MaterialTheme.colorScheme.inversePrimary,
+    isAnimated: Boolean = false,
     onClick: () -> Unit = { }
 ) {
+
+    val radialGradientColors = listOf(
+//        MaterialTheme.colorScheme.primary,
+//        MaterialTheme.colorScheme.onSecondaryContainer,
+//        MaterialTheme.colorScheme.onPrimaryContainer,
+
+//        MaterialTheme.colorScheme.tertiary,
+//        MaterialTheme.colorScheme.onTertiaryContainer,
+
+        MaterialTheme.colorScheme.inversePrimary,
+        MaterialTheme.colorScheme.tertiary,
+    )
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val rotateAnimation = infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1500,
+                easing = LinearEasing
+            )
+        )
+    )
+
     Box(modifier = modifier) {
         Icon(
             painter = painterResource(id = icon),
@@ -49,10 +78,21 @@ fun TintedIconButton(
                 .matchParentSize()
                 .align(Alignment.Center)
         ) {
-            drawCircle(
-                color = outerCircleColor,
-                style = Stroke(width = 2.dp.toPx()),
-            )
+            if (isAnimated) {
+                rotate(rotateAnimation.value) {
+                    drawCircle(
+                        Brush.verticalGradient(
+                            colors = radialGradientColors,
+                        ),
+                        style = Stroke(width = 2.dp.toPx())
+                    )
+                }
+            } else {
+                drawCircle(
+                    color = outerCircleColor,
+                    style = Stroke(width = 2.dp.toPx()),
+                )
+            }
         }
     }
 }
