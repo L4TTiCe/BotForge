@@ -8,9 +8,9 @@ sealed class AppRoutes(val route: String) {
     object SignIn: AppRoutes("sign_in_ui")
 
     sealed class MainRoutes(route: String): AppRoutes(route) {
-        object Default: MainRoutes("main_default")
-
-        object Chat: MainRoutes("main_chat")
+        sealed class PersonaRoutes(route: String): MainRoutes(route) {
+            object Chat: PersonaRoutes("chat_persona")
+        }
         object Settings: MainRoutes("main_settings")
     }
 }
