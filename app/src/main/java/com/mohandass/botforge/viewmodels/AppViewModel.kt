@@ -212,8 +212,9 @@ class AppViewModel @Inject constructor(
             personaSystemMessage.value = persona.systemMessage
             _personaSelected.value = persona.uuid
 
-            if (chatType.value != ChatType.CHAT) {
-                chatType.value = ChatType.CHAT
+            chatType.value = ChatType.CHAT
+
+            if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
             }
         } else {
