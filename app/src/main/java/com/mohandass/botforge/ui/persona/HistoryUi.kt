@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.ui.components.RoundedIconFromString
@@ -25,6 +26,42 @@ import java.util.*
 
 @Composable
 fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
+    val openDeleteDialog = remember { mutableStateOf(false) }
+
+    if (openDeleteDialog.value) {
+        AlertDialog(
+            onDismissRequest = { openDeleteDialog.value = false },
+            title = {
+                Text(text = stringResource(id = R.string.delete_all_bookmarked))
+            },
+            text = {
+                Text(text = stringResource(id = R.string.delete_all_bookmarked_message))
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    historyViewModel.deleteAllChats()
+                    openDeleteDialog.value = false
+                }) {
+                    Text(
+                        text = stringResource(id = R.string.delete),
+                        color = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    openDeleteDialog.value = false
+                }) {
+                    Text(
+                        text = stringResource(id = R.string.cancel),
+                        color = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        )
+    }
+
     val chats = historyViewModel.chats
     val personas = viewModel.personas
 
@@ -64,7 +101,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { openDeleteDialog.value = true }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_clear_all_24),
                         contentDescription = "Delete",
@@ -179,7 +216,9 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
 
                                     Spacer(modifier = Modifier.weight(1f))
 
-                                    IconButton(onClick = { /*TODO*/ }) {
+                                    IconButton(
+                                        onClick = { historyViewModel.deleteChat(chats[index].uuid) }
+                                    ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             contentDescription = "Delete",

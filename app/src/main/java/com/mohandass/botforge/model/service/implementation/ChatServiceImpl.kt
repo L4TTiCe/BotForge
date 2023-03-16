@@ -68,6 +68,14 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
         return chatList
     }
 
+    suspend fun deleteAllChats() {
+        chatDao.deleteAllChats()
+    }
+
+    suspend fun deleteChatByUUID(chatUUID: String) {
+        chatDao.deleteChatByUUID(chatUUID)
+    }
+
     companion object {
         private const val TAG = "ChatServiceImpl"
     }
