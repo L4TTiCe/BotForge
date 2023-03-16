@@ -19,7 +19,7 @@ import java.util.*
             entity = MessageMetadataE::class,
             parentColumns = ["openAiId"],
             childColumns = ["metadataOpenAiId"],
-            onDelete = CASCADE
+            onDelete = ForeignKey.SET_NULL
         )],
     indices = [Index("chatUuid"), Index("metadataOpenAiId")]
 )
