@@ -9,7 +9,7 @@ import java.util.*
 data class ChatE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val name: String = "",
-    val personaUuid: String = "",
+    val personaUuid: String? = null,
     val savedAt: Long = System.currentTimeMillis(),
 ) {
     override fun toString(): String {

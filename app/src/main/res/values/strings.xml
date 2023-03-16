@@ -112,4 +112,5 @@
     <string name="delete_all_bookmarked">Delete All Bookmarked Chats?</string>
     <string name="delete_all_bookmarked_message">This action will remove all bookmarked chats
         from your device, and is irreversible.</string>
+    <string name="delete_all_bookmarked_success">All bookmarked cleared!</string>
 </resources>

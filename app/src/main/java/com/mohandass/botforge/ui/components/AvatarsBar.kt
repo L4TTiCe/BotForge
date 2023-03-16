@@ -131,7 +131,8 @@ fun AvatarsBar(
                             .aspectRatio(1f, matchHeightConstraintsFirst = true)
                             .padding(10.dp)
                             .clip(CircleShape)
-                            .scale(0.8f),
+                            .scale(0.8f)
+                            .alpha(0.8f),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }

@@ -2,6 +2,7 @@ package com.mohandass.botforge.model
 
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatMessage
+import com.mohandass.botforge.model.entities.MessageE
 import java.util.*
 
 data class Message(
@@ -31,6 +32,17 @@ data class Message(
                 text = message.content,
                 role = Role.from(message.role),
                 uuid = UUID.randomUUID().toString(),
+            )
+        }
+
+        fun from(message: MessageE): Message {
+            return Message(
+                text = message.text,
+                role = message.role,
+                uuid = message.uuid,
+                timestamp = message.timestamp,
+                isActive = true,
+                metadata = null,
             )
         }
     }
