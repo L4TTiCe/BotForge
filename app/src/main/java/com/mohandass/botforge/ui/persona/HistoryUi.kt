@@ -1,5 +1,6 @@
 package com.mohandass.botforge.ui.persona
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -68,10 +69,12 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
     val personas = viewModel.personas
 
     LaunchedEffect(Unit) {
-        viewModel.setLoading(true)
-        historyViewModel.fetchChats(onSuccess = {
-            viewModel.setLoading(false)
-        })
+        historyViewModel.fetchChats(onSuccess = {})
+    }
+
+    BackHandler {
+        viewModel.restoreState()
+        viewModel.navControllerPersona.popBackStack()
     }
 
     Surface(
@@ -123,7 +126,9 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
                     ) {
                         Icon(
                             painterResource(id = R.drawable.empty_box),
-                            modifier = Modifier.size(150.dp).alpha(0.8f),
+                            modifier = Modifier
+                                .size(150.dp)
+                                .alpha(0.8f),
                             contentDescription = "No Bookmarks"
                         )
 
@@ -151,7 +156,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
                         mutableStateOf(0)
                     }
                     val isDeleted = remember {
-                        if (chats[index].personaUuid == "") {
+                        if (chats[index].personaUuid == null) {
                             mutableStateOf(false)
                         } else {
                             if (persona.value == null) {
