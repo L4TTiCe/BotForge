@@ -114,8 +114,36 @@ class AppViewModel @Inject constructor(
     val chatType: MutableState<ChatType>
         get() = _chatType
 
-    private fun setChatType(chatType: ChatType) {
+    fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
+    }
+
+    class State {
+        var _personaName: String = ""
+        var _personaSystemMessage: String = ""
+        var _personaAlias: String = ""
+        var _personaSelected: String = ""
+        var chatType: ChatType = ChatType.CREATE
+    }
+
+    private val _state = mutableStateOf(State())
+
+    fun saveState() {
+        Log.v("AppViewModel", "saveState()")
+        _state.value._personaName = _personaName.value
+        _state.value._personaSystemMessage = _personaSystemMessage.value
+        _state.value._personaAlias = _personaAlias.value
+        _state.value._personaSelected = _personaSelected.value
+        _state.value.chatType = _chatType.value
+    }
+
+    fun restoreState() {
+        Log.v("AppViewModel", "restoreState()")
+        _personaName.value = _state.value._personaName
+        _personaSystemMessage.value = _state.value._personaSystemMessage
+        _personaAlias.value = _state.value._personaAlias
+        _personaSelected.value = _state.value._personaSelected
+        _chatType.value = _state.value.chatType
     }
 
 
@@ -146,6 +174,7 @@ class AppViewModel @Inject constructor(
 
     fun showHistory() {
         Log.v("AppViewModel", "showHistory()")
+        saveState()
         clearSelection(create = false)
         setChatType(ChatType.HISTORY)
         if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
@@ -440,7 +469,6 @@ class AppViewModel @Inject constructor(
 
         if (_personaSystemMessage.value != "") {
             val systemMessage = Message(
-                uuid = UUID.randomUUID().toString(),
                 text = _personaSystemMessage.value,
                 role = Role.SYSTEM,
             )
