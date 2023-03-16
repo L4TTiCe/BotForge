@@ -1,5 +1,7 @@
 package com.mohandass.botforge.model
 
+import com.mohandass.botforge.model.entities.MessageMetadataE
+
 data class MessageMetadata (
     val openAiId: String? = null,
     val finishReason: String? = null,
@@ -15,5 +17,17 @@ data class MessageMetadata (
                 "completionTokens=$completionTokens," +
                 "totalTokens=$totalTokens" +
                 ")"
+    }
+
+    companion object {
+        fun from(messageMetadata: MessageMetadataE): MessageMetadata {
+            return MessageMetadata(
+                openAiId = messageMetadata.openAiId,
+                finishReason = messageMetadata.finishReason,
+                promptTokens = messageMetadata.promptTokens,
+                completionTokens = messageMetadata.completionTokens,
+                totalTokens = messageMetadata.totalTokens,
+            )
+        }
     }
 }

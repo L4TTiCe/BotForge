@@ -114,7 +114,7 @@ class AppViewModel @Inject constructor(
     val chatType: MutableState<ChatType>
         get() = _chatType
 
-    fun setChatType(chatType: ChatType) {
+    private fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
     }
 
@@ -303,6 +303,7 @@ class AppViewModel @Inject constructor(
             )
             if (isSuccess) {
                 _personaSelected.value = uuid
+                chatType.value = ChatType.CHAT
             }
             return
         }
@@ -412,6 +413,10 @@ class AppViewModel @Inject constructor(
         autoAddMessage()
     }
 
+    fun setMessages(messages: List<Message>) {
+        _activeChat.value = messages
+    }
+
     private val _chatName = mutableStateOf("testChat")
     val chatName: MutableState<String> = _chatName
 
@@ -423,16 +428,36 @@ class AppViewModel @Inject constructor(
         val chat = Chat(
             uuid = UUID.randomUUID().toString(),
             name = _chatName.value,
-            personaUuid = _personaSelected.value,
+            personaUuid =
+            if (_personaSelected.value == "") {
+                null
+            } else {
+                _personaSelected.value
+            }
         )
+
+        val messages = mutableListOf<Message>()
+
+        if (_personaSystemMessage.value != "") {
+            val systemMessage = Message(
+                uuid = UUID.randomUUID().toString(),
+                text = _personaSystemMessage.value,
+                role = Role.SYSTEM,
+            )
+            Log.v("AppViewModel", "saveChat() systemMessage: $systemMessage")
+            messages.add(systemMessage)
+        }
 
         for (message in _activeChat.value) {
             Log.v("AppViewModel", "saveChat() message: $message")
+            if (message.text != "") {
+                messages.add(message)
+            }
         }
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                chatService.saveChat(chat, _activeChat.value)
+                chatService.saveChat(chat, messages)
                 SnackbarManager.showMessage(AppText.chat_saved)
             }
         }

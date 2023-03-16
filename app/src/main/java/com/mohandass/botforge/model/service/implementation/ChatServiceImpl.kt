@@ -3,6 +3,7 @@ package com.mohandass.botforge.model.service.implementation
 import android.util.Log
 import com.mohandass.botforge.model.Chat
 import com.mohandass.botforge.model.Message
+import com.mohandass.botforge.model.MessageMetadata
 import com.mohandass.botforge.model.dao.ChatDao
 import com.mohandass.botforge.model.entities.ChatE
 import com.mohandass.botforge.model.entities.MessageE
@@ -70,6 +71,31 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
             chatList += chat
         }
         return chatList
+    }
+
+    suspend fun getMessagesFromChat(chatUUID: String): List<Message> {
+        val chatWithMessagesEList = chatDao.getChatWithMessages(chatUUID)
+        val messageList = mutableListOf<Message>()
+
+        for (chatWithMessagesE in chatWithMessagesEList) {
+            val messagesE = chatWithMessagesE.messages
+
+            for(messageE in messagesE) {
+                val message = Message.from(messageE)
+
+                if (messageE.metadataOpenAiId != null) {
+                    val messageWithMetadataEList = chatDao.getMessageWithMetadata(messageE.uuid)
+                    for (messageWithMetadataE in messageWithMetadataEList) {
+                        val metadataE = messageWithMetadataE.metadata
+                        message.metadata = MessageMetadata.from(metadataE)
+                    }
+                }
+
+                messageList += message
+            }
+        }
+
+        return messageList
     }
 
     suspend fun deleteAllChats() {
