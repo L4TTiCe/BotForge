@@ -4,18 +4,23 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
@@ -23,10 +28,11 @@ import com.mohandass.botforge.resources
 import com.mohandass.botforge.viewmodels.SettingsViewModel
 import java.text.DecimalFormat
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ApiSettings(settingsViewModel: SettingsViewModel) {
     val apiKey = remember { mutableStateOf(settingsViewModel.getApiKey()) }
+    val keyboardController = LocalSoftwareKeyboardController.current
     val showTokenInfoDialog = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -153,7 +159,14 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
         },
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 2.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        keyboardOptions = KeyboardOptions (imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions (
+            onDone = {
+                settingsViewModel.setApiKey(apiKey.value)
+                keyboardController?.hide ()
+            }
+        )
     )
 
     Text(
@@ -202,6 +215,7 @@ fun ApiSettings(settingsViewModel: SettingsViewModel) {
         modifier = Modifier.padding(horizontal = 10.dp),
         onClick = {
             settingsViewModel.setApiKey(apiKey.value)
+            keyboardController?.hide()
         }
     ) {
         Text(text = resources().getString(R.string.save))
