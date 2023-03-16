@@ -7,6 +7,13 @@ data class Chat(
     val name: String = "",
     val personaUuid: String = "",
     val savedAt: Long = System.currentTimeMillis(),
-
-    val messages: List<Message> = emptyList(),
-)
+) {
+    override fun toString(): String {
+        return "Chat(" +
+                "uuid='$uuid'," +
+                "name='$name'," +
+                "personaUuid='$personaUuid'," +
+                "savedAt=$savedAt," +
+                ")"
+    }
+}

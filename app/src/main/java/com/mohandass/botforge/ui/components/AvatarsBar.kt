@@ -8,7 +8,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,7 +26,8 @@ fun AvatarsBar(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel,
 ) {
-    val personas by viewModel.personas.observeAsState(listOf())
+//    val personas by viewModel.personas.observeAsState(listOf())
+    val personas = viewModel.personas
     val chatType by viewModel.chatType
 
     LazyRow(modifier = modifier) {
@@ -52,50 +52,48 @@ fun AvatarsBar(
             VerticalDivider()
 
         }
-        personas?.let {
-            items(it.size) { index ->
+        items(personas.size) { index ->
 
-                Column(
-                    modifier = Modifier,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
 
-                    if (viewModel.selectedPersona.value == personas!![index].uuid) {
-                        RoundedIconFromStringAnimated(
-                            text = (
-                                    if (personas!![index].alias != "")
-                                        personas!![index].alias
-                                    else
-                                        personas!![index].name
-                                    ),
-                            modifier = Modifier.size(90.dp),
-                            onClick = { viewModel.selectPersona(personas!![index].uuid) }
-                        )
+                if (viewModel.selectedPersona.value == personas[index].uuid) {
+                    RoundedIconFromStringAnimated(
+                        text = (
+                                if (personas[index].alias != "")
+                                    personas[index].alias
+                                else
+                                    personas[index].name
+                                ),
+                        modifier = Modifier.size(90.dp),
+                        onClick = { viewModel.selectPersona(personas[index].uuid) }
+                    )
 
-                        ActiveIndicator()
+                    ActiveIndicator()
 
-                    } else {
-                        RoundedIconFromString(
-                            text = (
-                                    if (personas!![index].alias != "")
-                                        personas!![index].alias
-                                    else
-                                        personas!![index].name
-                                    ),
-                            modifier = Modifier.size(90.dp),
-                            onClick = { viewModel.selectPersona(personas!![index].uuid) }
-                        )
+                } else {
+                    RoundedIconFromString(
+                        text = (
+                                if (personas[index].alias != "")
+                                    personas[index].alias
+                                else
+                                    personas[index].name
+                                ),
+                        modifier = Modifier.size(90.dp),
+                        onClick = { viewModel.selectPersona(personas[index].uuid) }
+                    )
 
-                        ActiveIndicator(modifier = Modifier.alpha(0f))
+                    ActiveIndicator(modifier = Modifier.alpha(0f))
 
-                    }
                 }
-
             }
+
         }
 
-        if (personas?.size == 0) {
+        if (personas.size == 0) {
             item {
                 var tint = MaterialTheme.colorScheme.onSurfaceVariant
                 tint = tint.copy(alpha = 1f)

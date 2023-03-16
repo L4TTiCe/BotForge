@@ -18,6 +18,9 @@ interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChat(chat: ChatE)
 
+    @Query("SELECT COUNT(*) FROM messages WHERE chatUuid = :chatUUID")
+    suspend fun getMessageCount(chatUUID: String): Int
+
     @Query("SELECT * FROM chats ORDER BY savedAt DESC")
     suspend fun getAllChats(): List<ChatE>
 

@@ -2,10 +2,10 @@ package com.mohandass.botforge.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -38,6 +38,11 @@ class AppViewModel @Inject constructor(
     private val chatService: ChatServiceImpl
 )
 : ViewModel() {
+    private val _historyViewModel: HistoryViewModel = HistoryViewModel(
+        appViewModel = this,
+        chatService = chatService)
+    val historyViewModel: HistoryViewModel
+        get() = _historyViewModel
 
     private val _isLoading = mutableStateOf(false)
     val isLoading: MutableState<Boolean>
@@ -160,9 +165,11 @@ class AppViewModel @Inject constructor(
 
     // Persona
 
-    private val _personas = MutableLiveData<List<Persona>>()
-    val personas: MutableLiveData<List<Persona>>
-        get() = _personas
+//    private val _personas = MutableLiveData<List<Persona>>()
+//    val personas: MutableLiveData<List<Persona>>
+//        get() = _personas
+    private val _personas = mutableStateListOf<Persona>()
+    val personas = _personas
 
     private val _personaName = mutableStateOf("")
     val personaName: MutableState<String> = _personaName
@@ -185,7 +192,12 @@ class AppViewModel @Inject constructor(
         Log.v("AppViewModel", "fetchPersonas()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _personas.postValue(personaService.allPersonas())
+//                _personas.postValue(personaService.allPersonas())
+
+                try {
+                    _personas.clear()
+                } catch (_: Throwable) {}
+                _personas.addAll(personaService.allPersonas())
             }
         }
     }
@@ -205,7 +217,9 @@ class AppViewModel @Inject constructor(
     fun selectPersona(uuid: String) {
         Log.v("AppViewModel", "selectPersona() persona: $uuid")
 
-        val persona = _personas.value?.find { it.uuid == uuid }
+//        val persona = _personas.value?.find { it.uuid == uuid }
+        val persona = _personas.find { it.uuid == uuid }
+
         if (persona != null) {
             personaName.value = persona.name
             personaAlias.value = persona.alias
@@ -303,7 +317,8 @@ class AppViewModel @Inject constructor(
     }
 
     fun deletePersona() {
-        val persona = _personas.value?.find { it.uuid == _personaSelected.value }
+//        val persona = _personas.value?.find { it.uuid == _personaSelected.value }
+        val persona = _personas.find { it.uuid == _personaSelected.value }
         if (persona != null) {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
@@ -409,7 +424,6 @@ class AppViewModel @Inject constructor(
             uuid = UUID.randomUUID().toString(),
             name = _chatName.value,
             personaUuid = _personaSelected.value,
-            messages = _activeChat.value,
         )
 
         for (message in _activeChat.value) {
@@ -418,8 +432,8 @@ class AppViewModel @Inject constructor(
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                chatService.saveChat(chat)
-//                SnackbarManager.showMessage(AppText.saved_chat)
+                chatService.saveChat(chat, _activeChat.value)
+                SnackbarManager.showMessage(AppText.chat_saved)
             }
         }
     }

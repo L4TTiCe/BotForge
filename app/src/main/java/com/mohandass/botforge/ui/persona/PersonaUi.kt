@@ -58,7 +58,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 ChatUi(viewModel = viewModel)
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
-                HistoryUi(viewModel = viewModel)
+                HistoryUi(viewModel = viewModel, historyViewModel = viewModel.historyViewModel)
             }
         }
     }
