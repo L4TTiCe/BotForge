@@ -1,20 +1,35 @@
 package com.mohandass.botforge.model.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import androidx.room.*
+import androidx.room.ForeignKey.Companion.CASCADE
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import java.util.*
 
-@Entity(tableName = "messages")
+@Entity(
+    tableName = "messages",
+    foreignKeys = [
+        ForeignKey(
+            entity = ChatE::class,
+            parentColumns = ["uuid"],
+            childColumns = ["chatUuid"],
+            onDelete = CASCADE
+        ),
+        ForeignKey(
+            entity = MessageMetadataE::class,
+            parentColumns = ["openAiId"],
+            childColumns = ["metadataOpenAiId"],
+            onDelete = CASCADE
+        )],
+    indices = [Index("chatUuid"), Index("metadataOpenAiId")]
+)
 @TypeConverters(CustomTypeConverters::class)
 data class MessageE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val text: String = "",
     val role: Role = Role.USER,
     val timestamp: Long = System.currentTimeMillis(),
-    val metadataOpenAiId: String = "",
+    var metadataOpenAiId: String? = null,
     var chatUuid: String = "",
 ) {
     override fun toString(): String {
