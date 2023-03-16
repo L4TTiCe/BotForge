@@ -11,6 +11,7 @@ data class MessageMetadataE (
     val promptTokens: Int? = null,
     val completionTokens: Int? = null,
     val totalTokens: Int? = null,
+    val timestamp: Long = System.currentTimeMillis(),
 ) {
     override fun toString(): String {
         return "MessageMetadata(" +
@@ -18,7 +19,8 @@ data class MessageMetadataE (
                 "finishReason='$finishReason', " +
                 "promptTokens=$promptTokens, " +
                 "completionTokens=$completionTokens, " +
-                "totalTokens=$totalTokens" +
+                "totalTokens=$totalTokens, " +
+                "timestamp=$timestamp" +
                 ")"
     }
 

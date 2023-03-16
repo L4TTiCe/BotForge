@@ -12,7 +12,7 @@ interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMessage(message: MessageE)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMetadata(metadata: MessageMetadataE)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
