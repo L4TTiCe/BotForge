@@ -36,6 +36,7 @@ fun ChatUi(viewModel: AppViewModel) {
     val scrollState = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openAliasDialog = remember { mutableStateOf(false) }
+    val openSaveChatDialog = remember { mutableStateOf(false) }
 
     val hapticFeedback = LocalHapticFeedback.current
 
@@ -63,6 +64,54 @@ fun ChatUi(viewModel: AppViewModel) {
             dismissButton = {
                 TextButton(onClick = {
                     openDeleteDialog.value = false
+                }) {
+                    Text(text = stringResource(id = R.string.cancel))
+                }
+            }
+        )
+    }
+
+    if (openSaveChatDialog.value) {
+        val chatName = remember { mutableStateOf("") }
+
+        AlertDialog(
+            onDismissRequest = {
+                chatName.value = ""
+                openSaveChatDialog.value = false
+           },
+            title = {
+                Text(text = "Name your Chat")
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                ) {
+                    OutlinedTextField(
+                        value = chatName.value,
+                        onValueChange = { chatName.value = it },
+                        label = { Text(text = "Chat Name") },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        ),
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.updateChatName(chatName.value)
+                    viewModel.saveChat()
+                    openSaveChatDialog.value = false
+                    chatName.value = ""
+                }) {
+                    Text(text = stringResource(id = R.string.save))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    chatName.value = ""
+                    openSaveChatDialog.value = false
                 }) {
                     Text(text = stringResource(id = R.string.cancel))
                 }
@@ -341,7 +390,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         Spacer(modifier = Modifier.weight(1f))
 
                         IconButton(
-                            onClick = { viewModel.saveChat() },
+                            onClick = { openSaveChatDialog.value = true },
                         ) {
                             Icon(
                                 painter = painterResource(
