@@ -19,12 +19,16 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
             val messageE = MessageE.from(message)
             messageE.chatUuid = chatE.uuid
 
-            messagesEList.add(messageE)
-
             if (message.metadata != null) {
                 val metadataE = MessageMetadataE.from(message.metadata!!)
-                metadataEList.add(metadataE!!)
+                messageE.metadataOpenAiId = metadataE!!.openAiId
+                metadataEList.add(metadataE)
+            } else {
+                Log.v(TAG, "saveChat() message.metadata is null")
+                messageE.metadataOpenAiId = null
             }
+
+            messagesEList.add(messageE)
         }
 
         Log.v(TAG, "saveChat() Saving chat: $chatE")
@@ -33,15 +37,15 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
 
         chatDao.insertChat(chatE)
 
+        for (metadataE in metadataEList) {
+            Log.v(TAG, "saveChat() Saving metadata: $metadataE")
+            chatDao.insertMetadata(metadataE)
+        }
+
         for (messageE in messagesEList) {
             Log.v(TAG, "saveChat() Saving message: $messageE")
             Log.v(TAG, "saveChat() Saving message: ${messageE.role}")
             chatDao.insertMessage(messageE)
-        }
-
-        for (metadataE in metadataEList) {
-            Log.v(TAG, "saveChat() Saving metadata: $metadataE")
-            chatDao.insertMetadata(metadataE)
         }
     }
 
