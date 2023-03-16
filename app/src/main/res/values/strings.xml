@@ -108,4 +108,8 @@
     <string name="chat_saved">Your conversation has been saved.</string>
 
     <string name="please_wait">Please wait… Waiting for previous response.</string>
+
+    <string name="delete_all_bookmarked">Delete All Bookmarked Chats?</string>
+    <string name="delete_all_bookmarked_message">This action will remove all bookmarked chats
+        from your device, and is irreversible.</string>
 </resources>

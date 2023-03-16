@@ -31,4 +31,10 @@ interface ChatDao {
     @Transaction
     @Query("SELECT * FROM chats WHERE uuid = :chatUUID")
     suspend fun getChatWithMessages(chatUUID: String): List<ChatWithMessages>
+
+    @Query("DELETE FROM chats")
+    suspend fun deleteAllChats()
+
+    @Query("DELETE FROM chats WHERE uuid = :chatUUID")
+    suspend fun deleteChatByUUID(chatUUID: String)
 }

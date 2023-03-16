@@ -40,6 +40,24 @@ class HistoryViewModel(
         }
     }
 
+    fun deleteAllChats() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                chatService.deleteAllChats()
+                _chats.clear()
+            }
+        }
+    }
+
+    fun deleteChat(chatUUID: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                chatService.deleteChatByUUID(chatUUID)
+                _chats.removeIf { it.uuid == chatUUID }
+            }
+        }
+    }
+
     companion object {
         private const val TAG = "HistoryViewModel"
     }
