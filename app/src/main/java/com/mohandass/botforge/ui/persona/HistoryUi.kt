@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -111,6 +112,31 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
+
+            if (chats.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.empty_box),
+                            modifier = Modifier.size(150.dp).alpha(0.8f),
+                            contentDescription = "No Bookmarks"
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = "No Bookmarks yet",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+            }
 
             LazyColumn(
                 modifier = Modifier
