@@ -146,6 +146,9 @@ dependencies {
 
     // gson
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // prettytime
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.4.Final'
 }
 
 // Dependency Injection with Hilt

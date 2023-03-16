@@ -13,5 +13,5 @@ data class ChatWithMessages(
         entityColumn = "chatUuid",
         entity = MessageE::class
     )
-    val messages: List<MessageAndMetadata>
+    val messages: List<MessageE>
 )

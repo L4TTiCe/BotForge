@@ -10,7 +10,7 @@ data class Message(
     val uuid: String = UUID.randomUUID().toString(),
     val timestamp: Long = System.currentTimeMillis(),
     val isActive: Boolean = true,
-    val metadata: MessageMetadata? = null,
+    var metadata: MessageMetadata? = null,
 ) {
     override fun toString(): String {
         return "Message(text='$text', role=$role, uuid='$uuid')"

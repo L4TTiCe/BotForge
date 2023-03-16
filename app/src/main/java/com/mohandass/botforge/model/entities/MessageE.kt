@@ -34,7 +34,7 @@ data class MessageE(
                 text = message.text,
                 role = message.role,
                 timestamp = message.timestamp,
-                metadataOpenAiId = if (message.metadata?.openAiId != null) message.metadata.openAiId else "",
+                metadataOpenAiId = (if (message.metadata?.openAiId != null) message.metadata!!.openAiId else "").toString(),
             )
         }
     }
