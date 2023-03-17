@@ -89,9 +89,9 @@ dependencies {
 
     def lifecycle_version = "2.6.0"
     def arch_version = "2.1.0"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-//    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+//    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
 
 
 //    testImplementation 'junit:junit:4.13.2'
@@ -149,6 +149,9 @@ dependencies {
 
     // prettytime
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.4.Final'
+
+    // Accompanist
+    // implementation "com.google.accompanist:accompanist-systemuicontroller:0.29.2-rc"
 }
 
 // Dependency Injection with Hilt
