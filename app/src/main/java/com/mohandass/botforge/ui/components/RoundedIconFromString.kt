@@ -1,7 +1,10 @@
 package com.mohandass.botforge.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,9 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.ui.theme.BotForgeTheme
 
 @Composable
 fun RoundedIconFromString(
@@ -45,37 +46,5 @@ fun RoundedIconFromString(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             maxLines = 1,
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RoundedIconFromStringPreview() {
-    BotForgeTheme {
-        RoundedIconFromString(text = "Ab", modifier = Modifier.size(70.dp))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RoundedIconFromStringPreviewEmoji() {
-    BotForgeTheme {
-        RoundedIconFromString(text = "\uD83D\uDD25", modifier = Modifier.size(70.dp))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RoundedIconFromStringPreviewEmoji2() {
-    BotForgeTheme {
-        RoundedIconFromString(text = "❤️", modifier = Modifier.size(70.dp))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RoundedIconFromStringPreviewEmoji3() {
-    BotForgeTheme {
-        RoundedIconFromString(text = "\uD83D\uDC80", modifier = Modifier.size(70.dp))
     }
 }

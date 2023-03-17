@@ -87,11 +87,13 @@ dependencies {
     def core_version = "1.9.0"
     implementation "androidx.core:core-ktx:$core_version"
 
-    def lifecycle_version = "2.6.0"
-    def arch_version = "2.1.0"
+    def lifecycleVersion = "2.6.0"
+//    def arch_version = "2.1.0"
 //    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion"
 
 
 //    testImplementation 'junit:junit:4.13.2'

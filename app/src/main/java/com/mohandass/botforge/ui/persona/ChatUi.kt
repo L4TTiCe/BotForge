@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.ui.persona
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -339,7 +339,9 @@ fun ChatUi(viewModel: AppViewModel) {
                         }
 
                         Button(
-                            onClick = { viewModel.saveUpdatePersona() },
+                            onClick = {
+                                viewModel.saveUpdatePersona()
+                            },
                         ) {
                             Text(text = stringResource(id = R.string.save))
                         }

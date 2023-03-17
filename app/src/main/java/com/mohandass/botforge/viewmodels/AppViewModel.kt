@@ -7,6 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.mohandass.botforge.AppRoutes
@@ -18,12 +20,15 @@ import com.mohandass.botforge.model.Chat
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
+import com.mohandass.botforge.model.preferences.UserPreferences
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.OpenAiService
+import com.mohandass.botforge.model.service.PreferencesDataStore
 import com.mohandass.botforge.model.service.implementation.ChatServiceImpl
 import com.mohandass.botforge.model.service.implementation.PersonaServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -35,9 +40,26 @@ class AppViewModel @Inject constructor(
     private val accountService: AccountService,
     private val personaService: PersonaServiceImpl,
     private val openAiService: OpenAiService,
-    private val chatService: ChatServiceImpl
+    private val chatService: ChatServiceImpl,
+    private val preferencesDataStore: PreferencesDataStore
 )
 : ViewModel() {
+//    val initialSetupEvent = liveData {
+//        emit(preferencesDataStore.fetchInitialPreferences())
+//    }
+
+    // Keep the user preferences as a stream of changes
+    private val userPreferencesFlow = preferencesDataStore.userPreferencesFlow
+
+    private val _userPreferencesFlow = userPreferencesFlow.map {userPreference ->
+        UserPreferences(
+            preferredTheme = userPreference.preferredTheme,
+            useDynamicColors = userPreference.useDynamicColors
+        )
+    }
+
+    val userPreferences = _userPreferencesFlow.asLiveData()
+
     private val _historyViewModel: HistoryViewModel = HistoryViewModel(
         appViewModel = this,
         chatService = chatService)
@@ -212,12 +234,12 @@ class AppViewModel @Inject constructor(
     private val _personaSelected = mutableStateOf("")
     val selectedPersona: MutableState<String> = _personaSelected
 
-    init {
-        Log.v("AppViewModel", "init()")
-        fetchPersonas()
-    }
+//    init {
+//        Log.v("AppViewModel", "init()")
+//        fetchPersonas()
+//    }
 
-    private fun fetchPersonas() {
+    fun fetchPersonas() {
         Log.v("AppViewModel", "fetchPersonas()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -447,7 +469,6 @@ class AppViewModel @Inject constructor(
     }
 
     private val _chatName = mutableStateOf("testChat")
-    val chatName: MutableState<String> = _chatName
 
     fun updateChatName(name: String) {
         _chatName.value = name

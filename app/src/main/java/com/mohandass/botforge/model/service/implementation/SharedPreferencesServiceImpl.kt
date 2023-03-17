@@ -3,13 +3,13 @@ package com.mohandass.botforge.model.service.implementation
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
-import com.mohandass.botforge.model.service.DataStoreService
+import com.mohandass.botforge.model.service.SharedPreferencesService
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private const val API_KEY = "open_ai_api_key"
 private const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
 
-class DataStoreServiceImpl private constructor(context: Context) : DataStoreService{
+class SharedPreferencesServiceImpl private constructor(context: Context) : SharedPreferencesService{
 
     private val sharedPreferences =
         context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
@@ -54,16 +54,16 @@ class DataStoreServiceImpl private constructor(context: Context) : DataStoreServ
 
     companion object {
         @Volatile
-        private var INSTANCE: DataStoreService? = null
+        private var INSTANCE: SharedPreferencesService? = null
 
-        fun getInstance(applicationContext: Context): DataStoreService {
+        fun getInstance(applicationContext: Context): SharedPreferencesService {
             val tempInstance = INSTANCE
 
             if (tempInstance != null) {
                 return tempInstance
             }
             synchronized(this) {
-                val instance = DataStoreServiceImpl(applicationContext)
+                val instance = SharedPreferencesServiceImpl(applicationContext)
                 INSTANCE = instance
                 return instance
             }
