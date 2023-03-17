@@ -1,6 +1,6 @@
 package com.mohandass.botforge.model.service
 
-interface DataStoreService {
+interface SharedPreferencesService {
 
     // API Key
     fun getApiKey(): String

@@ -1,21 +1,24 @@
 package com.mohandass.botforge.model
 
 import android.app.Application
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.model.dao.ChatDao
-import com.mohandass.botforge.model.service.AccountService
-import com.mohandass.botforge.model.service.DataStoreService
-import com.mohandass.botforge.model.service.OpenAiService
-import com.mohandass.botforge.model.service.PersonaService
+import com.mohandass.botforge.model.service.*
 import com.mohandass.botforge.model.service.implementation.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
+private val Context.dataStore by preferencesDataStore(
+    name = PreferencesDataStore.PREFERENCES_NAME,
+)
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -57,13 +60,13 @@ class AppModule {
     @Singleton
     fun provideDataStore(
         app: Application
-    ) = DataStoreServiceImpl.getInstance(app)
+    ) = SharedPreferencesServiceImpl.getInstance(app)
 
     @Provides
     @Singleton
     fun provideOpenAiService(
-        dataStoreService: DataStoreService
-    ): OpenAiService = OpenAiServiceImpl.getInstance(dataStoreService)
+        sharedPreferencesService: SharedPreferencesService
+    ): OpenAiService = OpenAiServiceImpl.getInstance(sharedPreferencesService)
 
     @Provides
     @Singleton
@@ -76,4 +79,10 @@ class AppModule {
     fun provideChatServiceImpl(
         chatDao: ChatDao
     ) = ChatServiceImpl(chatDao)
+
+    @Provides
+    @Singleton
+    fun providePreferencesDataStore(
+        app: Application
+    ): PreferencesDataStore = PreferencesDataStoreImpl(app.dataStore)
 }

@@ -15,14 +15,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.ui.components.SkipSignInButton
-import com.mohandass.botforge.ui.theme.BotForgeTheme
+import com.mohandass.botforge.ui.components.buttons.SkipSignInButton
 import com.mohandass.botforge.viewmodels.LandingViewModel
 import com.slaviboy.composeunits.dh
 
@@ -78,13 +76,5 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
             }
         }
 
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LandingUiPreview() {
-    BotForgeTheme {
-        LandingUi(appState = null)
     }
 }

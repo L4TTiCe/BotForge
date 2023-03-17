@@ -6,11 +6,14 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.mohandass.botforge.model.preferences.PreferredTheme
+import com.mohandass.botforge.viewmodels.AppViewModel
 
 
 private val LightColors = lightColorScheme(
@@ -103,10 +106,23 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun BotForgeTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
-    useDynamicColor: Boolean = true,
+    viewModel: AppViewModel,
     content: @Composable () -> Unit,
 ) {
+    var useDynamicColor = true
+    var useDarkTheme = isSystemInDarkTheme()
+    val userPreferences = viewModel.userPreferences.observeAsState()
+
+    userPreferences.value?.let {
+        useDarkTheme = when (it.preferredTheme) {
+            PreferredTheme.LIGHT -> false
+            PreferredTheme.DARK -> true
+            PreferredTheme.AUTO -> isSystemInDarkTheme()
+        }
+
+        useDynamicColor = it.useDynamicColors
+    }
+
     val colorScheme = when {
         useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current

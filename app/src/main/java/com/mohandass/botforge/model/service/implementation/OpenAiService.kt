@@ -9,13 +9,13 @@ import com.aallam.openai.client.OpenAI
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.MessageMetadata
 import com.mohandass.botforge.model.Role
-import com.mohandass.botforge.model.service.DataStoreService
+import com.mohandass.botforge.model.service.SharedPreferencesService
 import com.mohandass.botforge.model.service.OpenAiService
 
-class OpenAiServiceImpl private constructor(private val dataStoreService: DataStoreService): OpenAiService {
+class OpenAiServiceImpl private constructor(private val sharedPreferencesService: SharedPreferencesService): OpenAiService {
 
     private fun getClient(): OpenAI {
-        val apiKey = dataStoreService.getApiKey()
+        val apiKey = sharedPreferencesService.getApiKey()
         Log.v("OpenAiService", "getClient() |$apiKey|")
 
         if (apiKey == "") {
@@ -57,7 +57,7 @@ class OpenAiServiceImpl private constructor(private val dataStoreService: DataSt
             )
 
             // Update usage tokens
-            dataStoreService.incrementUsageTokens(completion.usage?.totalTokens ?: 0)
+            sharedPreferencesService.incrementUsageTokens(completion.usage?.totalTokens ?: 0)
 
             return Message(
                 text = completion.choices[0].message?.content?.trim() ?: "",
@@ -74,14 +74,14 @@ class OpenAiServiceImpl private constructor(private val dataStoreService: DataSt
         @Volatile
         private var INSTANCE: OpenAiService? = null
 
-        fun getInstance(dataStoreService: DataStoreService): OpenAiService {
+        fun getInstance(sharedPreferencesService: SharedPreferencesService): OpenAiService {
             val tempInstance = INSTANCE
 
             if (tempInstance != null) {
                 return tempInstance
             }
             synchronized(this) {
-                val instance = OpenAiServiceImpl(dataStoreService)
+                val instance = OpenAiServiceImpl(sharedPreferencesService)
                 INSTANCE = instance
                 return instance
             }

@@ -1,6 +1,5 @@
 package com.mohandass.botforge
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,13 +28,14 @@ import com.mohandass.botforge.ui.*
 import com.mohandass.botforge.ui.auth.SignInUi
 import com.mohandass.botforge.ui.auth.SignUpUi
 import com.mohandass.botforge.ui.theme.BotForgeTheme
+import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,8 @@ class MainActivity : ComponentActivity() {
         initSize()
 
         setContent {
-            BotForgeTheme {
+            val viewModel: AppViewModel = hiltViewModel()
+            BotForgeTheme(viewModel = viewModel) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize().imePadding(),
@@ -56,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                     ) {
-                        Navigation(modifier = Modifier.padding(it), appState = appState)
+                        Navigation(modifier = Modifier.padding(it), appState = appState, viewModel = viewModel)
                     }
                 }
             }
@@ -84,7 +86,7 @@ fun resources(): Resources {
 }
 
 @Composable
-fun Navigation(modifier: Modifier, appState: AppState) {
+fun Navigation(modifier: Modifier, appState: AppState, viewModel: AppViewModel) {
     NavHost(
         modifier = modifier,
         navController = appState.navController,
@@ -104,7 +106,7 @@ fun Navigation(modifier: Modifier, appState: AppState) {
             LandingUi(appState = appState)
         }
         composable(AppRoutes.Main.route) {
-            MainUi(appState = appState)
+            MainUi(appState = appState, viewModel = viewModel)
         }
         composable(AppRoutes.SignUp.route) {
             SignUpUi(appState = appState)

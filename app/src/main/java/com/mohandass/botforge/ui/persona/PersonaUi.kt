@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -16,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.components.AvatarsBar
+import com.mohandass.botforge.ui.persona.ChatUi
 import com.mohandass.botforge.ui.persona.HistoryUi
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
@@ -26,6 +28,10 @@ fun PersonaUi(viewModel: AppViewModel) {
     viewModel.setNavControllerPersona(navController)
 
     val isLoading by viewModel.isLoading
+
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.fetchPersonas()
+    }
 
     Column {
         Surface(

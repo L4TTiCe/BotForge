@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,12 +13,11 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.ui.components.TopBar
 import com.mohandass.botforge.ui.settings.SettingsUi
-import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.AppViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
+fun MainUi(appState: AppState?, viewModel: AppViewModel) {
     val navController = rememberNavController()
     viewModel.setNavControllerMain(navController)
 
@@ -50,12 +48,4 @@ fun MainUi(appState: AppState?, viewModel: AppViewModel = hiltViewModel()) {
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainUiPreview() {
-    BotForgeTheme {
-        MainUi(null)
-    }
 }

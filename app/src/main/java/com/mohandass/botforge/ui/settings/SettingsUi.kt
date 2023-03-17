@@ -13,13 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
-import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.mohandass.botforge.viewmodels.SettingsViewModel
 import com.slaviboy.composeunits.dh
@@ -63,6 +60,13 @@ fun SettingsUi(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        AppearanceSettings(
+            viewModel = viewModel,
+            settingsViewModel = settingsViewModel
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         ApiSettings(settingsViewModel = settingsViewModel)
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -74,13 +78,5 @@ fun SettingsUi(
         )
 
         Spacer(modifier = Modifier.height(0.2.dh))
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SettingsUiPreview() {
-    BotForgeTheme {
-        SettingsUi(viewModel = hiltViewModel(), settingsViewModel = hiltViewModel())
     }
 }

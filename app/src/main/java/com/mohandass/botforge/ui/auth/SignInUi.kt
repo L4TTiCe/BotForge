@@ -16,14 +16,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.resources
-import com.mohandass.botforge.ui.theme.BotForgeTheme
 import com.mohandass.botforge.viewmodels.SignInViewModel
 import com.slaviboy.composeunits.dh
 import com.mohandass.botforge.R.string as AppText
@@ -134,13 +132,5 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
                 modifier = Modifier.padding(4.dp)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignInUiPreview() {
-    BotForgeTheme {
-        SignInUi(appState = null)
     }
 }
