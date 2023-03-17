@@ -1,10 +1,10 @@
-package com.mohandass.botforge.model.service
+package com.mohandass.botforge.model.dao
 
 import androidx.room.*
 import com.mohandass.botforge.model.entities.Persona
 
 @Dao
-interface PersonaService {
+interface PersonaDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addPersona(persona: Persona)

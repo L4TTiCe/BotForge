@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.ui.persona
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
