@@ -8,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.model.dao.ChatDao
+import com.mohandass.botforge.model.dao.PersonaDao
 import com.mohandass.botforge.model.service.*
 import com.mohandass.botforge.model.service.implementation.*
 import dagger.Module
@@ -48,13 +49,13 @@ class AppModule {
     @Singleton
     fun providePersonaService(
         localDatabase: LocalDatabase
-    ): PersonaService = localDatabase.personaService()
+    ): PersonaDao = localDatabase.personaService()
 
     @Provides
     @Singleton
     fun providePersonaServiceImpl(
-        personaService: PersonaService
-    ) = PersonaServiceImpl(personaService)
+        personaDao: PersonaDao
+    ) = PersonaServiceImpl(personaDao)
 
     @Provides
     @Singleton

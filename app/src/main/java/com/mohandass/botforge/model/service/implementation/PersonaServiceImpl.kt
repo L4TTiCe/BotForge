@@ -1,27 +1,27 @@
 package com.mohandass.botforge.model.service.implementation
 
 import com.mohandass.botforge.model.entities.Persona
-import com.mohandass.botforge.model.service.PersonaService
+import com.mohandass.botforge.model.dao.PersonaDao
 
-class PersonaServiceImpl(private val PersonaService: PersonaService)  {
+class PersonaServiceImpl(private val PersonaDao: PersonaDao)  {
 
     suspend fun allPersonas(): List<Persona> {
-        return PersonaService.getAllPersonas()
+        return PersonaDao.getAllPersonas()
     }
 
     suspend fun addPersona(persona: Persona) {
-        PersonaService.addPersona(persona)
+        PersonaDao.addPersona(persona)
     }
 
     suspend fun updatePersona(persona: Persona) {
-        PersonaService.updatePersona(persona)
+        PersonaDao.updatePersona(persona)
     }
 
     suspend fun deletePersona(persona: Persona) {
-        PersonaService.deletePersona(persona)
+        PersonaDao.deletePersona(persona)
     }
 
     suspend fun deleteAllPersonas() {
-        PersonaService.deleteAllPersonas()
+        PersonaDao.deleteAllPersonas()
     }
 }

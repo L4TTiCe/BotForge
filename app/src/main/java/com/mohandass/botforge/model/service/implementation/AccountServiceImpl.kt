@@ -31,28 +31,28 @@ class AccountServiceImpl @Inject constructor(
         }
 
     override suspend fun authenticate(email: String, password: String) {
-        Log.v("AccountServiceImpl", "authenticate()")
+        Log.v(TAG, "authenticate()")
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
     override suspend fun sendRecoveryEmail(email: String) {
-        Log.v("AccountServiceImpl", "sendRecoveryEmail()")
+        Log.v(TAG, "sendRecoveryEmail()")
         auth.sendPasswordResetEmail(email).await()
     }
 
     override suspend fun createAnonymousAccount() {
-        Log.v("AccountServiceImpl", "createAnonymousAccount()")
+        Log.v(TAG, "createAnonymousAccount()")
         auth.signInAnonymously().await()
     }
 
     override suspend fun linkAccount(email: String, password: String) {
-        Log.v("AccountServiceImpl", "linkAccount()")
+        Log.v(TAG, "linkAccount()")
         val credential = EmailAuthProvider.getCredential(email, password)
         auth.currentUser!!.linkWithCredential(credential).await()
     }
 
     override suspend fun deleteAccount() {
-        Log.v("AccountServiceImpl", "deleteAccount()")
+        Log.v(TAG, "deleteAccount()")
         auth.currentUser!!.delete().await()
     }
 
@@ -61,9 +61,13 @@ class AccountServiceImpl @Inject constructor(
             auth.currentUser!!.delete()
         }
         auth.signOut()
-        Log.v("AccountServiceImpl", "signOut()")
+        Log.v(TAG, "signOut()")
 
         // Sign the user back in anonymously.
 //        createAnonymousAccount()
+    }
+
+    companion object {
+        private const val TAG = "AccountServiceImpl"
     }
 }

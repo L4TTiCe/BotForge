@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mohandass.botforge.model.dao.ChatDao
 import com.mohandass.botforge.model.entities.*
-import com.mohandass.botforge.model.service.PersonaService
+import com.mohandass.botforge.model.dao.PersonaDao
 
 @androidx.room.Database(
     entities = [
@@ -20,10 +20,11 @@ import com.mohandass.botforge.model.service.PersonaService
 )
 @TypeConverters(CustomTypeConverters::class)
 abstract class LocalDatabase: RoomDatabase() {
-    abstract fun personaService(): PersonaService
+    abstract fun personaService(): PersonaDao
     abstract fun chatDao(): ChatDao
 
     companion object {
+        private const val DB_NAME = "botforge_db"
         @Volatile
         private var INSTANCE: LocalDatabase? = null
 
@@ -37,7 +38,7 @@ abstract class LocalDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     applicationContext,
                     LocalDatabase::class.java,
-                    "botforge_db"
+                    DB_NAME
                 ).build()
                 INSTANCE = instance
                 return instance

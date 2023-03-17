@@ -25,7 +25,7 @@ class SharedPreferencesServiceImpl private constructor(context: Context) : Share
         }
 
     override fun setAPIKey(apiKey: String) {
-        Log.v("DataStoreImpl", "setAPIKey() $apiKey")
+        Log.v(TAG, "setAPIKey() $apiKey")
         sharedPreferences.edit {
             putString(API_KEY, apiKey)
         }
@@ -53,6 +53,8 @@ class SharedPreferencesServiceImpl private constructor(context: Context) : Share
     }
 
     companion object {
+        private const val TAG = "SharedPreferencesImpl"
+
         @Volatile
         private var INSTANCE: SharedPreferencesService? = null
 

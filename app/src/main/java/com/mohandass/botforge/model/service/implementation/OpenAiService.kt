@@ -16,10 +16,10 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
 
     private fun getClient(): OpenAI {
         val apiKey = sharedPreferencesService.getApiKey()
-        Log.v("OpenAiService", "getClient() |$apiKey|")
+        Log.v(TAG, "getClient() |$apiKey|")
 
         if (apiKey == "") {
-            Log.e("OpenAiService", "getClient() No API key found")
+            Log.e(TAG, "getClient() No API key found")
             throw Throwable("No API key found")
         }
 
@@ -31,11 +31,11 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
         messages: List<Message>,
         modelId: ModelId
     ): Message {
-        Log.v("OpenAiService", "getChatCompletion() ${messages.size}")
+        Log.v(TAG, "getChatCompletion() ${messages.size}")
         val chatMessages = messages.map { it.toChatMessage() }
 
         for (chatMessage in chatMessages) {
-            Log.v("OpenAiService", "getChatCompletion() ${chatMessage.content}")
+            Log.v(TAG, "getChatCompletion() ${chatMessage.content}")
         }
 
         val chatCompletionRequest = ChatCompletionRequest(
@@ -44,9 +44,9 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
         )
 
         try {
-            Log.v("OpenAiService", "getChatCompletion() start request")
+            Log.v(TAG, "getChatCompletion() start request")
             val completion: ChatCompletion = getClient().chatCompletion(chatCompletionRequest)
-            Log.v("OpenAiService", "getChatCompletion() ${completion.choices[0].message?.content}")
+            Log.v(TAG, "getChatCompletion() ${completion.choices[0].message?.content}")
 
             val metadata = MessageMetadata(
                 openAiId = completion.id,
@@ -71,6 +71,8 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
     }
 
     companion object {
+        private const val TAG = "OpenAiService"
+
         @Volatile
         private var INSTANCE: OpenAiService? = null
 
