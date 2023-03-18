@@ -49,6 +49,13 @@ class AppViewModel @Inject constructor(
 
     val userPreferences = _userPreferencesFlow.asLiveData()
 
+    // TopBar
+
+    private val _topBarViewModel: TopBarViewModel = TopBarViewModel()
+    val topBar: TopBarViewModel
+        get() = _topBarViewModel
+
+
     // History
 
     private val _historyViewModel: HistoryViewModel = HistoryViewModel(

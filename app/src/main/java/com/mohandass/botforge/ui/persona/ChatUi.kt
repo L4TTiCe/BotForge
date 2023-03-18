@@ -10,10 +10,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -34,6 +31,10 @@ import com.slaviboy.composeunits.dw
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatUi(viewModel: AppViewModel) {
+    LaunchedEffect(Unit) {
+        viewModel.topBar.title.value = R.string.app_name
+        viewModel.topBar.overrideMenu.value = false
+    }
 
     val scrollState = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }

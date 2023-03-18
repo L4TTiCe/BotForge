@@ -124,10 +124,15 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Checkbox(
+            Switch(
                 checked = useDynamicColors,
                 onCheckedChange = { settingsViewModel.updateDynamicColor(it) }
             )
+
+//            Checkbox(
+//                checked = useDynamicColors,
+//                onCheckedChange = { settingsViewModel.updateDynamicColor(it) }
+//            )
 
             Spacer(modifier = Modifier.width(10.dp))
         }

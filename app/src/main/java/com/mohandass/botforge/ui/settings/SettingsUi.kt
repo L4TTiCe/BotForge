@@ -11,6 +11,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,21 @@ fun SettingsUi(
     settingsViewModel: SettingsViewModel,
     appState: AppState? = null
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.topBar.title.value = R.string.settings
+        viewModel.topBar.overrideMenu.value = true
+        viewModel.topBar.menu.value = {
+            IconButton(onClick = {
+                viewModel.navControllerMain.popBackStack()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    modifier = Modifier.size(32.dp),
+                    contentDescription = stringResource(id = R.string.back_cd)
+                )
+            }
+        }
+    }
     val scrollState = rememberScrollState()
 
     Column (
@@ -45,15 +61,15 @@ fun SettingsUi(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = {
-                viewModel.navControllerMain.popBackStack()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    modifier = Modifier.size(32.dp),
-                    contentDescription = stringResource(id = R.string.back_cd)
-                )
-            }
+//            IconButton(onClick = {
+//                viewModel.navControllerMain.popBackStack()
+//            }) {
+//                Icon(
+//                    imageVector = Icons.Default.ArrowBack,
+//                    modifier = Modifier.size(32.dp),
+//                    contentDescription = stringResource(id = R.string.back_cd)
+//                )
+//            }
         }
 
         VersionInfo()
