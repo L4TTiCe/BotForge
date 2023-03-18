@@ -41,7 +41,6 @@ class ChatViewModel @Inject constructor(
         }
         if (this::job.isInitialized) {
             job.cancel()
-            SnackbarManager.showMessage(R.string.waiting_for_response_cancelled)
         }
         viewModel.setLoading(false)
     }
@@ -82,18 +81,37 @@ class ChatViewModel @Inject constructor(
                     addMessage(completion)
                 } catch (e: Throwable) {
                     logger.logError(TAG, "getChatCompletion() error: $e", e)
-                    e.printStackTrace()
                     if (e.message != null) {
+                        logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
                         SnackbarManager.showMessage(
                             e.toSnackbarMessageWithAction(R.string.settings) {
                                 viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
                             })
                     } else {
+                        logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
                         val message = Utils.parseStackTraceForErrorMessage(e)
-                        SnackbarManager.showMessage(
-                            message.toSnackbarMessageWithAction(R.string.settings) {
-                                viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
-                            })
+
+                        when (message.message) {
+                            Utils.INVALID_API_KEY_ERROR_MESSAGE -> {
+                                SnackbarManager.showMessageWithAction(
+                                    R.string.invalid_api_key,
+                                    R.string.settings
+                                ) {
+                                    viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                                }
+                            }
+                            Utils.INTERRUPTED_ERROR_MESSAGE -> {
+                                SnackbarManager.showMessage(R.string.request_cancelled)
+                            }
+                            else -> {
+                                SnackbarManager.showMessage(
+                                    message.toSnackbarMessageWithAction(R.string.settings) {
+                                        viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                                    })
+                            }
+                        }
+
+
                     }
                 }
                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)

@@ -108,10 +108,12 @@
     <string name="chat_saved">Your conversation has been saved.</string>
 
     <string name="waiting_for_response">Waiting for previous response.</string>
-    <string name="waiting_for_response_cancelled">Request cancelled!</string>
+    <string name="request_cancelled">Request cancelled!</string>
 
     <string name="delete_all_bookmarked">Delete All Bookmarked Chats?</string>
     <string name="delete_all_bookmarked_message">This action will remove all bookmarked chats
         from your device, and is irreversible.</string>
     <string name="delete_all_bookmarked_success">All bookmarked cleared!</string>
+
+    <string name="invalid_api_key">Invalid API Key!</string>
 </resources>

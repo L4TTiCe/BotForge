@@ -26,6 +26,9 @@ class Utils {
 
             val stackTrace = stringWriter.toString()
             for (line in stackTrace.split("\n")) {
+                if (line.contains(INTERRUPT_ERROR_MESSAGE)) {
+                    return Throwable(INTERRUPTED_ERROR_MESSAGE)
+                }
                 if (line.contains("message")) {
                     val messageAsJson = "{${line.substring(0, line.length - 1)}}"
                     Log.v("Utils", "parseStackTraceForErrorMessage($messageAsJson)")
@@ -33,8 +36,8 @@ class Utils {
 
                     val message = map["message"] as String
 
-                    return if (message.contains("Incorrect API key")) {
-                        Throwable("Incorrect API key.")
+                    return if (message.contains("Invalid API key")) {
+                        Throwable(INVALID_API_KEY_ERROR_MESSAGE)
                     } else {
                         Throwable(message)
                     }
@@ -43,5 +46,10 @@ class Utils {
 
             return Throwable("")
         }
+
+        private const val TAG = "Utils"
+        private const val INTERRUPT_ERROR_MESSAGE = "com.mohandass.botforge.viewmodels.ChatViewModel.interruptRequest"
+        const val INVALID_API_KEY_ERROR_MESSAGE = "invalid_api_key"
+        const val INTERRUPTED_ERROR_MESSAGE = "interrupted"
     }
 }
