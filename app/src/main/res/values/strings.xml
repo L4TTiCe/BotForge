@@ -116,4 +116,31 @@
     <string name="delete_all_bookmarked_success">All bookmarked cleared!</string>
 
     <string name="invalid_api_key">Invalid API Key!</string>
+
+    <string name="display">Display</string>
+    <string name="appearance_settings">Appearance</string>
+    <string name="dark_mode">Dark</string>
+    <string name="light_mode">Light</string>
+    <string name="system_default">Auto</string>
+    <string name="dynamic_colors">Use Dynamic Colors</string>
+    <string name="dynamic_colors_message">Changes the
+        app\'s color scheme based on your system\'s theme.</string>
+
+    <string name="account">Account</string>
+    <string name="logged_in_as_anonymous">Logged in as Anonymous</string>
+    <string name="uid">UID: %1$s</string>
+    <string name="account_actions">Actions</string>
+    <string name="link_account">Link Account</string>
+    <string name="link_account_message">Link your account to your email address.</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_message">Logs you out of the App.</string>
+    <string name="delete_account_message_2">Deletes your account, and signs you out of the App.</string>
+
+    <string name="api">API</string>
+    <string name="api_settings_message">View or change your API Key.</string>
+    <string name="usage_settings">Usage</string>
+    <string name="usage_settings_message">Check your API usage information, and estimated cost.</string>
+
+    <string name="manage_account">Manage Account</string>
+    <string name="manage_account_message">View or change your account information.</string>
 </resources>

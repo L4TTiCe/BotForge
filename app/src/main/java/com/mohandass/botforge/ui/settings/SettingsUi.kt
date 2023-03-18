@@ -13,20 +13,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.AppState
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
+import com.mohandass.botforge.ui.settings.components.SettingsCategory
+import com.mohandass.botforge.ui.settings.components.SettingsItem
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.mohandass.botforge.viewmodels.SettingsViewModel
-import com.slaviboy.composeunits.dh
 
 @Composable
 fun SettingsUi(
     viewModel: AppViewModel,
-    settingsViewModel: SettingsViewModel,
-    appState: AppState? = null
+    settingsViewModel: SettingsViewModel
 ) {
     LaunchedEffect(Unit) {
         viewModel.topBar.title.value = R.string.settings
@@ -60,21 +61,13 @@ fun SettingsUi(
             )
 
             Spacer(modifier = Modifier.weight(1f))
-
-//            IconButton(onClick = {
-//                viewModel.navControllerMain.popBackStack()
-//            }) {
-//                Icon(
-//                    imageVector = Icons.Default.ArrowBack,
-//                    modifier = Modifier.size(32.dp),
-//                    contentDescription = stringResource(id = R.string.back_cd)
-//                )
-//            }
         }
 
         VersionInfo()
 
         Spacer(modifier = Modifier.height(10.dp))
+
+        SettingsCategory(title = resources().getString(R.string.display))
 
         AppearanceSettings(
             viewModel = viewModel,
@@ -83,16 +76,35 @@ fun SettingsUi(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        ApiSettings(settingsViewModel = settingsViewModel)
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        AccountSettings(
-            viewModel = viewModel,
-            settingsViewModel = settingsViewModel,
-            appState = appState
+        SettingsCategory(title = resources().getString(R.string.api))
+        
+        SettingsItem(
+            title = resources().getString(R.string.api_key),
+            description = resources().getString(R.string.api_settings_message),
+            painter = painterResource(id = R.drawable.baseline_key_24),
+            onClick = ({
+                viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
+            })
         )
 
-        Spacer(modifier = Modifier.height(0.2.dh))
+        SettingsItem(
+            title = resources().getString(R.string.usage_settings),
+            description = resources().getString(R.string.usage_settings_message),
+            painter = painterResource(id = R.drawable.baseline_token_24),
+            onClick = ({
+                viewModel.navigateTo(AppRoutes.MainRoutes.ApiUsageSettings.route)
+            })
+        )
+
+        SettingsCategory(title = resources().getString(R.string.account))
+
+        SettingsItem(
+            title = resources().getString(R.string.manage_account),
+            description = resources().getString(R.string.manage_account_message),
+            painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
+            onClick = ({
+                viewModel.navigateTo(AppRoutes.MainRoutes.ManageAccountSettings.route)
+            })
+        )
     }
 }

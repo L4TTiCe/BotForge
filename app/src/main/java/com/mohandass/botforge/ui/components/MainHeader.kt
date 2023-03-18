@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
@@ -27,8 +26,7 @@ import com.slaviboy.composeunits.dw
 @Composable
 fun MainHeader(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel,
-    appState: AppState? = null
+    viewModel: AppViewModel
 ) {
     val title by viewModel.topBar.title
     val overrideMenu by viewModel.topBar.overrideMenu
@@ -64,14 +62,14 @@ fun MainHeader(
 
             Spacer(modifier = Modifier.width(0.02.dw))
         } else {
-            DefaultDropdownMenu(modifier, viewModel, appState)
+            DefaultDropdownMenu(modifier, viewModel)
         }
 
     }
 }
 
 @Composable
-fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel, appState: AppState? = null) {
+fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
     val openDeleteConfirmationDialog = remember { mutableStateOf(false) }
 
@@ -110,7 +108,7 @@ fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel,
         DropdownMenuItem(
             onClick = {
                 viewModel.signOut {
-                    appState?.navigateTo(AppRoutes.Landing.route)
+                    viewModel.navController.navigate(AppRoutes.Landing.route)
                 }
                 displayOptionsMenu = false
             },

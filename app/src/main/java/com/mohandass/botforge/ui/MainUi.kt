@@ -10,22 +10,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.ui.components.TopBar
 import com.mohandass.botforge.ui.persona.PersonaUi
+import com.mohandass.botforge.ui.settings.ApiKeyUi
+import com.mohandass.botforge.ui.settings.ApiUsageUi
+import com.mohandass.botforge.ui.settings.ManageAccountUi
 import com.mohandass.botforge.ui.settings.SettingsUi
 import com.mohandass.botforge.viewmodels.AppViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainUi(appState: AppState?, viewModel: AppViewModel) {
+fun MainUi(viewModel: AppViewModel) {
     val navController = rememberNavController()
     viewModel.setNavControllerMain(navController)
 
     Scaffold(
         topBar = {
             TopBar(
-                appState = appState,
                 viewModel = viewModel
             )
         },
@@ -42,7 +43,16 @@ fun MainUi(appState: AppState?, viewModel: AppViewModel) {
                             PersonaUi(viewModel = viewModel)
                         }
                         composable(AppRoutes.MainRoutes.Settings.route) {
-                            SettingsUi(viewModel = viewModel, settingsViewModel = hiltViewModel(), appState = appState)
+                            SettingsUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
+                        }
+                        composable(AppRoutes.MainRoutes.ApiKeySettings.route) {
+                            ApiKeyUi(settingsViewModel = hiltViewModel())
+                        }
+                        composable(AppRoutes.MainRoutes.ApiUsageSettings.route) {
+                            ApiUsageUi(settingsViewModel = hiltViewModel())
+                        }
+                        composable(AppRoutes.MainRoutes.ManageAccountSettings.route) {
+                            ManageAccountUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
                         }
                     }
                 }

@@ -55,6 +55,8 @@ class MainActivity : ComponentActivity() {
                     val snackbarHostState = remember { SnackbarHostState() }
                     val appState = rememberAppState(snackbarHostState)
 
+                    viewModel.setNavController(appState.navController)
+
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                     ) {
@@ -106,7 +108,7 @@ fun Navigation(modifier: Modifier, appState: AppState, viewModel: AppViewModel) 
             LandingUi(appState = appState)
         }
         composable(AppRoutes.Main.route) {
-            MainUi(appState = appState, viewModel = viewModel)
+            MainUi(viewModel = viewModel)
         }
         composable(AppRoutes.SignUp.route) {
             SignUpUi(appState = appState)

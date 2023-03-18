@@ -111,6 +111,10 @@ class AppViewModel @Inject constructor(
 
 
     // Navigation
+    private var _navController: NavController? = null
+    val navController: NavController
+        get() = _navController!!
+
     // NacController in MainUI.kt
     private var _navControllerMain: NavController? = null
     val navControllerMain: NavController
@@ -120,6 +124,10 @@ class AppViewModel @Inject constructor(
     val navControllerPersona: NavController
         get() = _navControllerPersona!!
 
+    fun setNavController(navController: NavController) {
+        logger.logVerbose(TAG, "setNavController()")
+        _navController = navController
+    }
     fun setNavControllerMain(navController: NavController) {
         logger.logVerbose(TAG, "setNavControllerMain()")
         _navControllerMain = navController

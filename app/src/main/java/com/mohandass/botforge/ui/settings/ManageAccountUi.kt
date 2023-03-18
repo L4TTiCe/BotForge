@@ -1,27 +1,28 @@
 package com.mohandass.botforge.ui.settings
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.model.User
+import com.mohandass.botforge.ui.settings.components.SettingsCategory
+import com.mohandass.botforge.ui.settings.components.SettingsItem
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.mohandass.botforge.viewmodels.SettingsViewModel
 
 @Composable
-fun AccountSettings(
+fun ManageAccountUi(
     viewModel: AppViewModel,
     settingsViewModel: SettingsViewModel,
-    appState: AppState? = null
 ) {
     val user by settingsViewModel.getCurrentUser().collectAsState(User())
     val openDeleteDialog = remember { mutableStateOf(false) }
@@ -37,7 +38,7 @@ fun AccountSettings(
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.deleteAccount {
-                        appState?.navigateTo(AppRoutes.Landing.route)
+                        viewModel.navigateTo(AppRoutes.Landing.route)
                         openDeleteDialog.value = false
                     }
                 }) {
@@ -62,54 +63,61 @@ fun AccountSettings(
         )
     }
 
-    Text(
-        text = "Account",
-        modifier = Modifier.padding(10.dp),
-        style = MaterialTheme.typography.titleMedium
-    )
-
-    if (user.isAnonymous) {
-        Text(
-            text = "You have logged in anonymously",
-            modifier = Modifier.padding(horizontal = 10.dp),
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-
-    Text(
-        text = "UID:\t${user.id}",
-        modifier = Modifier.padding(horizontal = 10.dp),
-        style = MaterialTheme.typography.bodySmall
-    )
-
-    Row(modifier = Modifier.padding(10.dp)) {
-        if (user.isAnonymous) {
-            OutlinedButton(onClick = { /*TODO*/
-                SnackbarManager.showMessage(R.string.not_implemented)
-            }) {
-                Text(text = "Link Account")
-            }
-
-            Spacer(modifier = Modifier.width(10.dp))
-        }
-
-        OutlinedButton(onClick = {
-            viewModel.signOut {
-                appState?.navigateTo(AppRoutes.Landing.route)
-            }
-        }) {
-            Text(text = "Sign Out")
-        }
-    }
-    OutlinedButton(
-        modifier = Modifier.padding(horizontal = 10.dp),
-        onClick = {
-            openDeleteDialog.value = true
-        },
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.error
-        ),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
     ) {
-        Text(text = "Delete Account")
+        Text(
+            text = stringResource(id = R.string.account),
+            modifier = Modifier.padding(10.dp),
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        if (user.isAnonymous) {
+            Text(
+                text = stringResource(id = R.string.logged_in_as_anonymous),
+                modifier = Modifier.padding(horizontal = 10.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        Text(
+            text = stringResource(id = R.string.uid, user.id),
+            modifier = Modifier.padding(horizontal = 10.dp),
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        SettingsCategory(title = stringResource(id = R.string.account_actions),)
+
+        if (user.isAnonymous) {
+            SettingsItem(
+                title = stringResource(id = R.string.link_account),
+                description = stringResource(id = R.string.link_account_message),
+                painter = painterResource(id = R.drawable.baseline_add_link_24),
+            ) {
+                SnackbarManager.showMessage(R.string.not_implemented)
+            }
+        }
+
+        SettingsItem(
+            title = stringResource(id = R.string.sign_out),
+            description = stringResource(id = R.string.sign_out_message),
+            painter = painterResource(id = R.drawable.baseline_logout_24),
+        ) {
+            viewModel.signOut {
+                viewModel.navController.navigate(AppRoutes.Landing.route)
+            }
+        }
+
+        SettingsItem(
+            title = stringResource(id = R.string.delete_account),
+            description = stringResource(id = R.string.delete_account_message_2),
+            painter = painterResource(id = R.drawable.baseline_delete_24),
+        ) {
+            openDeleteDialog.value = true
+        }
     }
 }
