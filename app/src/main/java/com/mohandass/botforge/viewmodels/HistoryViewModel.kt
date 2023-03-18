@@ -37,7 +37,7 @@ class HistoryViewModel(
     }
 
     private fun isPersonaDeleted(personaUuid: String): Boolean {
-        val personas = viewModel.personas
+        val personas = viewModel.persona.personas
         personas.firstOrNull { it.uuid == personaUuid } ?: return true
         return false
     }
@@ -59,12 +59,12 @@ class HistoryViewModel(
                 if (chat?.personaUuid != null) {
                     if (isPersonaDeleted(chat.personaUuid)) {
                         viewModel.clearSelection(create = false)
-                        viewModel.updatePersonaSystemMessage(messages.first().text)
+                        viewModel.persona.updatePersonaSystemMessage(messages.first().text)
                         viewModel.chat.setMessages(messages.subList(1, messages.size))
                     } else {
                         // ignore first message
                         viewModel.chat.setMessages(messages.subList(1, messages.size))
-                        viewModel.selectPersona(chat.personaUuid)
+                        viewModel.persona.selectPersona(chat.personaUuid)
                     }
                 } else {
                     viewModel.clearSelection(create = false)

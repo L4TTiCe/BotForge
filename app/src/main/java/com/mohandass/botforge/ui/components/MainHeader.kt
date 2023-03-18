@@ -152,7 +152,7 @@ fun MainHeader(
                     },
                     confirmButton = {
                         TextButton(onClick = {
-                            viewModel.deleteAllPersonas()
+                            viewModel.persona.deleteAllPersonas()
                             viewModel.clearSelection()
                             openDeleteConfirmationDialog.value = false
                         }) {

@@ -27,7 +27,7 @@ fun AvatarsBar(
     viewModel: AppViewModel,
 ) {
 //    val personas by viewModel.personas.observeAsState(listOf())
-    val personas = viewModel.personas
+    val personas = viewModel.persona.personas
     val chatType by viewModel.chatType
 
     LazyRow(modifier = modifier) {
@@ -60,7 +60,7 @@ fun AvatarsBar(
                 verticalArrangement = Arrangement.Center,
             ) {
 
-                if (viewModel.selectedPersona.value == personas[index].uuid) {
+                if (viewModel.persona.selectedPersona.value == personas[index].uuid) {
                     RoundedIconFromStringAnimated(
                         text = (
                                 if (personas[index].alias != "")
@@ -69,7 +69,7 @@ fun AvatarsBar(
                                     personas[index].name
                                 ),
                         modifier = Modifier.size(90.dp),
-                        onClick = { viewModel.selectPersona(personas[index].uuid) }
+                        onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
                     )
 
                     ActiveIndicator()
@@ -83,7 +83,7 @@ fun AvatarsBar(
                                     personas[index].name
                                 ),
                         modifier = Modifier.size(90.dp),
-                        onClick = { viewModel.selectPersona(personas[index].uuid) }
+                        onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
                     )
 
                     ActiveIndicator(modifier = Modifier.alpha(0f))

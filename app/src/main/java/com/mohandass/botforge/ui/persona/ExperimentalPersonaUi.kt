@@ -44,9 +44,9 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
     val hapticFeedback = LocalHapticFeedback.current
 
-    val personaName by viewModel.personaName
-    val personaAlias by viewModel.personaAlias
-    val personaSystemMessage by viewModel.personaSystemMessage
+    val personaName by viewModel.persona.personaName
+    val personaAlias by viewModel.persona.personaAlias
+    val personaSystemMessage by viewModel.persona.personaSystemMessage
     val isLoading by viewModel.isLoading
 
     if (openDeleteDialog.value) {
@@ -59,7 +59,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.deletePersona()
+                    viewModel.persona.deletePersona()
                     openDeleteDialog.value = false
                 }) {
                     Text(text = stringResource(id = R.string.delete))
@@ -88,7 +88,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                 ) {
                     OutlinedTextField(
                         value = personaAlias,
-                        onValueChange = { viewModel.updatePersonaAlias(it) },
+                        onValueChange = { viewModel.persona.updatePersonaAlias(it) },
                         label = { Text(text = "Alias") },
                     )
 
@@ -103,7 +103,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.saveUpdatePersona()
+                    viewModel.persona.saveUpdatePersona()
                     openAliasDialog.value = false
                 }) {
                     Text(text = stringResource(id = R.string.save))
@@ -270,7 +270,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
                 OutlinedTextField(
                     value = personaName,
-                    onValueChange = { viewModel.updatePersonaName(it) },
+                    onValueChange = { viewModel.persona.updatePersonaName(it) },
                     label = {
                         Text(text = stringResource(id = R.string.persona_name))
                     },
@@ -292,7 +292,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
                 OutlinedTextField(
                     value = personaSystemMessage,
-                    onValueChange = { viewModel.updatePersonaSystemMessage(it) },
+                    onValueChange = { viewModel.persona.updatePersonaSystemMessage(it) },
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.system_message_hint)
@@ -316,14 +316,14 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                     }
 
                     Button(
-                        onClick = { viewModel.saveUpdatePersona() },
+                        onClick = { viewModel.persona.saveUpdatePersona() },
                     ) {
                         Text(text = stringResource(id = R.string.save))
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    if (viewModel.selectedPersona.value != "") {
+                    if (viewModel.persona.selectedPersona.value != "") {
                         Button(
                             onClick = { openDeleteDialog.value = true },
                             modifier = Modifier.padding(horizontal = 10.dp),
@@ -338,9 +338,9 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                     }
                 }
 
-                if (viewModel.selectedPersona.value != "") {
+                if (viewModel.persona.selectedPersona.value != "") {
                     Button(
-                        onClick = { viewModel.saveAsNewPersona() },
+                        onClick = { viewModel.persona.saveAsNewPersona() },
                         modifier = Modifier.padding(horizontal = 10.dp)) {
                         Text(text = stringResource(id = R.string.make_copy))
                     }

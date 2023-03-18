@@ -64,7 +64,7 @@ fun HistoryUi(viewModel: AppViewModel) {
     }
 
     val chats = viewModel.history.chats
-    val personas = viewModel.personas
+    val personas = viewModel.persona.personas
 
     LaunchedEffect(Unit) {
         viewModel.history.fetchChats(onSuccess = {})

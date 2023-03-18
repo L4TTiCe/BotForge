@@ -36,7 +36,7 @@ class ChatViewModel @Inject constructor(
         viewModel.setLoading(true)
 
         val messages = mutableListOf<Message>()
-        val personaSystemMessage = viewModel.personaSystemMessage.value
+        val personaSystemMessage = viewModel.persona.personaSystemMessage.value
 
         if (personaSystemMessage != "") {
             messages.add(Message(personaSystemMessage, Role.SYSTEM))
@@ -150,8 +150,8 @@ class ChatViewModel @Inject constructor(
     }
 
     fun saveChat() {
-        val personaSelected = viewModel.selectedPersona.value
-        val personaSystemMessage = viewModel.personaSystemMessage.value
+        val personaSelected = viewModel.persona.selectedPersona.value
+        val personaSystemMessage = viewModel.persona.personaSystemMessage.value
         val messages = mutableListOf<Message>()
 
         val chat = Chat(

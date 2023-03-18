@@ -28,7 +28,7 @@ fun PersonaUi(viewModel: AppViewModel) {
     val isLoading by viewModel.isLoading
 
     LaunchedEffect(key1 = viewModel) {
-        viewModel.fetchPersonas()
+        viewModel.persona.fetchPersonas()
     }
 
     Column {
