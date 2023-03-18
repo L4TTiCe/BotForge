@@ -3,8 +3,6 @@ package com.mohandass.botforge.viewmodels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,12 +11,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
-import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.logger.Logger
-import com.mohandass.botforge.model.Chat
-import com.mohandass.botforge.model.Message
-import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.entities.Persona
 import com.mohandass.botforge.model.preferences.UserPreferences
 import com.mohandass.botforge.model.service.AccountService
@@ -39,8 +32,8 @@ import com.mohandass.botforge.R.string as AppText
 class AppViewModel @Inject constructor(
     private val accountService: AccountService,
     private val personaService: PersonaServiceImpl,
-    private val openAiService: OpenAiService,
-    private val chatService: ChatServiceImpl,
+    openAiService: OpenAiService,
+    chatService: ChatServiceImpl,
     preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
 )
@@ -62,11 +55,11 @@ class AppViewModel @Inject constructor(
     val userPreferences = _userPreferencesFlow.asLiveData()
 
     private val _historyViewModel: HistoryViewModel = HistoryViewModel(
-        appViewModel = this,
+        viewModel = this,
         chatService = chatService,
         logger = logger
     )
-    val historyViewModel: HistoryViewModel
+    val history: HistoryViewModel
         get() = _historyViewModel
 
     private val _isLoading = mutableStateOf(false)
@@ -75,56 +68,6 @@ class AppViewModel @Inject constructor(
 
     fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
-    }
-
-    // OpenAI
-
-    fun getChatCompletion(hapticFeedback: HapticFeedback) {
-        logger.log(TAG, "getChatCompletion()")
-        setLoading(true)
-
-        val messages = mutableListOf<Message>()
-        if (_personaSystemMessage.value != "") {
-            messages.add(Message(_personaSystemMessage.value, Role.SYSTEM))
-        } else {
-            messages.add(Message("You are a helpful assistant.", Role.SYSTEM))
-        }
-
-        for (message in _activeChat.value) {
-            if (message.isActive) {
-                messages.add(message)
-                logger.logVerbose(TAG, "getChatCompletion() message: $message")
-            }
-        }
-
-        logger.logVerbose(TAG, "getChatCompletion() messages: $messages")
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val completion = openAiService.getChatCompletion(messages)
-                    logger.logVerbose(TAG, "getChatCompletion() completion: $completion")
-                    addMessage(completion)
-                } catch (e: Throwable) {
-                    logger.logError(TAG, "getChatCompletion() error: $e", e)
-                    e.printStackTrace()
-                    if (e.message != null) {
-                        SnackbarManager.showMessage(
-                            e.toSnackbarMessageWithAction(R.string.settings) {
-                            navigateTo(AppRoutes.MainRoutes.Settings.route)
-                        })
-                    } else {
-                        val message = Utils.parseStackTraceForErrorMessage(e)
-                        SnackbarManager.showMessage(
-                            message.toSnackbarMessageWithAction(R.string.settings) {
-                                navigateTo(AppRoutes.MainRoutes.Settings.route)
-                            })
-                    }
-                }
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                setLoading(false)
-            }
-        }
     }
 
     // State
@@ -217,6 +160,17 @@ class AppViewModel @Inject constructor(
             navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
     }
+
+    // Chat
+
+    private val _chatViewModel = ChatViewModel(
+        viewModel = this,
+        chatService = chatService,
+        openAiService = openAiService,
+        logger = logger
+    )
+    val chat: ChatViewModel
+        get() = _chatViewModel
 
     // Persona
 
@@ -408,112 +362,6 @@ class AppViewModel @Inject constructor(
     }
     fun updatePersonaSystemMessage(message: String) {
         _personaSystemMessage.value = message
-    }
-
-    // Message
-
-    private val _activeChat = mutableStateOf(listOf(Message()))
-    val activeChat: MutableState<List<Message>> = _activeChat
-
-    private val _handleDelete = mutableStateOf(false)
-    val handleDelete: MutableState<Boolean> = _handleDelete
-
-    fun handleDelete(handle: Boolean) {
-        _handleDelete.value = handle
-    }
-
-    fun autoAddMessage() {
-        logger.log(TAG, "autoAddMessage()")
-//        val message = if (_activeChat.value.isEmpty()) {
-//            Message("", Role.USER)
-//        } else {
-//            Message(
-//                "",
-//                if (_activeChat.value.last().role == Role.USER) Role.BOT else Role.USER
-//            )
-//        }
-        val message = Message("", Role.USER)
-        _activeChat.value = _activeChat.value + message
-    }
-
-    private fun addMessage(message: Message) {
-        logger.log(TAG, "addMessage()")
-        _activeChat.value = _activeChat.value + message
-    }
-
-    fun updateMessage(message: Message) {
-        _activeChat.value = _activeChat.value.map {
-            if (it.uuid == message.uuid) {
-                message
-            } else {
-                it
-            }
-        }
-    }
-
-    fun deleteMessage(messageUuid: String) {
-        logger.log(TAG, "Deleting message: $messageUuid")
-        _activeChat.value = _activeChat.value.filter {
-            it.uuid != messageUuid
-        }
-        logger.logVerbose(TAG, "Messages: ${activeChat.value}")
-    }
-
-    fun clearMessages() {
-        logger.log(TAG, "clearMessages()")
-        while (_activeChat.value.isNotEmpty()) {
-            deleteMessage(_activeChat.value.last().uuid)
-        }
-
-        autoAddMessage()
-    }
-
-    fun setMessages(messages: List<Message>) {
-        _activeChat.value = messages
-    }
-
-    private val _chatName = mutableStateOf("testChat")
-
-    fun updateChatName(name: String) {
-        _chatName.value = name
-    }
-
-    fun saveChat() {
-        val chat = Chat(
-            uuid = UUID.randomUUID().toString(),
-            name = _chatName.value,
-            personaUuid =
-            if (_personaSelected.value == "") {
-                null
-            } else {
-                _personaSelected.value
-            }
-        )
-
-        val messages = mutableListOf<Message>()
-
-        if (_personaSystemMessage.value != "") {
-            val systemMessage = Message(
-                text = _personaSystemMessage.value,
-                role = Role.SYSTEM,
-            )
-            logger.logVerbose(TAG, "saveChat() systemMessage: $systemMessage")
-            messages.add(systemMessage)
-        }
-
-        for (message in _activeChat.value) {
-            logger.logVerbose(TAG, "saveChat() message: $message")
-            if (message.text != "") {
-                messages.add(message)
-            }
-        }
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                chatService.saveChat(chat, messages)
-                SnackbarManager.showMessage(AppText.chat_saved)
-            }
-        }
     }
 
     // Account

@@ -153,7 +153,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                             horizontalAlignment = Alignment.End,
                         ) {
                             FloatingActionButton(
-                                onClick = { viewModel.handleDelete(true) },
+                                onClick = { viewModel.chat.handleDelete(true) },
                                 containerColor = MaterialTheme.colorScheme.errorContainer,
                             ) {
                                 Icon(
@@ -168,7 +168,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
                             ExtendedFloatingActionButton(
                                 onClick = {
-                                    viewModel.getChatCompletion(hapticFeedback)
+                                    viewModel.chat.getChatCompletion(hapticFeedback)
                                 },
                             ) {
                                 Icon(

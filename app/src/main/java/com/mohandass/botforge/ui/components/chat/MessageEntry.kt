@@ -53,7 +53,7 @@ fun MessageEntry(
     }
 
     fun updateMessage() {
-        viewModel.updateMessage(
+        viewModel.chat.updateMessage(
             Message(
                 text = messageContent,
                 role = role,
@@ -101,7 +101,7 @@ fun MessageEntry(
         // launch coroutine to delete message after animation
         viewModel.viewModelScope.launch {
             delay(500)
-            viewModel.deleteMessage(message.uuid)
+            viewModel.chat.deleteMessage(message.uuid)
         }
     }
 

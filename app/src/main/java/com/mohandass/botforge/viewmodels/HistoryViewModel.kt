@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class HistoryViewModel(
     private val chatService: ChatServiceImpl,
-    private val appViewModel: AppViewModel,
+    private val viewModel: AppViewModel,
     private val logger: Logger,
 ): ViewModel() {
     private val _chats = mutableStateListOf<Chat>()
@@ -37,7 +37,7 @@ class HistoryViewModel(
     }
 
     private fun isPersonaDeleted(personaUuid: String): Boolean {
-        val personas = appViewModel.personas
+        val personas = viewModel.personas
         personas.firstOrNull { it.uuid == personaUuid } ?: return true
         return false
     }
@@ -53,21 +53,21 @@ class HistoryViewModel(
                 logger.logVerbose(TAG, "fetchMessages() chat: $chat")
                 logger.logVerbose(TAG, "fetchMessages() messages: $messages")
 
-                appViewModel.setMessages(messages)
+                viewModel.chat.setMessages(messages)
             }
             withContext(Dispatchers.Main) {
                 if (chat?.personaUuid != null) {
                     if (isPersonaDeleted(chat.personaUuid)) {
-                        appViewModel.clearSelection(create = false)
-                        appViewModel.updatePersonaSystemMessage(messages.first().text)
-                        appViewModel.setMessages(messages.subList(1, messages.size))
+                        viewModel.clearSelection(create = false)
+                        viewModel.updatePersonaSystemMessage(messages.first().text)
+                        viewModel.chat.setMessages(messages.subList(1, messages.size))
                     } else {
                         // ignore first message
-                        appViewModel.setMessages(messages.subList(1, messages.size))
-                        appViewModel.selectPersona(chat.personaUuid)
+                        viewModel.chat.setMessages(messages.subList(1, messages.size))
+                        viewModel.selectPersona(chat.personaUuid)
                     }
                 } else {
-                    appViewModel.clearSelection(create = false)
+                    viewModel.clearSelection(create = false)
                 }
                 onSuccess()
             }
@@ -78,7 +78,7 @@ class HistoryViewModel(
         logger.log(TAG, "selectChat()")
 
         fetchMessages(chat.uuid) {
-            appViewModel.navigateTo(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+            viewModel.navigateTo(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
 
     }

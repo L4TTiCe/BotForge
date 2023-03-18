@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.ui.persona
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +17,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.components.AvatarsBar
-import com.mohandass.botforge.ui.persona.ChatUi
-import com.mohandass.botforge.ui.persona.HistoryUi
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
 
@@ -64,7 +62,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 ChatUi(viewModel = viewModel)
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
-                HistoryUi(viewModel = viewModel, historyViewModel = viewModel.historyViewModel)
+                HistoryUi(viewModel = viewModel)
             }
         }
     }

@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
-    val messagesList by viewModel.activeChat
-    val handleDelete by viewModel.handleDelete
+    val messagesList by viewModel.chat.activeChat
+    val handleDelete by viewModel.chat.handleDelete
 
     // Visibility,
     var visibility by remember { mutableStateOf(true) }
@@ -30,11 +30,11 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
 
         viewModel.viewModelScope.launch {
             delay(600)
-            viewModel.clearMessages()
+            viewModel.chat.clearMessages()
             visibility = true
         }
 
-        viewModel.handleDelete(false)
+        viewModel.chat.handleDelete(false)
     }
 
     if (handleDelete) {
@@ -66,7 +66,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(onClick = {
-                    viewModel.autoAddMessage()
+                    viewModel.chat.autoAddMessage()
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.plus),

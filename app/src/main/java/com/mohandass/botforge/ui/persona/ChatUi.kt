@@ -100,8 +100,8 @@ fun ChatUi(viewModel: AppViewModel) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.updateChatName(chatName.value)
-                    viewModel.saveChat()
+                    viewModel.chat.updateChatName(chatName.value)
+                    viewModel.chat.saveChat()
                     openSaveChatDialog.value = false
                     chatName.value = ""
                 }) {
@@ -206,7 +206,7 @@ fun ChatUi(viewModel: AppViewModel) {
                 FloatingActionButton(
                     onClick = {
                         if (!isLoading) {
-                            viewModel.getChatCompletion(hapticFeedback)
+                            viewModel.chat.getChatCompletion(hapticFeedback)
                         } else {
                             SnackbarManager.showMessage(R.string.please_wait)
                         }
@@ -404,7 +404,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         }
 
                         IconButton(
-                            onClick = { viewModel.handleDelete(true) },
+                            onClick = { viewModel.chat.handleDelete(true) },
                             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp),
                             colors = IconButtonDefaults.iconButtonColors(
                                 contentColor = MaterialTheme.colorScheme.error

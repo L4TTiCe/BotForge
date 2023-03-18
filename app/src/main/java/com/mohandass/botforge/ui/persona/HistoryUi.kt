@@ -21,13 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.ui.components.RoundedIconFromString
 import com.mohandass.botforge.viewmodels.AppViewModel
-import com.mohandass.botforge.viewmodels.HistoryViewModel
 import kotlinx.coroutines.delay
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.*
 
 @Composable
-fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
+fun HistoryUi(viewModel: AppViewModel) {
     val openDeleteDialog = remember { mutableStateOf(false) }
 
     if (openDeleteDialog.value) {
@@ -41,7 +40,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    historyViewModel.deleteAllChats()
+                    viewModel.history.deleteAllChats()
                     openDeleteDialog.value = false
                 }) {
                     Text(
@@ -64,11 +63,11 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
         )
     }
 
-    val chats = historyViewModel.chats
+    val chats = viewModel.history.chats
     val personas = viewModel.personas
 
     LaunchedEffect(Unit) {
-        historyViewModel.fetchChats(onSuccess = {})
+        viewModel.history.fetchChats(onSuccess = {})
     }
 
     BackHandler {
@@ -176,7 +175,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
 
                     LaunchedEffect(Unit) {
                         delay(200)
-                        historyViewModel.getMessagesCount(chats[index].uuid) {
+                        viewModel.history.getMessagesCount(chats[index].uuid) {
                             count.value = it
                         }
                     }
@@ -185,7 +184,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                historyViewModel.selectChat(chats[index])
+                                viewModel.history.selectChat(chats[index])
                             }
                             .padding(5.dp),
 //                        elevation = CardDefaults.elevatedCardElevation()
@@ -250,7 +249,7 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel) {
                                     Spacer(modifier = Modifier.weight(1f))
 
                                     IconButton(
-                                        onClick = { historyViewModel.deleteChat(chats[index].uuid) }
+                                        onClick = { viewModel.history.deleteChat(chats[index].uuid) }
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,

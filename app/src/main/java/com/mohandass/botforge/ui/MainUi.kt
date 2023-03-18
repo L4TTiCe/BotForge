@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.ui.components.TopBar
+import com.mohandass.botforge.ui.persona.PersonaUi
 import com.mohandass.botforge.ui.settings.SettingsUi
 import com.mohandass.botforge.viewmodels.AppViewModel
 
