@@ -1,11 +1,11 @@
 package com.mohandass.botforge.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.logger.Logger
 import com.mohandass.botforge.model.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,8 @@ import com.mohandass.botforge.R.string as AppText
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val logger: Logger,
 ) : ViewModel() {
     private val _email = mutableStateOf("")
     private val _password = mutableStateOf("")
@@ -25,23 +26,23 @@ class SignUpViewModel @Inject constructor(
 
     fun onSignUp(onSuccess: () -> Unit) {
         if(Utils.validateEmail(_email.value).not()) {
-            Log.v("SignUpViewModel", "onSignUp() email invalid")
+            logger.logVerbose(TAG, "onSignUp() email invalid")
             SnackbarManager.showMessage(AppText.email_invalid)
             return
         }
 
         if(_password.value.length < 6) {
-            Log.v("SignUpViewModel", "onSignUp() password invalid")
+            logger.logVerbose(TAG, "onSignUp() password invalid")
             SnackbarManager.showMessage(AppText.password_invalid)
             return
         }
 
         if(_password.value != _confirmPassword.value) {
-            Log.v("SignUpViewModel", "onSignUp() passwords not match")
+            logger.logVerbose(TAG, "onSignUp() passwords not match")
             SnackbarManager.showMessage(AppText.passwords_not_match)
             return
         }
-        Log.v("SignUpViewModel", "onSignUp() Authenticating...")
+        logger.logVerbose(TAG, "onSignUp() Authenticating...")
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -49,7 +50,7 @@ class SignUpViewModel @Inject constructor(
                 accountService.linkAccount(_email.value, _password.value)
             }
             withContext(Dispatchers.Main) {
-                Log.v("SignUpViewModel", "onSignUp() Authenticated")
+                logger.log(TAG, "onSignUp() Authenticated")
                 onSuccess()
             }
         }
@@ -71,5 +72,9 @@ class SignUpViewModel @Inject constructor(
     }
     fun onPasswordVisibilityChange(boolean: Boolean) {
         _passwordVisibility.value = boolean
+    }
+
+    companion object {
+        private const val TAG = "SignUpViewModel"
     }
 }

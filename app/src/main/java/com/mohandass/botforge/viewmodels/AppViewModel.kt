@@ -1,6 +1,5 @@
 package com.mohandass.botforge.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,14 +7,15 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.logger.Logger
 import com.mohandass.botforge.model.Chat
 import com.mohandass.botforge.model.Message
 import com.mohandass.botforge.model.Role
@@ -41,7 +41,8 @@ class AppViewModel @Inject constructor(
     private val personaService: PersonaServiceImpl,
     private val openAiService: OpenAiService,
     private val chatService: ChatServiceImpl,
-    private val preferencesDataStore: PreferencesDataStore
+    preferencesDataStore: PreferencesDataStore,
+    private val logger: Logger,
 )
 : ViewModel() {
 //    val initialSetupEvent = liveData {
@@ -62,7 +63,9 @@ class AppViewModel @Inject constructor(
 
     private val _historyViewModel: HistoryViewModel = HistoryViewModel(
         appViewModel = this,
-        chatService = chatService)
+        chatService = chatService,
+        logger = logger
+    )
     val historyViewModel: HistoryViewModel
         get() = _historyViewModel
 
@@ -77,7 +80,7 @@ class AppViewModel @Inject constructor(
     // OpenAI
 
     fun getChatCompletion(hapticFeedback: HapticFeedback) {
-        Log.v("AppViewModel", "getChatCompletion()")
+        logger.log(TAG, "getChatCompletion()")
         setLoading(true)
 
         val messages = mutableListOf<Message>()
@@ -90,20 +93,20 @@ class AppViewModel @Inject constructor(
         for (message in _activeChat.value) {
             if (message.isActive) {
                 messages.add(message)
-                Log.v("AppViewModel", "getChatCompletion() message: $message")
+                logger.logVerbose(TAG, "getChatCompletion() message: $message")
             }
         }
 
-        Log.v("AppViewModel", "getChatCompletion() messages: $messages")
+        logger.logVerbose(TAG, "getChatCompletion() messages: $messages")
 
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val completion = openAiService.getChatCompletion(messages)
-                    Log.v("AppViewModel", "getChatCompletion() completion: $completion")
+                    logger.logVerbose(TAG, "getChatCompletion() completion: $completion")
                     addMessage(completion)
                 } catch (e: Throwable) {
-                    Log.e("AppViewModel", "getChatCompletion() error: $e")
+                    logger.logError(TAG, "getChatCompletion() error: $e", e)
                     e.printStackTrace()
                     if (e.message != null) {
                         SnackbarManager.showMessage(
@@ -136,8 +139,9 @@ class AppViewModel @Inject constructor(
     val chatType: MutableState<ChatType>
         get() = _chatType
 
-    fun setChatType(chatType: ChatType) {
+    private fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
+        FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
     }
 
     class State {
@@ -151,7 +155,7 @@ class AppViewModel @Inject constructor(
     private val _state = mutableStateOf(State())
 
     fun saveState() {
-        Log.v("AppViewModel", "saveState()")
+        logger.log(TAG, "saveState()")
         _state.value._personaName = _personaName.value
         _state.value._personaSystemMessage = _personaSystemMessage.value
         _state.value._personaAlias = _personaAlias.value
@@ -160,7 +164,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun restoreState() {
-        Log.v("AppViewModel", "restoreState()")
+        logger.log(TAG, "restoreState()")
         _personaName.value = _state.value._personaName
         _personaSystemMessage.value = _state.value._personaSystemMessage
         _personaAlias.value = _state.value._personaAlias
@@ -180,22 +184,22 @@ class AppViewModel @Inject constructor(
         get() = _navControllerPersona!!
 
     fun setNavControllerMain(navController: NavController) {
-        Log.v("AppViewModel", "setNavControllerMain()")
+        logger.logVerbose(TAG, "setNavControllerMain()")
         _navControllerMain = navController
     }
 
     fun setNavControllerPersona(navController: NavController) {
-        Log.v("AppViewModel", "setNavControllerPersona()")
+        logger.logVerbose(TAG, "setNavControllerPersona()")
         _navControllerPersona = navController
     }
 
     fun navigateTo(route: String) {
-        Log.v("AppViewModel", "navigateTo($route)")
+        logger.log(TAG, "navigateTo($route)")
         navControllerMain.navigate(route)
     }
 
     fun showHistory() {
-        Log.v("AppViewModel", "showHistory()")
+        logger.logVerbose(TAG, "showHistory()")
         saveState()
         clearSelection(create = false)
         setChatType(ChatType.HISTORY)
@@ -205,7 +209,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun showCreate() {
-        Log.v("AppViewModel", "showCreate()")
+        logger.logVerbose(TAG, "showCreate()")
         clearSelection(create = true)
         setChatType(ChatType.CREATE)
 
@@ -240,7 +244,7 @@ class AppViewModel @Inject constructor(
 //    }
 
     fun fetchPersonas() {
-        Log.v("AppViewModel", "fetchPersonas()")
+        logger.log(TAG, "fetchPersonas()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
 //                _personas.postValue(personaService.allPersonas())
@@ -254,7 +258,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun clearSelection(create:Boolean = true) {
-        Log.v("AppViewModel", "newPersona()")
+        logger.log(TAG, "newPersona()")
         _personaName.value = ""
         _personaAlias.value = ""
         _personaSystemMessage.value = ""
@@ -266,7 +270,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun selectPersona(uuid: String) {
-        Log.v("AppViewModel", "selectPersona() persona: $uuid")
+        logger.log(TAG, "selectPersona() persona: $uuid")
 
 //        val persona = _personas.value?.find { it.uuid == uuid }
         val persona = _personas.find { it.uuid == uuid }
@@ -301,7 +305,7 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 personaService.addPersona(persona)
-                Log.v("AppViewModel", "savePersona() _personas: $persona")
+                logger.log(TAG, "savePersona() _personas: $persona")
                 if (customMessage) {
                     SnackbarManager.showMessage(AppText.saved_persona)
                 } else {
@@ -342,7 +346,7 @@ class AppViewModel @Inject constructor(
         )
 
         if (persona.uuid.isEmpty()) {
-            Log.v("AppViewModel", "savePersona() new persona")
+            logger.log(TAG, "savePersona() new persona")
             val uuid = UUID.randomUUID().toString()
             val isSuccess = savePersona(
                 Persona(
@@ -375,7 +379,7 @@ class AppViewModel @Inject constructor(
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     personaService.deletePersona(persona)
-                    Log.v("AppViewModel", "deletePersona() _personas: ${persona.name}")
+                    logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
                     SnackbarManager.showMessage(AppText.delete_persona_success, persona.name)
                     fetchPersonas()
                 }
@@ -419,7 +423,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun autoAddMessage() {
-        Log.v("AppViewModel", "autoAddMessage()")
+        logger.log(TAG, "autoAddMessage()")
 //        val message = if (_activeChat.value.isEmpty()) {
 //            Message("", Role.USER)
 //        } else {
@@ -433,7 +437,7 @@ class AppViewModel @Inject constructor(
     }
 
     private fun addMessage(message: Message) {
-        Log.v("AppViewModel", "addMessage()")
+        logger.log(TAG, "addMessage()")
         _activeChat.value = _activeChat.value + message
     }
 
@@ -448,15 +452,15 @@ class AppViewModel @Inject constructor(
     }
 
     fun deleteMessage(messageUuid: String) {
-        Log.v("AppViewModel", "Deleting message: $messageUuid")
+        logger.log(TAG, "Deleting message: $messageUuid")
         _activeChat.value = _activeChat.value.filter {
             it.uuid != messageUuid
         }
-        Log.v("AppViewModel", "Messages: ${activeChat.value}")
+        logger.logVerbose(TAG, "Messages: ${activeChat.value}")
     }
 
     fun clearMessages() {
-        Log.v("AppViewModel", "clearMessages()")
+        logger.log(TAG, "clearMessages()")
         while (_activeChat.value.isNotEmpty()) {
             deleteMessage(_activeChat.value.last().uuid)
         }
@@ -493,12 +497,12 @@ class AppViewModel @Inject constructor(
                 text = _personaSystemMessage.value,
                 role = Role.SYSTEM,
             )
-            Log.v("AppViewModel", "saveChat() systemMessage: $systemMessage")
+            logger.logVerbose(TAG, "saveChat() systemMessage: $systemMessage")
             messages.add(systemMessage)
         }
 
         for (message in _activeChat.value) {
-            Log.v("AppViewModel", "saveChat() message: $message")
+            logger.logVerbose(TAG, "saveChat() message: $message")
             if (message.text != "") {
                 messages.add(message)
             }
@@ -537,4 +541,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    companion object {
+        private const val TAG = "AppViewModel"
+    }
 }

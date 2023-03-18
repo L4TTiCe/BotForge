@@ -84,7 +84,8 @@ fun MainHeader(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = null)
+                        contentDescription = null
+                    )
                 }
             )
 
@@ -101,7 +102,8 @@ fun MainHeader(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.ExitToApp,
-                        contentDescription = null)
+                        contentDescription = null
+                    )
                 }
             )
             DropdownMenuItem(
@@ -114,7 +116,22 @@ fun MainHeader(
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = null)
+                        contentDescription = null
+                    )
+                }
+            )
+            DropdownMenuItem(
+                onClick = {
+                    throw RuntimeException("Test Crash")
+                },
+                text = {
+                    Text(text = "TEST CRASH")
+                },
+                trailingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_bug_report_24),
+                        contentDescription = null
+                    )
                 }
             )
 

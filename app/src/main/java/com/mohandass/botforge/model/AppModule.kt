@@ -7,6 +7,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mohandass.botforge.common.logger.AndroidLogger
+import com.mohandass.botforge.common.logger.Logger
 import com.mohandass.botforge.model.dao.ChatDao
 import com.mohandass.botforge.model.dao.PersonaDao
 import com.mohandass.botforge.model.service.*
@@ -86,4 +88,8 @@ class AppModule {
     fun providePreferencesDataStore(
         app: Application
     ): PreferencesDataStore = PreferencesDataStoreImpl(app.dataStore)
+
+    @Provides
+    @Singleton
+    fun provideLogger(): Logger = AndroidLogger()
 }

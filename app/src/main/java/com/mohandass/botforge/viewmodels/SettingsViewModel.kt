@@ -1,10 +1,10 @@
 package com.mohandass.botforge.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.logger.Logger
 import com.mohandass.botforge.model.preferences.PreferredTheme
 import com.mohandass.botforge.model.service.AccountService
 import com.mohandass.botforge.model.service.PreferencesDataStore
@@ -18,10 +18,12 @@ class SettingsViewModel @Inject constructor(
     private val accountService: AccountService,
     private val sharedPreferencesService: SharedPreferencesService,
     private val preferencesDataStore: PreferencesDataStore,
+    private val logger: Logger,
 ) : ViewModel() {
     fun getApiKey(): String = sharedPreferencesService.getApiKey()
 
     fun setApiKey(value: String) {
+        logger.log(TAG, "setApiKey()")
         sharedPreferencesService.setAPIKey(value)
         SnackbarManager.showMessage(R.string.api_key_saved)
     }
@@ -29,22 +31,25 @@ class SettingsViewModel @Inject constructor(
 
     // Usage
     fun getUsageTokens(): Long {
+        logger.logVerbose(TAG, "getUsageTokens()")
         return sharedPreferencesService.getUsageTokens()
     }
 
     fun resetUsageTokens() {
+        logger.log(TAG, "resetUsageTokens()")
         sharedPreferencesService.resetUsageTokens()
         SnackbarManager.showMessage(R.string.usage_tokens_reset)
     }
 
     fun updateTheme(preferredTheme: PreferredTheme) {
+        logger.log(TAG, "updateTheme() preferredTheme: $preferredTheme")
         viewModelScope.launch {
             preferencesDataStore.updateTheme(preferredTheme)
         }
     }
 
     fun updateDynamicColor(value: Boolean) {
-        Log.v(TAG, "updateDynamicColor() value: $value")
+        logger.log(TAG, "updateDynamicColor() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setDynamicColor(value)
         }
