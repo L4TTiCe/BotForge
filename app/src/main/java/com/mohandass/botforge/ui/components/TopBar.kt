@@ -4,17 +4,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.viewmodels.AppViewModel
 
 @Composable
-fun TopBar(appState: AppState?, viewModel: AppViewModel) {
+fun TopBar(viewModel: AppViewModel) {
     Surface(
         tonalElevation = 4.dp,
     ) {
         Column {
             MainHeader(
-                appState = appState,
                 viewModel = viewModel
             )
         }
