@@ -18,6 +18,7 @@ import com.mohandass.botforge.model.Role
 import com.mohandass.botforge.model.service.OpenAiService
 import com.mohandass.botforge.model.service.implementation.ChatServiceImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -29,7 +30,27 @@ class ChatViewModel @Inject constructor(
     private val chatService: ChatServiceImpl,
     private val logger: Logger,
 ) : ViewModel() {
-    // OpenAI
+
+    private val _requestInProgress = mutableStateOf(false)
+
+    private lateinit var job: Job
+
+    private fun interruptRequest() {
+        if (_requestInProgress.value) {
+            _requestInProgress.value = false
+        }
+        if (this::job.isInitialized) {
+            job.cancel()
+            SnackbarManager.showMessage(R.string.waiting_for_response_cancelled)
+        }
+        viewModel.setLoading(false)
+    }
+
+    fun handleInterrupt() {
+        SnackbarManager.showMessageWithAction(R.string.waiting_for_response, R.string.cancel) {
+            interruptRequest()
+        }
+    }
 
     fun getChatCompletion(hapticFeedback: HapticFeedback) {
         logger.log(TAG, "getChatCompletion()")
@@ -53,7 +74,7 @@ class ChatViewModel @Inject constructor(
 
         logger.logVerbose(TAG, "getChatCompletion() messages: $messages")
 
-        viewModelScope.launch {
+        job = viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val completion = openAiService.getChatCompletion(messages)

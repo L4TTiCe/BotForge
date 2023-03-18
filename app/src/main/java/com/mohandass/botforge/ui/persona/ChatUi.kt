@@ -6,7 +6,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -201,6 +203,7 @@ fun ChatUi(viewModel: AppViewModel) {
 //            }
 //        }
 
+
         Scaffold(
             floatingActionButton = {
                 FloatingActionButton(
@@ -208,25 +211,30 @@ fun ChatUi(viewModel: AppViewModel) {
                         if (!isLoading) {
                             viewModel.chat.getChatCompletion(hapticFeedback)
                         } else {
-                            SnackbarManager.showMessage(R.string.please_wait)
+                            viewModel.chat.handleInterrupt()
                         }
                     },
                     containerColor =
-                        if (isLoading)
-                            MaterialTheme.colorScheme.errorContainer
-                        else
-                            MaterialTheme.colorScheme.primaryContainer,
+                    if (isLoading)
+                        MaterialTheme.colorScheme.errorContainer
+                    else
+                        MaterialTheme.colorScheme.primaryContainer,
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_send_24),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    // Text causes the UI to overlap with chat messages
-//                    Text(
-//                        text = stringResource(id = R.string.send),
-//                        modifier = Modifier.padding(horizontal = 10.dp)
-//                    )
+                    Box(contentAlignment = Alignment.Center) {
+                        if (!isLoading) {
+                            Icon(
+                                imageVector = Icons.Filled.Send,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        }
+                    }
                 }
             },
         )
