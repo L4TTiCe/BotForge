@@ -1,18 +1,18 @@
 package com.mohandass.botforge.ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,6 +44,7 @@ fun SettingsUi(
             }
         }
     }
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
 
     Column (
@@ -62,10 +63,6 @@ fun SettingsUi(
 
             Spacer(modifier = Modifier.weight(1f))
         }
-
-        VersionInfo()
-
-        Spacer(modifier = Modifier.height(10.dp))
 
         SettingsCategory(title = resources().getString(R.string.display))
 
@@ -96,6 +93,18 @@ fun SettingsUi(
             })
         )
 
+        SettingsItem(
+            title = resources().getString(R.string.open_ai_status),
+            description = resources().getString(R.string.open_ai_status_message),
+            painter = painterResource(id = R.drawable.baseline_open_in_new_24),
+            onClick = ({
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(context.getString(R.string.open_ai_status_link))
+                }
+                context.startActivity(intent)
+            })
+        )
+
         SettingsCategory(title = resources().getString(R.string.account))
 
         SettingsItem(
@@ -104,6 +113,26 @@ fun SettingsUi(
             painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
             onClick = ({
                 viewModel.navigateTo(AppRoutes.MainRoutes.ManageAccountSettings.route)
+            })
+        )
+
+        SettingsCategory(title = resources().getString(R.string.about))
+
+        SettingsItem(
+            title = resources().getString(R.string.licenses_and_acknowledgements),
+            description = resources().getString(R.string.licenses_and_acknowledgements_message),
+            painter = painterResource(id = R.drawable.baseline_library_books_24),
+            onClick = ({
+                viewModel.navigateTo(AppRoutes.MainRoutes.OpenSourceLicenses.route)
+            })
+        )
+
+        SettingsItem(
+            title = resources().getString(R.string.app_information),
+            description = resources().getString(R.string.app_information_message),
+            painter = painterResource(id = R.drawable.baseline_info_24),
+            onClick = ({
+                viewModel.navigateTo(AppRoutes.MainRoutes.AppInformation.route)
             })
         )
     }

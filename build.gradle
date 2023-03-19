@@ -2,6 +2,7 @@ buildscript {
     ext {
         nav_version = "2.5.3"
         room_version = "2.5.0"
+        AboutLibsRelease = "10.6.1"
     }
     repositories {
         google()
@@ -22,6 +23,9 @@ plugins {
 
     // Dependency Injection with Hilt
     id "com.google.dagger.hilt.android" version "2.44" apply false
+
+    // AboutLibraries
+    id 'com.mikepenz.aboutlibraries.plugin' version "${AboutLibsRelease}" apply false
 }
 configurations {
     all {

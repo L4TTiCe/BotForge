@@ -210,8 +210,8 @@ fun ApiUsageUi(
         SettingsCategory(title = "External Links")
 
         SettingsItem(
-            title = "Usage Summary",
-            description = "OpenAI's usage summary, for more accurate usage tracking",
+            title = resources().getString(R.string.usage_summary),
+            description = resources().getString(R.string.usage_summary_message),
             painter = painterResource(id = R.drawable.baseline_data_usage_24),
         ) {
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -221,8 +221,8 @@ fun ApiUsageUi(
         }
 
         SettingsItem(
-            title = "OpenAI Pricing",
-            description = "Learn more about different models and pricing",
+            title = resources().getString(R.string.open_ai_pricing),
+            description = resources().getString(R.string.open_ai_pricing_message),
             painter = painterResource(id = R.drawable.baseline_price_check_24),
         ) {
             val intent = Intent(Intent.ACTION_VIEW).apply {

@@ -12,10 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.ui.components.TopBar
 import com.mohandass.botforge.ui.persona.PersonaUi
-import com.mohandass.botforge.ui.settings.ApiKeyUi
-import com.mohandass.botforge.ui.settings.ApiUsageUi
-import com.mohandass.botforge.ui.settings.ManageAccountUi
-import com.mohandass.botforge.ui.settings.SettingsUi
+import com.mohandass.botforge.ui.settings.*
 import com.mohandass.botforge.viewmodels.AppViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +50,12 @@ fun MainUi(viewModel: AppViewModel) {
                         }
                         composable(AppRoutes.MainRoutes.ManageAccountSettings.route) {
                             ManageAccountUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
+                        }
+                        composable(AppRoutes.MainRoutes.OpenSourceLicenses.route) {
+                            OpenSourceLibrariesUi(viewModel = viewModel)
+                        }
+                        composable(AppRoutes.MainRoutes.AppInformation.route) {
+                            AppInformationUi()
                         }
                     }
                 }

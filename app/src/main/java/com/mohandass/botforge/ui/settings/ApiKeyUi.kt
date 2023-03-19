@@ -149,11 +149,11 @@ fun ApiKeyUi(
             }
         }
 
-        SettingsCategory(title = "External Links")
+        SettingsCategory(title = resources().getString(R.string.external_links))
 
         SettingsItem(
-            title = "OpenAI API Page",
-            description = "Visit the OpenAI API page to get your API key",
+            title = resources().getString(R.string.open_ai_api_website),
+            description = resources().getString(R.string.open_ai_api_website_message),
             painter = painterResource(id = R.drawable.baseline_key_24),
         ) {
             val intent = Intent(Intent.ACTION_VIEW).apply {

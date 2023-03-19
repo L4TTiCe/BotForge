@@ -85,7 +85,7 @@ class ChatViewModel @Inject constructor(
                         logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
                         SnackbarManager.showMessage(
                             e.toSnackbarMessageWithAction(R.string.settings) {
-                                viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                                viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
                             })
                     } else {
                         logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
@@ -97,7 +97,7 @@ class ChatViewModel @Inject constructor(
                                     R.string.invalid_api_key,
                                     R.string.settings
                                 ) {
-                                    viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
                                 }
                             }
                             Utils.INTERRUPTED_ERROR_MESSAGE -> {

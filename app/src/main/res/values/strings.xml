@@ -71,7 +71,17 @@
     <string name="api_key_link">https://platform.openai.com/account/api-keys</string>
     <string name="tap_to_visit">Tap here to visit</string>
     <string name="open_ai_api_website">OpenAI API page</string>
+    <string name="open_ai_api_website_message">"Visit the OpenAI API page to get your API key</string>
     <string name="api_key_saved">API Key saved!</string>
+
+    <!-- API Usage Ui -->
+
+    <string name="managing_tokens">Managing tokens</string>
+    <string name="managing_tokens_message">Language models read text in chunks called tokens.
+        These tokens are the units used for measuring usage and billing.</string>
+    <string name="learn_more_managing_tokens">To learn more visit</string>
+    <string name="open_ai_managing_tokens">OpenAI\'s Chat Completion Guide</string>
+    <string name="open_ai_managing_tokens_link">https://platform.openai.com/docs/guides/chat/managing-tokens</string>
 
     <string name="api_usage">Usage</string>
     <string name="usage_quotas">Usage quotas</string>
@@ -80,13 +90,12 @@
         with your application. If you need more tokens, you can always request a quota
         increase.</string>
 
-    <string name="learn_more_pricing">To learn more visit</string>
+    <string name="usage_summary">Usage Summary</string>
+    <string name="usage_summary_message">"Visit OpenAI's usage summary, for more accurate usage tracking"</string>
     <string name="open_ai_pricing">OpenAI Pricing</string>
+    <string name="open_ai_pricing_message">"Learn more about OpenAI's pricing"</string>
     <string name="open_ai_pricing_link">https://openai.com/pricing</string>
     <string name="your_usage">Your Usage (Tokens)</string>
-    <string name="visit">Visit</string>
-    <string name="open_ai_usage">OpenAI Usage</string>
-    <string name="usage_summary">for a summary of your API Usage.</string>
     <string name="open_ai_usage_link">https://platform.openai.com/account/usage</string>
     <string name="reset_usage">Reset Usage</string>
     <string name="usage_tokens_reset">Local token counter reset!</string>
@@ -97,13 +106,6 @@
 
     <string name="back_cd">Back</string>
     <string name="dismiss">Dismiss</string>
-
-    <string name="managing_tokens">Managing tokens</string>
-    <string name="managing_tokens_message">Language models read text in chunks called tokens.
-        These tokens are the units used for measuring usage and billing.</string>
-    <string name="learn_more_managing_tokens">To learn more visit</string>
-    <string name="open_ai_managing_tokens">OpenAI\'s Chat Completion Guide</string>
-    <string name="open_ai_managing_tokens_link">https://platform.openai.com/docs/guides/chat/managing-tokens</string>
 
     <string name="chat_saved">Your conversation has been saved.</string>
 
@@ -143,4 +145,30 @@
 
     <string name="manage_account">Manage Account</string>
     <string name="manage_account_message">View or change your account information.</string>
+
+    <string name="open_source_libraries">Open Source Libraries</string>
+
+    <string name="open_ai_status">OpenAI Status Page</string>
+    <string name="open_ai_status_message">Check the status of OpenAI\'s API.</string>
+    <string name="open_ai_status_link">https://status.openai.com/</string>
+
+    <string name="about">About</string>
+    <string name="licenses_and_acknowledgements">Licenses and Acknowledgement</string>
+    <string name="licenses_and_acknowledgements_message">View the licenses and acknowledgements of the libraries used in this app.</string>
+
+    <string name="app_information">App Information</string>\
+    <string name="app_information_message">View information about the app.</string>
+
+    <string name="external_links">External Links</string>
+
+    <!--    App Information UI-->
+    <string name="about_app">BotForge is an unofficial OpenAI API client for Android.</string>
+    <string name="version_number">Version</string>
+    <string name="build_number">Build Number</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_message">View the privacy policy of the app.</string>
+    <string name="github">GitHub</string>
+    <string name="github_message">Submit an issue, bug or feature request</string>
+    <string name="privacy_policy_link">https://dheshan.mohandass.com/posts/privacy</string>
+    <string name="github_link">https://github.com/L4TTiCe/BotForge</string>
 </resources>

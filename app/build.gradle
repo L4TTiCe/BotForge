@@ -13,6 +13,9 @@ plugins {
 
     // Add the Crashlytics Gradle plugin
     id 'com.google.firebase.crashlytics'
+
+    // AboutLibraries
+    id 'com.mikepenz.aboutlibraries.plugin'
 }
 
 android {
@@ -156,8 +159,9 @@ dependencies {
     // prettytime
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.4.Final'
 
-    // Accompanist
-    // implementation "com.google.accompanist:accompanist-systemuicontroller:0.29.2-rc"
+    // AboutLibraries
+    implementation "com.mikepenz:aboutlibraries-core:${AboutLibsRelease}"
+    implementation "com.mikepenz:aboutlibraries-compose:${AboutLibsRelease}"
 }
 
 // Dependency Injection with Hilt

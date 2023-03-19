@@ -16,5 +16,7 @@ sealed class AppRoutes(val route: String) {
         object ApiKeySettings: MainRoutes("main_settings_api_key")
         object ApiUsageSettings: MainRoutes("main_settings_api_usage")
         object ManageAccountSettings: MainRoutes("main_settings_manage_account")
+        object OpenSourceLicenses: MainRoutes("main_settings_open_source_licenses")
+        object AppInformation: MainRoutes("main_settings_app_information")
     }
 }
