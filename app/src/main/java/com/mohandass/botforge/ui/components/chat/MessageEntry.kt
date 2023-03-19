@@ -32,7 +32,7 @@ fun MessageEntry(
     viewModel: AppViewModel,
     startWithFocus: Boolean = false,
     startVisibility: Boolean = true,
-    scrollToItem: () -> Unit = {}
+//    scrollToItem: () -> Unit = {}
 ) {
     val showMetadata = remember { mutableStateOf(false) }
     val isActive  = remember { mutableStateOf(message.isActive) }
@@ -42,15 +42,18 @@ fun MessageEntry(
     var messageContent by remember { mutableStateOf(message.text) }
     var role by remember { mutableStateOf(message.role) }
 
+    val messageIsFocussed by viewModel.chat.isMessageInFocus
+
     LaunchedEffect(Unit) {
         delay(200)
         if (
             message.isActive &&
             message.text.isEmpty() &&
             message.role == Role.USER &&
-            startWithFocus
+            startWithFocus &&
+            messageIsFocussed
         ) {
-            scrollToItem()
+//            scrollToItem()
             delay(200)
             focusRequester.requestFocus()
         }

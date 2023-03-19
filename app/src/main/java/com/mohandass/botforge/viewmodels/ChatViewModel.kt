@@ -33,6 +33,9 @@ class ChatViewModel @Inject constructor(
 
     private val _requestInProgress = mutableStateOf(false)
 
+    private val _isMessageInFocus = mutableStateOf(false)
+    val isMessageInFocus: MutableState<Boolean> = _isMessageInFocus
+
     private lateinit var job: Job
 
     private fun interruptRequest() {

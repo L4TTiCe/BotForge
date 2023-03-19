@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     val messagesList by viewModel.chat.activeChat
     val handleDelete by viewModel.chat.handleDelete
+    val messageIsFocussed by viewModel.chat.isMessageInFocus
+
+    val coroutineScope = rememberCoroutineScope()
 
     // Visibility,
     var visibility by remember { mutableStateOf(true) }
@@ -54,8 +57,8 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                         modifier=Modifier,
                         message = item,
                         viewModel = viewModel,
-                        startWithFocus = idx == messagesList.size - 1 && idx != 0,
-                        startVisibility = idx != messagesList.size - 1 && item.text.isEmpty()
+                        startWithFocus = (idx == (messagesList.size - 1)) && (idx != 0) && messageIsFocussed,
+                        startVisibility = (idx != (messagesList.size - 1)) && item.text.isEmpty(),
                     )
                     Spacer(modifier = modifier.height(12.dp))
                 }
@@ -67,7 +70,12 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(onClick = {
+                    viewModel.chat.isMessageInFocus.value = true
                     viewModel.chat.autoAddMessage()
+                    coroutineScope.launch {
+                        delay(500)
+                        viewModel.chat.isMessageInFocus.value = false
+                    }
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.plus),
