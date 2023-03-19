@@ -16,6 +16,8 @@ buildscript {
         percentage_units_version = "1.0.0"
         prettytime_version = "5.0.4.Final"
         AboutLibsRelease = "10.6.1"
+
+        accompanist_navigation = "0.29.2-rc"
     }
     repositories {
         google()

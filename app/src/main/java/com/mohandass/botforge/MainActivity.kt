@@ -4,6 +4,9 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,9 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.*
 import com.mohandass.botforge.ui.auth.SignInUi
@@ -68,10 +72,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAppState(
     snackbarHostState: SnackbarHostState,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberAnimatedNavController(),
     snackbarManager: SnackbarManager = SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -87,9 +92,10 @@ fun resources(): Resources {
     return LocalContext.current.resources
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(modifier: Modifier, appState: AppState, viewModel: AppViewModel) {
-    NavHost(
+    AnimatedNavHost(
         modifier = modifier,
         navController = appState.navController,
         startDestination = AppRoutes.Splash.route) {
@@ -101,19 +107,214 @@ fun Navigation(modifier: Modifier, appState: AppState, viewModel: AppViewModel) 
             }
         }
 
-        composable(AppRoutes.Splash.route) {
+        composable(
+            route = AppRoutes.Splash.route,
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
             SplashUi(appState = appState)
         }
-        composable(AppRoutes.Landing.route) {
+        composable(
+            route = AppRoutes.Landing.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
             LandingUi(appState = appState)
         }
-        composable(AppRoutes.Main.route) {
+        composable(
+            route = AppRoutes.Main.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
             MainUi(viewModel = viewModel)
         }
-        composable(AppRoutes.SignUp.route) {
+        composable(
+            route = AppRoutes.SignUp.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
             SignUpUi(appState = appState)
         }
-        composable(AppRoutes.SignIn.route) {
+        composable(
+            route = AppRoutes.SignIn.route,
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
             SignInUi(appState = appState)
         }
     }
