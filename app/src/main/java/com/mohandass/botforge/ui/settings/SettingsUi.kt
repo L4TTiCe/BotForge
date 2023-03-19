@@ -4,11 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -45,95 +47,106 @@ fun SettingsUi(
         }
     }
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
 
-    Column (
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(scrollState)
             .background(MaterialTheme.colorScheme.background)
             .padding(10.dp)
             .fillMaxSize(),
     ) {
-        Row {
-            Text(
-                text = resources().getString(R.string.settings),
-                modifier = Modifier.padding(10.dp),
-                style = MaterialTheme.typography.headlineSmall
+        item {
+            Row {
+                Text(
+                    text = resources().getString(R.string.settings),
+                    modifier = Modifier.padding(10.dp),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+            }
+        }
+        item {
+            SettingsCategory(title = resources().getString(R.string.display))
+        }
+        item {
+            AppearanceSettings(
+                viewModel = viewModel,
+                settingsViewModel = settingsViewModel
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(10.dp))
         }
-
-        SettingsCategory(title = resources().getString(R.string.display))
-
-        AppearanceSettings(
-            viewModel = viewModel,
-            settingsViewModel = settingsViewModel
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        SettingsCategory(title = resources().getString(R.string.api))
-        
-        SettingsItem(
-            title = resources().getString(R.string.api_key),
-            description = resources().getString(R.string.api_settings_message),
-            painter = painterResource(id = R.drawable.baseline_key_24),
-            onClick = ({
-                viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
-            })
-        )
-
-        SettingsItem(
-            title = resources().getString(R.string.usage_settings),
-            description = resources().getString(R.string.usage_settings_message),
-            painter = painterResource(id = R.drawable.baseline_token_24),
-            onClick = ({
-                viewModel.navigateTo(AppRoutes.MainRoutes.ApiUsageSettings.route)
-            })
-        )
-
-        SettingsItem(
-            title = resources().getString(R.string.open_ai_status),
-            description = resources().getString(R.string.open_ai_status_message),
-            painter = painterResource(id = R.drawable.baseline_open_in_new_24),
-            onClick = ({
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(context.getString(R.string.open_ai_status_link))
-                }
-                context.startActivity(intent)
-            })
-        )
-
-        SettingsCategory(title = resources().getString(R.string.account))
-
-        SettingsItem(
-            title = resources().getString(R.string.manage_account),
-            description = resources().getString(R.string.manage_account_message),
-            painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
-            onClick = ({
-                viewModel.navigateTo(AppRoutes.MainRoutes.ManageAccountSettings.route)
-            })
-        )
-
-        SettingsCategory(title = resources().getString(R.string.about))
-
-        SettingsItem(
-            title = resources().getString(R.string.licenses_and_acknowledgements),
-            description = resources().getString(R.string.licenses_and_acknowledgements_message),
-            painter = painterResource(id = R.drawable.baseline_library_books_24),
-            onClick = ({
-                viewModel.navigateTo(AppRoutes.MainRoutes.OpenSourceLicenses.route)
-            })
-        )
-
-        SettingsItem(
-            title = resources().getString(R.string.app_information),
-            description = resources().getString(R.string.app_information_message),
-            painter = painterResource(id = R.drawable.baseline_info_24),
-            onClick = ({
-                viewModel.navigateTo(AppRoutes.MainRoutes.AppInformation.route)
-            })
-        )
+        item {
+            SettingsCategory(title = resources().getString(R.string.api))
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.api_key),
+                description = resources().getString(R.string.api_settings_message),
+                painter = painterResource(id = R.drawable.baseline_key_24),
+                onClick = ({
+                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
+                })
+            )
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.usage_settings),
+                description = resources().getString(R.string.usage_settings_message),
+                painter = painterResource(id = R.drawable.baseline_token_24),
+                onClick = ({
+                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiUsageSettings.route)
+                })
+            )
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.open_ai_status),
+                description = resources().getString(R.string.open_ai_status_message),
+                painter = painterResource(id = R.drawable.baseline_open_in_new_24),
+                onClick = ({
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(context.getString(R.string.open_ai_status_link))
+                    }
+                    context.startActivity(intent)
+                })
+            )
+        }
+        item {
+            SettingsCategory(title = resources().getString(R.string.account))
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.manage_account),
+                description = resources().getString(R.string.manage_account_message),
+                painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
+                onClick = ({
+                    viewModel.navigateTo(AppRoutes.MainRoutes.ManageAccountSettings.route)
+                })
+            )
+        }
+        item {
+            SettingsCategory(title = resources().getString(R.string.about))
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.licenses_and_acknowledgements),
+                description = resources().getString(R.string.licenses_and_acknowledgements_message),
+                painter = painterResource(id = R.drawable.baseline_library_books_24),
+                onClick = ({
+                    viewModel.navigateTo(AppRoutes.MainRoutes.OpenSourceLicenses.route)
+                })
+            )
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.app_information),
+                description = resources().getString(R.string.app_information_message),
+                painter = painterResource(id = R.drawable.baseline_info_24),
+                onClick = ({
+                    viewModel.navigateTo(AppRoutes.MainRoutes.AppInformation.route)
+                })
+            )
+        }
     }
 }
