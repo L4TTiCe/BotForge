@@ -31,7 +31,8 @@ fun MessageEntry(
     message: Message = Message(),
     viewModel: AppViewModel,
     startWithFocus: Boolean = false,
-    startVisibility: Boolean = true
+    startVisibility: Boolean = true,
+    scrollToItem: () -> Unit = {}
 ) {
     val showMetadata = remember { mutableStateOf(false) }
     val isActive  = remember { mutableStateOf(message.isActive) }
@@ -49,6 +50,8 @@ fun MessageEntry(
             message.role == Role.USER &&
             startWithFocus
         ) {
+            scrollToItem()
+            delay(200)
             focusRequester.requestFocus()
         }
     }

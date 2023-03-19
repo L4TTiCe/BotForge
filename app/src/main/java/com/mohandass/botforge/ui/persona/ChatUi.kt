@@ -1,8 +1,11 @@
 package com.mohandass.botforge.ui.persona
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -18,13 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.components.RoundedIconFromStringAnimated
-import com.mohandass.botforge.ui.components.chat.MessageList
+import com.mohandass.botforge.ui.components.chat.MessageEntry
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +40,9 @@ fun ChatUi(viewModel: AppViewModel) {
         viewModel.topBar.title.value = R.string.app_name
         viewModel.topBar.overrideMenu.value = false
     }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openAliasDialog = remember { mutableStateOf(false) }
     val openSaveChatDialog = remember { mutableStateOf(false) }
@@ -44,6 +53,28 @@ fun ChatUi(viewModel: AppViewModel) {
     val personaAlias by viewModel.persona.personaAlias
     val personaSystemMessage by viewModel.persona.personaSystemMessage
     val isLoading by viewModel.isLoading
+
+    val messagesList by viewModel.chat.activeChat
+    val handleDelete by viewModel.chat.handleDelete
+
+    // Visibility,
+    var visibility by remember { mutableStateOf(true) }
+
+    fun handleClearAllMessages() {
+        visibility = false
+
+        viewModel.viewModelScope.launch {
+            delay(600)
+            viewModel.chat.clearMessages()
+            visibility = true
+        }
+
+        viewModel.chat.handleDelete(false)
+    }
+
+    if (handleDelete) {
+        handleClearAllMessages()
+    }
 
     if (openDeleteDialog.value) {
         AlertDialog(onDismissRequest = { openDeleteDialog.value = false },
@@ -219,7 +250,8 @@ fun ChatUi(viewModel: AppViewModel) {
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
+                    .padding(horizontal = 10.dp),
+                state = listState,
             ) {
                 item {
                     Spacer(modifier = Modifier.height(0.02.dh))
@@ -419,15 +451,56 @@ fun ChatUi(viewModel: AppViewModel) {
                     Spacer(modifier = Modifier.height(0.02.dh))
                 }
 
-                item {
-                    MessageList(
-                        modifier = Modifier
+                itemsIndexed(messagesList) { idx, item ->
+                    MessageEntry(
+                        modifier= Modifier
                             .padding(horizontal = 10.dp),
-                        viewModel = viewModel
+                        message = item,
+                        viewModel = viewModel,
+                        startWithFocus = idx == messagesList.size - 1 && idx != 0,
+                        startVisibility = idx != messagesList.size - 1 && item.text.isEmpty(),
+                        scrollToItem = {
+                            coroutineScope.launch {
+                                Log.v("scrollToItem", "idx: $idx")
+                                listState.animateScrollToItem(idx + 8)
+                            }
+                        }
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
 
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        IconButton(onClick = {
+                            viewModel.chat.autoAddMessage()
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.plus),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                }
+
+                item {
                     Spacer(modifier = Modifier.height(0.2.dh))
                 }
+
+//                item {
+//                    MessageList(
+//                        modifier = Modifier
+//                            .padding(horizontal = 10.dp),
+//                        viewModel = viewModel
+//                    )
+//
+//                    Spacer(modifier = Modifier.height(0.2.dh))
+//                }
             }
         }
     }
