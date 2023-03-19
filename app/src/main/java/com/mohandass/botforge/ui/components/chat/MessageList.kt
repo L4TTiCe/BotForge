@@ -54,7 +54,8 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                         modifier=Modifier,
                         message = item,
                         viewModel = viewModel,
-                        startWithFocus = idx == messagesList.size - 1 && idx != 0
+                        startWithFocus = idx == messagesList.size - 1 && idx != 0,
+                        startVisibility = idx != messagesList.size - 1 && item.text.isEmpty()
                     )
                     Spacer(modifier = modifier.height(12.dp))
                 }

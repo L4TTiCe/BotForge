@@ -2,9 +2,8 @@ package com.mohandass.botforge.ui.persona
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -35,8 +34,6 @@ fun ChatUi(viewModel: AppViewModel) {
         viewModel.topBar.title.value = R.string.app_name
         viewModel.topBar.overrideMenu.value = false
     }
-
-    val scrollState = rememberScrollState()
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openAliasDialog = remember { mutableStateOf(false) }
     val openSaveChatDialog = remember { mutableStateOf(false) }
@@ -181,74 +178,50 @@ fun ChatUi(viewModel: AppViewModel) {
         )
     }
 
-    Column {
-//        Surface(
-//            tonalElevation = 4.dp,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        ) {
-//            Column {
-//                AvatarsBar(
-//                    viewModel = viewModel
-//                )
-//
-//                Spacer(
-//                    modifier = Modifier.height(0.01.dh)
-//                )
-//
-//                LinearProgressIndicator(
-//                    modifier = Modifier
-//                        .alpha(if (isLoading) 0.9f else 0f)
-//                        .fillMaxWidth(),
-//                )
-//            }
-//        }
-
-
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        if (!isLoading) {
-                            viewModel.chat.getChatCompletion(hapticFeedback)
-                        } else {
-                            viewModel.chat.handleInterrupt()
-                        }
-                    },
-                    containerColor =
-                    if (isLoading)
-                        MaterialTheme.colorScheme.errorContainer
-                    else
-                        MaterialTheme.colorScheme.primaryContainer,
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        if (!isLoading) {
-                            Icon(
-                                imageVector = Icons.Filled.Send,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        }
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    if (!isLoading) {
+                        viewModel.chat.getChatCompletion(hapticFeedback)
+                    } else {
+                        viewModel.chat.handleInterrupt()
+                    }
+                },
+                containerColor =
+                if (isLoading)
+                    MaterialTheme.colorScheme.errorContainer
+                else
+                    MaterialTheme.colorScheme.primaryContainer,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    if (!isLoading) {
+                        Icon(
+                            imageVector = Icons.Filled.Send,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                        )
                     }
                 }
-            },
-        )
-        {
-            Surface(
-                tonalElevation = 0.1.dp,
-            ) {
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState)
-                        .padding(horizontal = 10.dp)
-                ) {
+            }
+        },
+    )
+    {
+        Surface(
+            tonalElevation = 0.1.dp,
+        ) {
 
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+            ) {
+                item {
                     Spacer(modifier = Modifier.height(0.02.dh))
 
                     Text(
@@ -264,7 +237,9 @@ fun ChatUi(viewModel: AppViewModel) {
                     )
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     Row {
                         Column {
                             Text(
@@ -294,12 +269,12 @@ fun ChatUi(viewModel: AppViewModel) {
                                 modifier = Modifier.size(36.dp)
                             )
                         }
-
-
                     }
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     OutlinedTextField(
                         value = personaName,
                         onValueChange = { viewModel.persona.updatePersonaName(it) },
@@ -315,7 +290,9 @@ fun ChatUi(viewModel: AppViewModel) {
                     )
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     Text(
                         text = stringResource(id = R.string.system_message),
                         modifier = Modifier.padding(horizontal = 10.dp),
@@ -337,7 +314,9 @@ fun ChatUi(viewModel: AppViewModel) {
                     )
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     Row(horizontalArrangement = Arrangement.SpaceAround) {
                         Button(
                             onClick = { /*TODO*/
@@ -371,7 +350,9 @@ fun ChatUi(viewModel: AppViewModel) {
                             }
                         }
                     }
+                }
 
+                item {
                     if (viewModel.persona.selectedPersona.value != "") {
                         Button(
                             onClick = { viewModel.persona.saveAsNewPersona() },
@@ -381,13 +362,17 @@ fun ChatUi(viewModel: AppViewModel) {
                     }
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     Divider(
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .fillMaxWidth()
                     )
+                }
 
+                item {
                     Row (
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -432,7 +417,9 @@ fun ChatUi(viewModel: AppViewModel) {
                     }
 
                     Spacer(modifier = Modifier.height(0.02.dh))
+                }
 
+                item {
                     MessageList(
                         modifier = Modifier
                             .padding(horizontal = 10.dp),

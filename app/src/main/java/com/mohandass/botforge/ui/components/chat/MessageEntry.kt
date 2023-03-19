@@ -30,7 +30,8 @@ fun MessageEntry(
     modifier: Modifier = Modifier,
     message: Message = Message(),
     viewModel: AppViewModel,
-    startWithFocus: Boolean = false
+    startWithFocus: Boolean = false,
+    startVisibility: Boolean = true
 ) {
     val showMetadata = remember { mutableStateOf(false) }
     val isActive  = remember { mutableStateOf(message.isActive) }
@@ -89,7 +90,7 @@ fun MessageEntry(
     )
 
     // Visibility, used to animate the message entry and exit
-    var visibility by remember { mutableStateOf(false) }
+    var visibility by remember { mutableStateOf(startVisibility) }
 
     LaunchedEffect(Unit) {
         visibility = true
