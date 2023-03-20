@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.auth
+package com.mohandass.botforge.auth.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,17 +18,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
+import com.mohandass.botforge.*
 import com.mohandass.botforge.R
-import com.mohandass.botforge.resources
 import com.mohandass.botforge.auth.ui.viewmodel.SignUpViewModel
 import com.slaviboy.composeunits.dh
 import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) {
+fun SignUpUi(viewModel:AppViewModel, signUpViewModel: SignUpViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,8 +55,8 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         Spacer(modifier = Modifier.size(0.02.dh))
 
         OutlinedTextField(
-            value = viewModel.email,
-            onValueChange = { viewModel.onEmailChange(it) },
+            value = signUpViewModel.email,
+            onValueChange = { signUpViewModel.onEmailChange(it) },
             label = { Text(resources().getString(AppText.email)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
@@ -67,13 +65,13 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         )
         Spacer(modifier = Modifier.size(0.02.dh))
         OutlinedTextField(
-            value = viewModel.password,
-            onValueChange = { viewModel.onPasswordChange(it) },
+            value = signUpViewModel.password,
+            onValueChange = { signUpViewModel.onPasswordChange(it) },
             label = { Text(resources().getString(AppText.password)) },
-            visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (signUpViewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                if (viewModel.passwordVisibility) {
-                    IconButton(onClick = { viewModel.onPasswordVisibilityChange(false) }) {
+                if (signUpViewModel.passwordVisibility) {
+                    IconButton(onClick = { signUpViewModel.onPasswordVisibilityChange(false) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.hide_eye),
                             modifier = Modifier.size(24.dp),
@@ -81,7 +79,7 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
                         )
                     }
                 } else {
-                    IconButton(onClick = { viewModel.onPasswordVisibilityChange(true) }) {
+                    IconButton(onClick = { signUpViewModel.onPasswordVisibilityChange(true) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.show_eye),
                             modifier = Modifier.size(24.dp),
@@ -97,9 +95,9 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         )
         Spacer(modifier = Modifier.size(0.01.dh))
         OutlinedTextField(
-            value = viewModel.confirmPassword,
-            onValueChange = { viewModel.onConfirmPasswordChange(it) },
-            visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            value = signUpViewModel.confirmPassword,
+            onValueChange = { signUpViewModel.onConfirmPasswordChange(it) },
+            visualTransformation = if (signUpViewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             label = { Text(resources().getString(AppText.confirm_password)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
@@ -111,8 +109,8 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
 
         FilledTonalButton(
             onClick = {
-                viewModel.onSignUp {
-                    appState?.navController?.navigate(AppRoutes.Main.route) {
+                signUpViewModel.onSignUp {
+                    viewModel.navController.navigate(AppRoutes.Main.route) {
                         popUpTo(AppRoutes.SignUp.route) { inclusive = true }
                     }
                 }
@@ -127,7 +125,7 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         Spacer(modifier = Modifier.size(0.01.dh))
         TextButton(
             onClick = {
-                appState?.navController?.navigate(AppRoutes.SignIn.route) {
+                viewModel.navController.navigate(AppRoutes.SignIn.route) {
                     popUpTo(AppRoutes.SignUp.route) { inclusive = true }
                 }
             },
@@ -140,9 +138,9 @@ fun SignUpUi(appState: AppState?, viewModel: SignUpViewModel = hiltViewModel()) 
         }
         TextButton(
             onClick = {
-                viewModel.onEmailChange("")
-                viewModel.onPasswordChange("")
-                viewModel.onConfirmPasswordChange("")
+                signUpViewModel.onEmailChange("")
+                signUpViewModel.onPasswordChange("")
+                signUpViewModel.onConfirmPasswordChange("")
             },
             modifier = Modifier
         ) {

@@ -1,11 +1,16 @@
 package com.mohandass.botforge
 
+import android.content.res.Resources
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
@@ -19,8 +24,13 @@ import com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.HistoryViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.PersonaViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.TopBarViewModel
+import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissAction
+import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissLabel
+import com.mohandass.botforge.common.SnackbarMessage.Companion.hasAction
+import com.mohandass.botforge.common.SnackbarMessage.Companion.toMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,6 +45,46 @@ class AppViewModel @Inject constructor(
     preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
 ) : ViewModel() {
+
+    // Snackbar
+    private val snackbarManager: SnackbarManager = SnackbarManager
+
+    private lateinit var snackbarHostState: SnackbarHostState
+    private lateinit var resources: Resources
+
+    fun initSnackbar(snackbarHostState: SnackbarHostState, resources: Resources) {
+        this.resources = resources
+        this.snackbarHostState = snackbarHostState
+
+        viewModelScope.launch {
+            snackbarManager.snackbarMessages.filterNotNull().collect { snackbarMessage ->
+                val text = snackbarMessage.toMessage(resources)
+                val hasDismissAction = snackbarMessage.hasAction()
+                if (hasDismissAction) {
+                    val dismissLabel = snackbarMessage.getDismissLabel(resources)
+                    val dismissAction = snackbarMessage.getDismissAction()
+
+                    val result: SnackbarResult = snackbarHostState.showSnackbar(
+                        message = text,
+                        actionLabel = dismissLabel,
+                        duration = SnackbarDuration.Short,
+                        withDismissAction = true,
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        dismissAction()
+                    }
+                } else {
+                    snackbarHostState.showSnackbar(
+                        text,
+                        duration = SnackbarDuration.Short,
+                    )
+                }
+            }
+        }
+    }
+
+
+
 //    val initialSetupEvent = liveData {
 //        emit(preferencesDataStore.fetchInitialPreferences())
 //    }
@@ -113,8 +163,8 @@ class AppViewModel @Inject constructor(
 
 
     // Navigation
-    private var _navController: NavController? = null
-    val navController: NavController
+    private var _navController: NavHostController? = null
+    val navController: NavHostController
         get() = _navController!!
 
     // NacController in MainUI.kt
@@ -126,7 +176,7 @@ class AppViewModel @Inject constructor(
     val navControllerPersona: NavController
         get() = _navControllerPersona!!
 
-    fun setNavController(navController: NavController) {
+    fun setNavController(navController: NavHostController) {
         logger.logVerbose(TAG, "setNavController()")
         _navController = navController
     }

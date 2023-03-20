@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.auth.ui
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -22,17 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.ui.viewmodel.LandingViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable
-fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: LandingViewModel = hiltViewModel()) {
+fun LandingUi(modifier: Modifier = Modifier, viewModel: AppViewModel,  landingViewModel: LandingViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
-        viewModel.checkAuthentication {
+        landingViewModel.checkAuthentication {
             Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
-            appState?.navController?.navigate(AppRoutes.Main.route)
+            viewModel.navController.navigate(AppRoutes.Main.route)
         }
     }
 
@@ -73,7 +73,7 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
 
         FilledTonalButton (
             onClick = {
-                appState?.navController?.navigate(AppRoutes.SignIn.route)
+                viewModel.navController.navigate(AppRoutes.SignIn.route)
             }
         ) {
             Text(
@@ -84,8 +84,8 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
 
         TextButton(
             onClick = {
-                viewModel.onSkip{
-                    appState?.navController?.navigate(AppRoutes.Main.route)
+                landingViewModel.onSkip{
+                    viewModel.navController.navigate(AppRoutes.Main.route)
                 }
             },
             modifier = Modifier.padding(8.dp),

@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.common.ui
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashUi(appState: AppState?) {
+fun SplashUi(viewModel: AppViewModel) {
     val scale =  remember {
         Animatable(0f)
     }
@@ -35,7 +35,7 @@ fun SplashUi(appState: AppState?) {
         )
 
         delay(1000)
-        appState?.navController?.navigate(AppRoutes.Landing.route) {
+        viewModel.navController.navigate(AppRoutes.Landing.route) {
             popUpTo(AppRoutes.Splash.route) { inclusive = true }
         }
     }

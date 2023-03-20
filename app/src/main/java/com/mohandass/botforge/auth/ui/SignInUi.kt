@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.auth
+package com.mohandass.botforge.auth.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,17 +18,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppState
+import com.mohandass.botforge.*
 import com.mohandass.botforge.R
-import com.mohandass.botforge.resources
 import com.mohandass.botforge.auth.ui.viewmodel.SignInViewModel
 import com.slaviboy.composeunits.dh
 import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel()) {
+fun SignInUi (viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,20 +55,20 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         Spacer(modifier = Modifier.size(0.02.dh))
 
         OutlinedTextField(
-            value = viewModel.email,
-            onValueChange = { viewModel.onEmailChange(it)},
+            value = signInViewModel.email,
+            onValueChange = { signInViewModel.onEmailChange(it)},
             label = { Text(resources().getString(AppText.email)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.size(0.02.dh))
         OutlinedTextField(
-            value = viewModel.password,
-            onValueChange = { viewModel.onPasswordChange(it)},
+            value = signInViewModel.password,
+            onValueChange = { signInViewModel.onPasswordChange(it)},
             label = { Text(resources().getString(AppText.password)) },
-            visualTransformation = if (viewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (signInViewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                if (viewModel.passwordVisibility) {
-                    IconButton(onClick = { viewModel.onPasswordVisibilityChange(false) }) {
+                if (signInViewModel.passwordVisibility) {
+                    IconButton(onClick = { signInViewModel.onPasswordVisibilityChange(false) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.hide_eye),
                             modifier = Modifier.size(24.dp),
@@ -78,7 +76,7 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
                         )
                     }
                 } else {
-                    IconButton(onClick = { viewModel.onPasswordVisibilityChange(true) }) {
+                    IconButton(onClick = { signInViewModel.onPasswordVisibilityChange(true) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.show_eye),
                             modifier = Modifier.size(24.dp),
@@ -94,8 +92,8 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
 
         FilledTonalButton(
             onClick = {
-                viewModel.signIn {
-                    appState?.navController?.navigate(AppRoutes.Main.route) {
+                signInViewModel.signIn {
+                    viewModel.navController.navigate(AppRoutes.Main.route) {
                         popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                     }
                 }
@@ -110,7 +108,7 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         Spacer(modifier = Modifier.size(0.01.dh))
         TextButton(
             onClick = {
-                appState?.navController?.navigate(AppRoutes.SignUp.route) {
+                viewModel.navController.navigate(AppRoutes.SignUp.route) {
                     popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                 }
             },
@@ -123,7 +121,7 @@ fun SignInUi (appState: AppState?, viewModel: SignInViewModel = hiltViewModel())
         }
         TextButton(
             onClick = {
-                viewModel.sendRecoveryEmail()
+                signInViewModel.sendRecoveryEmail()
             },
             modifier = Modifier
         ) {
