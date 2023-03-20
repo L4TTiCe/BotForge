@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components.buttons
+package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable

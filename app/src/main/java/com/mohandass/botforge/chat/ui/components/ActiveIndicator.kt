@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components
+package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

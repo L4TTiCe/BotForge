@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.persona
+package com.mohandass.botforge.chat.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.settings.model.PreferredTheme
-import com.mohandass.botforge.ui.components.AvatarsBar
+import com.mohandass.botforge.chat.ui.components.AvatarsBar
 import com.mohandass.botforge.AppViewModel
 import com.slaviboy.composeunits.dh
 

@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components.chat
+package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.R
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

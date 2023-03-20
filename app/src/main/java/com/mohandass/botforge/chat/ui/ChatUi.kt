@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.persona
+package com.mohandass.botforge.chat.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -19,11 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.ui.components.RoundedIconFromStringAnimated
-import com.mohandass.botforge.ui.components.chat.MessageList
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.MessageList
+import com.mohandass.botforge.chat.ui.components.RoundedIconFromStringAnimated
+import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 

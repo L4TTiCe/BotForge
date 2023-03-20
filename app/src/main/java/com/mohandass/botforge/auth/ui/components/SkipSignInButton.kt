@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components.buttons
+package com.mohandass.botforge.auth.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

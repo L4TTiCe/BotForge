@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui
+package com.mohandass.botforge.common.ui
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -15,11 +15,11 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.common.Constants
-import com.mohandass.botforge.ui.components.TopBar
-import com.mohandass.botforge.ui.persona.PersonaUi
-import com.mohandass.botforge.ui.settings.*
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.ui.PersonaUi
+import com.mohandass.botforge.chat.ui.components.TopBar
+import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.ui.settings.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components
+package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.R
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 

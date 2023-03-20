@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.components.buttons
+package com.mohandass.botforge.chat.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.*
