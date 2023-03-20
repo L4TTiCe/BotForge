@@ -31,8 +31,7 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.ui.*
 import com.mohandass.botforge.ui.auth.SignInUi
 import com.mohandass.botforge.ui.auth.SignUpUi
-import com.mohandass.botforge.ui.theme.BotForgeTheme
-import com.mohandass.botforge.viewmodels.AppViewModel
+import com.mohandass.botforge.common.ui.theme.BotForgeTheme
 import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

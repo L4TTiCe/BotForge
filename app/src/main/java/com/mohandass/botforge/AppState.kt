@@ -1,7 +1,6 @@
 package com.mohandass.botforge
 
 import android.content.res.Resources
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -16,7 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Stable
 class AppState(
     val snackbarHostState: SnackbarHostState,
@@ -52,9 +50,4 @@ class AppState(
             }
         }
     }
-
-    fun navigateTo(route: String) {
-        navController.navigate(route)
-    }
-
 }
