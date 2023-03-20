@@ -3,23 +3,26 @@ package com.mohandass.botforge.ui.settings
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
+import com.mohandass.botforge.model.preferences.PreferredTheme
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.ui.settings.components.SettingsCategory
 import com.mohandass.botforge.ui.settings.components.SettingsItem
@@ -46,6 +49,54 @@ fun SettingsUi(
             }
         }
     }
+
+    var activeTheme = remember {
+        PreferredTheme.AUTO
+    }
+    var useDynamicColor = remember {
+        true
+    }
+
+    var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
+    var navigationBarColor = MaterialTheme.colorScheme.background
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme()
+
+    val userPreferences = viewModel.userPreferences.observeAsState()
+    userPreferences.value?.let {
+        statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
+        navigationBarColor = MaterialTheme.colorScheme.background
+
+        activeTheme = it.preferredTheme
+        useDynamicColor = it.useDynamicColors
+
+
+    }
+
+    DisposableEffect(systemUiController, activeTheme, useDynamicColor) {
+
+        systemUiController.setStatusBarColor(
+            color = statusBarColor,
+            darkIcons = when (activeTheme) {
+                PreferredTheme.AUTO -> useDarkIcons
+                PreferredTheme.LIGHT -> true
+                PreferredTheme.DARK -> false
+            }
+        )
+
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = when (activeTheme) {
+                PreferredTheme.AUTO -> useDarkIcons
+                PreferredTheme.LIGHT -> true
+                PreferredTheme.DARK -> false
+            }
+        )
+
+        onDispose {}
+    }
+
     val context = LocalContext.current
 
     LazyColumn(

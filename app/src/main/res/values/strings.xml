@@ -11,6 +11,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="reset">Reset</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="anonymous_sign_in">Sign In Anonymously</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>

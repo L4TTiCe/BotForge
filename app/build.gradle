@@ -147,7 +147,9 @@ dependencies {
     implementation "com.mikepenz:aboutlibraries-compose:${AboutLibsRelease}"
 
     // Accompanist Navigation Animation
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_navigation"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
 
 
 //    testImplementation 'junit:junit:4.13.2'

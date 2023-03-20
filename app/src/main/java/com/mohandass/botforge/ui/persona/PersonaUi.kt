@@ -1,21 +1,25 @@
 package com.mohandass.botforge.ui.persona
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.model.preferences.PreferredTheme
 import com.mohandass.botforge.ui.components.AvatarsBar
 import com.mohandass.botforge.viewmodels.AppViewModel
 import com.slaviboy.composeunits.dh
@@ -29,6 +33,43 @@ fun PersonaUi(viewModel: AppViewModel) {
 
     LaunchedEffect(key1 = viewModel) {
         viewModel.persona.fetchPersonas()
+    }
+
+    var activeTheme = remember {
+        PreferredTheme.AUTO
+    }
+    val userPreferences = viewModel.userPreferences.observeAsState()
+    userPreferences.value?.let {
+        activeTheme = it.preferredTheme
+    }
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = !isSystemInDarkTheme()
+
+    val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
+    val navigationBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.1.dp)
+
+    DisposableEffect(systemUiController, activeTheme) {
+
+        systemUiController.setStatusBarColor(
+            color = statusBarColor,
+            darkIcons = when (activeTheme) {
+                PreferredTheme.AUTO -> useDarkIcons
+                PreferredTheme.LIGHT -> true
+                PreferredTheme.DARK -> false
+            }
+        )
+
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = when (activeTheme) {
+                PreferredTheme.AUTO -> useDarkIcons
+                PreferredTheme.LIGHT -> true
+                PreferredTheme.DARK -> false
+            }
+        )
+
+        onDispose {}
     }
 
     Column {

@@ -7,20 +7,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.ui.components.buttons.SkipSignInButton
 import com.mohandass.botforge.viewmodels.LandingViewModel
 import com.slaviboy.composeunits.dh
 
@@ -31,6 +34,15 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
             Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
             appState?.navController?.navigate(AppRoutes.Main.route)
         }
+    }
+
+    val systemUiController = rememberSystemUiController()
+    DisposableEffect(systemUiController) {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+        )
+
+        onDispose {}
     }
 
     Column(
@@ -70,11 +82,16 @@ fun LandingUi(modifier: Modifier = Modifier, appState: AppState?, viewModel: Lan
             )
         }
 
-        SkipSignInButton {
-            viewModel.onSkip{
-                appState?.navController?.navigate(AppRoutes.Main.route)
-            }
+        TextButton(
+            onClick = {
+                viewModel.onSkip{
+                    appState?.navController?.navigate(AppRoutes.Main.route)
+                }
+            },
+            modifier = Modifier.padding(8.dp),
+            shape = MaterialTheme.shapes.medium,
+        ) {
+            Text(text = stringResource(id = R.string.anonymous_sign_in),)
         }
-
     }
 }
