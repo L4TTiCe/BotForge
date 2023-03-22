@@ -32,7 +32,9 @@ fun LandingUi(modifier: Modifier = Modifier, viewModel: AppViewModel,  landingVi
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
             Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
-            viewModel.navController.navigate(AppRoutes.Main.route)
+            viewModel.navController.navigate(AppRoutes.Main.route) {
+                popUpTo(AppRoutes.Landing.route) { inclusive = true }
+            }
         }
     }
 
