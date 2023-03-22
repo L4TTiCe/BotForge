@@ -1,4 +1,4 @@
-package com.mohandass.botforge.model.service.implementation
+package com.mohandass.botforge.chat.model.services.implementation
 
 import android.util.Log
 import com.aallam.openai.api.BetaOpenAI
