@@ -1,6 +1,7 @@
 package com.mohandass.botforge.chat.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -40,6 +41,8 @@ fun ChatUi(viewModel: AppViewModel) {
     val openDeleteDialog = remember { mutableStateOf(false) }
     val openAliasDialog = remember { mutableStateOf(false) }
     val openSaveChatDialog = remember { mutableStateOf(false) }
+
+    val expandCustomizePersona = remember { mutableStateOf(false) }
 
     val hapticFeedback = LocalHapticFeedback.current
 
@@ -214,10 +217,11 @@ fun ChatUi(viewModel: AppViewModel) {
                 }
             }
         },
-    )
-    {
+    ) {
         Surface(
             tonalElevation = 0.1.dp,
+            modifier = Modifier
+                .fillMaxSize()
         ) {
 
             LazyColumn(
@@ -226,146 +230,191 @@ fun ChatUi(viewModel: AppViewModel) {
                 state = listState,
             ) {
                 item {
-                    Spacer(modifier = Modifier.height(0.02.dh))
+//                    Spacer(modifier = Modifier.height(0.02.dh))
 
-                    Text(
-                        text = if (personaName != "")
-                            stringResource(
-                                id = R.string.chat_with_persona_name,
-                                personaName
-                            )
-                        else
-                            stringResource(id = R.string.chat),
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-                }
-
-                item {
-                    Row {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.customise_persona),
-                                modifier = Modifier.padding(10.dp),
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-
-                            Text(
-                                text = stringResource(id = R.string.create_persona_message),
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        IconButton(
-                            onClick = { openAliasDialog.value = true },
-                            modifier = Modifier.padding(10.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(
-                                    id = R.drawable.baseline_drive_file_rename_outline_24
-                                ),
-                                contentDescription = null,
-                                modifier = Modifier.size(36.dp)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-                }
-
-                item {
-                    OutlinedTextField(
-                        value = personaName,
-                        onValueChange = { viewModel.persona.updatePersonaName(it) },
-                        label = {
-                            Text(text = stringResource(id = R.string.persona_name))
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next,
-                            keyboardType = KeyboardType.Text),
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-                }
-
-                item {
-                    Text(
-                        text = stringResource(id = R.string.system_message),
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-
-                    OutlinedTextField(
-                        value = personaSystemMessage,
-                        onValueChange = { viewModel.persona.updatePersonaSystemMessage(it) },
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.system_message_hint)
-                            )
-                        },
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp, vertical = 4.dp)
-                            .sizeIn(minHeight = 0.2.dh)
-                            .fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-                }
-
-                item {
-                    Row(horizontalArrangement = Arrangement.SpaceAround) {
-                        Button(
-                            onClick = { /*TODO*/
-                                SnackbarManager.showMessage(R.string.not_implemented)
-                            },
-                            modifier = Modifier.padding(horizontal = 10.dp)) {
-                            Text(text = stringResource(id = R.string.share))
-                        }
-
-                        Button(
-                            onClick = {
-                                viewModel.persona.saveUpdatePersona()
-                            },
-                        ) {
-                            Text(text = stringResource(id = R.string.save))
-                        }
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        if (viewModel.persona.selectedPersona.value != "") {
-                            Button(
-                                onClick = { openDeleteDialog.value = true },
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.error
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = if (personaName != "")
+                                stringResource(
+                                    id = R.string.chat_with_persona_name,
+                                    personaName
                                 )
+                            else
+                                stringResource(id = R.string.chat),
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        if (expandCustomizePersona.value) {
+                            IconButton(
+                                onClick = { expandCustomizePersona.value = false },
+                                modifier = Modifier.padding(10.dp)
                             ) {
-                                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                                Spacer(modifier = Modifier.width(0.01.dw))
-                                Text(text = stringResource(id = R.string.delete))
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.baseline_keyboard_arrow_up_24
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(36.dp)
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = { expandCustomizePersona.value = true },
+                                modifier = Modifier.padding(10.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(
+                                        id = R.drawable.baseline_keyboard_arrow_down_24
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(36.dp)
+                                )
                             }
                         }
                     }
+
+//                    Spacer(modifier = Modifier.height(0.02.dh))
                 }
 
                 item {
-                    if (viewModel.persona.selectedPersona.value != "") {
-                        Button(
-                            onClick = { viewModel.persona.saveAsNewPersona() },
-                            modifier = Modifier.padding(horizontal = 10.dp)) {
-                            Text(text = stringResource(id = R.string.make_copy))
+                    AnimatedVisibility(
+                        visible = expandCustomizePersona.value,
+                        enter = slideInVertically {
+                            -it - 150
+                        } + expandVertically(
+                            expandFrom = Alignment.Top
+                        ) + fadeIn(
+                            initialAlpha = 0.3f
+                        ),
+                        exit = slideOutVertically{
+                            -it - 150
+                        } + shrinkVertically() + fadeOut(
+                            targetAlpha = 0f
+                        )
+                    ) {
+                        Column {
+                            Row {
+                                Column {
+                                    Text(
+                                        text = stringResource(id = R.string.customise_persona),
+                                        modifier = Modifier.padding(10.dp),
+                                        style = MaterialTheme.typography.headlineSmall
+                                    )
+
+                                    Text(
+                                        text = stringResource(id = R.string.create_persona_message),
+                                        modifier = Modifier.padding(horizontal = 10.dp),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                IconButton(
+                                    onClick = { openAliasDialog.value = true },
+                                    modifier = Modifier.padding(10.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(
+                                            id = R.drawable.baseline_drive_file_rename_outline_24
+                                        ),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(36.dp)
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(0.02.dh))
+
+                            OutlinedTextField(
+                                value = personaName,
+                                onValueChange = { viewModel.persona.updatePersonaName(it) },
+                                label = {
+                                    Text(text = stringResource(id = R.string.persona_name))
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Next,
+                                    keyboardType = KeyboardType.Text),
+                                modifier = Modifier
+                                    .padding(horizontal = 10.dp)
+                                    .fillMaxWidth()
+                            )
+
+                            Spacer(modifier = Modifier.height(0.02.dh))
+
+                            Text(
+                                text = stringResource(id = R.string.system_message),
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+
+                            OutlinedTextField(
+                                value = personaSystemMessage,
+                                onValueChange = { viewModel.persona.updatePersonaSystemMessage(it) },
+                                placeholder = {
+                                    Text(
+                                        text = stringResource(id = R.string.system_message_hint)
+                                    )
+                                },
+                                modifier = Modifier
+                                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                                    .sizeIn(minHeight = 0.2.dh)
+                                    .fillMaxWidth()
+                            )
+
+                            Spacer(modifier = Modifier.height(0.02.dh))
+
+                            Row(horizontalArrangement = Arrangement.SpaceAround) {
+                                Button(
+                                    onClick = { /*TODO*/
+                                        SnackbarManager.showMessage(R.string.not_implemented)
+                                    },
+                                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                                    Text(text = stringResource(id = R.string.share))
+                                }
+
+                                Button(
+                                    onClick = {
+                                        viewModel.persona.saveUpdatePersona()
+                                    },
+                                ) {
+                                    Text(text = stringResource(id = R.string.save))
+                                }
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                if (viewModel.persona.selectedPersona.value != "") {
+                                    Button(
+                                        onClick = { openDeleteDialog.value = true },
+                                        modifier = Modifier.padding(horizontal = 10.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = MaterialTheme.colorScheme.error
+                                        )
+                                    ) {
+                                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                                        Spacer(modifier = Modifier.width(0.01.dw))
+                                        Text(text = stringResource(id = R.string.delete))
+                                    }
+                                }
+                            }
+
+                            if (viewModel.persona.selectedPersona.value != "") {
+                                Button(
+                                    onClick = { viewModel.persona.saveAsNewPersona() },
+                                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                                    Text(text = stringResource(id = R.string.make_copy))
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(0.02.dh))
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
                 }
 
                 item {
