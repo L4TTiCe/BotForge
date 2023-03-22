@@ -13,15 +13,16 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.settings.model.PreferredTheme
-import com.mohandass.botforge.chat.ui.components.AvatarsBar
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.ui.components.AvatarsBar
+import com.mohandass.botforge.settings.model.PreferredTheme
 import com.slaviboy.composeunits.dh
 
 @Composable
@@ -47,7 +48,7 @@ fun PersonaUi(viewModel: AppViewModel) {
     val useDarkIcons = !isSystemInDarkTheme()
 
     val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
-    val navigationBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.1.dp)
+//    val navigationBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(0.1.dp)
 
     DisposableEffect(systemUiController, activeTheme) {
 
@@ -61,7 +62,7 @@ fun PersonaUi(viewModel: AppViewModel) {
         )
 
         systemUiController.setNavigationBarColor(
-            color = navigationBarColor,
+            color = Color.Transparent,
             darkIcons = when (activeTheme) {
                 PreferredTheme.AUTO -> useDarkIcons
                 PreferredTheme.LIGHT -> true

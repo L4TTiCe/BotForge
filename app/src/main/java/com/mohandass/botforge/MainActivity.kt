@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                     ) {
-                        Navigation(modifier = Modifier.padding(it), viewModel = viewModel)
+                        Navigation(modifier = Modifier.padding(top = it.calculateTopPadding()), viewModel = viewModel)
                     }
                 }
             }
