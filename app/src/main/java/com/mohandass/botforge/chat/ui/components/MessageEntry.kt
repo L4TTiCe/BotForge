@@ -1,8 +1,6 @@
 package com.mohandass.botforge.chat.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -151,10 +149,14 @@ fun MessageEntry(
                 }]
             )
 
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom
+            ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.88f)
+                        .weight(0.88f)
+//                        .fillMaxWidth(0.88f)
                 ) {
                     TextField(
                         modifier = modifier
@@ -188,7 +190,6 @@ fun MessageEntry(
                             }
                         },
                     )
-
                     AnimatedVisibility(visible = showMetadata.value) {
                         MessageMetadata(modifier = modifier, message = message)
                     }
@@ -196,9 +197,12 @@ fun MessageEntry(
 
                 Column (
                     modifier = modifier
-                        .fillMaxSize(),
+                        .weight(0.12f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    // Make all elements stick to the bottom
+                    Spacer(modifier = Modifier.weight(1f))
+
                     // Delete button
                     IconButton(onClick = {
                         handleDelete()
@@ -247,8 +251,29 @@ fun MessageEntry(
                         }
                     }
 
-                    AnimatedVisibility(visible = showAllIcons.value) {
+                    AnimatedVisibility(
+                        visible = showAllIcons.value,
+                        enter = slideInVertically(
+                            initialOffsetY = { it }
+                        ) + expandVertically(),
+                        exit = slideOutVertically(
+                            targetOffsetY = { -it + 120 }
+                        ) + shrinkVertically()
+                    ) {
                         Column {
+                            if (showAllIcons.value) {
+                                IconButton(onClick = {
+                                    showAllIcons.value = false
+                                    showMetadata.value = false
+                                }) {
+                                    Icon(
+                                        modifier = Modifier.size(18.dp),
+                                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+
                             if (message.text.isNotEmpty()) {
                                 IconButton(onClick = {
                                     isActive.value = !isActive.value
@@ -270,19 +295,6 @@ fun MessageEntry(
                                     Icon(
                                         modifier = Modifier.size(18.dp),
                                         imageVector = Icons.Default.Info,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-
-                            if (showAllIcons.value) {
-                                IconButton(onClick = {
-                                    showAllIcons.value = false
-                                    showMetadata.value = false
-                                }) {
-                                    Icon(
-                                        modifier = Modifier.size(18.dp),
-                                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
                                         contentDescription = null
                                     )
                                 }

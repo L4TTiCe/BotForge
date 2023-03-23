@@ -29,6 +29,7 @@ import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.settings.ui.viewmodel.SettingsViewModel
+import com.slaviboy.composeunits.dh
 
 @Composable
 fun SettingsUi(
@@ -199,6 +200,9 @@ fun SettingsUi(
                     viewModel.navigateTo(AppRoutes.MainRoutes.AppInformation.route)
                 })
             )
+        }
+        item {
+            Spacer(modifier = Modifier.height(0.1.dh))
         }
     }
 }

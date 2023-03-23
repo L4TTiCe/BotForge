@@ -10,7 +10,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Message
-import com.slaviboy.composeunits.dw
 
 @Composable
 fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
@@ -92,7 +91,9 @@ fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
 //               }
             }
 
-            Spacer(modifier = modifier.width(0.2.dw))
+            Spacer(modifier = modifier.width(10.dp))
         }
+
+        Spacer(modifier = modifier.height(10.dp))
     }
 }

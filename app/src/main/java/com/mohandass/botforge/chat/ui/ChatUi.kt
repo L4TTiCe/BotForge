@@ -475,7 +475,7 @@ fun ChatUi(viewModel: AppViewModel) {
                 item {
                     MessageList(
                         modifier = Modifier
-                            .padding(horizontal = 10.dp),
+                            .padding(start = 10.dp),
                         viewModel = viewModel
                     )
 
