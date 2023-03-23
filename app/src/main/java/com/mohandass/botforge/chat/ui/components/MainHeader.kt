@@ -169,7 +169,7 @@ fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel)
                 confirmButton = {
                     TextButton(onClick = {
                         viewModel.persona.deleteAllPersonas()
-                        viewModel.clearSelection()
+                        viewModel.persona.clearSelection()
                         openDeleteConfirmationDialog.value = false
                     }) {
                         Text(

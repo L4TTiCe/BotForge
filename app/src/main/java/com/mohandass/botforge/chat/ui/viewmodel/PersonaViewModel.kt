@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.SnackbarManager
@@ -12,6 +13,7 @@ import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.model.ChatType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,13 +44,50 @@ class PersonaViewModel @Inject constructor(
     private val _state = mutableStateOf(State())
 
     class State {
+        var chatType: ChatType = ChatType.CREATE
         var personaName: String = ""
         var personaSystemMessage: String = ""
         var personaAlias: String = ""
         var personaSelected: String = ""
     }
 
+    private val _chatType = mutableStateOf(ChatType.CREATE)
+    val chatType: MutableState<ChatType>
+        get() = _chatType
+
+    private fun setChatType(chatType: ChatType) {
+        _chatType.value = chatType
+        FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
+    }
+
+    fun showHistory() {
+        logger.logVerbose(TAG, "showHistory()")
+        saveState()
+        clearSelection()
+        setChatType(ChatType.HISTORY)
+        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
+        }
+    }
+
+    fun showCreate() {
+        logger.logVerbose(TAG, "showCreate()")
+        clearSelection()
+        setChatType(ChatType.CREATE)
+
+        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+        }
+    }
+
+    fun showBrowse() {
+        logger.logVerbose(TAG, "showBrowse()")
+        clearSelection()
+        setChatType(ChatType.BROWSE)
+    }
+
     fun saveState() {
+        _state.value.chatType = chatType.value
         _state.value.personaName = personaName.value
         _state.value.personaSystemMessage = personaSystemMessage.value
         _state.value.personaAlias = personaAlias.value
@@ -56,6 +95,7 @@ class PersonaViewModel @Inject constructor(
     }
 
     fun restoreState() {
+        chatType.value = _state.value.chatType
         personaName.value = _state.value.personaName
         personaSystemMessage.value = _state.value.personaSystemMessage
         personaAlias.value = _state.value.personaAlias
@@ -81,7 +121,7 @@ class PersonaViewModel @Inject constructor(
             personaSystemMessage.value = persona.systemMessage
             _personaSelected.value = persona.uuid
 
-            viewModel.chatType.value = AppViewModel.ChatType.CHAT
+            chatType.value = ChatType.CHAT
 
             if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
@@ -172,7 +212,7 @@ class PersonaViewModel @Inject constructor(
             )
             if (isSuccess) {
                 _personaSelected.value = uuid
-                viewModel.chatType.value = AppViewModel.ChatType.CHAT
+                chatType.value = ChatType.CHAT
             }
             return
         }

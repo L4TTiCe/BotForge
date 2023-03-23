@@ -71,7 +71,7 @@ fun HistoryUi(viewModel: AppViewModel) {
     }
 
     BackHandler {
-        viewModel.restoreState()
+        viewModel.persona.restoreState()
         viewModel.navControllerPersona.popBackStack()
     }
 

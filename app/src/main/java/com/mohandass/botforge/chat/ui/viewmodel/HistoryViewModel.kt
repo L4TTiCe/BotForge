@@ -59,7 +59,7 @@ class HistoryViewModel(
             withContext(Dispatchers.Main) {
                 if (chat?.personaUuid != null) {
                     if (isPersonaDeleted(chat.personaUuid)) {
-                        viewModel.clearSelection(create = false)
+                        viewModel.persona.clearSelection()
                         viewModel.persona.updatePersonaSystemMessage(messages.first().text)
                         viewModel.chat.setMessages(messages.subList(1, messages.size))
                     } else {
@@ -68,7 +68,7 @@ class HistoryViewModel(
                         viewModel.persona.selectPersona(chat.personaUuid)
                     }
                 } else {
-                    viewModel.clearSelection(create = false)
+                    viewModel.persona.clearSelection()
                 }
                 onSuccess()
             }

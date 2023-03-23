@@ -11,23 +11,22 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.chat.model.services.OpenAiService
-import com.mohandass.botforge.settings.model.service.PreferencesDataStore
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.HistoryViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.PersonaViewModel
 import com.mohandass.botforge.chat.ui.viewmodel.TopBarViewModel
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissAction
 import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissLabel
 import com.mohandass.botforge.common.SnackbarMessage.Companion.hasAction
 import com.mohandass.botforge.common.SnackbarMessage.Companion.toMessage
+import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.settings.model.UserPreferences
+import com.mohandass.botforge.settings.model.service.PreferencesDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterNotNull
@@ -128,40 +127,6 @@ class AppViewModel @Inject constructor(
         _isLoading.value = isLoading
     }
 
-    enum class ChatType {
-        CREATE,
-        BROWSE,
-        CHAT,
-        HISTORY
-    }
-
-    private val _chatType = mutableStateOf(ChatType.CREATE)
-    val chatType: MutableState<ChatType>
-        get() = _chatType
-
-    private fun setChatType(chatType: ChatType) {
-        _chatType.value = chatType
-        FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
-    }
-
-    class State {
-        var chatType: ChatType = ChatType.CREATE
-    }
-
-    private val _state = mutableStateOf(State())
-
-    fun saveState() {
-        logger.log(TAG, "saveState()")
-        persona.saveState()
-        _state.value.chatType = _chatType.value
-    }
-
-    fun restoreState() {
-        logger.log(TAG, "restoreState()")
-        persona.restoreState()
-        _chatType.value = _state.value.chatType
-    }
-
 
     // Navigation
     private var _navController: NavHostController? = null
@@ -196,32 +161,6 @@ class AppViewModel @Inject constructor(
         navControllerMain.navigate(route)
     }
 
-    fun showHistory() {
-        logger.logVerbose(TAG, "showHistory()")
-        saveState()
-        clearSelection(create = false)
-        setChatType(ChatType.HISTORY)
-        if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
-            navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
-        }
-    }
-
-    fun showCreate() {
-        logger.logVerbose(TAG, "showCreate()")
-        clearSelection(create = true)
-        setChatType(ChatType.CREATE)
-
-        if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
-            navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
-        }
-    }
-
-    fun showBrowse() {
-        logger.logVerbose(TAG, "showBrowse()")
-        clearSelection(create = false)
-        setChatType(ChatType.BROWSE)
-    }
-
     // Chat
 
     private val _chatViewModel = ChatViewModel(
@@ -240,15 +179,6 @@ class AppViewModel @Inject constructor(
     )
     val persona: PersonaViewModel
         get() = _personaViewModel
-
-    fun clearSelection(create:Boolean = true) {
-        logger.log(TAG, "newPersona()")
-        persona.clearSelection()
-
-        if (create) {
-            chatType.value = ChatType.CREATE
-        }
-    }
 
     // Account
     fun signOut(onSuccess: () -> Unit) {

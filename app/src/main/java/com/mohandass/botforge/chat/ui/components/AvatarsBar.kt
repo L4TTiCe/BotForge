@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.R.string as AppText
 
@@ -27,7 +28,7 @@ fun AvatarsBar(
 ) {
 //    val personas by viewModel.personas.observeAsState(listOf())
     val personas = viewModel.persona.personas
-    val chatType by viewModel.chatType
+    val chatType by viewModel.persona.chatType
 
     LazyRow(modifier = modifier) {
         item {
@@ -41,11 +42,11 @@ fun AvatarsBar(
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
-                    isAnimated = chatType == AppViewModel.ChatType.CREATE,
-                    onClick = { viewModel.showCreate() }
+                    isAnimated = chatType == ChatType.CREATE,
+                    onClick = { viewModel.persona.showCreate() }
                 )
 
-                if (chatType == AppViewModel.ChatType.CREATE) {
+                if (chatType == ChatType.CREATE) {
                     ActiveIndicator()
                 }
             }
@@ -60,11 +61,11 @@ fun AvatarsBar(
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
-                    isAnimated = chatType == AppViewModel.ChatType.BROWSE,
-                    onClick = { viewModel.showBrowse() }
+                    isAnimated = chatType == ChatType.BROWSE,
+                    onClick = { viewModel.persona.showBrowse() }
                 )
 
-                if (chatType == AppViewModel.ChatType.BROWSE) {
+                if (chatType == ChatType.BROWSE) {
                     ActiveIndicator()
                 }
             }
@@ -142,7 +143,7 @@ fun AvatarsBar(
                 Column(
                     modifier = modifier.size(90.dp)
                         .clip(CircleShape)
-                        .clickable { viewModel.showHistory() }.padding(6.dp),
+                        .clickable { viewModel.persona.showHistory() }.padding(6.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -160,7 +161,7 @@ fun AvatarsBar(
                     )
                 }
 
-                if (chatType == AppViewModel.ChatType.HISTORY) {
+                if (chatType == ChatType.HISTORY) {
                     ActiveIndicator()
                 } else {
                     ActiveIndicator(modifier = Modifier.alpha(0f))
