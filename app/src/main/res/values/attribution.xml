@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="community_attr" type="string">
+        <a href="https://www.flaticon.com/free-icons/population" title="population icons">Population icons created by Uniconlabs - Flaticon</a>
+    </item>
+    <item name="empty_box_attr" type="string">
+        <a href="https://www.flaticon.com/free-icons/empty" title="empty icons">Empty icons created by Freepik - Flaticon</a>
+    </item>
+    <item name="swap_attr" type="string">
+        <a href="https://www.flaticon.com/free-icons/swap" title="swap icons">Swap icons created by bqlqn - Flaticon</a>
+    </item>
+</resources>

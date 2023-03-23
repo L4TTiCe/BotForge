@@ -37,6 +37,7 @@ fun AvatarsBar(
             Column {
                 TintedIconButton(
                     icon = R.drawable.plus,
+                    iconTint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
@@ -48,9 +49,32 @@ fun AvatarsBar(
                     ActiveIndicator()
                 }
             }
-            VerticalDivider()
-
         }
+
+        item {
+            Column {
+                TintedIconButton(
+                    icon = R.drawable.community,
+                    iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    scale = 0.8f,
+                    modifier = Modifier
+                        .size(90.dp)
+                        .padding(6.dp),
+                    isAnimated = chatType == AppViewModel.ChatType.BROWSE,
+                    onClick = { viewModel.showBrowse() }
+                )
+
+                if (chatType == AppViewModel.ChatType.BROWSE) {
+                    ActiveIndicator()
+                }
+            }
+        }
+
+
+        item {
+            VerticalDivider()
+        }
+
         items(personas.size) { index ->
 
             Column(

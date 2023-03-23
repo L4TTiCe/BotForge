@@ -130,6 +130,7 @@ class AppViewModel @Inject constructor(
 
     enum class ChatType {
         CREATE,
+        BROWSE,
         CHAT,
         HISTORY
     }
@@ -213,6 +214,12 @@ class AppViewModel @Inject constructor(
         if (navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
             navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
+    }
+
+    fun showBrowse() {
+        logger.logVerbose(TAG, "showBrowse()")
+        clearSelection(create = false)
+        setChatType(ChatType.BROWSE)
     }
 
     // Chat
