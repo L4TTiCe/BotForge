@@ -150,6 +150,10 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
+    // Compose Markdown
+    implementation "com.github.jeziellago:compose-markdown:$compose_markdown_version"
+    implementation("io.coil-kt:coil-compose:$coil_version")
+
 
 
 //    testImplementation 'junit:junit:4.13.2'

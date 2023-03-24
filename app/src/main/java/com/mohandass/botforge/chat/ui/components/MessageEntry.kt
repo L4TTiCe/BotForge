@@ -1,6 +1,7 @@
 package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -12,12 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
+import com.mohandass.botforge.common.Utils
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -40,6 +45,69 @@ fun MessageEntry(
     var role by remember { mutableStateOf(message.role) }
 
     val messageIsFocussed by viewModel.chat.isMessageInFocus
+
+    val showMarkdownDialog = remember { mutableStateOf(false) }
+    val showAsMarkdown = remember { mutableStateOf(true) }
+
+    val cardColors =  when (role) {
+        Role.USER -> CardDefaults.cardColors()
+        Role.BOT -> CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+        Role.SYSTEM -> CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+        else -> {
+            throw Exception("Invalid role")
+        }
+    }
+
+    if (showMarkdownDialog.value) {
+        AlertDialog(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            properties = DialogProperties(usePlatformDefaultWidth = false),
+            onDismissRequest = {
+                showMarkdownDialog.value = false
+            },
+            title = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.size(18.dp),
+                        painter = painterResource(id = R.drawable.baseline_auto_awesome_24),
+                        contentDescription = null
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(text = stringResource(R.string.markdown))
+                }
+            },
+            text = {
+                MarkdownText(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    markdown = messageContent
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showMarkdownDialog.value = false
+                    },
+                    content = {
+                        Text(text = stringResource(R.string.dismiss))
+                    }
+                )
+            }
+        )
+    }
 
     LaunchedEffect(Unit) {
         delay(200)
@@ -149,6 +217,40 @@ fun MessageEntry(
                 }]
             )
 
+            if (Utils.containsMarkdown(messageContent)) {
+                Card (
+                    modifier = Modifier
+                        .fillMaxWidth(0.88f)
+                        .padding(vertical = 8.dp)
+                        .clickable {
+                            showAsMarkdown.value = !showAsMarkdown.value
+                        },
+                    colors = cardColors,
+                    shape = MaterialTheme.shapes.small,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (showAsMarkdown.value) {
+                            Text(text =  stringResource(id = R.string.markdown_default))
+                        } else {
+                            Text(text = stringResource(id = R.string.markdown_switch))
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            painter = painterResource(id = R.drawable.baseline_auto_awesome_24),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom
@@ -156,40 +258,63 @@ fun MessageEntry(
                 Column(
                     modifier = Modifier
                         .weight(0.88f)
-//                        .fillMaxWidth(0.88f)
                 ) {
-                    TextField(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                            .sizeIn(minHeight = 100.dp),
-                        value = messageContent,
-                        onValueChange = {
-                            messageContent = it
-                            updateMessage()
-                        },
-                        enabled = isActive.value,
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                role = Role.values()[(role.ordinal + 1) % 3]
+                    if (Utils.containsMarkdown(messageContent) && showAsMarkdown.value) {
+                        Card(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            colors = cardColors,
+                            shape = MaterialTheme.shapes.small,
+                        ) {
+                            MarkdownText(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                color = when (role) {
+                                    Role.USER -> MaterialTheme.colorScheme.onBackground
+                                    Role.BOT -> MaterialTheme.colorScheme.onTertiaryContainer
+                                    Role.SYSTEM -> MaterialTheme.colorScheme.onSecondaryContainer
+                                    else -> {
+                                        throw Exception("Invalid role")
+                                    }
+                                },
+                                markdown = messageContent
+                            )
+                        }
+                    } else {
+                        TextField(
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester)
+                                .sizeIn(minHeight = 100.dp),
+                            value = messageContent,
+                            onValueChange = {
+                                messageContent = it
                                 updateMessage()
-                            }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.swap),
-                                    modifier = Modifier.size(18.dp),
-                                    contentDescription = null,
-                                )
-                            }
-                        },
-                        colors = when (role) {
-                            Role.USER -> TextFieldDefaults.textFieldColors()
-                            Role.BOT -> botTextFieldColors
-                            Role.SYSTEM -> systemTextFieldColors
-                            else -> {
-                                throw Exception("Invalid role")
-                            }
-                        },
-                    )
+                            },
+                            enabled = isActive.value,
+                            trailingIcon = {
+                                IconButton(onClick = {
+                                    role = Role.values()[(role.ordinal + 1) % 3]
+                                    updateMessage()
+                                }) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.swap),
+                                        modifier = Modifier.size(18.dp),
+                                        contentDescription = null,
+                                    )
+                                }
+                            },
+                            colors = when (role) {
+                                Role.USER -> TextFieldDefaults.textFieldColors()
+                                Role.BOT -> botTextFieldColors
+                                Role.SYSTEM -> systemTextFieldColors
+                                else -> {
+                                    throw Exception("Invalid role")
+                                }
+                            },
+                        )
+                    }
                     AnimatedVisibility(visible = showMetadata.value) {
                         MessageMetadata(modifier = modifier, message = message)
                     }
@@ -261,17 +386,25 @@ fun MessageEntry(
                         ) + shrinkVertically()
                     ) {
                         Column {
-                            if (showAllIcons.value) {
-                                IconButton(onClick = {
-                                    showAllIcons.value = false
-                                    showMetadata.value = false
-                                }) {
-                                    Icon(
-                                        modifier = Modifier.size(18.dp),
-                                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                                        contentDescription = null
-                                    )
-                                }
+                            IconButton(onClick = {
+                                showMarkdownDialog.value = true
+                            }) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = R.drawable.baseline_auto_awesome_24),
+                                    contentDescription = null
+                                )
+                            }
+
+                            IconButton(onClick = {
+                                showAllIcons.value = false
+                                showMetadata.value = false
+                            }) {
+                                Icon(
+                                    modifier = Modifier.size(18.dp),
+                                    painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
+                                    contentDescription = null
+                                )
                             }
 
                             if (message.text.isNotEmpty()) {

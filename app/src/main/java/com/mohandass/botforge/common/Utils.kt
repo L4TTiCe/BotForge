@@ -47,9 +47,14 @@ class Utils {
             return Throwable("")
         }
 
+        fun containsMarkdown(string: String): Boolean {
+            return markdownRegex.containsMatchIn(string)
+        }
+
         private const val TAG = "Utils"
         private const val INTERRUPT_ERROR_MESSAGE = "com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel.interruptRequest"
         const val INVALID_API_KEY_ERROR_MESSAGE = "invalid_api_key"
         const val INTERRUPTED_ERROR_MESSAGE = "interrupted"
+        private val markdownRegex = Regex("""(^#+\s.+|[*_].+?[*_]|!\[.+?\]\(.+?\)|\[.+?\]\(.+?\)|(```|~~~).+?(```|~~~)|`[^`]+`|^\s{4}.+|^\s*\*|\d+\.)|^\s*\|(.+\|)+\s*$""", RegexOption.MULTILINE)
     }
 }
