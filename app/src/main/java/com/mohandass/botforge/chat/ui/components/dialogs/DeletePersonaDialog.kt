@@ -11,10 +11,10 @@ import com.mohandass.botforge.R
 
 @Composable
 fun DeletePersonaDialog(viewModel: AppViewModel) {
-    val openDeleteDialog by viewModel.chat.openDeleteDialog
+    val openDeleteDialog by viewModel.persona.openDeleteDialog
 
     if (openDeleteDialog) {
-        AlertDialog(onDismissRequest = { viewModel.chat.updateDeletePersonaDialogState(false) },
+        AlertDialog(onDismissRequest = { viewModel.persona.updateDeletePersonaDialogState(false) },
             title = {
                 Text(text = stringResource(id = R.string.delete_persona))
             },
@@ -24,14 +24,14 @@ fun DeletePersonaDialog(viewModel: AppViewModel) {
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.persona.deletePersona()
-                    viewModel.chat.updateDeletePersonaDialogState(false)
+                    viewModel.persona.updateDeletePersonaDialogState(false)
                 }) {
                     Text(text = stringResource(id = R.string.delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = {
-                    viewModel.chat.updateDeletePersonaDialogState(false)
+                    viewModel.persona.updateDeletePersonaDialogState(false)
                 }) {
                     Text(text = stringResource(id = R.string.cancel))
                 }

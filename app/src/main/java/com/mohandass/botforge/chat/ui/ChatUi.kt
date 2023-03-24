@@ -40,7 +40,7 @@ fun ChatUi(viewModel: AppViewModel) {
     }
     val listState = rememberLazyListState()
 
-    val expandCustomizePersona by viewModel.chat.expandCustomizePersona
+    val expandCustomizePersona by viewModel.persona.expandCustomizePersona
 
     val hapticFeedback = LocalHapticFeedback.current
 
@@ -123,7 +123,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         if (expandCustomizePersona) {
                             IconButton(
                                 onClick = {
-                                    viewModel.chat.updateExpandCustomizePersona(false)
+                                    viewModel.persona.updateExpandCustomizePersona(false)
                                 },
                                 modifier = Modifier.padding(10.dp)
                             ) {
@@ -138,7 +138,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         } else {
                             IconButton(
                                 onClick = {
-                                    viewModel.chat.updateExpandCustomizePersona(true)
+                                    viewModel.persona.updateExpandCustomizePersona(true)
                                 },
                                 modifier = Modifier.padding(10.dp)
                             ) {
@@ -268,7 +268,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                 if (viewModel.persona.selectedPersona.value != "") {
                                     Button(
                                         onClick = {
-                                            viewModel.chat.updateDeletePersonaDialogState(true)
+                                            viewModel.persona.updateDeletePersonaDialogState(true)
                                         },
                                         modifier = Modifier.padding(horizontal = 10.dp),
                                         colors = ButtonDefaults.buttonColors(

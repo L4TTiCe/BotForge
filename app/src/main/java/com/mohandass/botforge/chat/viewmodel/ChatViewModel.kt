@@ -34,13 +34,6 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Dialog State
-    private val _openDeletePersonaDialog = mutableStateOf(false)
-    val openDeleteDialog: State<Boolean> = _openDeletePersonaDialog
-
-    fun updateDeletePersonaDialogState(state: Boolean) {
-        _openDeletePersonaDialog.value = state
-    }
-
     private val _openAliasDialog = mutableStateOf(false)
     val openAliasDialog: State<Boolean> = _openAliasDialog
 
@@ -53,13 +46,6 @@ class ChatViewModel @Inject constructor(
 
     fun updateSaveChatDialogState(state: Boolean) {
         _openSaveChatDialog.value = state
-    }
-
-    private val _expandCustomizePersona = mutableStateOf(false)
-    val expandCustomizePersona: State<Boolean> = _expandCustomizePersona
-
-    fun updateExpandCustomizePersona(state: Boolean) {
-        _expandCustomizePersona.value = state
     }
 
     private val _requestInProgress = mutableStateOf(false)

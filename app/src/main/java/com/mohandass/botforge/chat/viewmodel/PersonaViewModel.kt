@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.service.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,6 +41,20 @@ class PersonaViewModel @Inject constructor(
 
     private val _personaSelected = mutableStateOf("")
     val selectedPersona: MutableState<String> = _personaSelected
+
+    private val _openDeletePersonaDialog = mutableStateOf(false)
+    val openDeleteDialog: androidx.compose.runtime.State<Boolean> = _openDeletePersonaDialog
+
+    fun updateDeletePersonaDialogState(state: Boolean) {
+        _openDeletePersonaDialog.value = state
+    }
+
+    private val _expandCustomizePersona = mutableStateOf(false)
+    val expandCustomizePersona: androidx.compose.runtime.State<Boolean> = _expandCustomizePersona
+
+    fun updateExpandCustomizePersona(state: Boolean) {
+        _expandCustomizePersona.value = state
+    }
 
     private val _state = mutableStateOf(State())
 
@@ -75,6 +89,7 @@ class PersonaViewModel @Inject constructor(
         logger.logVerbose(TAG, "showCreate()")
         clearSelection()
         setChatType(ChatType.CREATE)
+        updateExpandCustomizePersona(true)
 
         if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
             viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
@@ -123,6 +138,7 @@ class PersonaViewModel @Inject constructor(
             _personaSelected.value = persona.uuid
 
             chatType.value = ChatType.CHAT
+            updateExpandCustomizePersona(false)
 
             if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
@@ -246,7 +262,7 @@ class PersonaViewModel @Inject constructor(
                     fetchPersonas()
                 }
             }
-            clearSelection()
+            showCreate()
         } else {
             SnackbarManager.showMessage(R.string.generic_error)
         }
