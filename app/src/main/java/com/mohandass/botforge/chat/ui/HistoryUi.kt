@@ -16,52 +16,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.dialogs.DeleteHistoryDialog
+import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import kotlinx.coroutines.delay
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.*
 
 @Composable
 fun HistoryUi(viewModel: AppViewModel) {
-    val openDeleteDialog = remember { mutableStateOf(false) }
 
-    if (openDeleteDialog.value) {
-        AlertDialog(
-            onDismissRequest = { openDeleteDialog.value = false },
-            title = {
-                Text(text = stringResource(id = R.string.delete_all_bookmarked))
-            },
-            text = {
-                Text(text = stringResource(id = R.string.delete_all_bookmarked_message))
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.history.deleteAllChats()
-                    openDeleteDialog.value = false
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.delete),
-                        color = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    openDeleteDialog.value = false
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.cancel),
-                        color = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                }
-            },
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-        )
-    }
+    DeleteHistoryDialog(viewModel)
 
     val chats = viewModel.history.chats
     val personas = viewModel.persona.personas
@@ -104,7 +71,9 @@ fun HistoryUi(viewModel: AppViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { openDeleteDialog.value = true }) {
+                IconButton(onClick = {
+                    viewModel.history.updateDeleteDialogState(true)
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_clear_all_24),
                         contentDescription = "Delete",

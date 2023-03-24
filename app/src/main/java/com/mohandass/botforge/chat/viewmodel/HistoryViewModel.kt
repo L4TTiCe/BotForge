@@ -1,16 +1,18 @@
 package com.mohandass.botforge.chat.viewmodel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.service.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,6 +24,13 @@ class HistoryViewModel(
 ): ViewModel() {
     private val _chats = mutableStateListOf<Chat>()
     val chats = _chats
+
+    private val _openDeleteHistoryDialog = mutableStateOf(false)
+    val openDeleteHistoryDialog: State<Boolean> = _openDeleteHistoryDialog
+
+    fun updateDeleteDialogState(state: Boolean) {
+        _openDeleteHistoryDialog.value = state
+    }
 
     fun fetchChats(onSuccess: () -> Unit = {}) {
         logger.log(TAG, "fetchChats()")
