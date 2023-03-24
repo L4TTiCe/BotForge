@@ -22,8 +22,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
+import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
+import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
-import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
@@ -38,151 +40,19 @@ fun ChatUi(viewModel: AppViewModel) {
     }
     val listState = rememberLazyListState()
 
-    val openDeleteDialog = remember { mutableStateOf(false) }
-    val openAliasDialog = remember { mutableStateOf(false) }
-    val openSaveChatDialog = remember { mutableStateOf(false) }
-
-    val expandCustomizePersona = remember { mutableStateOf(false) }
+    val expandCustomizePersona by viewModel.chat.expandCustomizePersona
 
     val hapticFeedback = LocalHapticFeedback.current
 
     val personaName by viewModel.persona.personaName
-    val personaAlias by viewModel.persona.personaAlias
     val personaSystemMessage by viewModel.persona.personaSystemMessage
     val isLoading by viewModel.isLoading
 
-    if (openDeleteDialog.value) {
-        AlertDialog(onDismissRequest = { openDeleteDialog.value = false },
-            title = {
-                Text(text = stringResource(id = R.string.delete_persona))
-            },
-            text = {
-                Text(text = stringResource(id = R.string.delete_persona_message))
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.persona.deletePersona()
-                    openDeleteDialog.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.delete))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    openDeleteDialog.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.cancel))
-                }
-            }
-        )
-    }
+    DeletePersonaDialog(viewModel = viewModel)
 
-    if (openSaveChatDialog.value) {
-        val chatName = remember { mutableStateOf("") }
+    SavePersonaDialog(viewModel = viewModel)
 
-        AlertDialog(
-            onDismissRequest = {
-                chatName.value = ""
-                openSaveChatDialog.value = false
-           },
-            title = {
-                Text(text = "Name your Chat")
-            },
-            text = {
-                Column(
-                    modifier = Modifier
-                        .padding(10.dp)
-                ) {
-                    OutlinedTextField(
-                        value = chatName.value,
-                        onValueChange = { chatName.value = it },
-                        label = { Text(text = "Chat Name") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.chat.updateChatName(chatName.value)
-                    viewModel.chat.saveChat()
-                    openSaveChatDialog.value = false
-                    chatName.value = ""
-                }) {
-                    Text(text = stringResource(id = R.string.save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    chatName.value = ""
-                    openSaveChatDialog.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.cancel))
-                }
-            }
-        )
-    }
-
-    /*TODO Extract string to string.xml*/
-    if (openAliasDialog.value) {
-        AlertDialog(onDismissRequest = { openAliasDialog.value = false },
-            title = {
-                Text(text = "Change Alias")
-            },
-            text = {
-                Column(
-                    modifier = Modifier
-                        .padding(10.dp)
-                ) {
-
-                    Row (
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        RoundedIconFromStringAnimated(
-                            text = (personaAlias.ifEmpty { personaName }),
-                            modifier = Modifier.size(90.dp),
-                            onClick = {}
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-
-                    OutlinedTextField(
-                        value = personaAlias,
-                        onValueChange = { viewModel.persona.updatePersonaAlias(it) },
-                        label = { Text(text = "Alias") },
-                    )
-
-                    Spacer(modifier = Modifier.height(0.02.dh))
-
-                    Text(text = "Alias is what is shown in the App's Top Bar / Header")
-
-                    Spacer(modifier = Modifier.height(0.01.dh))
-
-                    Text(text = "Try emoji's like 🤖")
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.persona.saveUpdatePersona()
-                    openAliasDialog.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    openAliasDialog.value = false
-                }) {
-                    Text(text = "Close")
-                }
-            }
-        )
-    }
+    SetPersonaAliasDialog(viewModel = viewModel)
 
     Scaffold(
         floatingActionButton = {
@@ -250,9 +120,11 @@ fun ChatUi(viewModel: AppViewModel) {
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        if (expandCustomizePersona.value) {
+                        if (expandCustomizePersona) {
                             IconButton(
-                                onClick = { expandCustomizePersona.value = false },
+                                onClick = {
+                                    viewModel.chat.updateExpandCustomizePersona(false)
+                                },
                                 modifier = Modifier.padding(10.dp)
                             ) {
                                 Icon(
@@ -265,7 +137,9 @@ fun ChatUi(viewModel: AppViewModel) {
                             }
                         } else {
                             IconButton(
-                                onClick = { expandCustomizePersona.value = true },
+                                onClick = {
+                                    viewModel.chat.updateExpandCustomizePersona(true)
+                                },
                                 modifier = Modifier.padding(10.dp)
                             ) {
                                 Icon(
@@ -284,7 +158,7 @@ fun ChatUi(viewModel: AppViewModel) {
 
                 item {
                     AnimatedVisibility(
-                        visible = expandCustomizePersona.value,
+                        visible = expandCustomizePersona,
                         enter = slideInVertically {
                             -it - 150
                         } + expandVertically(
@@ -317,7 +191,9 @@ fun ChatUi(viewModel: AppViewModel) {
                                 Spacer(modifier = Modifier.weight(1f))
 
                                 IconButton(
-                                    onClick = { openAliasDialog.value = true },
+                                    onClick = {
+                                        viewModel.chat.updateAliasDialogState(true)
+                                    },
                                     modifier = Modifier.padding(10.dp)
                                 ) {
                                     Icon(
@@ -391,7 +267,9 @@ fun ChatUi(viewModel: AppViewModel) {
 
                                 if (viewModel.persona.selectedPersona.value != "") {
                                     Button(
-                                        onClick = { openDeleteDialog.value = true },
+                                        onClick = {
+                                            viewModel.chat.updateDeletePersonaDialogState(true)
+                                        },
                                         modifier = Modifier.padding(horizontal = 10.dp),
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = MaterialTheme.colorScheme.error
@@ -439,7 +317,9 @@ fun ChatUi(viewModel: AppViewModel) {
                         Spacer(modifier = Modifier.weight(1f))
 
                         IconButton(
-                            onClick = { openSaveChatDialog.value = true },
+                            onClick = {
+                                viewModel.chat.updateSaveChatDialogState(true)
+                            },
                         ) {
                             Icon(
                                 painter = painterResource(

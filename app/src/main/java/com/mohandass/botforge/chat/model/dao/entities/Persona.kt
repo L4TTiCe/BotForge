@@ -8,7 +8,7 @@ import java.util.*
 data class Persona(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val name: String = "",
-    val alias: String = "",
+    var alias: String = "",
     val systemMessage: String = "",
 
     val createdAt: Long = System.currentTimeMillis(),

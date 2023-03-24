@@ -1,23 +1,24 @@
 package com.mohandass.botforge.chat.ui.viewmodel
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
-import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.model.services.OpenAiService
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
+import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.service.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,6 +32,35 @@ class ChatViewModel @Inject constructor(
     private val chatService: ChatServiceImpl,
     private val logger: Logger,
 ) : ViewModel() {
+
+    // Dialog State
+    private val _openDeletePersonaDialog = mutableStateOf(false)
+    val openDeleteDialog: State<Boolean> = _openDeletePersonaDialog
+
+    fun updateDeletePersonaDialogState(state: Boolean) {
+        _openDeletePersonaDialog.value = state
+    }
+
+    private val _openAliasDialog = mutableStateOf(false)
+    val openAliasDialog: State<Boolean> = _openAliasDialog
+
+    fun updateAliasDialogState(state: Boolean) {
+        _openAliasDialog.value = state
+    }
+
+    private val _openSaveChatDialog = mutableStateOf(false)
+    val openSaveChatDialog: State<Boolean> = _openSaveChatDialog
+
+    fun updateSaveChatDialogState(state: Boolean) {
+        _openSaveChatDialog.value = state
+    }
+
+    private val _expandCustomizePersona = mutableStateOf(false)
+    val expandCustomizePersona: State<Boolean> = _expandCustomizePersona
+
+    fun updateExpandCustomizePersona(state: Boolean) {
+        _expandCustomizePersona.value = state
+    }
 
     private val _requestInProgress = mutableStateOf(false)
 

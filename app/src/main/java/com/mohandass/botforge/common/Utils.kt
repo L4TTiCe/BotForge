@@ -51,6 +51,26 @@ class Utils {
             return markdownRegex.containsMatchIn(string)
         }
 
+        fun randomEmojiUnicode(): String {
+            // A list of ranges of code points for emoji blocks
+            val emojiRanges = listOf(
+                0x1F600..0x1F64F, // Emoticons
+                0x1F300..0x1F5FF, // Miscellaneous Symbols and Pictographs
+                0x1F680..0x1F6FF, // Transport and Map Symbols
+                0x2600..0x26FF,   // Miscellaneous Symbols
+                0x2700..0x27BF,   // Dingbats
+                0xFE00..0xFE0F,   // Variation Selectors
+                0x1F900..0x1F9FF, // Supplemental Symbols and Pictographs
+                // 0x1F1E6..0x1F1FF  // Flags
+            )
+            val random = java.util.Random()
+            val range = emojiRanges[random.nextInt(emojiRanges.size)]
+
+            val codePoint = random.nextInt(range.last - range.first + 1) + range.first
+
+            return Character.toChars(codePoint).joinToString("")
+        }
+
         private const val TAG = "Utils"
         private const val INTERRUPT_ERROR_MESSAGE = "com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel.interruptRequest"
         const val INVALID_API_KEY_ERROR_MESSAGE = "invalid_api_key"

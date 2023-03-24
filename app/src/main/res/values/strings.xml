@@ -176,4 +176,10 @@
     <string name="markdown">Markdown</string>
     <string name="markdown_default">Rendered as Markdown. Tap to switch.</string>
     <string name="markdown_switch">Tap to render as Markdown.</string>
+
+    <!--    SetPersonaAliasDialog   -->
+    <string name="set_alias">Choose Avatar</string>
+    <string name="alias">Alias / Avatar</string>
+    <string name="set_alias_message">Choose an avatar for your persona.</string>
+    <string name="set_alias_message_2">Try emoji\'s like 🤖</string>
 </resources>

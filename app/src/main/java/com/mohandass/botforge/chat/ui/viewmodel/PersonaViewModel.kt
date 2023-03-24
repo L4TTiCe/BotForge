@@ -14,6 +14,7 @@ import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.common.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -199,15 +200,22 @@ class PersonaViewModel @Inject constructor(
             systemMessage = _personaSystemMessage.value,
         )
 
+        logger.log(TAG, "savePersona() persona: $persona")
+
+        if (persona.alias == "") {
+            persona.alias = Utils.randomEmojiUnicode()
+            logger.log(TAG, "savePersona() generated alias: ${persona.alias}")
+        }
+
         if (persona.uuid.isEmpty()) {
             logger.log(TAG, "savePersona() new persona")
             val uuid = UUID.randomUUID().toString()
             val isSuccess = savePersona(
                 Persona(
                     uuid = uuid,
-                    name = _personaName.value,
-                    alias = _personaAlias.value,
-                    systemMessage = _personaSystemMessage.value,
+                    name = persona.name,
+                    alias = persona.alias,
+                    systemMessage = persona.systemMessage,
                 )
             )
             if (isSuccess) {
