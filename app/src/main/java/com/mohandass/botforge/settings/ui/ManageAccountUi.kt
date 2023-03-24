@@ -17,7 +17,7 @@ import com.mohandass.botforge.auth.model.User
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.settings.ui.viewmodel.SettingsViewModel
+import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 
 @Composable
 fun ManageAccountUi(

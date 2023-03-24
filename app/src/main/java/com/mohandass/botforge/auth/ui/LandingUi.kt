@@ -24,7 +24,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.auth.ui.viewmodel.LandingViewModel
+import com.mohandass.botforge.auth.viewmodel.LandingViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable

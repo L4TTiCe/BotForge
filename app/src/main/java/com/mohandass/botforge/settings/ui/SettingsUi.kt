@@ -28,7 +28,7 @@ import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.settings.ui.viewmodel.SettingsViewModel
+import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable

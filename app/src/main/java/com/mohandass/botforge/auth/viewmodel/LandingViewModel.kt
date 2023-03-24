@@ -1,4 +1,4 @@
-package com.mohandass.botforge.auth.ui.viewmodel
+package com.mohandass.botforge.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -24,7 +24,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
-import com.mohandass.botforge.settings.ui.viewmodel.SettingsViewModel
+import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable

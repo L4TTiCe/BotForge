@@ -1,4 +1,4 @@
-package com.mohandass.botforge.chat.ui.viewmodel
+package com.mohandass.botforge.chat.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

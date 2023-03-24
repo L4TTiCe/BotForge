@@ -1,4 +1,4 @@
-package com.mohandass.botforge.settings.ui.viewmodel
+package com.mohandass.botforge.settings.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

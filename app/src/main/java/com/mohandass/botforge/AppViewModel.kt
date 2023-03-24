@@ -11,10 +11,10 @@ import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.chat.model.services.OpenAiService
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel
-import com.mohandass.botforge.chat.ui.viewmodel.HistoryViewModel
-import com.mohandass.botforge.chat.ui.viewmodel.PersonaViewModel
-import com.mohandass.botforge.chat.ui.viewmodel.TopBarViewModel
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
+import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.UserPreferences

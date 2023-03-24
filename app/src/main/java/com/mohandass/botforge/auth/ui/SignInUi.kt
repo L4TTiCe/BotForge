@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.*
 import com.mohandass.botforge.R
-import com.mohandass.botforge.auth.ui.viewmodel.SignInViewModel
+import com.mohandass.botforge.auth.viewmodel.SignInViewModel
 import com.slaviboy.composeunits.dh
 import com.mohandass.botforge.R.string as AppText
 
