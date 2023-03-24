@@ -17,7 +17,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.chat.ui.PersonaUi
-import com.mohandass.botforge.chat.ui.components.TopBar
+import com.mohandass.botforge.chat.ui.components.header.TopBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.ui.settings.*
 

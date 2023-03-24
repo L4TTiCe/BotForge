@@ -21,7 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.chat.ui.components.AvatarsBar
+import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.slaviboy.composeunits.dh
 

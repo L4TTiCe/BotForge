@@ -1,4 +1,4 @@
-package com.mohandass.botforge.chat.ui.components
+package com.mohandass.botforge.chat.ui.components.header
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

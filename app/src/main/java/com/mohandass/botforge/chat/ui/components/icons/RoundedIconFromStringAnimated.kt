@@ -1,4 +1,4 @@
-package com.mohandass.botforge.chat.ui.components
+package com.mohandass.botforge.chat.ui.components.icons
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable

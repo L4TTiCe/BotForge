@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.RoundedIconFromString
+import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.AppViewModel
 import kotlinx.coroutines.delay
 import org.ocpsoft.prettytime.PrettyTime

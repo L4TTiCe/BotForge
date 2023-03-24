@@ -1,4 +1,4 @@
-package com.mohandass.botforge.chat.ui.components
+package com.mohandass.botforge.chat.ui.components.header
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
+import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
+import com.mohandass.botforge.chat.ui.components.icons.TintedIconButton
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.R.string as AppText
 
