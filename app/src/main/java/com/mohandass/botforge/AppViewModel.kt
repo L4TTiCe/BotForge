@@ -19,6 +19,8 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
+import com.mohandass.botforge.sync.model.service.BotServiceImpl
+import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -32,6 +34,7 @@ class AppViewModel @Inject constructor(
     personaService: PersonaServiceImpl,
     openAiService: OpenAiService,
     chatService: ChatServiceImpl,
+    botService: BotServiceImpl,
     preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
 ) : ViewModel() {
@@ -130,6 +133,16 @@ class AppViewModel @Inject constructor(
     )
     val persona: PersonaViewModel
         get() = _personaViewModel
+
+    // Sync
+
+    private val _browseViewModel = BrowseViewModel(
+        viewModel = this,
+        botService = botService,
+        logger = logger
+    )
+    val browse: BrowseViewModel
+        get() = _browseViewModel
 
     // Account
     fun signOut(onSuccess: () -> Unit) {

@@ -11,6 +11,7 @@ sealed class AppRoutes(val route: String) {
         sealed class PersonaRoutes(route: String): MainRoutes(route) {
             object Chat: PersonaRoutes("chat_persona")
             object History: PersonaRoutes("history_persona")
+            object Marketplace: PersonaRoutes("market_persona")
         }
         object Settings: MainRoutes("main_settings")
         object ApiKeySettings: MainRoutes("main_settings_api_key")

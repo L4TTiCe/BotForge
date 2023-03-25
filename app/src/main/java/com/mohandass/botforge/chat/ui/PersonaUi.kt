@@ -22,6 +22,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
+import com.mohandass.botforge.sync.ui.BrowseBots
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.slaviboy.composeunits.dh
 
@@ -105,6 +106,9 @@ fun PersonaUi(viewModel: AppViewModel) {
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
                 HistoryUi(viewModel = viewModel)
+            }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
+                BrowseBots(viewModel = viewModel)
             }
         }
     }

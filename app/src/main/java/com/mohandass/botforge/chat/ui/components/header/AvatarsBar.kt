@@ -65,7 +65,7 @@ fun AvatarsBar(
                         .size(90.dp)
                         .padding(6.dp),
                     isAnimated = chatType == ChatType.BROWSE,
-                    onClick = { viewModel.persona.showBrowse() }
+                    onClick = { viewModel.persona.showMarketplace() }
                 )
 
                 if (chatType == ChatType.BROWSE) {

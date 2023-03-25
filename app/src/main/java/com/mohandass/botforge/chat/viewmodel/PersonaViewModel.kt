@@ -96,10 +96,14 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
-    fun showBrowse() {
+    fun showMarketplace() {
         logger.logVerbose(TAG, "showBrowse()")
         clearSelection()
         setChatType(ChatType.BROWSE)
+
+        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route)
+        }
     }
 
     fun saveState() {

@@ -7,21 +7,33 @@ import androidx.room.TypeConverters
 import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.PersonaDao
 import com.mohandass.botforge.chat.model.dao.entities.*
+import com.mohandass.botforge.sync.model.dao.BotDao
+import com.mohandass.botforge.sync.model.dao.entities.BotE
+import com.mohandass.botforge.sync.model.dao.entities.BotFts
+import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
 
 @androidx.room.Database(
     entities = [
+        // Personas
         Persona::class,
+
+        // Chats
         ChatE::class,
         MessageE::class,
-        MessageMetadataE::class
+        MessageMetadataE::class,
+
+        // Bots
+        BotE::class,
+        BotFts::class,
     ],
     version = 1,
     exportSchema = false
 )
-@TypeConverters(CustomTypeConverters::class)
+@TypeConverters(CustomTypeConverters::class, CustomSyncTypeConverters::class)
 abstract class LocalDatabase: RoomDatabase() {
     abstract fun personaService(): PersonaDao
     abstract fun chatDao(): ChatDao
+    abstract fun botDao(): BotDao
 
     companion object {
         private const val DB_NAME = "botforge_db"
