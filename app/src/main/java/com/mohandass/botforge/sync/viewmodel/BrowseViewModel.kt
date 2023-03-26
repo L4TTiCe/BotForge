@@ -7,13 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
 import com.mohandass.botforge.sync.model.dao.entities.BotE
-import com.mohandass.botforge.sync.model.service.BotServiceImpl
-import com.mohandass.botforge.sync.service.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.model.service.BotService
+import com.mohandass.botforge.sync.model.service.FirestoreService
+import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,9 +23,11 @@ import javax.inject.Inject
 
 class BrowseViewModel @Inject constructor (
     private val viewModel: AppViewModel,
-    private val botService: BotServiceImpl,
+    private val botService: BotService,
     private val personaService: PersonaServiceImpl,
     private val firebaseDatabaseService: FirebaseDatabaseServiceImpl,
+    private val firestoreService: FirestoreService,
+    private val accountService: AccountService,
     private val preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
 ): ViewModel() {
@@ -65,6 +69,34 @@ class BrowseViewModel @Inject constructor (
                 personaService.addPersona(bot.toPersona())
                 viewModel.persona.fetchPersonas()
             }
+        }
+    }
+
+    fun upVote(botId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                firestoreService.addUpVote(botId, accountService.currentUserId)
+            }
+        }
+    }
+
+    fun downVote(botId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                firestoreService.addDownVote(botId, accountService.currentUserId)
+            }
+        }
+    }
+
+    suspend fun getUpVoteCount(botId: String): Long {
+        return withContext(Dispatchers.IO) {
+            firestoreService.getUpVotes(botId)
+        }
+    }
+
+    suspend fun getDownVoteCount(botId: String): Long {
+        return withContext(Dispatchers.IO) {
+            firestoreService.getDownVotes(botId)
         }
     }
 
@@ -127,10 +159,12 @@ class BrowseViewModel @Inject constructor (
         logger.log(TAG, "syncWithDatabase: lastSyncedAt: $lastSyncedAt")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                preferencesDataStore.updateLastSuccessfulSync()
                 val bots = firebaseDatabaseService.fetchBotsUpdatedAfter(lastSyncedAt!!)
                 for (bot in bots) {
                     botService.addBot(bot.toBotE())
+                }
+                if (bots.isNotEmpty()) {
+                    preferencesDataStore.updateLastSuccessfulSync()
                 }
                 fetchBots()
             }

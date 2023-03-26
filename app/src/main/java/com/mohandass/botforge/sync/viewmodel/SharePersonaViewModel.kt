@@ -12,7 +12,7 @@ import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.sync.model.Bot
-import com.mohandass.botforge.sync.service.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

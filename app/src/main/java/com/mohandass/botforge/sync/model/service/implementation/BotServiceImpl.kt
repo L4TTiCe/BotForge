@@ -1,23 +1,24 @@
-package com.mohandass.botforge.sync.model.service
+package com.mohandass.botforge.sync.model.service.implementation
 
 import android.util.Log
 import com.mohandass.botforge.sync.model.dao.BotDao
 import com.mohandass.botforge.sync.model.dao.entities.BotE
+import com.mohandass.botforge.sync.model.service.BotService
 
-class BotServiceImpl(private val botDao: BotDao) {
+class BotServiceImpl(private val botDao: BotDao): BotService {
 
-    suspend fun searchBots(query: String): List<BotE> {
+    override suspend fun searchBots(query: String): List<BotE> {
         return botDao.search("*$query*")
     }
 
-    suspend fun getBots(
-        limit: Int = 15,
-        offset: Int = 0
+    override suspend fun getBots(
+        limit: Int,
+        offset: Int
     ): List<BotE> {
         return botDao.getBots(limit, offset)
     }
 
-    suspend fun addBot(bot: BotE) {
+    override suspend fun addBot(bot: BotE) {
         botDao.addBot(bot)
         val botFts = bot.toBotFts()
         botDao.addBotFts(botFts)
@@ -25,7 +26,7 @@ class BotServiceImpl(private val botDao: BotDao) {
         Log.v(TAG, "addBot: $botFts")
     }
 
-    suspend fun deleteAllBots() {
+    override suspend fun deleteAllBots() {
         botDao.deleteAllBots()
         botDao.deleteAllBotsFts()
     }

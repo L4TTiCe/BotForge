@@ -1,4 +1,4 @@
-package com.mohandass.botforge.sync.service
+package com.mohandass.botforge.sync.model.service.implementation
 
 import android.util.Log
 import com.google.firebase.database.ktx.database
@@ -27,7 +27,6 @@ class FirebaseDatabaseServiceImpl {
 
     companion object {
         const val TAG = "FirebaseDatabaseServiceImpl"
-        const val USERS_COLLECTION = "users"
         const val BOT_COLLECTION = "bots"
     }
 }

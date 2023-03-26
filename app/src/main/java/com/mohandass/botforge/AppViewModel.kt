@@ -19,8 +19,9 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
-import com.mohandass.botforge.sync.model.service.BotServiceImpl
-import com.mohandass.botforge.sync.service.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.model.service.BotService
+import com.mohandass.botforge.sync.model.service.FirestoreService
+import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
 import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,9 +37,10 @@ class AppViewModel @Inject constructor(
     personaService: PersonaServiceImpl,
     openAiService: OpenAiService,
     chatService: ChatServiceImpl,
-    botService: BotServiceImpl,
+    botService: BotService,
     preferencesDataStore: PreferencesDataStore,
     firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
+    firestoreService: FirestoreService,
     private val logger: Logger,
 ) : ViewModel() {
 //    val initialSetupEvent = liveData {
@@ -145,6 +147,8 @@ class AppViewModel @Inject constructor(
         botService = botService,
         personaService = personaService,
         firebaseDatabaseService = firebaseDatabaseServiceImpl,
+        firestoreService = firestoreService,
+        accountService = accountService,
         preferencesDataStore = preferencesDataStore,
         logger = logger
     )

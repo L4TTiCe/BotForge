@@ -23,7 +23,11 @@ import com.mohandass.botforge.sync.model.dao.entities.BotEProvider
 import com.slaviboy.composeunits.dw
 
 @Composable
-fun BotCard(botE: BotE, onClickButton: () -> Unit) {
+fun BotCard(
+    botE: BotE,
+    onClickButton: () -> Unit,
+    onUpVote: () -> Unit,
+    onDownVote: () -> Unit) {
     val showDetailDialog = remember {mutableStateOf(false)}
 
     if (showDetailDialog.value) {
@@ -33,7 +37,9 @@ fun BotCard(botE: BotE, onClickButton: () -> Unit) {
                 onClickAccept = {
                     onClickButton()
                     showDetailDialog.value = false
-                }
+                },
+                onUpVote = onUpVote,
+                onDownVote = onDownVote
             )
     }
 
@@ -129,7 +135,7 @@ fun BotCardPreviewLight(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeLightThemePreview {
-        BotCard(bot) { }
+        BotCard(bot, {}, {}, {})
     }
 }
 
@@ -139,6 +145,6 @@ fun BotCardPreviewDark(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeDarkThemePreview {
-        BotCard(bot) { }
+        BotCard(bot, {}, {}, {})
     }
 }
