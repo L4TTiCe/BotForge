@@ -20,7 +20,9 @@ import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
 import com.mohandass.botforge.sync.model.service.BotServiceImpl
+import com.mohandass.botforge.sync.service.FirebaseDatabaseServiceImpl
 import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
+import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -36,6 +38,7 @@ class AppViewModel @Inject constructor(
     chatService: ChatServiceImpl,
     botService: BotServiceImpl,
     preferencesDataStore: PreferencesDataStore,
+    firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     private val logger: Logger,
 ) : ViewModel() {
 //    val initialSetupEvent = liveData {
@@ -48,7 +51,8 @@ class AppViewModel @Inject constructor(
     private val _userPreferencesFlow = userPreferencesFlow.map {userPreference ->
         UserPreferences(
             preferredTheme = userPreference.preferredTheme,
-            useDynamicColors = userPreference.useDynamicColors
+            useDynamicColors = userPreference.useDynamicColors,
+            lastSuccessfulSync = userPreference.lastSuccessfulSync,
         )
     }
 
@@ -139,10 +143,22 @@ class AppViewModel @Inject constructor(
     private val _browseViewModel = BrowseViewModel(
         viewModel = this,
         botService = botService,
+        personaService = personaService,
+        firebaseDatabaseService = firebaseDatabaseServiceImpl,
+        preferencesDataStore = preferencesDataStore,
         logger = logger
     )
     val browse: BrowseViewModel
         get() = _browseViewModel
+
+    private val _sharePersonaViewModel = SharePersonaViewModel(
+        viewModel = this,
+        accountService = accountService,
+        firebaseDatabaseServiceImpl = firebaseDatabaseServiceImpl,
+        logger = logger
+    )
+    val sharePersona: SharePersonaViewModel
+        get() = _sharePersonaViewModel
 
     // Account
     fun signOut(onSuccess: () -> Unit) {

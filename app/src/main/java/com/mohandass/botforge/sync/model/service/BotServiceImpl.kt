@@ -10,8 +10,11 @@ class BotServiceImpl(private val botDao: BotDao) {
         return botDao.search("*$query*")
     }
 
-    suspend fun getAllBots(): List<BotE> {
-        return botDao.getAllBots()
+    suspend fun getBots(
+        limit: Int = 15,
+        offset: Int = 0
+    ): List<BotE> {
+        return botDao.getBots(limit, offset)
     }
 
     suspend fun addBot(bot: BotE) {

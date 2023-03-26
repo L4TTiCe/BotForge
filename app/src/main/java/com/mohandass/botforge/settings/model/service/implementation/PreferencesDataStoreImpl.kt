@@ -18,6 +18,7 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>):
     private object PreferencesKeys {
         val PREF_THEME = stringPreferencesKey(PreferencesDataStore.PREFERRED_THEME_KEY)
         val DYNAMIC_COLOR = booleanPreferencesKey(PreferencesDataStore.DYNAMIC_COLOR)
+        val LAST_SUCCESSFUL_SYNC = longPreferencesKey(PreferencesDataStore.LAST_SUCCESSFUL_SYNC)
     }
 
     /**
@@ -50,6 +51,13 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>):
         }
     }
 
+    override suspend fun updateLastSuccessfulSync() {
+        Log.v(TAG, "updateLastSuccessfulSync()")
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] = System.currentTimeMillis()
+        }
+    }
+
     override suspend fun fetchInitialPreferences() =
         mapUserPreferences(dataStore.data.first().toPreferences())
 
@@ -59,7 +67,8 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>):
             preferences[PreferencesKeys.PREF_THEME] ?: PreferredTheme.AUTO.name
         )
         val useDynamicColors = preferences[PreferencesKeys.DYNAMIC_COLOR] ?: true
-        return UserPreferences(preferredTheme, useDynamicColors)
+        val lastSuccessfulSync = preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] ?: 0L
+        return UserPreferences(preferredTheme, useDynamicColors, lastSuccessfulSync)
     }
 
     companion object {

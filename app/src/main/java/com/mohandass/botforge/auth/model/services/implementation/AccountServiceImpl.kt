@@ -3,6 +3,7 @@ package com.mohandass.botforge.auth.model.services.implementation
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.mohandass.botforge.auth.model.User
 import com.mohandass.botforge.auth.model.services.AccountService
 import kotlinx.coroutines.channels.awaitClose
@@ -43,6 +44,13 @@ class AccountServiceImpl @Inject constructor(
     override suspend fun createAnonymousAccount() {
         Log.v(TAG, "createAnonymousAccount()")
         auth.signInAnonymously().await()
+
+        // Assign a random username to the anonymous user.
+        auth.currentUser!!.updateProfile(
+            UserProfileChangeRequest.Builder()
+                .setDisplayName("Anonymous${auth.currentUser!!.uid.takeLast(4)}")
+                .build()
+        ).await()
     }
 
     override suspend fun linkAccount(email: String, password: String) {

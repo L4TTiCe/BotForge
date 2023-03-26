@@ -106,6 +106,14 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    fun showSharePersona() {
+        logger.logVerbose(TAG, "showSavePersona()")
+        saveState()
+        setChatType(ChatType.SHARE)
+
+        viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Share.route)
+    }
+
     fun saveState() {
         _state.value.chatType = chatType.value
         _state.value.personaName = personaName.value

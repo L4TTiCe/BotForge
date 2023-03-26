@@ -2,6 +2,7 @@ package com.mohandass.botforge.sync.model.dao.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.mohandass.botforge.chat.model.dao.entities.Persona
 import java.util.*
 
 @Entity(tableName = "bots")
@@ -32,6 +33,17 @@ data class BotE (
             description = description.lowercase(),
             tags = tags.joinToString(",").lowercase(),
             createdBy = createdBy.lowercase()
+        )
+    }
+
+    fun toPersona(): Persona {
+        return Persona(
+            uuid = UUID.randomUUID().toString(),
+            name = name,
+            alias = alias,
+            systemMessage = systemMessage,
+            createdAt = createdAt,
+            lastUsed = Date().time,
         )
     }
 

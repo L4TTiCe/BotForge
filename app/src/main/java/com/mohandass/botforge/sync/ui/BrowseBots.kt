@@ -2,7 +2,11 @@ package com.mohandass.botforge.sync.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,11 +17,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.sync.ui.components.BotCard
+import com.slaviboy.composeunits.dh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BrowseBots(viewModel: AppViewModel) {
     val searchText by viewModel.browse.searchQuery
+    val communityBots = viewModel.browse.fetchedBots
+    val topBots = viewModel.browse.topBots
+
+    val scrollState = rememberScrollState()
 
     BackHandler {
         viewModel.persona.restoreState()
@@ -31,12 +41,14 @@ fun BrowseBots(viewModel: AppViewModel) {
     ) {
         Column(
             modifier = Modifier
-                .padding(10.dp)
+                .verticalScroll(scrollState)
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
+                    .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -53,7 +65,9 @@ fun BrowseBots(viewModel: AppViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    viewModel.browse.syncWithDatabase()
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_cloud_sync_24),
                         contentDescription = "Sync",
@@ -66,9 +80,12 @@ fun BrowseBots(viewModel: AppViewModel) {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
+                    .padding(horizontal = 20.dp),
                 value = searchText,
-                onValueChange = { viewModel.browse.updateSearchQuery(it) },
+                onValueChange = {
+                    viewModel.browse.updateSearchQuery(it)
+                    viewModel.browse.search()
+                },
                 label = {
                     Text("Search Community Bots")
                 },
@@ -95,42 +112,57 @@ fun BrowseBots(viewModel: AppViewModel) {
 
             Text(
                 text = "Browse Bots",
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 style = MaterialTheme.typography.headlineSmall
             )
 
             Text(
                 text = "Browse bots from the community",
-                modifier = Modifier.padding(horizontal = 10.dp),
+                modifier = Modifier.padding(horizontal = 20.dp),
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = "DEBUG",
-                modifier = Modifier.padding(horizontal = 10.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Row {
-                Button(onClick = { viewModel.browse.addBot() }) {
-                    Text("Add Bot")
-                }
-                Spacer(modifier = Modifier.width(10.dp))
-                Button(onClick = { viewModel.browse.getBots() }) {
-                    Text("Log")
-                }
-                Spacer(modifier = Modifier.width(10.dp))
-                Button(onClick = { viewModel.browse.search() }) {
-                    Text("Search")
-                }
-                Spacer(modifier = Modifier.width(10.dp))
-                Button(onClick = { viewModel.browse.deleteAllBots() }) {
-                    Text("Delete All")
+            LazyHorizontalGrid(
+                rows = GridCells.Adaptive(minSize = 100.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 0.4.dh),
+                contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
+            ) {
+                // use Bot's UUID as key
+                items(
+                    count = communityBots.size,
+                    key = { communityBots[it].uuid }
+                ) { idx ->
+                    BotCard(botE = communityBots[idx], viewModel = viewModel)
                 }
             }
 
+            Text(
+                text = "Most Popular Bots",
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+                style = MaterialTheme.typography.headlineSmall
+            )
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            LazyHorizontalGrid(
+                rows = GridCells.Adaptive(minSize = 100.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 0.4.dh),
+                contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
+            ) {
+                // use Bot's UUID as key
+                items(
+                    count = topBots.size,
+                    key = { topBots[it].uuid }
+                ) { idx ->
+                    BotCard(botE = topBots[idx], viewModel = viewModel)
+                }
+            }
         }
     }
 }

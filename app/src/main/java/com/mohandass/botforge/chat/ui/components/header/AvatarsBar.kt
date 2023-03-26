@@ -64,11 +64,11 @@ fun AvatarsBar(
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
-                    isAnimated = chatType == ChatType.BROWSE,
+                    isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
                     onClick = { viewModel.persona.showMarketplace() }
                 )
 
-                if (chatType == ChatType.BROWSE) {
+                if (chatType == ChatType.BROWSE || chatType == ChatType.SHARE) {
                     ActiveIndicator()
                 }
             }

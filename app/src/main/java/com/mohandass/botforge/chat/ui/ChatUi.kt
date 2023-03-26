@@ -26,7 +26,6 @@ import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
-import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 
@@ -34,10 +33,6 @@ import com.slaviboy.composeunits.dw
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatUi(viewModel: AppViewModel) {
-    LaunchedEffect(Unit) {
-        viewModel.topBar.title.value = R.string.app_name
-        viewModel.topBar.overrideMenu.value = false
-    }
     val listState = rememberLazyListState()
 
     val expandCustomizePersona by viewModel.persona.expandCustomizePersona
@@ -248,8 +243,8 @@ fun ChatUi(viewModel: AppViewModel) {
 
                             Row(horizontalArrangement = Arrangement.SpaceAround) {
                                 Button(
-                                    onClick = { /*TODO*/
-                                        SnackbarManager.showMessage(R.string.not_implemented)
+                                    onClick = {
+                                        viewModel.persona.showSharePersona()
                                     },
                                     modifier = Modifier.padding(horizontal = 10.dp)) {
                                     Text(text = stringResource(id = R.string.share))

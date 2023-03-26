@@ -28,8 +28,15 @@ interface BotDao {
 //        offset: Int = 0
     ): List<BotE>
 
-    @Query("SELECT * FROM bots ORDER BY createdAt DESC")
-    suspend fun getAllBots(): List<BotE>
+    @Query("""
+       SELECT * FROM bots 
+       ORDER BY (bots.userUpVotes + bots.usersCount ) DESC 
+       LIMIT :limit OFFSET :offset
+    """)
+    suspend fun getBots(
+        limit: Int = 15,
+        offset: Int = 0
+    ): List<BotE>
 
     // Delete all bots
     @Query("DELETE FROM bots")
