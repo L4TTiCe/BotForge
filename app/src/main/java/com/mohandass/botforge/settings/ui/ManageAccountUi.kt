@@ -88,6 +88,12 @@ fun ManageAccountUi(
             style = MaterialTheme.typography.bodyMedium
         )
 
+        Text(
+            text = "Display Name: ${user.displayName}",
+            modifier = Modifier.padding(horizontal = 10.dp),
+            style = MaterialTheme.typography.bodyMedium
+        )
+
         Spacer(modifier = Modifier.height(10.dp))
 
         SettingsCategory(title = stringResource(id = R.string.account_actions),)

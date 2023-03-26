@@ -33,10 +33,16 @@ class BrowseViewModel @Inject constructor (
     private val _topBots = mutableStateListOf<BotE>()
     val topBots = _topBots
 
-    init {
+    fun fetchBots() {
+        logger.logVerbose(TAG, "fetchBots()")
         viewModelScope.launch {
+            _topBots.clear()
             _topBots.addAll(botService.getBots())
         }
+    }
+
+    init {
+        fetchBots()
     }
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
@@ -126,6 +132,7 @@ class BrowseViewModel @Inject constructor (
                 for (bot in bots) {
                     botService.addBot(bot.toBotE())
                 }
+                fetchBots()
             }
         }
     }

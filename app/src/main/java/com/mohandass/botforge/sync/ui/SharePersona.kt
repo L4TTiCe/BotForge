@@ -36,14 +36,9 @@ fun SharePersona(
     val currentTag by viewModel.sharePersona.currentTag
     val personaTags = viewModel.sharePersona.personaTags
 
-    val backHandler = {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
-    }
-
 
     BackHandler {
-        backHandler()
+        viewModel.sharePersona.backHandler()
     }
 
     Surface(
@@ -71,7 +66,7 @@ fun SharePersona(
                             .size(30.dp)
                     )
                     Text(
-                        text = "Community",
+                        text = stringResource(id = R.string.community),
                         modifier = Modifier.padding(10.dp),
                         style = MaterialTheme.typography.headlineMedium
                     )
@@ -79,11 +74,11 @@ fun SharePersona(
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        backHandler()
+                        viewModel.sharePersona.backHandler()
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "back",
+                            contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
                         )
@@ -95,7 +90,7 @@ fun SharePersona(
                 Row {
                     Column {
                         Text(
-                            text = "Share Persona with Community",
+                            text = stringResource(id = R.string.share_persona),
                             modifier = Modifier.padding(horizontal = 10.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -103,7 +98,7 @@ fun SharePersona(
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = "Share your creation, with community members",
+                            text = stringResource(id = R.string.share_persona_message),
                             modifier = Modifier.padding(horizontal = 10.dp),
                             style = MaterialTheme.typography.bodyMedium
                         )
@@ -149,7 +144,7 @@ fun SharePersona(
                         value = personaAlias,
                         onValueChange = { viewModel.persona.updatePersonaAlias(it) },
                         label = {
-                            Text(text = "Alias")
+                            Text(text = stringResource(id = R.string.alias))
                         },
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Next,
@@ -163,7 +158,7 @@ fun SharePersona(
                 Spacer(modifier = Modifier.height(0.01.dh))
 
                 Text(
-                    text = "Alias is an emojis or short text that represent your persona, and help users distinguish between personas",
+                    text = stringResource(id = R.string.alias_message_1),
                     modifier = Modifier.padding(horizontal = 10.dp),
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -171,7 +166,7 @@ fun SharePersona(
                 Spacer(modifier = Modifier.height(0.01.dh))
 
                 Text(
-                    text = "Choosing a relevant alias will help users identify your persona",
+                    text = stringResource(id = R.string.alias_message_2),
                     modifier = Modifier.padding(horizontal = 10.dp),
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -202,11 +197,11 @@ fun SharePersona(
                     value = personaDescription,
                     onValueChange = { viewModel.sharePersona.updatePersonaDescription(it) },
                     label = {
-                        Text(text = "Description")
+                        Text(text = stringResource(id = R.string.description))
                     },
                     placeholder = {
                         Text(
-                            text = "Describe your persona in a few words. This will help with discoverability.",
+                            text = stringResource(id = R.string.description_message_1),
                         )
                     },
                     modifier = Modifier
@@ -224,7 +219,7 @@ fun SharePersona(
                         Spacer(modifier = Modifier.width(10.dp))
 
                         Text(
-                            text = "Tags",
+                            text = stringResource(id = R.string.tags),
                             modifier = Modifier.padding(horizontal = 10.dp),
                             style = MaterialTheme.typography.labelLarge,
                         )
@@ -249,7 +244,7 @@ fun SharePersona(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
-                                        contentDescription = "close",
+                                        contentDescription = null,
                                     )
                                 }
                             }
@@ -261,7 +256,7 @@ fun SharePersona(
                     value = currentTag,
                     onValueChange = { viewModel.sharePersona.updateCurrentTag(it) },
                     label = {
-                        Text(text = "Add Tags")
+                        Text(text = stringResource(id = R.string.add_tags))
                     },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
@@ -311,12 +306,12 @@ fun SharePersona(
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_cloud_upload_24),
-                                contentDescription = "Share",
+                                contentDescription = stringResource(id = R.string.share),
                             )
 
                             Spacer(modifier = Modifier.width(10.dp))
 
-                            Text(text = "Share")
+                            Text(text = stringResource(id = R.string.share))
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package com.mohandass.botforge.sync.model.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotFts
@@ -9,10 +10,10 @@ import com.mohandass.botforge.sync.model.dao.entities.BotFts
 @Dao
 interface BotDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addBot(bot: BotE)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addBotFts(bot: BotFts)
 
     @Query("""

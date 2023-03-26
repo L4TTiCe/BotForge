@@ -7,7 +7,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.model.services.AccountService
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.sync.model.Bot
 import com.mohandass.botforge.sync.service.FirebaseDatabaseServiceImpl
@@ -24,7 +26,12 @@ class SharePersonaViewModel @Inject constructor (
     private val logger: Logger,
 ): ViewModel() {
 
-    fun clear() {
+    val backHandler = {
+        viewModel.persona.restoreState()
+        viewModel.navControllerPersona.popBackStack()
+    }
+
+    private fun clear() {
         _personaDescription.value = ""
         _currentTag.value = ""
         _personaTags = mutableStateListOf()
@@ -70,7 +77,7 @@ class SharePersonaViewModel @Inject constructor (
             systemMessage = viewModel.persona.personaSystemMessage.value,
             description = _personaDescription.value,
             tags = _personaTags.toList().joinToString(","),
-            createdBy = accountService.currentUserId,
+            createdBy = accountService.displayName,
             usersCount = 0,
             userUpVotes = 0,
             userDownVotes = 0,
@@ -81,6 +88,11 @@ class SharePersonaViewModel @Inject constructor (
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 firebaseDatabaseServiceImpl.writeNewBot(bot)
+            }
+            withContext(Dispatchers.Main) {
+                SnackbarManager.showMessage(R.string.share_persona_success)
+                clear()
+                backHandler()
             }
         }
     }

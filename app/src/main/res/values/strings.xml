@@ -182,4 +182,16 @@
     <string name="alias">Alias / Avatar</string>
     <string name="set_alias_message">Choose an avatar for your persona.</string>
     <string name="set_alias_message_2">Try emoji\'s like 🤖</string>
+
+    <!--    SharePersona   -->
+    <string name="community">Community</string>
+    <string name="share_persona">Share Persona with Community</string>
+    <string name="share_persona_message">Share your creation with community members.</string>
+    <string name="share_persona_success">Persona shared!</string>
+    <string name="alias_message_1">Alias is an emojis or short text that represent your persona, and help users distinguish between personas</string>
+    <string name="alias_message_2">Choosing a relevant alias will help users identify your persona</string>
+    <string name="description">Description</string>
+    <string name="description_message_1">Describe your persona in a few words. This will help with discoverability.</string>
+    <string name="tags">Tags</string>
+    <string name="add_tags">Add Tags</string>
 </resources>

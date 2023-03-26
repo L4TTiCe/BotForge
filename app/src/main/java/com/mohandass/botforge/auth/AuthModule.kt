@@ -1,5 +1,6 @@
 package com.mohandass.botforge.auth
 
+import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -22,5 +23,6 @@ class AuthModule {
     @Singleton
     fun provideAccountService(
         auth: FirebaseAuth,
-    ): AccountService = AccountServiceImpl(auth)
+        application: Application,
+    ): AccountService = AccountServiceImpl(auth, application)
 }

@@ -29,6 +29,10 @@ fun BrowseBots(viewModel: AppViewModel) {
 
     val scrollState = rememberScrollState()
 
+    LaunchedEffect(Unit) {
+        viewModel.browse.fetchBots()
+    }
+
     BackHandler {
         viewModel.persona.restoreState()
         viewModel.navControllerPersona.popBackStack()
