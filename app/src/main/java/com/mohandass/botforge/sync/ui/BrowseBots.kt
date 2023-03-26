@@ -140,7 +140,12 @@ fun BrowseBots(viewModel: AppViewModel) {
                     count = communityBots.size,
                     key = { communityBots[it].uuid }
                 ) { idx ->
-                    BotCard(botE = communityBots[idx], viewModel = viewModel)
+                    BotCard(
+                        botE = communityBots[idx],
+                        onClickButton = {
+                            viewModel.browse.makePersona(topBots[idx])
+                        }
+                    )
                 }
             }
 
@@ -164,7 +169,12 @@ fun BrowseBots(viewModel: AppViewModel) {
                     count = topBots.size,
                     key = { topBots[it].uuid }
                 ) { idx ->
-                    BotCard(botE = topBots[idx], viewModel = viewModel)
+                    BotCard(
+                        botE = topBots[idx],
+                        onClickButton = {
+                        viewModel.browse.makePersona(topBots[idx])
+                        }
+                    )
                 }
             }
         }
