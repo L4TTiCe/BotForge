@@ -116,7 +116,21 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 )
             }
         )
-
+        DropdownMenuItem(
+            onClick = {
+                viewModel.persona.showHistory()
+                displayOptionsMenu = false
+            },
+            text = {
+                Text(text = "Bookmarks")
+            },
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_bookmarks_24),
+                    contentDescription = null
+                )
+            }
+        )
         DropdownMenuItem(
             onClick = {
                 viewModel.signOut {
