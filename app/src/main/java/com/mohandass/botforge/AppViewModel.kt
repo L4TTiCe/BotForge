@@ -28,7 +28,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,14 +42,11 @@ class AppViewModel @Inject constructor(
     firestoreService: FirestoreService,
     private val logger: Logger,
 ) : ViewModel() {
-//    val initialSetupEvent = liveData {
-//        emit(preferencesDataStore.fetchInitialPreferences())
-//    }
 
     // Keep the user preferences as a stream of changes
     private val userPreferencesFlow = preferencesDataStore.userPreferencesFlow
 
-    private val _userPreferencesFlow = userPreferencesFlow.map {userPreference ->
+    private val _userPreferencesFlow = userPreferencesFlow.map { userPreference ->
         UserPreferences(
             preferredTheme = userPreference.preferredTheme,
             useDynamicColors = userPreference.useDynamicColors,
@@ -106,6 +102,7 @@ class AppViewModel @Inject constructor(
         logger.logVerbose(TAG, "setNavController()")
         _navController = navController
     }
+
     fun setNavControllerMain(navController: NavController) {
         logger.logVerbose(TAG, "setNavControllerMain()")
         _navControllerMain = navController
@@ -167,24 +164,16 @@ class AppViewModel @Inject constructor(
     // Account
     fun signOut(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                accountService.signOut()
-            }
-            withContext(Dispatchers.Main) {
-                onSuccess()
-            }
+            accountService.signOut()
+            onSuccess()
         }
     }
 
     fun deleteAccount(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                accountService.deleteAccount()
-            }
-            withContext(Dispatchers.Main) {
-                SnackbarManager.showMessage(R.string.delete_account_success)
-                onSuccess()
-            }
+            accountService.deleteAccount()
+            SnackbarManager.showMessage(R.string.delete_account_success)
+            onSuccess()
         }
     }
 

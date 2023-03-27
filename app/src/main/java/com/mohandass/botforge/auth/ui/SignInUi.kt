@@ -26,7 +26,7 @@ import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInUi (viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltViewModel()) {
+fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,14 +56,17 @@ fun SignInUi (viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVi
 
         OutlinedTextField(
             value = signInViewModel.email,
-            onValueChange = { signInViewModel.onEmailChange(it)},
+            onValueChange = { signInViewModel.onEmailChange(it) },
             label = { Text(resources().getString(AppText.email)) },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email)
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email
+            )
         )
         Spacer(modifier = Modifier.size(0.02.dh))
         OutlinedTextField(
             value = signInViewModel.password,
-            onValueChange = { signInViewModel.onPasswordChange(it)},
+            onValueChange = { signInViewModel.onPasswordChange(it) },
             label = { Text(resources().getString(AppText.password)) },
             visualTransformation = if (signInViewModel.passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -85,7 +88,10 @@ fun SignInUi (viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVi
                     }
                 }
             },
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send, keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Send,
+                keyboardType = KeyboardType.Password
+            )
         )
 
         Spacer(modifier = Modifier.size(0.12.dh))

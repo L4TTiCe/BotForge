@@ -149,7 +149,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                         }
                     }
 
-                    ElevatedCard (
+                    ElevatedCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
@@ -170,7 +170,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                                                 ),
                                         modifier = Modifier.size(90.dp),
                                         borderColor = Color.Transparent,
-                                        onClick = {  }
+                                        onClick = { }
                                     )
                                 } else {
                                     Icon(
@@ -184,7 +184,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                                 }
                             }
 
-                            Column (
+                            Column(
                                 modifier = Modifier.padding(10.dp),
                             ) {
 
@@ -231,7 +231,7 @@ fun HistoryUi(viewModel: AppViewModel) {
 
                                 Spacer(modifier = Modifier.height(14.dp))
 
-                                Row (
+                                Row(
                                     horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {

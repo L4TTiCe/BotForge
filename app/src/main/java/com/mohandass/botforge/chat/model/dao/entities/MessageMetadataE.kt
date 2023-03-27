@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.MessageMetadata
 
 @Entity
-data class MessageMetadataE (
+data class MessageMetadataE(
     @PrimaryKey val openAiId: String = "",
     val finishReason: String? = null,
     val promptTokens: Int? = null,

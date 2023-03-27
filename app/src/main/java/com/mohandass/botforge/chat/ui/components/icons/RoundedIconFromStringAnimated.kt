@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RoundedIconFromStringAnimated(
     modifier: Modifier = Modifier,
-    text : String,
+    text: String,
     onClick: () -> Unit = { }
 ) {
     val radialGradientColors = listOf(

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 
-class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>):
+class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
     PreferencesDataStore {
     private object PreferencesKeys {
         val PREF_THEME = stringPreferencesKey(PreferencesDataStore.PREFERRED_THEME_KEY)

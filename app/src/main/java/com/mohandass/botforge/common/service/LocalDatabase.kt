@@ -30,13 +30,14 @@ import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
     exportSchema = false
 )
 @TypeConverters(CustomTypeConverters::class, CustomSyncTypeConverters::class)
-abstract class LocalDatabase: RoomDatabase() {
+abstract class LocalDatabase : RoomDatabase() {
     abstract fun personaService(): PersonaDao
     abstract fun chatDao(): ChatDao
     abstract fun botDao(): BotDao
 
     companion object {
         private const val DB_NAME = "botforge_db"
+
         @Volatile
         private var INSTANCE: LocalDatabase? = null
 

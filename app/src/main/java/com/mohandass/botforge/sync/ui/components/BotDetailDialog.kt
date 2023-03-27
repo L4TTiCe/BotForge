@@ -161,10 +161,6 @@ fun BotDetailDialog(
                         }
                     }
                 }
-
-//                Spacer(modifier = Modifier.height(10.dp))
-
-
             }
         },
         confirmButton = {
@@ -181,7 +177,7 @@ fun BotDetailDialog(
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                IconButton(onClick = onUpVote ) {
+                IconButton(onClick = onUpVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.upvote_filled),
                         contentDescription = null,
@@ -190,7 +186,7 @@ fun BotDetailDialog(
                     )
                 }
 
-                IconButton(onClick = onDownVote ) {
+                IconButton(onClick = onDownVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.downvote_filled),
                         contentDescription = null,

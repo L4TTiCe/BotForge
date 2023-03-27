@@ -27,13 +27,14 @@ fun BotCard(
     botE: BotE,
     onClickButton: () -> Unit,
     onUpVote: () -> Unit,
-    onDownVote: () -> Unit) {
-    val showDetailDialog = remember {mutableStateOf(false)}
+    onDownVote: () -> Unit
+) {
+    val showDetailDialog = remember { mutableStateOf(false) }
 
     if (showDetailDialog.value) {
         BotDetailDialog(
             botE,
-            onClickDismiss = {showDetailDialog.value = false},
+            onClickDismiss = { showDetailDialog.value = false },
             onClickAccept = {
                 onClickButton()
                 showDetailDialog.value = false
@@ -43,7 +44,7 @@ fun BotCard(
         )
     }
 
-    Card (
+    Card(
         modifier = Modifier
             .padding(5.dp)
             .width(
@@ -63,9 +64,9 @@ fun BotCard(
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column (
+            Column(
                 modifier = Modifier.weight(1f)
-            ){
+            ) {
                 RoundedIconFromString(
                     text = (
                             if (botE.alias != "")

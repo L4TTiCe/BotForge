@@ -37,7 +37,7 @@ fun MainUi(viewModel: AppViewModel) {
             Surface(
                 modifier = Modifier.padding(top = it.calculateTopPadding()),
             ) {
-                Column{
+                Column {
                     AnimatedNavHost(
                         navController = navController,
                         startDestination = AppRoutes.MainRoutes.PersonaRoutes.Chat.route
@@ -290,7 +290,10 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            ManageAccountUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
+                            ManageAccountUi(
+                                viewModel = viewModel,
+                                settingsViewModel = hiltViewModel()
+                            )
                         }
                         composable(
                             route = AppRoutes.MainRoutes.OpenSourceLicenses.route,

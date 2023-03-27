@@ -11,12 +11,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.auth.model.User
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
-import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 
 @Composable
@@ -28,7 +28,8 @@ fun ManageAccountUi(
     val openDeleteDialog = remember { mutableStateOf(false) }
 
     if (openDeleteDialog.value) {
-        AlertDialog(onDismissRequest = { openDeleteDialog.value = false },
+        AlertDialog(
+            onDismissRequest = { openDeleteDialog.value = false },
             title = {
                 Text(text = stringResource(id = R.string.delete_account))
             },
@@ -96,7 +97,7 @@ fun ManageAccountUi(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        SettingsCategory(title = stringResource(id = R.string.account_actions),)
+        SettingsCategory(title = stringResource(id = R.string.account_actions))
 
         if (user.isAnonymous) {
             SettingsItem(

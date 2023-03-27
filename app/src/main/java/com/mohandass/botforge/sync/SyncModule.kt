@@ -32,12 +32,12 @@ class SyncModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabaseService()
-    : FirebaseDatabaseServiceImpl = FirebaseDatabaseServiceImpl()
+            : FirebaseDatabaseServiceImpl = FirebaseDatabaseServiceImpl()
 
     @Provides
     @Singleton
     fun provideFirestoreService(
         logger: Logger
     )
-    : FirestoreService = FirestoreServiceImpl(logger)
+            : FirestoreService = FirestoreServiceImpl(logger)
 }

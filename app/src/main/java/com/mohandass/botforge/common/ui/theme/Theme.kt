@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.settings.model.PreferredTheme
 
 
 private val LightColors = lightColorScheme(
@@ -80,29 +80,6 @@ private val DarkColors = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
 )
-
-//@Composable
-//fun BotForgeTheme(
-//    useDarkTheme: Boolean = isSystemInDarkTheme(),
-//    content: @Composable() () -> Unit
-//) {
-//    val systemUiController = rememberSystemUiController()
-//
-//    systemUiController.setSystemBarsColor(
-//        color = Color.Transparent
-//    )
-//
-//    val colors = if (!useDarkTheme) {
-//        LightColors
-//    } else {
-//        DarkColors
-//    }
-//
-//    MaterialTheme(
-//        colorScheme = colors,
-//        content = content
-//    )
-//}
 
 @Composable
 fun BotForgeTheme(

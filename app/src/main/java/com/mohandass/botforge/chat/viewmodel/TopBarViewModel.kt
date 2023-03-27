@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.mohandass.botforge.R
 
-class TopBarViewModel: ViewModel() {
+class TopBarViewModel : ViewModel() {
     private val _topBarTitle = mutableStateOf(R.string.app_name)
     val title: MutableState<Int>
         get() = _topBarTitle

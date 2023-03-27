@@ -19,10 +19,8 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.service.Logger
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -94,49 +92,47 @@ class ChatViewModel @Inject constructor(
         logger.logVerbose(TAG, "getChatCompletion() messages: $messages")
 
         job = viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val completion = openAiService.getChatCompletion(messages)
-                    logger.logVerbose(TAG, "getChatCompletion() completion: $completion")
-                    addMessage(completion)
-                } catch (e: Throwable) {
-                    logger.logError(TAG, "getChatCompletion() error: $e", e)
-                    if (e.message != null) {
-                        logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
-                        SnackbarManager.showMessage(
-                            e.toSnackbarMessageWithAction(R.string.settings) {
-                                viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
-                            })
-                    } else {
-                        logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
-                        val message = Utils.parseStackTraceForErrorMessage(e)
+            try {
+                val completion = openAiService.getChatCompletion(messages)
+                logger.logVerbose(TAG, "getChatCompletion() completion: $completion")
+                addMessage(completion)
+            } catch (e: Throwable) {
+                logger.logError(TAG, "getChatCompletion() error: $e", e)
+                if (e.message != null) {
+                    logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
+                    SnackbarManager.showMessage(
+                        e.toSnackbarMessageWithAction(R.string.settings) {
+                            viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
+                        })
+                } else {
+                    logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
+                    val message = Utils.parseStackTraceForErrorMessage(e)
 
-                        when (message.message) {
-                            Utils.INVALID_API_KEY_ERROR_MESSAGE -> {
-                                SnackbarManager.showMessageWithAction(
-                                    R.string.invalid_api_key,
-                                    R.string.settings
-                                ) {
-                                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
-                                }
-                            }
-                            Utils.INTERRUPTED_ERROR_MESSAGE -> {
-                                SnackbarManager.showMessage(R.string.request_cancelled)
-                            }
-                            else -> {
-                                SnackbarManager.showMessage(
-                                    message.toSnackbarMessageWithAction(R.string.settings) {
-                                        viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
-                                    })
+                    when (message.message) {
+                        Utils.INVALID_API_KEY_ERROR_MESSAGE -> {
+                            SnackbarManager.showMessageWithAction(
+                                R.string.invalid_api_key,
+                                R.string.settings
+                            ) {
+                                viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
                             }
                         }
-
-
+                        Utils.INTERRUPTED_ERROR_MESSAGE -> {
+                            SnackbarManager.showMessage(R.string.request_cancelled)
+                        }
+                        else -> {
+                            SnackbarManager.showMessage(
+                                message.toSnackbarMessageWithAction(R.string.settings) {
+                                    viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                                })
+                        }
                     }
+
+
                 }
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                viewModel.setLoading(false)
             }
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            viewModel.setLoading(false)
         }
     }
 
@@ -154,14 +150,6 @@ class ChatViewModel @Inject constructor(
 
     fun autoAddMessage() {
         logger.log(TAG, "autoAddMessage()")
-//        val message = if (_activeChat.value.isEmpty()) {
-//            Message("", Role.USER)
-//        } else {
-//            Message(
-//                "",
-//                if (_activeChat.value.last().role == Role.USER) Role.BOT else Role.USER
-//            )
-//        }
         val message = Message("", Role.USER)
         _activeChat.value = _activeChat.value + message
     }
@@ -241,10 +229,8 @@ class ChatViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                chatService.saveChat(chat, messages)
-                SnackbarManager.showMessage(R.string.chat_saved)
-            }
+            chatService.saveChat(chat, messages)
+            SnackbarManager.showMessage(R.string.chat_saved)
         }
     }
 

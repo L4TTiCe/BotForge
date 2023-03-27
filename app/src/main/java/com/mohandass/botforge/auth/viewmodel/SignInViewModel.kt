@@ -3,10 +3,10 @@ package com.mohandass.botforge.auth.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.auth.model.services.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -88,9 +88,11 @@ class SignInViewModel @Inject constructor(
     fun onEmailChange(email: String) {
         _email.value = email
     }
+
     fun onPasswordChange(password: String) {
         _password.value = password
     }
+
     fun onPasswordVisibilityChange(boolean: Boolean) {
         _passwordVisibility.value = boolean
     }

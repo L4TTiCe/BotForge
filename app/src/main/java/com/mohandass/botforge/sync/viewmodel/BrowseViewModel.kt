@@ -18,12 +18,10 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.service.BotService
 import com.mohandass.botforge.sync.model.service.FirestoreService
 import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class BrowseViewModel @Inject constructor (
+class BrowseViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val botService: BotService,
     private val personaService: PersonaServiceImpl,
@@ -32,7 +30,7 @@ class BrowseViewModel @Inject constructor (
     private val accountService: AccountService,
     private val preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
-): ViewModel() {
+) : ViewModel() {
     private val _searchQuery = mutableStateOf("")
     val searchQuery: State<String> = _searchQuery
 
@@ -50,6 +48,7 @@ class BrowseViewModel @Inject constructor (
     init {
         fetchBots()
     }
+
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
         viewModel.browse.search()
@@ -61,7 +60,7 @@ class BrowseViewModel @Inject constructor (
     fun search() {
         viewModelScope.launch {
             _fetchedBots.clear()
-            _fetchedBots.addAll(botService.searchBots( Utils.sanitizeSearchQuery(searchQuery.value)))
+            _fetchedBots.addAll(botService.searchBots(Utils.sanitizeSearchQuery(searchQuery.value)))
             Log.v(TAG, "search: $_fetchedBots")
         }
     }
@@ -69,91 +68,25 @@ class BrowseViewModel @Inject constructor (
     fun makePersona(bot: BotE) {
         logger.logVerbose(TAG, "makePersona()")
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                personaService.addPersona(bot.toPersona())
-                viewModel.persona.fetchPersonas()
-            }
+            personaService.addPersona(bot.toPersona())
+            viewModel.persona.fetchPersonas()
         }
     }
 
     fun upVote(botId: String) {
         logger.logVerbose(TAG, "upVote()")
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                firestoreService.addUpVote(botId, accountService.currentUserId)
-            }
+            firestoreService.addUpVote(botId, accountService.currentUserId)
         }
     }
 
     fun downVote(botId: String) {
         logger.logVerbose(TAG, "downVote()")
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                firestoreService.addDownVote(botId, accountService.currentUserId)
-            }
+            firestoreService.addDownVote(botId, accountService.currentUserId)
         }
     }
 
-    suspend fun getUpVoteCount(botId: String): Long {
-        return withContext(Dispatchers.IO) {
-            firestoreService.getUpVotes(botId)
-        }
-    }
-
-    suspend fun getDownVoteCount(botId: String): Long {
-        return withContext(Dispatchers.IO) {
-            firestoreService.getDownVotes(botId)
-        }
-    }
-
-//    fun addBot() {
-//        var bot = BotE(
-//            uuid = UUID.randomUUID().toString(),
-//            name = "Personal Assistant",
-//            alias = "ChatGPT",
-//            systemMessage = "You are Chat GPT",
-//            description = "generic chatbot",
-//            tags = listOf("tag1", "TAG2"),
-//            createdBy = "admin",
-//            usersCount = 0,
-//            userUpVotes = 0,
-//            userDownVotes = 0,
-//            createdAt = Date().time,
-//            updatedAt = Date().time,
-//        )
-//
-//        viewModelScope.launch {
-//            botService.addBot(bot)
-//        }
-//
-//        bot = BotE(
-//            uuid = UUID.randomUUID().toString(),
-//            name = "HealthGPT",
-//            alias = "myHealthBot",
-//            systemMessage = "You are HealthGPT-2.",
-//            description = "Your personal bot to deduce your health and fitness",
-//            tags = listOf("Healthcare", "Education"),
-//            createdBy = "admin",
-//            usersCount = 0,
-//            userUpVotes = 0,
-//            userDownVotes = 0,
-//            createdAt = Date().time,
-//            updatedAt = Date().time,
-//        )
-//
-//        viewModelScope.launch {
-//            botService.addBot(bot)
-//        }
-//    }
-
-//    fun getBots() {
-//        viewModelScope.launch {
-//            _fetchedBots.clear()
-//            _fetchedBots.addAll(botService.getAllBots())
-//            Log.v(TAG, "getBots: $_fetchedBots")
-//        }
-//    }
-//
     fun deleteAllBots() {
         logger.log(TAG, "deleteAllBots()")
         viewModelScope.launch {
@@ -166,16 +99,14 @@ class BrowseViewModel @Inject constructor (
         val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync
         logger.log(TAG, "syncWithDatabase: lastSyncedAt: $lastSyncedAt")
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val bots = firebaseDatabaseService.fetchBotsUpdatedAfter(lastSyncedAt!!)
-                for (bot in bots) {
-                    botService.addBot(bot.toBotE())
-                }
-                if (bots.isNotEmpty()) {
-                    preferencesDataStore.updateLastSuccessfulSync()
-                }
-                fetchBots()
+            val bots = firebaseDatabaseService.fetchBotsUpdatedAfter(lastSyncedAt!!)
+            for (bot in bots) {
+                botService.addBot(bot.toBotE())
             }
+            if (bots.isNotEmpty()) {
+                preferencesDataStore.updateLastSuccessfulSync()
+            }
+            fetchBots()
         }
     }
 

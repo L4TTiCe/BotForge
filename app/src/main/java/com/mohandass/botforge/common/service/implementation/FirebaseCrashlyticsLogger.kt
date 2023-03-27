@@ -3,7 +3,7 @@ package com.mohandass.botforge.common.service.implementation
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.common.service.Logger
 
-class FirebaseCrashlyticsLogger: Logger {
+class FirebaseCrashlyticsLogger : Logger {
     override fun log(tag: String, message: String) {
         FirebaseCrashlytics.getInstance().log("$tag: $message")
     }
@@ -16,7 +16,7 @@ class FirebaseCrashlyticsLogger: Logger {
         FirebaseCrashlytics.getInstance().log("$tag: $message")
     }
 
-    override fun logError(tag:String, message: String, throwable: Throwable) {
+    override fun logError(tag: String, message: String, throwable: Throwable) {
         FirebaseCrashlytics.getInstance().log("$tag: $message")
         FirebaseCrashlytics.getInstance().recordException(throwable)
     }

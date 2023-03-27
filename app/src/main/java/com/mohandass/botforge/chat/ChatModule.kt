@@ -4,9 +4,9 @@ import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.PersonaDao
 import com.mohandass.botforge.chat.model.services.OpenAiService
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.chat.model.services.implementation.OpenAiServiceImpl
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.service.LocalDatabase
-import com.mohandass.botforge.chat.model.services.implementation.OpenAiServiceImpl
 import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 import dagger.Module
 import dagger.Provides

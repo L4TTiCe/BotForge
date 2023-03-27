@@ -3,7 +3,7 @@ package com.mohandass.botforge.common.service.implementation
 import android.util.Log
 import com.mohandass.botforge.common.service.Logger
 
-class AndroidLogger: Logger {
+class AndroidLogger : Logger {
     override fun log(tag: String, message: String) {
         Log.v(tag, message)
     }
@@ -16,7 +16,7 @@ class AndroidLogger: Logger {
         Log.e(tag, message)
     }
 
-    override fun logError(tag:String, message: String, throwable: Throwable) {
+    override fun logError(tag: String, message: String, throwable: Throwable) {
         Log.e(tag, message, throwable)
     }
 }

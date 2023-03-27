@@ -7,8 +7,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
-import com.mohandass.botforge.R
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 
 @Composable
 fun OpenSourceLibrariesUi(viewModel: AppViewModel) {

@@ -112,7 +112,10 @@ fun BrowseBots(viewModel: AppViewModel) {
                         )
                     }
                 },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search, keyboardType = KeyboardType.Text)
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search,
+                    keyboardType = KeyboardType.Text
+                )
             )
 
             Text(
@@ -179,7 +182,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                     BotCard(
                         botE = topBots[idx],
                         onClickButton = {
-                        viewModel.browse.makePersona(topBots[idx])
+                            viewModel.browse.makePersona(topBots[idx])
                         },
                         onUpVote = {
                             viewModel.browse.upVote(topBots[idx].uuid)

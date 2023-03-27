@@ -129,11 +129,11 @@ fun SharePersona(
 
                     RoundedIconFromStringAnimated(
                         text = (
-                               if (personaAlias != "")
-                                   personaAlias
-                               else
-                                   personaName
-                               ),
+                                if (personaAlias != "")
+                                    personaAlias
+                                else
+                                    personaName
+                                ),
                         modifier = Modifier.size(90.dp),
                         onClick = {}
                     )
@@ -148,7 +148,8 @@ fun SharePersona(
                         },
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Next,
-                            keyboardType = KeyboardType.Text),
+                            keyboardType = KeyboardType.Text
+                        ),
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
                             .fillMaxWidth(0.5f)
@@ -183,7 +184,8 @@ fun SharePersona(
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Text),
+                        keyboardType = KeyboardType.Text
+                    ),
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .fillMaxWidth()
@@ -215,7 +217,7 @@ fun SharePersona(
 
             item {
                 if (personaTags.size > 0) {
-                    Row{
+                    Row {
                         Spacer(modifier = Modifier.width(10.dp))
 
                         Text(
@@ -226,7 +228,7 @@ fun SharePersona(
                     }
                 }
 
-                LazyRow() {
+                LazyRow {
 
                     item {
                         Spacer(modifier = Modifier.width(10.dp))

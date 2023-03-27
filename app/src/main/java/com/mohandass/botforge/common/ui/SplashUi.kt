@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashUi(viewModel: AppViewModel) {
-    val scale =  remember {
+    val scale = remember {
         Animatable(0f)
     }
     LaunchedEffect(key1 = true) {
@@ -40,7 +40,7 @@ fun SplashUi(viewModel: AppViewModel) {
         }
     }
 
-    Box (
+    Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {

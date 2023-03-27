@@ -2,7 +2,7 @@ package com.mohandass.botforge.chat.model
 
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 
-data class MessageMetadata (
+data class MessageMetadata(
     val openAiId: String? = null,
     val finishReason: String? = null,
     val promptTokens: Int? = null,

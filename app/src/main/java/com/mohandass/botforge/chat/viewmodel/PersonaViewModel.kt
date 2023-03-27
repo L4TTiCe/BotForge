@@ -15,9 +15,7 @@ import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceI
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.service.Logger
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -140,7 +138,6 @@ class PersonaViewModel @Inject constructor(
     fun selectPersona(uuid: String) {
         logger.log(TAG, "selectPersona() persona: $uuid")
 
-//        val persona = _personas.value?.find { it.uuid == uuid }
         val persona = _personas.find { it.uuid == uuid }
 
         if (persona != null) {
@@ -163,14 +160,13 @@ class PersonaViewModel @Inject constructor(
     fun fetchPersonas() {
         logger.log(TAG, "fetchPersonas()")
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-//                _personas.postValue(personaService.allPersonas())
-
-                try {
-                    _personas.clear()
-                } catch (_: Throwable) {}
-                _personas.addAll(personaService.allPersonas())
+            try {
+                _personas.clear()
+            } catch (e: Throwable) {
+                logger.logError(TAG, "fetchPersonas() _personas.clear() failed", e)
             }
+            _personas.addAll(personaService.allPersonas())
+
         }
     }
 
@@ -186,16 +182,15 @@ class PersonaViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                personaService.addPersona(persona)
-                logger.log(TAG, "savePersona() _personas: $persona")
-                if (customMessage) {
-                    SnackbarManager.showMessage(R.string.saved_persona)
-                } else {
-                    SnackbarManager.showMessage(R.string.using_default_system_message)
-                }
-                fetchPersonas()
+            personaService.addPersona(persona)
+            logger.log(TAG, "savePersona() _personas: $persona")
+            if (customMessage) {
+                SnackbarManager.showMessage(R.string.saved_persona)
+            } else {
+                SnackbarManager.showMessage(R.string.using_default_system_message)
             }
+            fetchPersonas()
+
         }
         return true
     }
@@ -207,7 +202,7 @@ class PersonaViewModel @Inject constructor(
         if (newName.last().isDigit()) {
             val number = newName.last().toString().toInt()
             val name = newName.substring(0, newName.length - 1)
-            newName= "$name${number + 1}"
+            newName = "$name${number + 1}"
         } else {
             newName = "$newName v2"
         }
@@ -254,25 +249,21 @@ class PersonaViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                personaService.updatePersona(persona)
-                SnackbarManager.showMessage(R.string.saved_persona)
-                fetchPersonas()
-            }
+            personaService.updatePersona(persona)
+            SnackbarManager.showMessage(R.string.saved_persona)
+            fetchPersonas()
         }
     }
 
     fun deletePersona() {
-//        val persona = _personas.value?.find { it.uuid == _personaSelected.value }
         val persona = _personas.find { it.uuid == _personaSelected.value }
         if (persona != null) {
             viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    personaService.deletePersona(persona)
-                    logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
-                    SnackbarManager.showMessage(R.string.delete_persona_success, persona.name)
-                    fetchPersonas()
-                }
+                personaService.deletePersona(persona)
+                logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
+                SnackbarManager.showMessage(R.string.delete_persona_success, persona.name)
+                fetchPersonas()
+
             }
             showCreate()
         } else {
@@ -282,20 +273,20 @@ class PersonaViewModel @Inject constructor(
 
     fun deleteAllPersonas() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                personaService.deleteAllPersonas()
-                SnackbarManager.showMessage(R.string.delete_all_personas_success)
-                fetchPersonas()
-            }
+            personaService.deleteAllPersonas()
+            SnackbarManager.showMessage(R.string.delete_all_personas_success)
+            fetchPersonas()
         }
     }
 
     fun updatePersonaName(name: String) {
         _personaName.value = name
     }
+
     fun updatePersonaAlias(alias: String) {
         _personaAlias.value = alias
     }
+
     fun updatePersonaSystemMessage(message: String) {
         _personaSystemMessage.value = message
     }

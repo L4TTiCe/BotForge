@@ -50,11 +50,11 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
         exit = slideOutHorizontally(targetOffsetX = { it + 200 }),
     ) {
         Column(modifier = modifier) {
-            messagesList.forEachIndexed {
-                    idx, item -> key(item.uuid) {
+            messagesList.forEachIndexed { idx, item ->
+                key(item.uuid) {
                     // use the unique identifier of each message as a key
                     MessageEntry(
-                        modifier=Modifier,
+                        modifier = Modifier,
                         message = item,
                         viewModel = viewModel,
                         startWithFocus = (idx == (messagesList.size - 1)) && (idx != 0) && messageIsFocussed,

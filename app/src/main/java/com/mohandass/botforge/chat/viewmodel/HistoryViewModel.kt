@@ -13,15 +13,13 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HistoryViewModel(
     private val chatService: ChatServiceImpl,
     private val viewModel: AppViewModel,
     private val logger: Logger,
-): ViewModel() {
+) : ViewModel() {
     private val _chats = mutableStateListOf<Chat>()
     val chats = _chats
 
@@ -36,13 +34,11 @@ class HistoryViewModel(
         logger.log(TAG, "fetchChats()")
         _chats.clear()
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _chats.addAll(chatService.getChats())
-                logger.logVerbose(TAG, "fetchChats() chats: ${_chats.size}}")
-            }
-            withContext(Dispatchers.Main) {
-                onSuccess()
-            }
+            _chats.addAll(chatService.getChats())
+            logger.logVerbose(TAG, "fetchChats() chats: ${_chats.size}}")
+
+            onSuccess()
+
         }
     }
 
@@ -56,31 +52,30 @@ class HistoryViewModel(
         logger.log(TAG, "fetchMessages()")
         viewModelScope.launch {
             val chat = _chats.find { it.uuid == chatUUID }
-            var messages: List<Message>
-            withContext(Dispatchers.IO) {
-                messages = chatService.getMessagesFromChat(chatUUID)
 
-                logger.logVerbose(TAG, "fetchMessages() chat: $chat")
-                logger.logVerbose(TAG, "fetchMessages() messages: $messages")
+            val messages: List<Message> = chatService.getMessagesFromChat(chatUUID)
 
-                viewModel.chat.setMessages(messages)
-            }
-            withContext(Dispatchers.Main) {
-                if (chat?.personaUuid != null) {
-                    if (isPersonaDeleted(chat.personaUuid)) {
-                        viewModel.persona.clearSelection()
-                        viewModel.persona.updatePersonaSystemMessage(messages.first().text)
-                        viewModel.chat.setMessages(messages.subList(1, messages.size))
-                    } else {
-                        // ignore first message
-                        viewModel.chat.setMessages(messages.subList(1, messages.size))
-                        viewModel.persona.selectPersona(chat.personaUuid)
-                    }
-                } else {
+            logger.logVerbose(TAG, "fetchMessages() chat: $chat")
+            logger.logVerbose(TAG, "fetchMessages() messages: $messages")
+
+            viewModel.chat.setMessages(messages)
+
+
+            if (chat?.personaUuid != null) {
+                if (isPersonaDeleted(chat.personaUuid)) {
                     viewModel.persona.clearSelection()
+                    viewModel.persona.updatePersonaSystemMessage(messages.first().text)
+                    viewModel.chat.setMessages(messages.subList(1, messages.size))
+                } else {
+                    // ignore first message
+                    viewModel.chat.setMessages(messages.subList(1, messages.size))
+                    viewModel.persona.selectPersona(chat.personaUuid)
                 }
-                onSuccess()
+            } else {
+                viewModel.persona.clearSelection()
             }
+            onSuccess()
+
         }
     }
 
@@ -95,33 +90,28 @@ class HistoryViewModel(
 
     fun getMessagesCount(chatUUID: String, onSuccess: (Int) -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val count = chatService.getMessagesCount(chatUUID)
-                onSuccess(count)
-            }
+            val count = chatService.getMessagesCount(chatUUID)
+            onSuccess(count)
         }
     }
 
     fun deleteAllChats() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                logger.log(TAG, "deleteAllChats()")
-                chatService.deleteAllChats()
-                _chats.clear()
-            }
-            withContext(Dispatchers.Main) {
-                SnackbarManager.showMessage(R.string.delete_all_bookmarked_success)
-            }
+            logger.log(TAG, "deleteAllChats()")
+            chatService.deleteAllChats()
+            _chats.clear()
+            SnackbarManager.showMessage(R.string.delete_all_bookmarked_success)
+
         }
     }
 
     fun deleteChat(chatUUID: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                logger.log(TAG, "deleteChat() chatUUID: $chatUUID")
-                chatService.deleteChatByUUID(chatUUID)
-                _chats.removeIf { it.uuid == chatUUID }
-            }
+
+            logger.log(TAG, "deleteChat() chatUUID: $chatUUID")
+            chatService.deleteChatByUUID(chatUUID)
+            _chats.removeIf { it.uuid == chatUUID }
+
         }
     }
 

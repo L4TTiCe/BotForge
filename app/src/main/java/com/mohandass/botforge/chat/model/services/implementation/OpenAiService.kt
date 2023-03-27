@@ -9,10 +9,10 @@ import com.aallam.openai.client.OpenAI
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 import com.mohandass.botforge.chat.model.services.OpenAiService
+import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 
-class OpenAiServiceImpl private constructor(private val sharedPreferencesService: SharedPreferencesService):
+class OpenAiServiceImpl private constructor(private val sharedPreferencesService: SharedPreferencesService) :
     OpenAiService {
 
     private fun getClient(): OpenAI {
@@ -66,7 +66,7 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
                 metadata = metadata,
             )
         } catch (e: Exception) {
-//            Log.v("OpenAiService", "getChatCompletion() ${e.printStackTrace()}")
+            Log.v("OpenAiService", "getChatCompletion() ${e.printStackTrace()}")
             throw e
         }
     }

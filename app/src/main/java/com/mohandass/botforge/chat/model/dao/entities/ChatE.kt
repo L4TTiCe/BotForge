@@ -24,7 +24,7 @@ data class ChatE(
     companion object {
         fun from(chat: Chat): ChatE {
             return ChatE(
-                name= chat.name,
+                name = chat.name,
                 personaUuid = chat.personaUuid,
                 savedAt = chat.savedAt,
             )

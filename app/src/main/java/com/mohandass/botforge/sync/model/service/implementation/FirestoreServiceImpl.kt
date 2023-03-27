@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 
 class FirestoreServiceImpl(
     private val logger: Logger
-): FirestoreService {
+) : FirestoreService {
     private val db = Firebase.firestore
     private val upVoteRef = db.collection(UP_VOTES_COLLECTION)
     private val downVoteRef = db.collection(DOWN_VOTES_COLLECTION)

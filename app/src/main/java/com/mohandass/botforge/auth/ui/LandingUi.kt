@@ -28,7 +28,11 @@ import com.mohandass.botforge.auth.viewmodel.LandingViewModel
 import com.slaviboy.composeunits.dh
 
 @Composable
-fun LandingUi(modifier: Modifier = Modifier, viewModel: AppViewModel,  landingViewModel: LandingViewModel = hiltViewModel()) {
+fun LandingUi(
+    modifier: Modifier = Modifier,
+    viewModel: AppViewModel,
+    landingViewModel: LandingViewModel = hiltViewModel()
+) {
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
             Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
@@ -73,7 +77,7 @@ fun LandingUi(modifier: Modifier = Modifier, viewModel: AppViewModel,  landingVi
 
         Spacer(modifier = Modifier.size(0.15.dh))
 
-        FilledTonalButton (
+        FilledTonalButton(
             onClick = {
                 viewModel.navController.navigate(AppRoutes.SignIn.route)
             }
@@ -86,14 +90,14 @@ fun LandingUi(modifier: Modifier = Modifier, viewModel: AppViewModel,  landingVi
 
         TextButton(
             onClick = {
-                landingViewModel.onSkip{
+                landingViewModel.onSkip {
                     viewModel.navController.navigate(AppRoutes.Main.route)
                 }
             },
             modifier = Modifier.padding(8.dp),
             shape = MaterialTheme.shapes.medium,
         ) {
-            Text(text = stringResource(id = R.string.anonymous_sign_in),)
+            Text(text = stringResource(id = R.string.anonymous_sign_in))
         }
     }
 }

@@ -5,7 +5,7 @@ import com.mohandass.botforge.sync.model.dao.BotDao
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.service.BotService
 
-class BotServiceImpl(private val botDao: BotDao): BotService {
+class BotServiceImpl(private val botDao: BotDao) : BotService {
 
     override suspend fun searchBots(query: String): List<BotE> {
         return botDao.search("*$query*")

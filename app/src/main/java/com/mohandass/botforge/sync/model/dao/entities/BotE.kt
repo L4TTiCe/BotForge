@@ -7,7 +7,7 @@ import com.mohandass.botforge.chat.model.dao.entities.Persona
 import java.util.*
 
 @Entity(tableName = "bots")
-data class BotE (
+data class BotE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val name: String,
     var alias: String,

@@ -26,14 +26,16 @@ fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
 
         Spacer(modifier = modifier.height(4.dp))
 
-        Text(text = "ID: ${message.metadata?.openAiId}",
+        Text(
+            text = "ID: ${message.metadata?.openAiId}",
             modifier = modifier
                 .fillMaxWidth(),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface
         )
 
-        Text(text = "FinishReason: ${message.metadata?.finishReason}",
+        Text(
+            text = "FinishReason: ${message.metadata?.finishReason}",
             modifier = modifier
                 .fillMaxWidth(),
             style = MaterialTheme.typography.labelSmall,
@@ -42,13 +44,15 @@ fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
 
         Row {
             Column {
-                Text(text = "PromptTokens: ${message.metadata?.promptTokens}",
+                Text(
+                    text = "PromptTokens: ${message.metadata?.promptTokens}",
                     modifier = modifier,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Text(text = "ResponseTokens: ${message.metadata?.completionTokens}",
+                Text(
+                    text = "ResponseTokens: ${message.metadata?.completionTokens}",
                     modifier = modifier,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface
@@ -67,28 +71,13 @@ fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
 
                     Spacer(modifier = modifier.width(4.dp))
 
-                    Text(text = "${message.metadata?.totalTokens}",
+                    Text(
+                        text = "${message.metadata?.totalTokens}",
                         modifier = modifier,
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-//               Row {
-//                   Icon(
-//                       painter = painterResource(id = R.drawable.baseline_attach_money_24),
-//                       contentDescription = null,
-//                       modifier = modifier.size(18.dp),
-//                       tint = MaterialTheme.colorScheme.error
-//                   )
-//
-//                   Text(
-//                       text = (resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens)
-//                                       * message.metadata?.totalTokens?.div(1000)!!).toString(),
-//                       modifier = modifier,
-//                       style = MaterialTheme.typography.labelSmall,
-//                       color = MaterialTheme.colorScheme.error
-//                   )
-//               }
             }
 
             Spacer(modifier = modifier.width(10.dp))

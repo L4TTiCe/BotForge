@@ -62,7 +62,11 @@ fun ApiUsageUi(
                         text = annotatedStringManagingTokens,
                         modifier = Modifier.padding(vertical = 10.dp),
                         onClick = { offset ->
-                            annotatedStringManagingTokens.getStringAnnotations(tag = "URL", start = offset, end = offset)
+                            annotatedStringManagingTokens.getStringAnnotations(
+                                tag = "URL",
+                                start = offset,
+                                end = offset
+                            )
                                 .firstOrNull()?.let { annotation ->
                                     val intent = Intent(Intent.ACTION_VIEW).apply {
                                         data = Uri.parse(annotation.item)
@@ -94,7 +98,7 @@ fun ApiUsageUi(
 
         Text(
             text = resources().getString(R.string.api_usage),
-            modifier = Modifier.padding(horizontal = 10.dp,),
+            modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.titleLarge,
         )
 
@@ -114,7 +118,7 @@ fun ApiUsageUi(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -157,7 +161,7 @@ fun ApiUsageUi(
 
                     Spacer(modifier = Modifier.width(10.dp))
                 }
-                Row (
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Spacer(modifier = Modifier.weight(1f))

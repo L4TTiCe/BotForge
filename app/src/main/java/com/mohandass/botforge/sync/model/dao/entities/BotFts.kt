@@ -5,7 +5,7 @@ import androidx.room.Fts4
 
 @Fts4
 @Entity(tableName = "bots_fts")
-data class BotFts (
+data class BotFts(
     val uuid: String,
     val name: String,
     var alias: String,

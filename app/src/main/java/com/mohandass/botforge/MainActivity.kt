@@ -68,7 +68,10 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                     ) {
-                        Navigation(modifier = Modifier.padding(top = it.calculateTopPadding()), viewModel = viewModel)
+                        Navigation(
+                            modifier = Modifier.padding(top = it.calculateTopPadding()),
+                            viewModel = viewModel
+                        )
                     }
                 }
             }
@@ -104,7 +107,8 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
     AnimatedNavHost(
         modifier = modifier,
         navController = viewModel.navController,
-        startDestination = AppRoutes.Splash.route) {
+        startDestination = AppRoutes.Splash.route
+    ) {
         composable("test") {
             Column(
                 modifier = Modifier

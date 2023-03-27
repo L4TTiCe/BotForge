@@ -5,7 +5,7 @@ import androidx.room.Relation
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 
-data class MessageAndMetadata (
+data class MessageAndMetadata(
     @Embedded val message: MessageE,
 
     @Relation(

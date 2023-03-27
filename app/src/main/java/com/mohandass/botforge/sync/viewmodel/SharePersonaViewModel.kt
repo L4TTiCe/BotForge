@@ -13,18 +13,16 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.sync.model.Bot
 import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
-class SharePersonaViewModel @Inject constructor (
+class SharePersonaViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val accountService: AccountService,
     private val firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     private val logger: Logger,
-): ViewModel() {
+) : ViewModel() {
 
     val backHandler = {
         viewModel.persona.restoreState()
@@ -50,9 +48,9 @@ class SharePersonaViewModel @Inject constructor (
     fun updateCurrentTag(value: String) {
         val tags = value.split(" ", ",", "\n")
 
-        if(tags.size > 1) {
-            for(i in 0 until tags.size - 1) {
-                if(tags[i].isNotEmpty())
+        if (tags.size > 1) {
+            for (i in 0 until tags.size - 1) {
+                if (tags[i].isNotEmpty())
                     _personaTags.add(tags[i])
             }
 
@@ -86,14 +84,10 @@ class SharePersonaViewModel @Inject constructor (
         )
 
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                firebaseDatabaseServiceImpl.writeNewBot(bot)
-            }
-            withContext(Dispatchers.Main) {
-                SnackbarManager.showMessage(R.string.share_persona_success)
-                clear()
-                backHandler()
-            }
+            firebaseDatabaseServiceImpl.writeNewBot(bot)
+            SnackbarManager.showMessage(R.string.share_persona_success)
+            clear()
+            backHandler()
         }
     }
 

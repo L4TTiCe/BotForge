@@ -20,14 +20,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RoundedIconFromString(
     modifier: Modifier = Modifier,
-    text : String,
+    text: String,
     borderColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     onClick: () -> Unit = { }
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .clip(CircleShape)
-            .clickable { onClick() }.padding(6.dp),
+            .clickable { onClick() }
+            .padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

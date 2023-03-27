@@ -38,7 +38,7 @@ fun AppInformationUi() {
             style = MaterialTheme.typography.titleLarge
         )
 
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),

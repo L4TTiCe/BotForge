@@ -26,7 +26,7 @@ import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpUi(viewModel:AppViewModel, signUpViewModel: SignUpViewModel = hiltViewModel()) {
+fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()

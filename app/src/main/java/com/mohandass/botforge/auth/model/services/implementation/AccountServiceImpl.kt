@@ -17,9 +17,10 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
     application: Application,
-    ) : AccountService {
+) : AccountService {
 
-    private val adjectives = application.applicationContext.resources.getStringArray(R.array.adjectives)
+    private val adjectives =
+        application.applicationContext.resources.getStringArray(R.array.adjectives)
     private val animals = application.applicationContext.resources.getStringArray(R.array.animals)
 
     private fun generateUsername() = "${adjectives.random()}${animals.random()}"
@@ -37,7 +38,13 @@ class AccountServiceImpl @Inject constructor(
         get() = callbackFlow {
             val listener =
                 FirebaseAuth.AuthStateListener { auth ->
-                    this.trySend(auth.currentUser?.let { User(it.uid, it.isAnonymous, it.displayName) } ?: User())
+                    this.trySend(auth.currentUser?.let {
+                        User(
+                            it.uid,
+                            it.isAnonymous,
+                            it.displayName
+                        )
+                    } ?: User())
                 }
             auth.addAuthStateListener(listener)
             awaitClose { auth.removeAuthStateListener(listener) }

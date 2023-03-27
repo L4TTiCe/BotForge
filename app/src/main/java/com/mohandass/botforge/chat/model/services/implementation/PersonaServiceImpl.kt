@@ -1,27 +1,27 @@
 package com.mohandass.botforge.chat.model.services.implementation
 
-import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.model.dao.PersonaDao
+import com.mohandass.botforge.chat.model.dao.entities.Persona
 
-class PersonaServiceImpl(private val PersonaDao: PersonaDao)  {
+class PersonaServiceImpl(private val personaDao: PersonaDao) {
 
     suspend fun allPersonas(): List<Persona> {
-        return PersonaDao.getAllPersonas()
+        return personaDao.getAllPersonas()
     }
 
     suspend fun addPersona(persona: Persona) {
-        PersonaDao.addPersona(persona)
+        personaDao.addPersona(persona)
     }
 
     suspend fun updatePersona(persona: Persona) {
-        PersonaDao.updatePersona(persona)
+        personaDao.updatePersona(persona)
     }
 
     suspend fun deletePersona(persona: Persona) {
-        PersonaDao.deletePersona(persona)
+        personaDao.deletePersona(persona)
     }
 
     suspend fun deleteAllPersonas() {
-        PersonaDao.deleteAllPersonas()
+        personaDao.deleteAllPersonas()
     }
 }

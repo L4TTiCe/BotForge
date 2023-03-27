@@ -2,12 +2,10 @@ package com.mohandass.botforge.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.auth.model.services.AccountService
+import com.mohandass.botforge.common.service.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,24 +16,21 @@ class LandingViewModel @Inject constructor(
 
     fun checkAuthentication(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                if (accountService.hasUser) {
-                    logger.logVerbose(TAG, "checkAuthentication() Authenticated")
-                    onSuccess()
-                }
+            if (accountService.hasUser) {
+                logger.logVerbose(TAG, "checkAuthentication() Authenticated")
+                onSuccess()
             }
         }
     }
 
     fun onSkip(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                accountService.createAnonymousAccount()
-            }
-            withContext(Dispatchers.Main) {
-                logger.logVerbose(TAG, "onSkip() Authenticated")
-                onSuccess()
-            }
+
+            accountService.createAnonymousAccount()
+
+            logger.logVerbose(TAG, "onSkip() Authenticated")
+            onSuccess()
+
         }
     }
 

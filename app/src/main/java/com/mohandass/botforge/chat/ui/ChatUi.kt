@@ -95,8 +95,6 @@ fun ChatUi(viewModel: AppViewModel) {
                 state = listState,
             ) {
                 item {
-//                    Spacer(modifier = Modifier.height(0.02.dh))
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -147,8 +145,6 @@ fun ChatUi(viewModel: AppViewModel) {
                             }
                         }
                     }
-
-//                    Spacer(modifier = Modifier.height(0.02.dh))
                 }
 
                 item {
@@ -161,7 +157,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         ) + fadeIn(
                             initialAlpha = 0.3f
                         ),
-                        exit = slideOutVertically{
+                        exit = slideOutVertically {
                             -it - 150
                         } + shrinkVertically() + fadeOut(
                             targetAlpha = 0f
@@ -211,7 +207,8 @@ fun ChatUi(viewModel: AppViewModel) {
                                 },
                                 keyboardOptions = KeyboardOptions(
                                     imeAction = ImeAction.Next,
-                                    keyboardType = KeyboardType.Text),
+                                    keyboardType = KeyboardType.Text
+                                ),
                                 modifier = Modifier
                                     .padding(horizontal = 10.dp)
                                     .fillMaxWidth()
@@ -246,7 +243,8 @@ fun ChatUi(viewModel: AppViewModel) {
                                     onClick = {
                                         viewModel.persona.showSharePersona()
                                     },
-                                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                ) {
                                     Text(text = stringResource(id = R.string.share))
                                 }
 
@@ -270,7 +268,10 @@ fun ChatUi(viewModel: AppViewModel) {
                                             containerColor = MaterialTheme.colorScheme.error
                                         )
                                     ) {
-                                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = null
+                                        )
                                         Spacer(modifier = Modifier.width(0.01.dw))
                                         Text(text = stringResource(id = R.string.delete))
                                     }
@@ -280,7 +281,8 @@ fun ChatUi(viewModel: AppViewModel) {
                             if (viewModel.persona.selectedPersona.value != "") {
                                 Button(
                                     onClick = { viewModel.persona.saveAsNewPersona() },
-                                    modifier = Modifier.padding(horizontal = 10.dp)) {
+                                    modifier = Modifier.padding(horizontal = 10.dp)
+                                ) {
                                     Text(text = stringResource(id = R.string.make_copy))
                                 }
                             }
@@ -299,7 +301,7 @@ fun ChatUi(viewModel: AppViewModel) {
                 }
 
                 item {
-                    Row (
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {

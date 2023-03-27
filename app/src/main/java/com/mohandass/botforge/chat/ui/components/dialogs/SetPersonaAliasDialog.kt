@@ -35,7 +35,7 @@ fun SetPersonaAliasDialog(viewModel: AppViewModel) {
                         .padding(10.dp)
                 ) {
 
-                    Row (
+                    Row(
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         Spacer(modifier = Modifier.weight(1f))

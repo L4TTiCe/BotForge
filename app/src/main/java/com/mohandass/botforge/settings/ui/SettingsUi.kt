@@ -22,12 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.resources
+import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
-import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 import com.slaviboy.composeunits.dh
 
@@ -60,7 +60,6 @@ fun SettingsUi(
     }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
-//    var navigationBarColor = MaterialTheme.colorScheme.background
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()

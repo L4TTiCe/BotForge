@@ -26,11 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 
@@ -159,7 +159,8 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                             ) {
                                 Icon(
                                     painter = painterResource(
-                                        id = R.drawable.baseline_clear_all_24),
+                                        id = R.drawable.baseline_clear_all_24
+                                    ),
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp)
                                 )
@@ -177,7 +178,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                                     contentDescription = null,
                                     modifier = Modifier.size(24.dp)
                                 )
-                                Text (
+                                Text(
                                     text = stringResource(id = R.string.send),
                                     modifier = Modifier.padding(horizontal = 10.dp)
                                 )
@@ -227,11 +228,12 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
             sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
             sheetElevation = 4.dp,
         ) {
-            Column(modifier = Modifier
-                .verticalScroll(scrollState)
-                .background(MaterialTheme.colorScheme.background)
-                .padding(10.dp)
-                .fillMaxSize()
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(10.dp)
+                    .fillMaxSize()
             ) {
 
                 Row {
@@ -277,7 +279,8 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Text),
+                        keyboardType = KeyboardType.Text
+                    ),
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .fillMaxSize()
@@ -312,7 +315,8 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                         onClick = { /*TODO*/
                             SnackbarManager.showMessage(R.string.not_implemented)
                         },
-                        modifier = Modifier.padding(horizontal = 10.dp)) {
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    ) {
                         Text(text = stringResource(id = R.string.share))
                     }
 
@@ -342,7 +346,8 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                 if (viewModel.persona.selectedPersona.value != "") {
                     Button(
                         onClick = { viewModel.persona.saveAsNewPersona() },
-                        modifier = Modifier.padding(horizontal = 10.dp)) {
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    ) {
                         Text(text = stringResource(id = R.string.make_copy))
                     }
                 }

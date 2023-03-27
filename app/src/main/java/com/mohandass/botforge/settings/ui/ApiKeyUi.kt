@@ -99,7 +99,7 @@ fun ApiKeyUi(
 
         Text(
             text = resources().getString(R.string.api_key),
-            modifier = Modifier.padding(horizontal = 10.dp,),
+            modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.labelMedium,
         )
 
@@ -116,11 +116,11 @@ fun ApiKeyUi(
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 2.dp)
                 .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions (imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions (
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
                 onDone = {
                     settingsViewModel.setApiKey(apiKey.value)
-                    keyboardController?.hide ()
+                    keyboardController?.hide()
                 }
             )
         )
@@ -128,7 +128,8 @@ fun ApiKeyUi(
         Text(
             text = resources().getString(
                 R.string.api_key_info,
-                resources().getString(R.string.api_key_link)),
+                resources().getString(R.string.api_key_link)
+            ),
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             style = MaterialTheme.typography.bodySmall,
         )

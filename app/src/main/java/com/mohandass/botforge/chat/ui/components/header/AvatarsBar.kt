@@ -29,7 +29,6 @@ fun AvatarsBar(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel,
 ) {
-//    val personas by viewModel.personas.observeAsState(listOf())
     val personas = viewModel.persona.personas
     val chatType by viewModel.persona.chatType
 
@@ -144,9 +143,11 @@ fun AvatarsBar(
 
             Column {
                 Column(
-                    modifier = modifier.size(90.dp)
+                    modifier = modifier
+                        .size(90.dp)
                         .clip(CircleShape)
-                        .clickable { viewModel.persona.showHistory() }.padding(6.dp),
+                        .clickable { viewModel.persona.showHistory() }
+                        .padding(6.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {

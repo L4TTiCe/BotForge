@@ -8,7 +8,8 @@ import com.mohandass.botforge.R.string as AppText
 sealed class SnackbarMessage {
     class StringSnackbar(val message: String) : SnackbarMessage()
     class ResourceSnackbar(@StringRes val message: Int) : SnackbarMessage()
-    class ResourceSnackbarWithFormatArg(@StringRes val message: Int, vararg formatArgs: String) : SnackbarMessage() {
+    class ResourceSnackbarWithFormatArg(@StringRes val message: Int, vararg formatArgs: String) :
+        SnackbarMessage() {
         val formatArg: List<String> = formatArgs.toList()
     }
 
@@ -55,9 +56,15 @@ sealed class SnackbarMessage {
 
         fun SnackbarMessage.getDismissAction(): () -> Unit {
             return when (this) {
-                is StringSnackbar -> { {} }
-                is ResourceSnackbar -> { {} }
-                is ResourceSnackbarWithFormatArg -> { {} }
+                is StringSnackbar -> {
+                    {}
+                }
+                is ResourceSnackbar -> {
+                    {}
+                }
+                is ResourceSnackbarWithFormatArg -> {
+                    {}
+                }
 
                 is StringSnackbarWithAction -> this.dismissAction
                 is ResourceSnackbarWithAction -> this.dismissAction
@@ -86,7 +93,11 @@ sealed class SnackbarMessage {
             dismissAction: () -> Unit
         ): SnackbarMessage {
             val message = this.message.orEmpty()
-            return if (message.isNotBlank()) StringSnackbarWithAction(message, dismissLabel, dismissAction)
+            return if (message.isNotBlank()) StringSnackbarWithAction(
+                message,
+                dismissLabel,
+                dismissAction
+            )
             else ResourceSnackbarWithAction(AppText.generic_error, dismissLabel, dismissAction)
         }
     }

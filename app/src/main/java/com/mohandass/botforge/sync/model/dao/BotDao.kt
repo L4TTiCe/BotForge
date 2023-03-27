@@ -20,7 +20,8 @@ interface BotDao {
     suspend fun botFtsExists(uuid: String): Boolean
 
     // Update BotFts with uuid
-    @Query("""
+    @Query(
+        """
             UPDATE bots_fts
             SET name = :name, alias = :alias, systemMessage = :systemMessage, description = :description, tags = :tags, createdBy = :createdBy
             WHERE uuid = :uuid
@@ -36,24 +37,28 @@ interface BotDao {
         createdBy: String
     )
 
-    @Query("""
+    @Query(
+        """
       SELECT bots.*
       FROM bots
       JOIN bots_fts ON bots.uuid = bots_fts.uuid
       WHERE bots_fts MATCH :query
       ORDER BY (bots.userUpVotes + bots.usersCount ) DESC
-    """)
+    """
+    )
     suspend fun search(
         query: String,
 //        limit: Int = 10,
 //        offset: Int = 0
     ): List<BotE>
 
-    @Query("""
+    @Query(
+        """
        SELECT * FROM bots 
        ORDER BY (bots.userUpVotes + bots.usersCount ) DESC 
        LIMIT :limit OFFSET :offset
-    """)
+    """
+    )
     suspend fun getBots(
         limit: Int = 15,
         offset: Int = 0

@@ -37,7 +37,7 @@ fun MessageEntry(
 //    scrollToItem: () -> Unit = {}
 ) {
     val showMetadata = remember { mutableStateOf(false) }
-    val isActive  = remember { mutableStateOf(message.isActive) }
+    val isActive = remember { mutableStateOf(message.isActive) }
     val showAllIcons = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
 
@@ -49,7 +49,7 @@ fun MessageEntry(
     val showMarkdownDialog = remember { mutableStateOf(false) }
     val showAsMarkdown = remember { mutableStateOf(true) }
 
-    val cardColors =  when (role) {
+    val cardColors = when (role) {
         Role.USER -> CardDefaults.cardColors()
         Role.BOT -> CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
@@ -218,7 +218,7 @@ fun MessageEntry(
             )
 
             if (Utils.containsMarkdown(messageContent)) {
-                Card (
+                Card(
                     modifier = Modifier
                         .fillMaxWidth(0.88f)
                         .padding(vertical = 8.dp)
@@ -235,7 +235,7 @@ fun MessageEntry(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (showAsMarkdown.value) {
-                            Text(text =  stringResource(id = R.string.markdown_default))
+                            Text(text = stringResource(id = R.string.markdown_default))
                         } else {
                             Text(text = stringResource(id = R.string.markdown_switch))
                         }
@@ -320,7 +320,7 @@ fun MessageEntry(
                     }
                 }
 
-                Column (
+                Column(
                     modifier = modifier
                         .weight(0.12f),
                     horizontalAlignment = Alignment.CenterHorizontally

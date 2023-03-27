@@ -52,7 +52,7 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
 
     suspend fun getMessagesCount(chatUUID: String): Int {
         Log.v(TAG, "getMessagesCount() chatUUID: $chatUUID")
-        val count =  chatDao.getMessageCount(chatUUID)
+        val count = chatDao.getMessageCount(chatUUID)
         Log.v(TAG, "getMessagesCount() count: $count")
         return count
     }
@@ -64,7 +64,7 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
         for (chatE in chatEList) {
             val chat = Chat(
                 uuid = chatE.uuid,
-                name= chatE.name,
+                name = chatE.name,
                 personaUuid = chatE.personaUuid,
                 savedAt = chatE.savedAt,
             )
@@ -80,7 +80,7 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
         for (chatWithMessagesE in chatWithMessagesEList) {
             val messagesE = chatWithMessagesE.messages
 
-            for(messageE in messagesE) {
+            for (messageE in messagesE) {
                 val message = Message.from(messageE)
 
                 if (messageE.metadataOpenAiId != null) {

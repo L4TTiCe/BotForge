@@ -15,8 +15,13 @@ object SnackbarManager {
         messages.value = SnackbarMessage.ResourceSnackbar(message)
     }
 
-    fun showMessageWithAction(@StringRes message: Int, @StringRes dismissLabel: Int, dismissAction: () -> Unit = {}) {
-        messages.value = SnackbarMessage.ResourceSnackbarWithAction(message, dismissLabel, dismissAction)
+    fun showMessageWithAction(
+        @StringRes message: Int,
+        @StringRes dismissLabel: Int,
+        dismissAction: () -> Unit = {}
+    ) {
+        messages.value =
+            SnackbarMessage.ResourceSnackbarWithAction(message, dismissLabel, dismissAction)
     }
 
     fun showMessage(@StringRes message: Int, vararg formatArgs: String) {

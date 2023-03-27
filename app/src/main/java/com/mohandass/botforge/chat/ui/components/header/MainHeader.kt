@@ -69,7 +69,7 @@ fun MainHeader(
 }
 
 @Composable
-fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel) {
+fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
     val openDeleteConfirmationDialog = remember { mutableStateOf(false) }
 
@@ -87,7 +87,7 @@ fun DefaultDropdownMenu( modifier: Modifier = Modifier, viewModel: AppViewModel)
     DropdownMenu(
         expanded = displayOptionsMenu,
         onDismissRequest = { displayOptionsMenu = false },
-        offset =  DpOffset(0.8.dw, (0.01).dh),
+        offset = DpOffset(0.8.dw, (0.01).dh),
     ) {
         DropdownMenuItem(
             onClick = {
