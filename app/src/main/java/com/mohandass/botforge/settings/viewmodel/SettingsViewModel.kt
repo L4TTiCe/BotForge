@@ -63,6 +63,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setUserGeneratedContent(value: Boolean) {
+        logger.log(TAG, "setUserGeneratedContent() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setUserGeneratedContent(value)
+        }
+    }
+
     companion object {
         private const val TAG = "SettingsViewModel"
     }

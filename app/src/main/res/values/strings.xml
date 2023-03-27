@@ -184,7 +184,7 @@
 
     <!--    SetPersonaAliasDialog   -->
     <string name="set_alias">Choose Avatar</string>
-    <string name="alias">Alias / Avatar</string>
+    <string name="alias">Alias</string>
     <string name="set_alias_message">Choose an avatar for your persona.</string>
     <string name="set_alias_message_2">Try emoji\'s like 🤖</string>
 

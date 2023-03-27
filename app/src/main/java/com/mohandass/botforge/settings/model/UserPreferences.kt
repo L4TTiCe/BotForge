@@ -4,11 +4,14 @@ data class UserPreferences(
     val preferredTheme: PreferredTheme,
     val useDynamicColors: Boolean,
     val lastSuccessfulSync: Long,
+    val enableUserGeneratedContent: Boolean,
 ) {
     override fun toString(): String {
         return "UserPreferences(" +
                 "preferredTheme=$preferredTheme, " +
                 "useDynamicColors=$useDynamicColors, " +
-                "lastSuccessfulSync=$lastSuccessfulSync)"
+                "lastSuccessfulSync=$lastSuccessfulSync" +
+                "enableUserGeneratedContent=$enableUserGeneratedContent" +
+                ")"
     }
 }

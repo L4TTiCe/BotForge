@@ -6,8 +6,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,6 +32,15 @@ fun AvatarsBar(
     val personas = viewModel.persona.personas
     val chatType by viewModel.persona.chatType
 
+    var isUserGeneratedContentEnabled by remember {
+        mutableStateOf(false)
+    }
+
+    val userPreferences by viewModel.userPreferences.observeAsState()
+    userPreferences?.let {
+        isUserGeneratedContentEnabled = it.enableUserGeneratedContent
+    }
+
     LazyRow(modifier = modifier) {
         item {
 
@@ -54,21 +63,23 @@ fun AvatarsBar(
             }
         }
 
-        item {
-            Column {
-                TintedIconButton(
-                    icon = R.drawable.community,
-                    iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    scale = 0.8f,
-                    modifier = Modifier
-                        .size(90.dp)
-                        .padding(6.dp),
-                    isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
-                    onClick = { viewModel.persona.showMarketplace() }
-                )
+        if (isUserGeneratedContentEnabled) {
+            item {
+                Column {
+                    TintedIconButton(
+                        icon = R.drawable.community,
+                        iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        scale = 0.8f,
+                        modifier = Modifier
+                            .size(90.dp)
+                            .padding(6.dp),
+                        isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
+                        onClick = { viewModel.persona.showMarketplace() }
+                    )
 
-                if (chatType == ChatType.BROWSE || chatType == ChatType.SHARE) {
-                    ActiveIndicator()
+                    if (chatType == ChatType.BROWSE || chatType == ChatType.SHARE) {
+                        ActiveIndicator()
+                    }
                 }
             }
         }

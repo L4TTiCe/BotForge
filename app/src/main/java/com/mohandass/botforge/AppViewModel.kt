@@ -25,7 +25,6 @@ import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabase
 import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,6 +50,7 @@ class AppViewModel @Inject constructor(
             preferredTheme = userPreference.preferredTheme,
             useDynamicColors = userPreference.useDynamicColors,
             lastSuccessfulSync = userPreference.lastSuccessfulSync,
+            enableUserGeneratedContent = userPreference.enableUserGeneratedContent
         )
     }
 

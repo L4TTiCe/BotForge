@@ -9,11 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -52,11 +49,14 @@ fun SettingsUi(
         }
     }
 
-    var activeTheme = remember {
-        PreferredTheme.AUTO
+    var activeTheme by remember {
+        mutableStateOf(PreferredTheme.AUTO)
     }
-    var useDynamicColor = remember {
-        true
+    var useDynamicColor by remember {
+        mutableStateOf(true)
+    }
+    val isUserGeneratedContentEnabled = remember {
+        mutableStateOf(true)
     }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
@@ -71,11 +71,15 @@ fun SettingsUi(
 
         activeTheme = it.preferredTheme
         useDynamicColor = it.useDynamicColors
-
-
+        isUserGeneratedContentEnabled.value = it.enableUserGeneratedContent
     }
 
-    DisposableEffect(systemUiController, activeTheme, useDynamicColor) {
+    DisposableEffect(
+        systemUiController,
+        activeTheme,
+        useDynamicColor,
+        isUserGeneratedContentEnabled
+    ) {
 
         systemUiController.setStatusBarColor(
             color = statusBarColor,
@@ -179,6 +183,17 @@ fun SettingsUi(
         }
         item {
             SettingsCategory(title = resources().getString(R.string.community))
+        }
+        item {
+            SettingsItem(
+                title = "Enable User Generated Content",
+                description = "Allow bots from the community to be displayed in the app",
+                icon = painterResource(id = R.drawable.baseline_color_lens_24),
+                switchState = isUserGeneratedContentEnabled,
+                onCheckChange = {
+                    settingsViewModel.setUserGeneratedContent(it)
+                }
+            )
         }
         item {
             SettingsItem(

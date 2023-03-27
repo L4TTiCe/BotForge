@@ -19,6 +19,7 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
         val PREF_THEME = stringPreferencesKey(PreferencesDataStore.PREFERRED_THEME_KEY)
         val DYNAMIC_COLOR = booleanPreferencesKey(PreferencesDataStore.DYNAMIC_COLOR)
         val LAST_SUCCESSFUL_SYNC = longPreferencesKey(PreferencesDataStore.LAST_SUCCESSFUL_SYNC)
+        val USER_GENERATED_CONTENT = booleanPreferencesKey(PreferencesDataStore.USER_GENERATED_CONTENT)
     }
 
     /**
@@ -68,6 +69,12 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
     override suspend fun fetchInitialPreferences() =
         mapUserPreferences(dataStore.data.first().toPreferences())
 
+    override suspend fun setUserGeneratedContent(newValue: Boolean) {
+        Log.v(TAG, "setUserGeneratedContent() newValue: $newValue")
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.USER_GENERATED_CONTENT] = newValue
+        }
+    }
 
     private fun mapUserPreferences(preferences: Preferences): UserPreferences {
         val preferredTheme = PreferredTheme.valueOf(
@@ -75,7 +82,8 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
         )
         val useDynamicColors = preferences[PreferencesKeys.DYNAMIC_COLOR] ?: true
         val lastSuccessfulSync = preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] ?: 0L
-        return UserPreferences(preferredTheme, useDynamicColors, lastSuccessfulSync)
+        val enableUserGeneratedContent = preferences[PreferencesKeys.USER_GENERATED_CONTENT] ?: true
+        return UserPreferences(preferredTheme, useDynamicColors, lastSuccessfulSync, enableUserGeneratedContent)
     }
 
     companion object {

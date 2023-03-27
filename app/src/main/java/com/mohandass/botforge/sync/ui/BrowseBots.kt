@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -16,8 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.sync.ui.components.BotCard
 import com.slaviboy.composeunits.dh
 
@@ -29,6 +32,24 @@ fun BrowseBots(viewModel: AppViewModel) {
     val topBots = viewModel.browse.topBots
 
     val scrollState = rememberScrollState()
+
+    var isUserGeneratedContentEnabled by remember {
+        mutableStateOf(false)
+    }
+
+    val userPreferences by viewModel.userPreferences.observeAsState()
+    userPreferences?.let {
+        isUserGeneratedContentEnabled = it.enableUserGeneratedContent
+
+        if (!isUserGeneratedContentEnabled) {
+            viewModel.persona.clearSelection()
+            viewModel.persona.setChatType(ChatType.CREATE)
+            viewModel.persona.updateExpandCustomizePersona(true)
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+                popUpTo(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) { inclusive = true }
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.browse.fetchBots()

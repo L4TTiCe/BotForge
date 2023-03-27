@@ -68,7 +68,7 @@ class PersonaViewModel @Inject constructor(
     val chatType: MutableState<ChatType>
         get() = _chatType
 
-    private fun setChatType(chatType: ChatType) {
+    fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
         FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
     }
