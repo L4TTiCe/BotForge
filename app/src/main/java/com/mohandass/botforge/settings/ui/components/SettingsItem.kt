@@ -32,10 +32,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.R
 
 @Composable
 fun SettingsItem(title: String, description: String, painter: Painter, onClick: () -> Unit) {
@@ -122,4 +127,27 @@ fun SettingsItem(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun SettingsItemPreview() {
+    SettingsItem(
+        title = "Title",
+        description = "Description",
+        painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
+        onClick = {}
+    )
+}
+
+@Preview
+@Composable
+fun SettingsItemSwitchPreview() {
+    SettingsItem(
+        title = "Title",
+        description = "Description",
+        icon = painterResource(id = R.drawable.baseline_manage_accounts_24),
+        switchState = remember {mutableStateOf(true) },
+        onCheckChange = {}
+    )
 }

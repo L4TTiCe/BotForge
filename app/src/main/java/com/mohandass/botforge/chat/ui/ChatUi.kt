@@ -43,11 +43,46 @@ fun ChatUi(viewModel: AppViewModel) {
     val personaSystemMessage by viewModel.persona.personaSystemMessage
     val isLoading by viewModel.isLoading
 
-    DeletePersonaDialog(viewModel = viewModel)
+    val openDeleteDialog by viewModel.persona.openDeleteDialog
+    val openSaveChatDialog by viewModel.chat.openSaveChatDialog
+    val openAliasDialog by viewModel.chat.openAliasDialog
 
-    SavePersonaDialog(viewModel = viewModel)
+    if (openDeleteDialog) {
+        DeletePersonaDialog(
+            onDismiss = {
+                viewModel.persona.updateDeletePersonaDialogState(false)
+            },
+            onConfirm = {
+                viewModel.persona.deletePersona()
+                viewModel.persona.updateDeletePersonaDialogState(false)
+            })
+    }
 
-    SetPersonaAliasDialog(viewModel = viewModel)
+    if (openSaveChatDialog) {
+        SavePersonaDialog(
+            onDismiss = {
+                viewModel.chat.updateSaveChatDialogState(false)
+            },
+            onConfirm = {
+                viewModel.chat.updateChatName(it)
+                viewModel.chat.saveChat()
+                viewModel.chat.updateSaveChatDialogState(false)
+            }
+        )
+    }
+
+    if (openAliasDialog) {
+        SetPersonaAliasDialog(
+            onDismiss = {
+                viewModel.chat.updateAliasDialogState(false)
+            },
+            onConfirm = {
+                viewModel.persona.updatePersonaAlias(it)
+                viewModel.persona.saveUpdatePersona()
+                viewModel.chat.updateAliasDialogState(false)
+            }
+        )
+    }
 
     Scaffold(
         floatingActionButton = {

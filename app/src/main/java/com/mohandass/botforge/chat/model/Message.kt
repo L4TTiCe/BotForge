@@ -1,5 +1,6 @@
 package com.mohandass.botforge.chat.model
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatMessage
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
@@ -44,6 +45,40 @@ data class Message(
                 isActive = true,
                 metadata = null,
             )
+        }
+
+        class MessageProvider: PreviewParameterProvider<Message> {
+            override val values: Sequence<Message>
+                get() = sequenceOf(
+                    Message(
+                        text = "Hello",
+                        role = Role.USER,
+                        uuid = UUID.randomUUID().toString(),
+                        timestamp = System.currentTimeMillis(),
+                        isActive = true,
+                        metadata = MessageMetadata(
+                            openAiId = "openai-id",
+                            finishReason = "finish-reason",
+                            promptTokens = 150,
+                            completionTokens = 150,
+                            totalTokens = 300,
+                        ),
+                    ),
+                    Message(
+                        text = "Hello",
+                        role = Role.BOT,
+                        uuid = UUID.randomUUID().toString(),
+                        timestamp = System.currentTimeMillis(),
+                        isActive = true,
+                        metadata = MessageMetadata(
+                            openAiId = "openai-id",
+                            finishReason = "finish-reason",
+                            promptTokens = 150,
+                            completionTokens = 150,
+                            totalTokens = 300,
+                        ),
+                    ),
+                )
         }
     }
 }

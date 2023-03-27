@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
 import com.slaviboy.composeunits.dh
 import com.slaviboy.composeunits.dw
 
@@ -72,6 +73,17 @@ fun MainHeader(
 fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
     val openDeleteConfirmationDialog = remember { mutableStateOf(false) }
+
+    if (openDeleteConfirmationDialog.value) {
+        DeleteAllPersonasDialog(
+            onDismiss = { openDeleteConfirmationDialog.value = false },
+            onConfirm = {
+                viewModel.persona.deleteAllPersonas()
+                viewModel.persona.clearSelection()
+                openDeleteConfirmationDialog.value = false
+            }
+        )
+    }
 
     IconButton(onClick = { displayOptionsMenu = true }) {
         Icon(
@@ -136,61 +148,5 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 )
             }
         )
-        DropdownMenuItem(
-            onClick = {
-                throw RuntimeException("Test Crash")
-            },
-            text = {
-                Text(text = "TEST CRASH")
-            },
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_bug_report_24),
-                    contentDescription = null
-                )
-            }
-        )
-
-        if (openDeleteConfirmationDialog.value) {
-            AlertDialog(
-                onDismissRequest = { openDeleteConfirmationDialog.value = false },
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.delete_all_persona),
-                        color = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                },
-                text = {
-                    Text(
-                        text = stringResource(id = R.string.delete_all_persona_message),
-                        color = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                },
-                confirmButton = {
-                    TextButton(onClick = {
-                        viewModel.persona.deleteAllPersonas()
-                        viewModel.persona.clearSelection()
-                        openDeleteConfirmationDialog.value = false
-                    }) {
-                        Text(
-                            text = stringResource(id = R.string.delete_all),
-                            color = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = {
-                        openDeleteConfirmationDialog.value = false
-                    }) {
-                        Text(
-                            text = stringResource(id = R.string.cancel),
-                            color = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                textContentColor = MaterialTheme.colorScheme.onErrorContainer,
-            )
-        }
     }
 }

@@ -205,4 +205,7 @@
     <string name="community_browse">Browse Bots</string>
     <string name="community_browse_message">Browse community bots and templates.</string>
     <string name="community_most_popular">Most Popular Bots</string>
+
+    <string name="save_persona_dialog_title">Name your Chat</string>
+    <string name="save_persona_dialog_chat_title">Chat Title</string>
 </resources>

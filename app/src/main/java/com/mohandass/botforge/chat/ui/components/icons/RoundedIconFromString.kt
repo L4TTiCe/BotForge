@@ -1,10 +1,7 @@
 package com.mohandass.botforge.chat.ui.components.icons
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -49,4 +47,22 @@ fun RoundedIconFromString(
             maxLines = 1,
         )
     }
+}
+
+@Preview
+@Composable
+fun RoundedIconFromStringPreview() {
+    RoundedIconFromString(
+        modifier = Modifier.size(90.dp),
+        text = "AB"
+    )
+}
+
+@Preview
+@Composable
+fun RoundedIconFromStringPreviewEmoji() {
+    RoundedIconFromString(
+        modifier = Modifier.size(90.dp),
+        text = "\uD83D\uDD25"
+    )
 }

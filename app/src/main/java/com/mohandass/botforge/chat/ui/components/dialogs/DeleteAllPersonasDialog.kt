@@ -10,22 +10,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mohandass.botforge.R
 
 @Composable
-fun DeleteHistoryDialog(
+fun DeleteAllPersonasDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = stringResource(id = R.string.delete_all_bookmarked))
+            Text(
+                text = stringResource(id = R.string.delete_all_persona),
+                color = MaterialTheme.colorScheme.onErrorContainer
+            )
         },
         text = {
-            Text(text = stringResource(id = R.string.delete_all_bookmarked_message))
+            Text(
+                text = stringResource(id = R.string.delete_all_persona_message),
+                color = MaterialTheme.colorScheme.onErrorContainer
+            )
         },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(
-                    text = stringResource(id = R.string.delete),
+                    text = stringResource(id = R.string.delete_all),
                     color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
@@ -39,10 +45,15 @@ fun DeleteHistoryDialog(
             }
         },
         containerColor = MaterialTheme.colorScheme.errorContainer,
+        textContentColor = MaterialTheme.colorScheme.onErrorContainer,
     )
 }
+
 @Preview
 @Composable
-fun DeleteHistoryDialogPreview() {
-    DeleteHistoryDialog(onDismiss = {}, onConfirm = {})
+fun DeleteAllPersonasDialogPreview() {
+    DeleteAllPersonasDialog(
+        onDismiss = { },
+        onConfirm = { }
+    )
 }

@@ -1,5 +1,6 @@
 package com.mohandass.botforge.chat.ui.components.messages
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,8 @@ import com.mohandass.botforge.chat.model.Message
 
 @Composable
 fun MessageMetadata(modifier: Modifier = Modifier, message: Message) {
+    Log.v("MessageMetadata", "message: $message")
+
     Column {
         Spacer(modifier = modifier.height(4.dp))
 

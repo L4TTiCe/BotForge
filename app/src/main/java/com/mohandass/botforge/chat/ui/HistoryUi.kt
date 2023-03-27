@@ -7,10 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -28,7 +25,19 @@ import java.util.*
 @Composable
 fun HistoryUi(viewModel: AppViewModel) {
 
-    DeleteHistoryDialog(viewModel)
+    val openDeleteDialog by viewModel.history.openDeleteHistoryDialog
+    if (openDeleteDialog) {
+        DeleteHistoryDialog(
+            onDismiss = {
+                viewModel.history.updateDeleteDialogState(false)
+            },
+            onConfirm = {
+                viewModel.history.deleteAllChats()
+                viewModel.history.updateDeleteDialogState(false)
+            }
+        )
+    }
+
 
     val chats = viewModel.history.chats
     val personas = viewModel.persona.personas
