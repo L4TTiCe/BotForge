@@ -20,5 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.mohandass.botforge.model.** { *; }
 -keep class com.aallam.openai.** { *; }
+
+-keep class com.mohandass.botforge.chat.model.** { *; }
+-keep class com.mohandass.botforge.sync.model.** { *; }
