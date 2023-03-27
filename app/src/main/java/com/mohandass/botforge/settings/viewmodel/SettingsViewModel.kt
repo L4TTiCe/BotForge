@@ -55,6 +55,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun clearLastSyncTime() {
+        logger.log(TAG, "clearLastSyncTime()")
+        viewModelScope.launch {
+            preferencesDataStore.clearLastSuccessfulSync()
+        }
+    }
+
     companion object {
         private const val TAG = "SettingsViewModel"
     }

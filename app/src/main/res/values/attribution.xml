@@ -9,4 +9,16 @@
     <item name="swap_attr" type="string">
         <a href="https://www.flaticon.com/free-icons/swap" title="swap icons">Swap icons created by bqlqn - Flaticon</a>
     </item>
+    <item name="upvote" type="string">
+        <a href="https://www.flaticon.com/free-icons/up-arrow" title="up arrow icons">Up arrow icons created by Vitaly Gorbachev - Flaticon</a>
+    </item>
+    <item name="upvote_filled" type="string">
+        <a href="https://www.flaticon.com/free-icons/up-arrow" title="up arrow icons">Up arrow icons created by Pixel perfect - Flaticon</a>
+    </item>
+    <item name="downvote" type="string">
+        <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Vitaly Gorbachev - Flaticon</a>
+    </item>
+    <item name="downvote_filled" type="string">
+        <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Roundicons Premium - Flaticon</a>
+    </item>
 </resources>

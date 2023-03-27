@@ -120,6 +120,7 @@
 
     <string name="invalid_api_key">Invalid API Key!</string>
 
+    <!-- Settings -->
     <string name="display">Display</string>
     <string name="appearance_settings">Appearance</string>
     <string name="dark_mode">Dark</string>
@@ -162,6 +163,10 @@
 
     <string name="external_links">External Links</string>
 
+    <string name="clear_community_cache">Clear Community Cache</string>
+    <string name="clear_community_cache_message">"Remove all locally cached Community Bots and Bot Templates."</string>
+    <string name="clear_all_bots_toast">All bots cleared!</string>
+
     <!--    App Information UI-->
     <string name="about_app">BotForge is an unofficial OpenAI API client for Android.</string>
     <string name="version_number">Version</string>
@@ -182,4 +187,22 @@
     <string name="alias">Alias / Avatar</string>
     <string name="set_alias_message">Choose an avatar for your persona.</string>
     <string name="set_alias_message_2">Try emoji\'s like 🤖</string>
+
+    <!--    SharePersona   -->
+    <string name="share_persona">Share Persona with Community</string>
+    <string name="share_persona_message">Share your creation with community members.</string>
+    <string name="share_persona_success">Persona shared!</string>
+    <string name="alias_message_1">Alias is an emojis or short text that represent your persona, and help users distinguish between personas</string>
+    <string name="alias_message_2">Choosing a relevant alias will help users identify your persona</string>
+    <string name="description">Description</string>
+    <string name="description_message_1">Describe your persona in a few words. This will help with discoverability.</string>
+    <string name="tags">Tags</string>
+    <string name="add_tags">Add Tags</string>
+
+    <!--    Community   -->
+    <string name="community">Community</string>
+    <string name="community_search">Search Community Bots</string>
+    <string name="community_browse">Browse Bots</string>
+    <string name="community_browse_message">Browse community bots and templates.</string>
+    <string name="community_most_popular">Most Popular Bots</string>
 </resources>

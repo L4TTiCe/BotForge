@@ -71,6 +71,17 @@ class Utils {
             return Character.toChars(codePoint).joinToString("")
         }
 
+        fun sanitizeSearchQuery(query: String?): String {
+            Log.v(TAG, "sanitizeSearchQuery($query)")
+            if (query == null) {
+                return ""
+            }
+            val queryWithEscapedQuotes = query.replace(Regex.fromLiteral("\""), "\"\"")
+            val sanitizedQuery = "*$queryWithEscapedQuotes*"
+            Log.v(TAG, "sanitizeSearchQuery: $sanitizedQuery")
+            return sanitizedQuery
+        }
+
         private const val TAG = "Utils"
         private const val INTERRUPT_ERROR_MESSAGE = "com.mohandass.botforge.chat.ui.viewmodel.ChatViewModel.interruptRequest"
         const val INVALID_API_KEY_ERROR_MESSAGE = "invalid_api_key"

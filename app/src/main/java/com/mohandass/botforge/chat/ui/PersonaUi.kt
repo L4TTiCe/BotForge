@@ -21,8 +21,11 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
+import com.mohandass.botforge.sync.ui.BrowseBots
 import com.mohandass.botforge.settings.model.PreferredTheme
+import com.mohandass.botforge.sync.ui.SharePersona
 import com.slaviboy.composeunits.dh
 
 @Composable
@@ -32,8 +35,13 @@ fun PersonaUi(viewModel: AppViewModel) {
 
     val isLoading by viewModel.isLoading
 
-    LaunchedEffect(key1 = viewModel) {
+    LaunchedEffect(viewModel) {
         viewModel.persona.fetchPersonas()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.topBar.title.value = R.string.app_name
+        viewModel.topBar.overrideMenu.value = false
     }
 
     var activeTheme = remember {
@@ -105,6 +113,12 @@ fun PersonaUi(viewModel: AppViewModel) {
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
                 HistoryUi(viewModel = viewModel)
+            }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
+                BrowseBots(viewModel = viewModel)
+            }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.Share.route) {
+                SharePersona(viewModel = viewModel)
             }
         }
     }

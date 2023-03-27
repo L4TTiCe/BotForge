@@ -153,3 +153,24 @@ fun BotForgeTheme(
     )
 }
 
+@Composable
+fun BotForgeDarkThemePreview(
+    content: @Composable () -> Unit,
+) {
+    MaterialTheme(
+        colorScheme = DarkColors,
+        typography = Typography,
+        content = content,
+    )
+}
+
+@Composable
+fun BotForgeLightThemePreview(
+    content: @Composable () -> Unit,
+) {
+    MaterialTheme(
+        colorScheme = LightColors,
+        typography = Typography,
+        content = content,
+    )
+}
