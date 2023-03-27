@@ -10,6 +10,7 @@ interface PreferencesDataStore {
     suspend fun updateTheme(preferredTheme: PreferredTheme)
     suspend fun setDynamicColor(newValue: Boolean)
     suspend fun updateLastSuccessfulSync()
+    suspend fun clearLastSuccessfulSync()
 
     companion object {
         const val PREFERENCES_NAME = "botforge_preferences"

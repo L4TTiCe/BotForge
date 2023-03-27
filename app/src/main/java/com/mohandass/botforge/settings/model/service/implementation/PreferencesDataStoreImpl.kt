@@ -58,6 +58,13 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>):
         }
     }
 
+    override suspend fun clearLastSuccessfulSync() {
+        Log.v(TAG, "clearLastSuccessfulSync()")
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] = 0L
+        }
+    }
+
     override suspend fun fetchInitialPreferences() =
         mapUserPreferences(dataStore.data.first().toPreferences())
 

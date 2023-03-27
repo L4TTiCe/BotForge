@@ -7,8 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
@@ -65,6 +67,7 @@ class BrowseViewModel @Inject constructor (
     }
 
     fun makePersona(bot: BotE) {
+        logger.logVerbose(TAG, "makePersona()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 personaService.addPersona(bot.toPersona())
@@ -74,6 +77,7 @@ class BrowseViewModel @Inject constructor (
     }
 
     fun upVote(botId: String) {
+        logger.logVerbose(TAG, "upVote()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 firestoreService.addUpVote(botId, accountService.currentUserId)
@@ -82,6 +86,7 @@ class BrowseViewModel @Inject constructor (
     }
 
     fun downVote(botId: String) {
+        logger.logVerbose(TAG, "downVote()")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 firestoreService.addDownVote(botId, accountService.currentUserId)
@@ -149,11 +154,13 @@ class BrowseViewModel @Inject constructor (
 //        }
 //    }
 //
-//    fun deleteAllBots() {
-//        viewModelScope.launch {
-//            botService.deleteAllBots()
-//        }
-//    }
+    fun deleteAllBots() {
+        logger.log(TAG, "deleteAllBots()")
+        viewModelScope.launch {
+            botService.deleteAllBots()
+            SnackbarManager.showMessage(R.string.clear_all_bots_toast)
+        }
+    }
 
     fun syncWithDatabase() {
         val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync

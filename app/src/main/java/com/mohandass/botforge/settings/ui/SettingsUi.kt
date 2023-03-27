@@ -179,6 +179,20 @@ fun SettingsUi(
             )
         }
         item {
+            SettingsCategory(title = resources().getString(R.string.community))
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.clear_community_cache),
+                description = resources().getString(R.string.clear_community_cache_message),
+                painter = painterResource(id = R.drawable.baseline_delete_24),
+                onClick = ({
+                    viewModel.browse.deleteAllBots()
+                    settingsViewModel.clearLastSyncTime()
+                })
+            )
+        }
+        item {
             SettingsCategory(title = resources().getString(R.string.about))
         }
         item {

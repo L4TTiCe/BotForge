@@ -120,6 +120,7 @@
 
     <string name="invalid_api_key">Invalid API Key!</string>
 
+    <!-- Settings -->
     <string name="display">Display</string>
     <string name="appearance_settings">Appearance</string>
     <string name="dark_mode">Dark</string>
@@ -161,6 +162,10 @@
     <string name="app_information_message">View information about the app.</string>
 
     <string name="external_links">External Links</string>
+
+    <string name="clear_community_cache">Clear Community Cache</string>
+    <string name="clear_community_cache_message">"Remove all locally cached Community Bots and Bot Templates."</string>
+    <string name="clear_all_bots_toast">All bots cleared!</string>
 
     <!--    App Information UI-->
     <string name="about_app">BotForge is an unofficial OpenAI API client for Android.</string>

@@ -31,6 +31,7 @@ fun BrowseBots(viewModel: AppViewModel) {
 
     LaunchedEffect(Unit) {
         viewModel.browse.fetchBots()
+        viewModel.browse.syncWithDatabase()
     }
 
     BackHandler {
