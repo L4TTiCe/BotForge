@@ -18,7 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.common.ui.theme.BotForgeLightThemePreview
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotEProvider
@@ -36,8 +38,32 @@ fun BotDetailDialog(
 ) {
     AlertDialog(
         onDismissRequest = onClickDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        modifier = Modifier
+            .padding(24.dp),
         title = {
-            Text(text = bot.name)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(8.dp)
+            ) {
+                Text(text = bot.name)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                RoundedIconFromStringAnimated(
+                    text = (
+                            if (bot.alias != "")
+                                bot.alias
+                            else
+                                bot.name
+                            ),
+                    // Offset the icon to the top right corner
+                    modifier = Modifier
+                        .size(90.dp),
+                    onClick = { }
+                )
+            }
         },
         text = {
             Column {

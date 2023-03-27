@@ -21,7 +21,19 @@ class BotServiceImpl(private val botDao: BotDao): BotService {
     override suspend fun addBot(bot: BotE) {
         botDao.addBot(bot)
         val botFts = bot.toBotFts()
-        botDao.addBotFts(botFts)
+        if (botDao.botFtsExists(bot.uuid)) {
+            botDao.updateBotFts(
+                bot.uuid,
+                botFts.name,
+                botFts.alias,
+                botFts.systemMessage,
+                botFts.description,
+                botFts.tags,
+                botFts.createdBy
+            )
+        } else {
+            botDao.addBotFts(botFts)
+        }
 
         Log.v(TAG, "addBot: $botFts")
     }

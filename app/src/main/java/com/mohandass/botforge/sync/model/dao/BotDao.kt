@@ -16,6 +16,26 @@ interface BotDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addBotFts(bot: BotFts)
 
+    @Query("SELECT EXISTS(SELECT 1 FROM bots_fts WHERE uuid = :uuid)")
+    suspend fun botFtsExists(uuid: String): Boolean
+
+    // Update BotFts with uuid
+    @Query("""
+            UPDATE bots_fts
+            SET name = :name, alias = :alias, systemMessage = :systemMessage, description = :description, tags = :tags, createdBy = :createdBy
+            WHERE uuid = :uuid
+        """
+    )
+    suspend fun updateBotFts(
+        uuid: String,
+        name: String,
+        alias: String,
+        systemMessage: String,
+        description: String,
+        tags: String,
+        createdBy: String
+    )
+
     @Query("""
       SELECT bots.*
       FROM bots

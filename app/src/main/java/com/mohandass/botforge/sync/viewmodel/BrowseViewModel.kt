@@ -50,6 +50,7 @@ class BrowseViewModel @Inject constructor (
     }
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
+        viewModel.browse.search()
     }
 
     private val _fetchedBots = mutableStateListOf<BotE>()

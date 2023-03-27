@@ -88,7 +88,6 @@ fun BrowseBots(viewModel: AppViewModel) {
                 value = searchText,
                 onValueChange = {
                     viewModel.browse.updateSearchQuery(it)
-                    viewModel.browse.search()
                 },
                 label = {
                     Text("Search Community Bots")
