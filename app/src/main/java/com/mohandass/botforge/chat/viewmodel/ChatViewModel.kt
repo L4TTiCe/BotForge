@@ -7,6 +7,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
@@ -69,6 +70,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    @AddTrace(name = "getChatCompletion", enabled = true)
     fun getChatCompletion(hapticFeedback: HapticFeedback) {
         logger.log(TAG, "getChatCompletion()")
         viewModel.setLoading(true)
@@ -196,6 +198,7 @@ class ChatViewModel @Inject constructor(
         _chatName.value = name
     }
 
+    @AddTrace(name = "saveChat", enabled = true)
     fun saveChat() {
         val personaSelected = viewModel.persona.selectedPersona.value
         val personaSystemMessage = viewModel.persona.personaSystemMessage.value

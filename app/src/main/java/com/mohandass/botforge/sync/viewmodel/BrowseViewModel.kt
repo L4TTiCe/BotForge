@@ -18,6 +18,7 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.service.BotService
 import com.mohandass.botforge.sync.model.service.FirestoreService
 import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
+import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -95,6 +96,7 @@ class BrowseViewModel @Inject constructor(
         }
     }
 
+    @AddTrace(name = "syncWithDatabase", enabled = true)
     fun syncWithDatabase() {
         val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync
         logger.log(TAG, "syncWithDatabase: lastSyncedAt: $lastSyncedAt")
