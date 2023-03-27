@@ -2,6 +2,7 @@ package com.mohandass.botforge.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.common.service.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,20 @@ class LandingViewModel @Inject constructor(
             logger.logVerbose(TAG, "onSkip() Authenticated")
             onSuccess()
 
+        }
+    }
+
+    fun onGoogleSignIn(credential: AuthCredential) {
+        viewModelScope.launch {
+            accountService.signInWithCredential(credential)
+
+            if (accountService.hasUser) {
+                logger.logVerbose(TAG, "onGoogleSignIn() Authenticated")
+                if (accountService.displayName == "") {
+                    logger.logVerbose(TAG, "onGoogleSignIn() New User")
+                    accountService.generateAndSetDisplayName()
+                }
+            }
         }
     }
 
