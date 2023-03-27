@@ -179,7 +179,7 @@
     <string name="github_link">https://github.com/L4TTiCe/BotForge</string>
 
     <string name="markdown">Markdown</string>
-    <string name="markdown_default">Rendered as Markdown. Tap to switch.</string>
+    <string name="markdown_default">Rendered as Markdown.</string>
     <string name="markdown_switch">Tap to render as Markdown.</string>
 
     <!--    SetPersonaAliasDialog   -->
