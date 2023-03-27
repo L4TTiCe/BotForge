@@ -83,7 +83,7 @@ class HistoryViewModel(
         logger.log(TAG, "selectChat()")
 
         fetchMessages(chat.uuid) {
-            viewModel.navigateTo(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
 
     }

@@ -1,26 +1,21 @@
 package com.mohandass.botforge.chat.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.ChatCard
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteHistoryDialog
-import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
-import kotlinx.coroutines.delay
-import org.ocpsoft.prettytime.PrettyTime
-import java.util.*
 
 @Composable
 fun HistoryUi(viewModel: AppViewModel) {
@@ -124,153 +119,25 @@ fun HistoryUi(viewModel: AppViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                items(chats.size) { index ->
-                    val persona = remember {
-                        mutableStateOf(personas.firstOrNull { it.uuid == chats[index].personaUuid })
-                    }
-                    val count = remember {
-                        mutableStateOf(0)
-                    }
-                    val isDeleted = remember {
-                        if (chats[index].personaUuid == null) {
-                            mutableStateOf(false)
-                        } else {
-                            if (persona.value == null) {
-                                mutableStateOf(true)
-                            } else {
-                                mutableStateOf(false)
-                            }
+
+                // index chat item by uuid
+                items(
+                    count = chats.size,
+                    key = { index -> chats[index].uuid }
+                ) { index ->
+                    ChatCard(
+                        chat = chats[index],
+                        persona = personas.firstOrNull { it.uuid == chats[index].personaUuid },
+                        getMessage = {onSuccess ->
+                            viewModel.history.getMessagesCount(chats[index].uuid, onSuccess = onSuccess)
+                        },
+                        onClick = {
+                            viewModel.history.selectChat(chats[index])
+                        },
+                        onDelete = {
+                            viewModel.history.deleteChat(chats[index].uuid)
                         }
-                    }
-                    val time = remember {
-                        val timestamp = chats[index].savedAt
-                        val date = Date(timestamp)
-                        val prettyTime = PrettyTime()
-                        prettyTime.locale = Locale.getDefault()
-                        mutableStateOf(prettyTime.format(date))
-                    }
-
-
-                    LaunchedEffect(Unit) {
-                        delay(200)
-                        viewModel.history.getMessagesCount(chats[index].uuid) {
-                            count.value = it
-                        }
-                    }
-
-                    ElevatedCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                viewModel.history.selectChat(chats[index])
-                            }
-                            .padding(5.dp),
-//                        elevation = CardDefaults.elevatedCardElevation()
-                    ) {
-                        Row {
-                            Column {
-                                if (persona.value != null) {
-                                    RoundedIconFromString(
-                                        text = (
-                                                if (persona.value!!.alias != "")
-                                                    persona.value!!.alias
-                                                else
-                                                    persona.value!!.name
-                                                ),
-                                        modifier = Modifier.size(90.dp),
-                                        borderColor = Color.Transparent,
-                                        onClick = { }
-                                    )
-                                } else {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.logo),
-                                        contentDescription = "Person",
-                                        modifier = Modifier
-                                            .padding(10.dp)
-                                            .size(80.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                }
-                            }
-
-                            Column(
-                                modifier = Modifier.padding(10.dp),
-                            ) {
-
-                                Row {
-                                    Column {
-                                        Text(
-                                            text = chats[index].name,
-                                            style = MaterialTheme.typography.titleMedium
-                                        )
-
-                                        if (persona.value != null) {
-                                            Text(
-                                                text = (persona.value!!.name),
-                                                style = MaterialTheme.typography.bodyMedium
-                                            )
-                                        } else {
-                                            if (isDeleted.value) {
-                                                Text(
-                                                    text = "Deleted Persona",
-                                                    style = MaterialTheme.typography.bodyMedium
-                                                )
-                                            } else {
-                                                Text(
-                                                    text = "Default Persona",
-                                                    style = MaterialTheme.typography.bodyMedium
-                                                )
-                                            }
-                                        }
-                                    }
-
-                                    Spacer(modifier = Modifier.weight(1f))
-
-                                    IconButton(
-                                        onClick = { viewModel.history.deleteChat(chats[index].uuid) }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = "Delete",
-                                            modifier = Modifier
-                                                .size(20.dp),
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
-                                Row(
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-
-                                    Text(
-                                        text = count.value.toString(),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-
-                                    Spacer(modifier = Modifier.width(3.dp))
-
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.baseline_message_24),
-                                        contentDescription = "Message",
-                                        modifier = Modifier
-                                            .size(20.dp),
-                                        tint = MaterialTheme.colorScheme.onSurface
-                                    )
-
-                                    Spacer(modifier = Modifier.weight(1f))
-
-                                    Text(
-                                        modifier = Modifier.padding(horizontal = 5.dp),
-                                        text = time.value.toString(),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    )
                 }
             }
         }
