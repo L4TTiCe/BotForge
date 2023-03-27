@@ -118,7 +118,7 @@ fun BotCard(
                 IconButton(onClick = onClickButton) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_cloud_download_24),
-                        contentDescription = "Add",
+                        contentDescription = null,
                         modifier = Modifier
                             .size(25.dp)
                     )

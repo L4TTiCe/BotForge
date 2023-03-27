@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -63,7 +64,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                         .size(30.dp)
                 )
                 Text(
-                    text = "Community",
+                    text = stringResource(id = R.string.community),
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineMedium
                 )
@@ -75,7 +76,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_cloud_sync_24),
-                        contentDescription = "Sync",
+                        contentDescription = null,
                         modifier = Modifier
                             .size(30.dp)
                     )
@@ -91,12 +92,12 @@ fun BrowseBots(viewModel: AppViewModel) {
                     viewModel.browse.updateSearchQuery(it)
                 },
                 label = {
-                    Text("Search Community Bots")
+                    Text(stringResource(id = R.string.community_search))
                 },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_search_24),
-                        contentDescription = "Search",
+                        contentDescription = null,
                         modifier = Modifier
                             .size(30.dp)
                     )
@@ -105,7 +106,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                     IconButton(onClick = { viewModel.browse.updateSearchQuery("") }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_clear_24),
-                            contentDescription = "Search",
+                            contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
                         )
@@ -115,13 +116,13 @@ fun BrowseBots(viewModel: AppViewModel) {
             )
 
             Text(
-                text = "Browse Bots",
+                text = stringResource(id = R.string.community_browse),
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 style = MaterialTheme.typography.headlineSmall
             )
 
             Text(
-                text = "Browse bots from the community",
+                text = stringResource(id = R.string.community_browse_message),
                 modifier = Modifier.padding(horizontal = 20.dp),
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -156,7 +157,7 @@ fun BrowseBots(viewModel: AppViewModel) {
             }
 
             Text(
-                text = "Most Popular Bots",
+                text = stringResource(id = R.string.community_most_popular),
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
                 style = MaterialTheme.typography.headlineSmall
             )
