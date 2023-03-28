@@ -6,19 +6,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.R
 
 @Composable
 fun SkipSignInButton(
     onClick: () -> Unit
 ) {
     TextButton(
-        onClick = {
-            onClick()
-        },
+        onClick = onClick,
         modifier = Modifier.padding(8.dp),
         shape = MaterialTheme.shapes.medium,
     ) {
-        Text(text = "Skip Login")
+        Text(text = stringResource(id = R.string.anonymous_sign_in))
     }
 }

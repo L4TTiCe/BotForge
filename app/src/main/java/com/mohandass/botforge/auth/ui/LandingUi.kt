@@ -6,10 +6,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -32,6 +30,8 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.Constants
+import com.mohandass.botforge.auth.ui.components.GoogleSignInButton
+import com.mohandass.botforge.auth.ui.components.SkipSignInButton
 import com.mohandass.botforge.auth.viewmodel.LandingViewModel
 import com.slaviboy.composeunits.dh
 
@@ -103,60 +103,24 @@ fun LandingUi(
 
         Spacer(modifier = Modifier.size(0.1.dh))
 
-        FilledTonalButton(
-            onClick = {
-                viewModel.navController.navigate(AppRoutes.SignIn.route)
-            }
-        ) {
-            Text(
-                text = stringResource(id = R.string.sign_in_or_sign_up),
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-
         Spacer(modifier = Modifier.size(0.01.dh))
 
-        FilledTonalButton(
-            modifier = Modifier.padding(8.dp),
-            onClick = {
-                val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(Constants.WEB_CLIENT_ID)
-                    .build()
+        GoogleSignInButton {
+            val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(Constants.WEB_CLIENT_ID)
+                .build()
 
-                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+            val googleSignInClient = GoogleSignIn.getClient(context, gso)
 
-                launcher.launch(googleSignInClient.signInIntent)
-            },
-        ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.ic_google),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = stringResource(id = R.string.sign_in),
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
+            launcher.launch(googleSignInClient.signInIntent)
         }
 
-        TextButton(
-            onClick = {
-                landingViewModel.onSkip {
-                    viewModel.navController.navigate(AppRoutes.Main.route) {
-                        popUpTo(AppRoutes.Landing.route) { inclusive = true }
-                    }
+        SkipSignInButton {
+            landingViewModel.onSkip {
+                viewModel.navController.navigate(AppRoutes.Main.route) {
+                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
-            },
-            modifier = Modifier.padding(8.dp),
-            shape = MaterialTheme.shapes.medium,
-        ) {
-            Text(text = stringResource(id = R.string.anonymous_sign_in))
+            }
         }
     }
 }
