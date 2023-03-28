@@ -134,7 +134,7 @@
     <string name="uid">UID: %1$s</string>
     <string name="account_actions">Actions</string>
     <string name="link_account">Link Account</string>
-    <string name="link_account_message">Link your account to your email address.</string>
+    <string name="link_account_message">Link your account to your Google account.</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_out_message">Logs you out of the App.</string>
     <string name="delete_account_message_2">Deletes your account, and signs you out of the App.</string>
