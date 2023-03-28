@@ -100,5 +100,18 @@ sealed class SnackbarMessage {
             )
             else ResourceSnackbarWithAction(AppText.generic_error, dismissLabel, dismissAction)
         }
+
+        fun Exception.toSnackbarMessageWithAction(
+            @StringRes dismissLabel: Int,
+            dismissAction: () -> Unit
+        ): SnackbarMessage {
+            val message = this.message.orEmpty()
+            return if (message.isNotBlank()) StringSnackbarWithAction(
+                message,
+                dismissLabel,
+                dismissAction
+            )
+            else ResourceSnackbarWithAction(AppText.generic_error, dismissLabel, dismissAction)
+        }
     }
 }

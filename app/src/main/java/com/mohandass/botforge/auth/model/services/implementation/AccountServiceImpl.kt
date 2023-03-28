@@ -108,6 +108,11 @@ class AccountServiceImpl @Inject constructor(
         auth.signInWithCredential(credential).await()
     }
 
+    override suspend fun linkWithCredential(credential: AuthCredential) {
+        Log.v(TAG, "linkWithCredential()")
+        auth.currentUser!!.linkWithCredential(credential).await()
+    }
+
     companion object {
         private const val TAG = "AccountServiceImpl"
     }

@@ -21,4 +21,7 @@
     <item name="downvote_filled" type="string">
         <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Roundicons Premium - Flaticon</a>
     </item>
+    <item name="dice" type="string">
+        <a href="https://www.flaticon.com/free-icons/dice" title="dice icons">Dice icons created by Stockio - Flaticon</a>
+    </item>
 </resources>

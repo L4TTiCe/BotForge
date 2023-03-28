@@ -1,5 +1,8 @@
 package com.mohandass.botforge.ui.settings
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
@@ -7,14 +10,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.auth.Constants
 import com.mohandass.botforge.auth.model.User
-import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
@@ -25,6 +33,32 @@ fun ManageAccountUi(
     settingsViewModel: SettingsViewModel,
 ) {
     val user by settingsViewModel.getCurrentUser().collectAsState(User())
+
+    var displayName by remember { mutableStateOf(settingsViewModel.getDisplayName()) }
+    var isAnonymous by remember {
+        mutableStateOf(user.isAnonymous)
+    }
+
+    user.let {
+        displayName = it.displayName.toString()
+        isAnonymous = it.isAnonymous
+    }
+
+    val context = LocalContext.current
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try {
+                val result = account.getResult(ApiException::class.java)
+                val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
+                settingsViewModel.onGoogleSignIn(credentials) {
+                    isAnonymous = false
+                }
+            } catch (it: ApiException) {
+                Log.e("GoogleSignIn", "Google sign in failed", it)
+            }
+        }
+
     val openDeleteDialog = remember { mutableStateOf(false) }
 
     if (openDeleteDialog.value) {
@@ -39,7 +73,7 @@ fun ManageAccountUi(
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.deleteAccount {
-                        viewModel.navigateTo(AppRoutes.Landing.route)
+                        viewModel.navController.navigate(AppRoutes.Landing.route)
                         openDeleteDialog.value = false
                     }
                 }) {
@@ -75,7 +109,7 @@ fun ManageAccountUi(
             style = MaterialTheme.typography.titleLarge
         )
 
-        if (user.isAnonymous) {
+        if (isAnonymous) {
             Text(
                 text = stringResource(id = R.string.logged_in_as_anonymous),
                 modifier = Modifier.padding(horizontal = 10.dp),
@@ -90,7 +124,7 @@ fun ManageAccountUi(
         )
 
         Text(
-            text = "Display Name: ${user.displayName}",
+            text = "Display Name: $displayName",
             modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.bodyMedium
         )
@@ -99,14 +133,29 @@ fun ManageAccountUi(
 
         SettingsCategory(title = stringResource(id = R.string.account_actions))
 
-        if (user.isAnonymous) {
+        if (isAnonymous) {
             SettingsItem(
                 title = stringResource(id = R.string.link_account),
                 description = stringResource(id = R.string.link_account_message),
                 painter = painterResource(id = R.drawable.baseline_add_link_24),
             ) {
-                SnackbarManager.showMessage(R.string.not_implemented)
+                val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(Constants.WEB_CLIENT_ID)
+                    .build()
+
+                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+                launcher.launch(googleSignInClient.signInIntent)
             }
+        }
+
+        SettingsItem(
+            title = "Regenerate Display Name",
+            description = "This will generate a new display name for your account",
+            painter = painterResource(id = R.drawable.dice),
+        ) {
+            settingsViewModel.regenerateDisplayName()
+            displayName = settingsViewModel.getDisplayName()
         }
 
         SettingsItem(

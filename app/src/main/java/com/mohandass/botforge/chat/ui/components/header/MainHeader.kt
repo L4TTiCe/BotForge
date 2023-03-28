@@ -103,7 +103,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
     ) {
         DropdownMenuItem(
             onClick = {
-                viewModel.navigateTo(AppRoutes.MainRoutes.Settings.route)
+                viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
                 displayOptionsMenu = false
             },
             text = {

@@ -16,6 +16,7 @@ import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
 import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
 import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
@@ -113,11 +114,6 @@ class AppViewModel @Inject constructor(
         _navControllerPersona = navController
     }
 
-    fun navigateTo(route: String) {
-        logger.log(TAG, "navigateTo($route)")
-        navControllerMain.navigate(route)
-    }
-
     // Chat
 
     private val _chatViewModel = ChatViewModel(
@@ -171,9 +167,18 @@ class AppViewModel @Inject constructor(
 
     fun deleteAccount(onSuccess: () -> Unit) {
         viewModelScope.launch {
-            accountService.deleteAccount()
-            SnackbarManager.showMessage(R.string.delete_account_success)
-            onSuccess()
+            try {
+                accountService.deleteAccount()
+                SnackbarManager.showMessage(R.string.delete_account_success)
+                onSuccess()
+            } catch (e: Exception) {
+                e.toSnackbarMessageWithAction(R.string.sign_out) {
+                    signOut(onSuccess)
+                }.let { message ->
+                    SnackbarManager.showMessage(message)
+                }
+
+            }
         }
     }
 

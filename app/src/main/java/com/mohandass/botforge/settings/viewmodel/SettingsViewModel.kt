@@ -2,9 +2,11 @@ package com.mohandass.botforge.settings.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.SnackbarMessage
 import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
@@ -29,6 +31,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun getCurrentUser() = accountService.currentUser
+
+    fun getDisplayName() = accountService.displayName
 
     // Usage
     fun getUsageTokens(): Long {
@@ -67,6 +71,25 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "setUserGeneratedContent() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setUserGeneratedContent(value)
+        }
+    }
+
+    fun regenerateDisplayName() {
+        logger.log(TAG, "regenerateDisplayName()")
+        viewModelScope.launch {
+            accountService.generateAndSetDisplayName()
+        }
+    }
+
+    fun onGoogleSignIn(credential: AuthCredential, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                accountService.linkWithCredential(credential)
+                SnackbarManager.showMessage(R.string.account_linked)
+                onSuccess()
+            } catch (e: Exception) {
+                SnackbarManager.showMessage(SnackbarMessage.StringSnackbar(e.message ?: "Error linking account"))
+            }
         }
     }
 

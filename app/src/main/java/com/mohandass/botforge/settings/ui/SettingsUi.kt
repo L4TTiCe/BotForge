@@ -141,7 +141,7 @@ fun SettingsUi(
                 description = resources().getString(R.string.api_settings_message),
                 painter = painterResource(id = R.drawable.baseline_key_24),
                 onClick = ({
-                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiKeySettings.route)
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                 })
             )
         }
@@ -151,7 +151,7 @@ fun SettingsUi(
                 description = resources().getString(R.string.usage_settings_message),
                 painter = painterResource(id = R.drawable.baseline_token_24),
                 onClick = ({
-                    viewModel.navigateTo(AppRoutes.MainRoutes.ApiUsageSettings.route)
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ApiUsageSettings.route)
                 })
             )
         }
@@ -177,7 +177,7 @@ fun SettingsUi(
                 description = resources().getString(R.string.manage_account_message),
                 painter = painterResource(id = R.drawable.baseline_manage_accounts_24),
                 onClick = ({
-                    viewModel.navigateTo(AppRoutes.MainRoutes.ManageAccountSettings.route)
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ManageAccountSettings.route)
                 })
             )
         }
@@ -215,7 +215,7 @@ fun SettingsUi(
                 description = resources().getString(R.string.licenses_and_acknowledgements_message),
                 painter = painterResource(id = R.drawable.baseline_library_books_24),
                 onClick = ({
-                    viewModel.navigateTo(AppRoutes.MainRoutes.OpenSourceLicenses.route)
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.OpenSourceLicenses.route)
                 })
             )
         }
@@ -225,7 +225,7 @@ fun SettingsUi(
                 description = resources().getString(R.string.app_information_message),
                 painter = painterResource(id = R.drawable.baseline_info_24),
                 onClick = ({
-                    viewModel.navigateTo(AppRoutes.MainRoutes.AppInformation.route)
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.AppInformation.route)
                 })
             )
         }

@@ -207,4 +207,6 @@
 
     <string name="save_persona_dialog_title">Name your Chat</string>
     <string name="save_persona_dialog_chat_title">Chat Title</string>
+
+    <string name="account_linked">Account linked!</string>
 </resources>
