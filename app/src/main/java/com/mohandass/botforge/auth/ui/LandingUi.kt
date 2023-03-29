@@ -75,7 +75,7 @@ fun LandingUi(
                 val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
                 landingViewModel.onGoogleSignIn(credentials)
 
-                viewModel.navController.navigate(AppRoutes.Main.route) {
+                viewModel.navController.navigate(AppRoutes.Landing.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             } catch (it: ApiException) {
@@ -124,7 +124,7 @@ fun LandingUi(
 
         SkipSignInButton {
             landingViewModel.onSkip {
-                viewModel.navController.navigate(AppRoutes.Main.route) {
+                viewModel.navController.navigate(AppRoutes.Landing.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             }

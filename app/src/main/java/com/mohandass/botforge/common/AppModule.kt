@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.common.service.LocalDatabase
 import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.common.service.implementation.AndroidLogger
+import com.mohandass.botforge.common.service.implementation.FirebaseCrashlyticsLogger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,5 +28,5 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLogger(): Logger = AndroidLogger()
+    fun provideLogger(): Logger = FirebaseCrashlyticsLogger()
 }

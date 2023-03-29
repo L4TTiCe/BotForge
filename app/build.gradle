@@ -2,10 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 
-    // Dependency Injection with Hilt
-    id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
-
     // Google services Gradle plugin
     id 'com.google.gms.google-services'
 
@@ -19,6 +15,10 @@ plugins {
 
     // AboutLibraries
     id 'com.mikepenz.aboutlibraries.plugin'
+
+    // Dependency Injection with Hilt
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -43,8 +43,8 @@ android {
         applicationId "com.mohandass.botforge"
         minSdk 29
         targetSdk 33
-        versionCode 4
-        versionName "1.0"
+        versionCode 7
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
