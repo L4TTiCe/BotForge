@@ -6,6 +6,7 @@ sealed class AppRoutes(val route: String) {
     object Main : AppRoutes("main_ui")
     object SignUp : AppRoutes("sign_up_ui")
     object SignIn : AppRoutes("sign_in_ui")
+    object OnBoarding : AppRoutes("on_boarding_ui")
 
     sealed class MainRoutes(route: String) : AppRoutes(route) {
         sealed class PersonaRoutes(route: String) : MainRoutes(route) {

@@ -1,4 +1,4 @@
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
 import android.content.Intent
 import android.net.Uri

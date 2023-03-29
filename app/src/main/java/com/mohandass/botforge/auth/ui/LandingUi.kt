@@ -43,9 +43,16 @@ fun LandingUi(
 ) {
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
-            Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
-            viewModel.navController.navigate(AppRoutes.Main.route) {
-                popUpTo(AppRoutes.Landing.route) { inclusive = true }
+            if (true) {
+                Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to OnBoardingUi")
+                viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
+                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
+                }
+            } else {
+                Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
+                viewModel.navController.navigate(AppRoutes.Main.route) {
+                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
+                }
             }
         }
     }
