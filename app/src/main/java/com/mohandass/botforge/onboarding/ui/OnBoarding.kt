@@ -9,6 +9,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +21,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.onboarding.OnBoardingViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -27,6 +29,7 @@ fun OnBoarding(
     onBoardingViewModel: OnBoardingViewModel = hiltViewModel(),
     viewModel: AppViewModel,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
 
     val pageCount = 4
@@ -51,11 +54,22 @@ fun OnBoarding(
                 state = pagerState,
             ) { position -> when (position) {
                     0 -> OnBoardingUi1()
-                    1 -> OnBoardingUi2()
+                    1 -> OnBoardingUi2(
+                        onNext = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(2)
+                            }
+                        }
+                    )
                     2 -> OnBoardingUi3(
                         initialApiKey = onBoardingViewModel.getApiKey(),
                         saveApiKey = {
                             onBoardingViewModel.setApiKey(it)
+                        },
+                        onNext = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(3)
+                            }
                         }
                     )
                     3 -> OnBoardingUi4(
@@ -84,10 +98,10 @@ fun OnBoarding(
                     if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
                 Box(
                     modifier = Modifier
-                        .padding(6.dp)
+                        .padding(3.dp)
                         .clip(CircleShape)
                         .background(color)
-                        .size(15.dp)
+                        .size(8.dp)
 
                 )
             }

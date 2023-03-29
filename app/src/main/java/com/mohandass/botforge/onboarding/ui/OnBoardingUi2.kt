@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 
 @Composable
-fun OnBoardingUi2() {
+fun OnBoardingUi2(
+    onNext: () -> Unit
+) {
     val leftColor = colorResource(id = R.color.teal)
     val rightColor = colorResource(id = R.color.orange)
     val backgroundColor = colorResource(id = R.color.logoBorder)
@@ -84,11 +87,13 @@ fun OnBoardingUi2() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                    )
+                    IconButton(onClick = onNext) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.8f),
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -122,5 +127,5 @@ fun OnBoardingUi2() {
 @Preview
 @Composable
 fun OnBoardingUi2Preview() {
-    OnBoardingUi2()
+    OnBoardingUi2({})
 }

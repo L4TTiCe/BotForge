@@ -32,7 +32,8 @@ import com.mohandass.botforge.resources
 @Composable
 fun OnBoardingUi3(
     initialApiKey: String = "",
-    saveApiKey: (String) -> Unit
+    saveApiKey: (String) -> Unit,
+    onNext: () -> Unit
 ) {
     val backgroundColor = colorResource(id = R.color.logoBorder)
     var apiKey by remember { mutableStateOf(initialApiKey) }
@@ -105,17 +106,17 @@ fun OnBoardingUi3(
                     label = {
                         Text(
                             text = resources().getString(R.string.api_key),
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            color = Color.White.copy(alpha = 0.8f)
                         )
                     },
                     placeholder = {
                         Text(
                             text = resources().getString(R.string.api_key_hint),
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            color = Color.White.copy(alpha = 0.6f)
                         )
                     },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor = MaterialTheme.colorScheme.onPrimary,
+                        textColor = Color.White.copy(alpha = 0.8f),
                     ),
                     modifier = Modifier
                         .padding(horizontal = 20.dp, vertical = 2.dp)
@@ -143,11 +144,13 @@ fun OnBoardingUi3(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                )
+                IconButton(onClick = onNext) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
+                        contentDescription = null,
+                        tint = Color.White.copy(alpha = 0.8f),
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
@@ -176,7 +179,7 @@ fun GetKey(title: String, description: String, painter: Painter, onClick: () -> 
                 modifier = Modifier
                     .padding(start = 14.dp, end = 16.dp)
                     .size(32.dp),
-                tint = MaterialTheme.colorScheme.onPrimary
+                tint = Color.White.copy(alpha = 0.8f)
             )
             Column(
                 modifier = Modifier
@@ -187,11 +190,11 @@ fun GetKey(title: String, description: String, painter: Painter, onClick: () -> 
                     text = title,
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = Color.White.copy(alpha = 0.8f)
                 )
                 Text(
                     text = description,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White.copy(alpha = 0.8f),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
@@ -203,6 +206,7 @@ fun GetKey(title: String, description: String, painter: Painter, onClick: () -> 
 @Composable
 fun OnBoardingUi3Preview() {
     OnBoardingUi3(
-        saveApiKey = {}
+        saveApiKey = {},
+        onNext = {}
     )
 }

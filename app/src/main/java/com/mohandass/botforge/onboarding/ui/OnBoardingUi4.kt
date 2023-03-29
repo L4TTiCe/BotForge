@@ -144,7 +144,7 @@ fun UserGeneratedContentSwitch(
             modifier = Modifier
                 .padding(start = 14.dp, end = 16.dp)
                 .size(26.dp),
-            tint = MaterialTheme.colorScheme.onPrimary
+            tint = Color.White.copy(alpha = 0.8f)
         )
         Column(
             modifier = Modifier
@@ -155,11 +155,11 @@ fun UserGeneratedContentSwitch(
                 text = title,
                 maxLines = 1,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = Color.White.copy(alpha = 0.8f)
             )
             Text(
                 text = description,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White.copy(alpha = 0.8f),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
