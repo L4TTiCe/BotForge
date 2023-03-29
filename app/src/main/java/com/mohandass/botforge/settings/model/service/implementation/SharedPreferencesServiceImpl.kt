@@ -8,6 +8,7 @@ import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private const val API_KEY = "open_ai_api_key"
 private const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
+private const val ON_BOARDING_COMPLETED = "on_boarding_completed"
 
 class SharedPreferencesServiceImpl private constructor(context: Context) :
     SharedPreferencesService {
@@ -50,6 +51,21 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
     override fun resetUsageTokens() {
         sharedPreferences.edit {
             putLong(API_USAGE_AS_TOKENS, 0)
+        }
+    }
+
+    private val _onBoardingCompleted: Boolean
+        get() {
+            return sharedPreferences.getBoolean(ON_BOARDING_COMPLETED, false)
+        }
+
+    override fun getOnBoardingCompleted(): Boolean {
+        return _onBoardingCompleted
+    }
+
+    override fun setOnBoardingCompleted(value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(ON_BOARDING_COMPLETED, value)
         }
     }
 

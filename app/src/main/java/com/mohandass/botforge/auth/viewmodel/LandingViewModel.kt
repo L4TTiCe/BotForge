@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LandingViewModel @Inject constructor(
+    private val sharedPreferencesService: SharedPreferencesService,
     private val accountService: AccountService,
     private val logger: Logger,
 ) : ViewModel() {
@@ -22,6 +24,10 @@ class LandingViewModel @Inject constructor(
                 onSuccess()
             }
         }
+    }
+
+    fun isOnBoardingCompleted(): Boolean {
+        return sharedPreferencesService.getOnBoardingCompleted()
     }
 
     fun onSkip(onSuccess: () -> Unit) {

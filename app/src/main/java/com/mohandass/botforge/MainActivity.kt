@@ -37,6 +37,7 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.ui.MainUi
 import com.mohandass.botforge.common.ui.SplashUi
 import com.mohandass.botforge.common.ui.theme.BotForgeTheme
+import com.mohandass.botforge.onboarding.ui.OnBoarding
 import com.mohandass.botforge.ui.*
 import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint
@@ -338,6 +339,56 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
             }
         ) {
             SignInUi(viewModel = viewModel)
+        }
+        composable(
+            route = AppRoutes.OnBoarding.route,
+            enterTransition = {
+                slideInVertically(
+                    initialOffsetY = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+
+            },
+            exitTransition = {
+                slideOutVertically(
+                    targetOffsetY = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popEnterTransition = {
+                slideInVertically(
+                    initialOffsetY = { -Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeIn(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            },
+            popExitTransition = {
+                slideOutVertically(
+                    targetOffsetY = { Constants.ANIMATION_OFFSET },
+                    animationSpec = tween(
+                        durationMillis = Constants.ANIMATION_DURATION,
+                        easing = FastOutSlowInEasing
+                    )
+                ) + fadeOut(
+                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                )
+            }
+        ) {
+            OnBoarding(viewModel = viewModel)
         }
     }
 }
