@@ -6,6 +6,8 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +24,8 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     val messagesList by viewModel.chat.activeChat
     val handleDelete by viewModel.chat.handleDelete
     val messageIsFocussed by viewModel.chat.isMessageInFocus
+
+    val isLoading by viewModel.isLoading
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -61,6 +65,25 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                         startVisibility = (idx != (messagesList.size - 1)) && item.text.isEmpty(),
                     )
                     Spacer(modifier = modifier.height(12.dp))
+                }
+            }
+
+            if (isLoading) {
+                Spacer(modifier = modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Bot",
+                        modifier = Modifier,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.tertiary,
+                    )
+
+                    TypingIndicator(modifier = Modifier.padding(horizontal = 12.dp))
                 }
             }
 
