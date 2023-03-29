@@ -63,6 +63,7 @@ fun OnBoarding(
                             onBoardingViewModel.setUserGeneratedContent(it)
                         },
                         onComplete = {
+                            onBoardingViewModel.setOnBoardingCompleted()
                             viewModel.navController.navigate(AppRoutes.Main.route) {
                                 popUpTo(AppRoutes.OnBoarding.route) { inclusive = true }
                             }

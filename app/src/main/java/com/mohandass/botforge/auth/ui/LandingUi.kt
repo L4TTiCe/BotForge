@@ -43,7 +43,7 @@ fun LandingUi(
 ) {
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
-            if (true) {
+            if (!landingViewModel.isOnBoardingCompleted()) {
                 Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to OnBoardingUi")
                 viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }

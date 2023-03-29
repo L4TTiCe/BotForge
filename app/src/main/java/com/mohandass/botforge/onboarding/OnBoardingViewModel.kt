@@ -29,6 +29,11 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
+    fun setOnBoardingCompleted() {
+        logger.log(TAG, "setOnBoardingCompleted()")
+        sharedPreferencesService.setOnBoardingCompleted(true)
+    }
+
     companion object {
         private const val TAG = "OnBoardingViewModel"
     }
