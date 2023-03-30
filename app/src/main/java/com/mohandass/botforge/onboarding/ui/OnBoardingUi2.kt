@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,7 +91,7 @@ fun OnBoardingUi2(
                     IconButton(onClick = onNext) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.next_cd),
                             tint = Color.White.copy(alpha = 0.8f),
                         )
                     }
@@ -100,7 +101,7 @@ fun OnBoardingUi2(
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(0.9f),
-                        text = "Welcome to\nBotForge!",
+                        text = stringResource(id = R.string.on_boarding_title_1),
                         style = MaterialTheme.typography.displaySmall,
                         textAlign = TextAlign.Center,
                         color = Color.White
@@ -110,13 +111,13 @@ fun OnBoardingUi2(
                             .fillMaxWidth(0.8f)
                             .padding(horizontal = 40.dp)
                             .padding(20.dp),
-                        text = "Your platform for creating and sharing Prompts.",
+                        text = stringResource(id = R.string.on_boarding_message_1),
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
                         color = Color.White
                     )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
                 }
             }
 
@@ -127,5 +128,5 @@ fun OnBoardingUi2(
 @Preview
 @Composable
 fun OnBoardingUi2Preview() {
-    OnBoardingUi2({})
+    OnBoardingUi2 {}
 }

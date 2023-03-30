@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
@@ -64,11 +65,11 @@ fun HistoryUi(viewModel: AppViewModel) {
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                    contentDescription = "Bookmarks",
+                    contentDescription = stringResource(id = R.string.bookmarks),
                     modifier = Modifier
                 )
                 Text(
-                    text = "Bookmarked",
+                    text = stringResource(id = R.string.bookmarked),
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )
@@ -80,7 +81,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_clear_all_24),
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(id = R.string.clear_all_cd),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
@@ -100,13 +101,13 @@ fun HistoryUi(viewModel: AppViewModel) {
                             modifier = Modifier
                                 .size(150.dp)
                                 .alpha(0.8f),
-                            contentDescription = "No Bookmarks"
+                            contentDescription = stringResource(id = R.string.no_bookmarks_cd)
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Text(
-                            text = "No Bookmarks yet",
+                            text = stringResource(id = R.string.no_bookmarks),
                             style = MaterialTheme.typography.bodyLarge
                         )
 

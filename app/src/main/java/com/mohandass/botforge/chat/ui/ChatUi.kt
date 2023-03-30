@@ -104,13 +104,13 @@ fun ChatUi(viewModel: AppViewModel) {
                     if (!isLoading) {
                         Icon(
                             imageVector = Icons.Filled.Send,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.send),
                             modifier = Modifier.size(24.dp),
                         )
                     } else {
                         Icon(
                             imageVector = Icons.Filled.Close,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.cancel),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -159,7 +159,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     painter = painterResource(
                                         id = R.drawable.baseline_keyboard_arrow_up_24
                                     ),
-                                    contentDescription = null,
+                                    contentDescription = stringResource(id = R.string.show_less_cd),
                                     modifier = Modifier.size(36.dp)
                                 )
                             }
@@ -174,7 +174,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     painter = painterResource(
                                         id = R.drawable.baseline_keyboard_arrow_down_24
                                     ),
-                                    contentDescription = null,
+                                    contentDescription = stringResource(id = R.string.show_more_cd),
                                     modifier = Modifier.size(36.dp)
                                 )
                             }
@@ -226,7 +226,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                         painter = painterResource(
                                             id = R.drawable.baseline_drive_file_rename_outline_24
                                         ),
-                                        contentDescription = null,
+                                        contentDescription = stringResource(id = R.string.customise_persona),
                                         modifier = Modifier.size(36.dp)
                                     )
                                 }
@@ -305,7 +305,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
-                                            contentDescription = null
+                                            contentDescription = stringResource(id = R.string.delete)
                                         )
                                         Spacer(modifier = Modifier.width(0.01.dw))
                                         Text(text = stringResource(id = R.string.delete))
@@ -357,7 +357,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                 painter = painterResource(
                                     id = R.drawable.baseline_bookmark_add_24
                                 ),
-                                contentDescription = null,
+                                contentDescription = stringResource(id = R.string.add_to_bookmarks_cd),
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -373,7 +373,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                 painter = painterResource(
                                     id = R.drawable.baseline_clear_all_24
                                 ),
-                                contentDescription = null,
+                                contentDescription = stringResource(id = R.string.clear_all_cd),
                                 modifier = Modifier.size(36.dp)
                             )
                         }

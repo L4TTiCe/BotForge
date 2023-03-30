@@ -23,8 +23,6 @@ Papp/src/main/java/com/mohandass/botforge/settings/viewmodel/SettingsViewModel.k
 Oapp/src/main/java/com/mohandass/botforge/settings/ui/components/SettingsItem.kt,4/9/49eee4de657cda31547ebc4e5ece81d354946b00
 r
 Bapp/src/main/java/com/mohandass/botforge/settings/ui/SettingsUi.kt,0/c/0c464dfd3c5bf4adf6165fe7237e934cf40ab638
-p
-@app/src/main/java/com/mohandass/botforge/settings/ui/ApiKeyUi.kt,9/1/91e1d876035a737eb740666eb4666b9547edfbde
 e
 5app/src/main/java/com/mohandass/botforge/AppRoutes.kt,1/4/14dd721f6a29f940be75f828fad6c80ca0aa3829
 Å
@@ -49,11 +47,5 @@ m
 =app/src/main/java/com/mohandass/botforge/chat/ui/PersonaUi.kt,5/d/5d5d7c65dcf3d4c3cbeb70006333ab5a2fedad97
 w
 Gapp/src/main/java/com/mohandass/botforge/chat/ui/components/ChatCard.kt,2/9/29a0cc60d62acb2a018e1206e250a9b619bb2174
-j
-:app/src/main/java/com/mohandass/botforge/chat/ui/ChatUi.kt,d/e/de8e81d08998ba8d84b841c8c4bf718024b0e0dc
-É
-Sapp/src/main/java/com/mohandass/botforge/chat/ui/components/messages/MessageList.kt,e/1/e1b0d213de7cb794379082d6636fbcd5c23fe88a
-w
-Gapp/src/main/java/com/mohandass/botforge/onboarding/ui/OnBoardingUi1.kt,b/4/b45b01fdfbbfed1ba5004b2df830440a0021a348
-w
-Gapp/src/main/java/com/mohandass/botforge/onboarding/ui/OnBoardingUi4.kt,8/9/89a4dee82b58fdd31dbf228758ab448fa85473c0
+h
+8app/src/main/java/com/mohandass/botforge/AppViewModel.kt,2/7/2727cb1b6bf7c672a07b2ea518a32f3d30ecbb84

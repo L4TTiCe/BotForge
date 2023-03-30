@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
@@ -54,6 +55,7 @@ fun AvatarsBar(
                         .size(90.dp)
                         .padding(6.dp),
                     isAnimated = chatType == ChatType.CREATE,
+                    contentDescription = stringResource(id = AppText.create_persona),
                     onClick = { viewModel.persona.showCreate() }
                 )
 
@@ -74,6 +76,7 @@ fun AvatarsBar(
                             .size(90.dp)
                             .padding(6.dp),
                         isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
+                        contentDescription = stringResource(id = AppText.community),
                         onClick = { viewModel.persona.showMarketplace() }
                     )
 
@@ -164,7 +167,7 @@ fun AvatarsBar(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = AppText.bookmarks),
                         modifier = modifier
                             .size(90.dp)
                             .aspectRatio(1f, matchHeightConstraintsFirst = true)

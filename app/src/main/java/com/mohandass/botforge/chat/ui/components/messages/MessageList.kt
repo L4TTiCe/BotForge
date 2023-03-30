@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
@@ -77,7 +78,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Bot",
+                        text = stringResource(id = R.string.bot),
                         modifier = Modifier,
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.tertiary,
@@ -102,7 +103,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.plus),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.add_message_cd),
                         modifier = Modifier.size(24.dp)
                     )
                 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.R
@@ -70,7 +71,7 @@ fun OnBoardingUi1() {
                     .fillMaxWidth(0.5f)
                     .fillMaxHeight(0.8f),
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.logo_cd)
             )
 
         }

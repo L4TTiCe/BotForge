@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
@@ -48,7 +49,7 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_light_mode_24),
                     modifier = Modifier.size(32.dp),
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.light_mode_cd),
                     tint =
                     if (activeTheme == PreferredTheme.LIGHT)
                         MaterialTheme.colorScheme.onPrimaryContainer
@@ -63,7 +64,7 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_brightness_auto_24),
                     modifier = Modifier.size(32.dp),
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.system_default_cd),
                     tint =
                     if (activeTheme == PreferredTheme.AUTO)
                         MaterialTheme.colorScheme.onPrimaryContainer
@@ -79,7 +80,7 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_dark_mode_24),
                     modifier = Modifier.size(32.dp),
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.dark_mode_cd),
                     tint =
                     if (activeTheme == PreferredTheme.DARK)
                         MaterialTheme.colorScheme.onPrimaryContainer

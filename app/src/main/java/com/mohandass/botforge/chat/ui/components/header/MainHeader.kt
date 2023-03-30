@@ -40,7 +40,7 @@ fun MainHeader(
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
-            contentDescription = null,
+            contentDescription = stringResource(id = R.string.logo_cd),
             contentScale = ContentScale.Inside,
             modifier = modifier
                 .size(if (150.dp < 0.20.dw) 150.dp else 0.20.dw)
@@ -88,7 +88,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
     IconButton(onClick = { displayOptionsMenu = true }) {
         Icon(
             imageVector = Icons.Default.MoreVert,
-            contentDescription = null,
+            contentDescription = stringResource(id = R.string.more_options_cd),
             modifier = modifier
                 .size(0.05.dh)
         )
@@ -107,12 +107,12 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 displayOptionsMenu = false
             },
             text = {
-                Text(text = "Preferences")
+                Text(text = stringResource(id = R.string.settings))
             },
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.settings)
                 )
             }
         )
@@ -122,12 +122,12 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 displayOptionsMenu = false
             },
             text = {
-                Text(text = "Bookmarks")
+                Text(text = stringResource(id = R.string.bookmarks))
             },
             trailingIcon = {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.bookmarks)
                 )
             }
         )
@@ -144,7 +144,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.ExitToApp,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.sign_out)
                 )
             }
         )
@@ -158,7 +158,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.delete_all_persona)
                 )
             }
         )

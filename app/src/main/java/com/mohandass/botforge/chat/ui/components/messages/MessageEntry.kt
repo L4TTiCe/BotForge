@@ -26,6 +26,8 @@ import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private const val INVALID_ROLE = "Invalid role"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageEntry(
@@ -60,7 +62,7 @@ fun MessageEntry(
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
         else -> {
-            throw Exception("Invalid role")
+            throw Exception(INVALID_ROLE)
         }
     }
 
@@ -136,9 +138,6 @@ fun MessageEntry(
         )
     }
 
-    val roles by remember {
-        mutableStateOf(listOf("User", "Bot", "System"))
-    }
 
     val userColor = MaterialTheme.colorScheme.primary
     val botColor = MaterialTheme.colorScheme.tertiary
@@ -196,14 +195,14 @@ fun MessageEntry(
     ) {
         Column {
             Text(
-                text = roles[when (role) {
-                    Role.USER -> 0
-                    Role.BOT -> 1
-                    Role.SYSTEM -> 2
+                text = when (role) {
+                    Role.USER -> stringResource(id = R.string.user)
+                    Role.BOT -> stringResource(id = R.string.bot)
+                    Role.SYSTEM -> stringResource(id = R.string.system)
                     else -> {
-                        throw Exception("Invalid role")
+                        throw Exception(INVALID_ROLE)
                     }
-                }],
+                },
                 modifier = modifier
                     .fillMaxWidth(),
                 style = MaterialTheme.typography.labelLarge,
@@ -212,7 +211,7 @@ fun MessageEntry(
                     Role.BOT -> 1
                     Role.SYSTEM -> 2
                     else -> {
-                        throw Exception("Invalid role")
+                        throw Exception(INVALID_ROLE)
                     }
                 }]
             )
@@ -245,7 +244,7 @@ fun MessageEntry(
                         Icon(
                             modifier = Modifier.size(18.dp),
                             painter = painterResource(id = R.drawable.baseline_auto_awesome_24),
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.show_as_md_cd)
                         )
                     }
                 }
@@ -275,7 +274,7 @@ fun MessageEntry(
                                     Role.BOT -> MaterialTheme.colorScheme.onTertiaryContainer
                                     Role.SYSTEM -> MaterialTheme.colorScheme.onSecondaryContainer
                                     else -> {
-                                        throw Exception("Invalid role")
+                                        throw Exception(INVALID_ROLE)
                                     }
                                 },
                                 markdown = messageContent
@@ -300,8 +299,8 @@ fun MessageEntry(
                                 }) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.swap),
-                                        modifier = Modifier.size(18.dp),
-                                        contentDescription = null,
+                                        modifier = Modifier.size(19.dp),
+                                        contentDescription = stringResource(id = R.string.swap_cd),
                                     )
                                 }
                             },
@@ -310,7 +309,7 @@ fun MessageEntry(
                                 Role.BOT -> botTextFieldColors
                                 Role.SYSTEM -> systemTextFieldColors
                                 else -> {
-                                    throw Exception("Invalid role")
+                                    throw Exception(INVALID_ROLE)
                                 }
                             },
                         )
@@ -334,7 +333,7 @@ fun MessageEntry(
                     }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.delete),
                         )
                     }
 
@@ -350,7 +349,7 @@ fun MessageEntry(
                             Icon(
                                 modifier = Modifier.size(18.dp),
                                 painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
-                                contentDescription = null
+                                contentDescription = stringResource(id = R.string.show_more_cd)
                             )
                         }
                     }
@@ -392,7 +391,7 @@ fun MessageEntry(
                                 Icon(
                                     modifier = Modifier.size(18.dp),
                                     painter = painterResource(id = R.drawable.baseline_auto_awesome_24),
-                                    contentDescription = null
+                                    contentDescription = stringResource(id = R.string.show_as_md_cd)
                                 )
                             }
 
@@ -403,7 +402,7 @@ fun MessageEntry(
                                 Icon(
                                     modifier = Modifier.size(18.dp),
                                     painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                                    contentDescription = null
+                                    contentDescription = stringResource(id = R.string.show_less_cd)
                                 )
                             }
 
@@ -428,7 +427,7 @@ fun MessageEntry(
                                     Icon(
                                         modifier = Modifier.size(18.dp),
                                         imageVector = Icons.Default.Info,
-                                        contentDescription = null
+                                        contentDescription = stringResource(id = R.string.info_cd)
                                     )
                                 }
                             }

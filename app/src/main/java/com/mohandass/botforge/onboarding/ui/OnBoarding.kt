@@ -94,16 +94,19 @@ fun OnBoarding(
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(pageCount) { iteration ->
-                val color =
-                    if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
-                Box(
-                    modifier = Modifier
-                        .padding(3.dp)
-                        .clip(CircleShape)
-                        .background(color)
-                        .size(8.dp)
+                // skip indicator for first logo screen
+                if (iteration != 0) {
+                    val color =
+                        if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                    Box(
+                        modifier = Modifier
+                            .padding(3.dp)
+                            .clip(CircleShape)
+                            .background(color)
+                            .size(8.dp)
 
-                )
+                    )
+                }
             }
         }
     }

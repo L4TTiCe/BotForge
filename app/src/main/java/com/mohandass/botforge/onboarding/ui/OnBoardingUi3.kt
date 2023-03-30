@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -66,7 +67,7 @@ fun OnBoardingUi3(
                     .fillMaxWidth(0.25f)
                     .fillMaxHeight(0.2f),
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.logo_cd)
             )
 
             Column(
@@ -79,7 +80,7 @@ fun OnBoardingUi3(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(0.9f),
-                    text = "Before we begin...",
+                    text = stringResource(id = R.string.on_boarding_title_2),
                     style = MaterialTheme.typography.displaySmall,
                     textAlign = TextAlign.Center,
                     color = Color.White
@@ -89,7 +90,7 @@ fun OnBoardingUi3(
                         .fillMaxWidth(0.9f)
                         .padding(horizontal = 40.dp)
                         .padding(20.dp),
-                    text = "You will need an OpenAI API key to use this app.",
+                    text = stringResource(id = R.string.on_boarding_message_2_1),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Medium
                     ),
@@ -131,9 +132,23 @@ fun OnBoardingUi3(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(0.95f)
+                        .padding(horizontal = 40.dp)
+                        .padding(20.dp),
+                    text = stringResource(id = R.string.on_boarding_message_2_2),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
                 GetKey(
                     title = resources().getString(R.string.open_ai_api_website),
-                    description = "Tap to visit the OpenAI's API page to get your API key.",
+                    description = stringResource(id = R.string.on_boarding_visit_open_ai),
                     painter = painterResource(id = R.drawable.baseline_key_24),
                 ) {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -147,12 +162,12 @@ fun OnBoardingUi3(
                 IconButton(onClick = onNext) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_keyboard_arrow_up_24),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.next_cd),
                         tint = Color.White.copy(alpha = 0.8f),
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(40.dp))
             }
 
         }

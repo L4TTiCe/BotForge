@@ -44,7 +44,9 @@
     <string name="delete">Delete</string>
     <string name="delete_all">Delete All</string>
     <string name="cancel">Cancel</string>
+    <string name="clear">Clear</string>
 
+    <string name="create_persona">Create Persona</string>
     <string name="customise_persona">Customise Persona</string>
     <string name="create_persona_message">Create a persona to represent your bot</string>
 
@@ -123,8 +125,11 @@
     <string name="display">Display</string>
     <string name="appearance_settings">Appearance</string>
     <string name="dark_mode">Dark</string>
+    <string name="dark_mode_cd">Dark Mode</string>
     <string name="light_mode">Light</string>
+    <string name="light_mode_cd">Light Mode</string>
     <string name="system_default">Auto</string>
+    <string name="system_default_cd">System Default</string>
     <string name="dynamic_colors">Use Dynamic Colors</string>
     <string name="dynamic_colors_message">Changes the
         app\'s color scheme based on your system\'s theme.</string>
@@ -204,6 +209,53 @@
     <string name="community_browse">Browse Bots</string>
     <string name="community_browse_message">Browse community bots and templates.</string>
     <string name="community_most_popular">Most Popular Bots</string>
+    <string name="sync_cd">Sync</string>
+
+    <!--    Community BotDetailDialog   -->
+    <string name="up_vote">Up-vote</string>
+    <string name="down_vote">Down-vote</string>
+    <string name="add">Add</string>
+    <string name="by">By</string>
+
+    <!--    ChatUi   -->
+    <string name="show_more_cd">Show more</string>
+    <string name="show_less_cd">Show less</string>
+    <string name="add_to_bookmarks_cd">Add to Bookmarks</string>
+    <string name="clear_all_cd">Clear All Messages</string>
+
+    <!--    Dropdown Menu   -->
+    <string name="more_options_cd">More Options</string>
+
+    <!--    HistoryUi   -->
+    <string name="bookmarks">Bookmarks</string>
+    <string name="bookmarked">Bookmarked</string>
+    <string name="no_bookmarks_cd">No Bookmarks</string>
+    <string name="no_bookmarks">No Bookmarks yet.</string>
+
+    <!--    MessageList   -->
+    <string name="user">User</string>
+    <string name="bot">Bot</string>
+    <string name="system">System</string>
+    <string name="add_message_cd">Add Message</string>
+    <string name="swap_cd">Swap Role</string>
+    <string name="show_as_md_cd">Show as Markdown</string>
+    <string name="info_cd">Show or Hide Message Metadata</string>
+
+    <!--    OnBoarding   -->
+    <string name="next_cd">Move to next page.</string>
+    <!--    OnBoardingUi2  -->
+    <string name="on_boarding_title_1">"Welcome to\nBotForge!"</string>
+    <string name="on_boarding_message_1">"Your platform for creating and sharing Prompts."</string>
+
+    <!--    OnBoardingUi3  -->
+    <string name="on_boarding_title_2">"Before we begin…"</string>
+    <string name="on_boarding_message_2_1">"You will need an OpenAI API key to use this app."</string>
+    <string name="on_boarding_message_2_2">"BotForge is an unofficial client for OpenAI\'s Chat API."</string>
+    <string name="on_boarding_message_2_3">"We do not collect or store your API key."</string>
+    <string name="on_boarding_visit_open_ai">Tap to visit the OpenAI\'s API page to get your API key."</string>
+
+    <!--    OnBoardingUi4  -->
+
 
     <string name="save_persona_dialog_title">Name your Chat</string>
     <string name="save_persona_dialog_chat_title">Chat Title</string>

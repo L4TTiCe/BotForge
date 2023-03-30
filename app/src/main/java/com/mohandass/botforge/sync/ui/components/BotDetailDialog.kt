@@ -74,7 +74,7 @@ fun BotDetailDialog(
 //                        .padding(8.dp)
                 ) {
                     Text(
-                        text = "By",
+                        text = stringResource(id = R.string.by),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -180,7 +180,7 @@ fun BotDetailDialog(
                 IconButton(onClick = onUpVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.upvote_filled),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.up_vote),
                         modifier = Modifier
                             .size(18.dp)
                     )
@@ -189,7 +189,7 @@ fun BotDetailDialog(
                 IconButton(onClick = onDownVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.downvote_filled),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.down_vote),
                         modifier = Modifier
                             .size(18.dp)
                     )
@@ -204,7 +204,7 @@ fun BotDetailDialog(
 
                 TextButton(onClick = onClickAccept) {
                     Text(
-                        text = "Add",
+                        text = stringResource(id = R.string.add),
                     )
                 }
             }

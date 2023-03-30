@@ -32,6 +32,7 @@ fun TintedIconButton(
     outerCircleColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     iconTint: Color = MaterialTheme.colorScheme.inversePrimary,
     isAnimated: Boolean = false,
+    contentDescription: String? = null,
     onClick: () -> Unit = { }
 ) {
 
@@ -62,7 +63,7 @@ fun TintedIconButton(
     Box(modifier = modifier) {
         Icon(
             painter = painterResource(id = icon),
-            contentDescription = null,
+            contentDescription = contentDescription,
             modifier = Modifier
                 .padding(6.dp)
                 .clip(CircleShape)

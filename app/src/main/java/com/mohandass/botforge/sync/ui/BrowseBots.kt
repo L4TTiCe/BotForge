@@ -97,7 +97,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_cloud_sync_24),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.sync_cd),
                         modifier = Modifier
                             .size(30.dp)
                     )
@@ -127,7 +127,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                     IconButton(onClick = { viewModel.browse.updateSearchQuery("") }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_clear_24),
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.clear),
                             modifier = Modifier
                                 .size(30.dp)
                         )

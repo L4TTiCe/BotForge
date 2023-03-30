@@ -78,7 +78,7 @@ fun SharePersona(
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
+                            contentDescription = stringResource(id = R.string.back_cd),
                             modifier = Modifier
                                 .size(30.dp)
                         )
