@@ -293,13 +293,15 @@ fun MessageEntry(
                             },
                             enabled = isActive.value,
                             trailingIcon = {
-                                IconButton(onClick = {
-                                    role = Role.values()[(role.ordinal + 1) % 3]
-                                    updateMessage()
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        role = Role.values()[(role.ordinal + 1) % 3]
+                                        updateMessage()
+                                    }
+                                ) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.swap),
-                                        modifier = Modifier.size(19.dp),
+                                        modifier = Modifier.size(20.dp),
                                         contentDescription = stringResource(id = R.string.swap_cd),
                                     )
                                 }
@@ -369,7 +371,11 @@ fun MessageEntry(
                                 Icon(
                                     modifier = Modifier.size(18.dp),
                                     painter = painterResource(id = icon),
-                                    contentDescription = null
+                                    contentDescription = if (isActive.value) {
+                                        stringResource(id = R.string.set_message_inactive_cd)
+                                    } else {
+                                        stringResource(id = R.string.set_message_active_cd)
+                                    }
                                 )
                             }
                         }

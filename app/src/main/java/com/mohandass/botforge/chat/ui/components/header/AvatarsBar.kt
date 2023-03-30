@@ -76,7 +76,7 @@ fun AvatarsBar(
                             .size(90.dp)
                             .padding(6.dp),
                         isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
-                        contentDescription = stringResource(id = AppText.community),
+                        contentDescription = stringResource(id = AppText.community_ab_icon_cd),
                         onClick = { viewModel.persona.showMarketplace() }
                     )
 
@@ -140,6 +140,7 @@ fun AvatarsBar(
 
                 TintedIconButton(
                     icon = R.drawable.logo,
+                    contentDescription = stringResource(id = AppText.persona_placeholder_cd),
                     modifier = Modifier
                         .size(90.dp)
                         .padding(6.dp),
@@ -167,7 +168,7 @@ fun AvatarsBar(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                        contentDescription = stringResource(id = AppText.bookmarks),
+                        contentDescription = stringResource(id = AppText.show_bookmarks_cd),
                         modifier = modifier
                             .size(90.dp)
                             .aspectRatio(1f, matchHeightConstraintsFirst = true)

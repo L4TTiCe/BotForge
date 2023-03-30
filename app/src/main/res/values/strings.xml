@@ -147,6 +147,8 @@
     <string name="api">API</string>
     <string name="api_settings_message">View or change your API Key.</string>
     <string name="usage_settings">Usage</string>
+    <string name="tokens">Tokens</string>
+    <string name="dollars">Dollars</string>
     <string name="usage_settings_message">Check your API usage information, and estimated cost.</string>
 
     <string name="manage_account">Manage Account</string>
@@ -205,6 +207,7 @@
 
     <!--    Community   -->
     <string name="community">Community</string>
+    <string name="community_ab_icon_cd">Go to community page</string>
     <string name="community_search">Search Community Bots</string>
     <string name="community_browse">Browse Bots</string>
     <string name="community_browse_message">Browse community bots and templates.</string>
@@ -222,12 +225,14 @@
     <string name="show_less_cd">Show less</string>
     <string name="add_to_bookmarks_cd">Add to Bookmarks</string>
     <string name="clear_all_cd">Clear All Messages</string>
+    <string name="persona_placeholder_cd">Persona Placeholder</string>
 
     <!--    Dropdown Menu   -->
     <string name="more_options_cd">More Options</string>
 
     <!--    HistoryUi   -->
     <string name="bookmarks">Bookmarks</string>
+    <string name="show_bookmarks_cd">Show Bookmarks</string>
     <string name="bookmarked">Bookmarked</string>
     <string name="no_bookmarks_cd">No Bookmarks</string>
     <string name="no_bookmarks">No Bookmarks yet.</string>
@@ -240,22 +245,29 @@
     <string name="swap_cd">Swap Role</string>
     <string name="show_as_md_cd">Show as Markdown</string>
     <string name="info_cd">Show or Hide Message Metadata</string>
+    <string name="set_message_inactive_cd">Set Message Inactive</string>
+    <string name="set_message_active_cd">Set Message Active</string>
 
     <!--    OnBoarding   -->
     <string name="next_cd">Move to next page.</string>
+
     <!--    OnBoardingUi2  -->
-    <string name="on_boarding_title_1">"Welcome to\nBotForge!"</string>
-    <string name="on_boarding_message_1">"Your platform for creating and sharing Prompts."</string>
+    <string name="on_boarding_title_1">Welcome to\nBotForge!</string>
+    <string name="on_boarding_message_1">Your platform for creating and sharing Prompts.</string>
 
     <!--    OnBoardingUi3  -->
-    <string name="on_boarding_title_2">"Before we begin…"</string>
-    <string name="on_boarding_message_2_1">"You will need an OpenAI API key to use this app."</string>
-    <string name="on_boarding_message_2_2">"BotForge is an unofficial client for OpenAI\'s Chat API."</string>
-    <string name="on_boarding_message_2_3">"We do not collect or store your API key."</string>
-    <string name="on_boarding_visit_open_ai">Tap to visit the OpenAI\'s API page to get your API key."</string>
+    <string name="on_boarding_title_2">Before we begin…</string>
+    <string name="on_boarding_message_2_1">You will need an OpenAI API key to use this app.</string>
+    <string name="on_boarding_message_2_2">BotForge is an unofficial client for OpenAI\'s Chat API.</string>
+    <string name="on_boarding_message_2_3">We do not collect or store your API key.</string>
+    <string name="on_boarding_visit_open_ai">Tap to visit the OpenAI\'s API page to get your API key.</string>
 
     <!--    OnBoardingUi4  -->
-
+    <string name="on_boarding_title_3">"Finally,"</string>
+    <string name="on_boarding_message_3_1">Do you want to enable user generated content?</string>
+    <string name="user_generated_content">User Generated Content</string>
+    <string name="user_generated_content_message">Allow bots from the community to be displayed in the app</string>
+    <string name="get_started">Get Started</string>
 
     <string name="save_persona_dialog_title">Name your Chat</string>
     <string name="save_persona_dialog_chat_title">Chat Title</string>

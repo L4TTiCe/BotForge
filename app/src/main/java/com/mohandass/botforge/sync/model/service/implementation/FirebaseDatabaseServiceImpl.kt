@@ -1,12 +1,14 @@
 package com.mohandass.botforge.sync.model.service.implementation
 
-import android.util.Log
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.sync.model.Bot
 import kotlinx.coroutines.tasks.await
 
-class FirebaseDatabaseServiceImpl {
+class FirebaseDatabaseServiceImpl(
+    private val logger: Logger
+) {
     private val database = Firebase.database
     private val botRef = database.getReference(BOT_COLLECTION)
 
@@ -17,9 +19,9 @@ class FirebaseDatabaseServiceImpl {
     suspend fun fetchBotsUpdatedAfter(time: Long): List<Bot> {
         val bots = mutableListOf<Bot>()
         val snapshot = botRef.orderByChild("updatedAt").startAt(time.toDouble()).get().await()
-        Log.v(TAG, "fetchBotsUpdatedAfter: ${snapshot.childrenCount}")
+        logger.logVerbose(TAG, "fetchBotsUpdatedAfter: ${snapshot.childrenCount}")
         snapshot.children.forEach {
-            Log.v(TAG, "fetchBotsUpdatedAfter: ${it.getValue(Bot::class.java)}")
+            logger.logVerbose(TAG, "fetchBotsUpdatedAfter: ${it.getValue(Bot::class.java)}")
             bots.add(it.getValue(Bot::class.java)!!)
         }
         return bots

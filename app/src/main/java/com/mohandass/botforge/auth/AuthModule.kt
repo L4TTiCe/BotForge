@@ -6,6 +6,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.auth.model.services.AccountService
 import com.mohandass.botforge.auth.model.services.implementation.AccountServiceImpl
+import com.mohandass.botforge.common.service.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,7 @@ class AuthModule {
     @Singleton
     fun provideAccountService(
         auth: FirebaseAuth,
+        logger: Logger,
         application: Application,
-    ): AccountService = AccountServiceImpl(auth, application)
+    ): AccountService = AccountServiceImpl(auth, logger, application)
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,7 +73,7 @@ fun OnBoardingUi4(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(0.9f),
-                    text = "Finally,",
+                    text = stringResource(id = R.string.on_boarding_title_3),
                     style = MaterialTheme.typography.displaySmall,
                     textAlign = TextAlign.Center,
                     color = Color.White
@@ -85,7 +86,7 @@ fun OnBoardingUi4(
                         .fillMaxWidth(0.9f)
                         .padding(horizontal = 40.dp)
                         .padding(20.dp),
-                    text = "Do you want to enable user generated content?",
+                    text = stringResource(id = R.string.on_boarding_message_3_1),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Medium
                     ),
@@ -96,8 +97,8 @@ fun OnBoardingUi4(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 UserGeneratedContentSwitch(
-                    title = "User Generated Content",
-                    description = "Allow bots from the community to be displayed in the app",
+                    title = stringResource(id = R.string.user_generated_content),
+                    description = stringResource(id = R.string.user_generated_content_message),
                     icon = painterResource(id = R.drawable.baseline_color_lens_24),
                     switchState = enableUserGeneratedContent,
                     onCheckChange = {
@@ -110,7 +111,7 @@ fun OnBoardingUi4(
 
                 Button(onClick = onComplete) {
                     Text(
-                        text = "Get Started",
+                        text = stringResource(id = R.string.get_started),
                     )
                 }
 

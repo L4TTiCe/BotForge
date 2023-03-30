@@ -132,7 +132,7 @@ fun ApiUsageUi(
             }) {
                 Icon(
                     imageVector = Icons.Default.Info,
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.info_cd),
                     modifier = Modifier.size(18.dp)
                 )
             }
@@ -147,7 +147,7 @@ fun ApiUsageUi(
 
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_token_24),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.tokens),
                         modifier = Modifier.size(18.dp)
                     )
 
@@ -168,7 +168,7 @@ fun ApiUsageUi(
 
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_attach_money_24),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.dollars),
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.error
                     )

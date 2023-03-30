@@ -7,6 +7,7 @@ import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.model.services.implementation.OpenAiServiceImpl
 import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.service.LocalDatabase
+import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 import dagger.Module
 import dagger.Provides
@@ -32,8 +33,9 @@ class ChatModule {
     @Provides
     @Singleton
     fun provideOpenAiService(
-        sharedPreferencesService: SharedPreferencesService
-    ): OpenAiService = OpenAiServiceImpl.getInstance(sharedPreferencesService)
+        sharedPreferencesService: SharedPreferencesService,
+        logger: Logger,
+    ): OpenAiService = OpenAiServiceImpl.getInstance(sharedPreferencesService, logger)
 
     @Provides
     @Singleton
@@ -44,6 +46,7 @@ class ChatModule {
     @Provides
     @Singleton
     fun provideChatServiceImpl(
-        chatDao: ChatDao
-    ) = ChatServiceImpl(chatDao)
+        chatDao: ChatDao,
+        logger: Logger,
+    ) = ChatServiceImpl(chatDao, logger)
 }

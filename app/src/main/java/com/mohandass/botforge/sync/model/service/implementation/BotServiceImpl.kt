@@ -1,11 +1,14 @@
 package com.mohandass.botforge.sync.model.service.implementation
 
-import android.util.Log
+import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.sync.model.dao.BotDao
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.service.BotService
 
-class BotServiceImpl(private val botDao: BotDao) : BotService {
+class BotServiceImpl(
+    private val botDao: BotDao,
+    private val logger: Logger
+) : BotService {
 
     override suspend fun searchBots(query: String): List<BotE> {
         return botDao.search("*$query*")
@@ -35,7 +38,7 @@ class BotServiceImpl(private val botDao: BotDao) : BotService {
             botDao.addBotFts(botFts)
         }
 
-        Log.v(TAG, "addBot: $botFts")
+        logger.logVerbose(TAG, "addBot: $botFts")
     }
 
     override suspend fun deleteAllBots() {

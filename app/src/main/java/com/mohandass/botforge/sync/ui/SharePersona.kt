@@ -246,7 +246,7 @@ fun SharePersona(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
-                                        contentDescription = null,
+                                        contentDescription = stringResource(id = R.string.clear),
                                     )
                                 }
                             }

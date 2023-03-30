@@ -1,7 +1,6 @@
 package com.mohandass.botforge.common
 
 import android.content.res.Resources
-import android.util.Log
 import androidx.annotation.StringRes
 import com.mohandass.botforge.R.string as AppText
 
@@ -31,7 +30,6 @@ sealed class SnackbarMessage {
                 is StringSnackbar -> this.message
                 is ResourceSnackbar -> resources.getString(this.message)
                 is ResourceSnackbarWithFormatArg -> {
-                    Log.v("SnackbarMessage", "toMessage($message, $formatArg)")
                     resources.getString(this.message, *this.formatArg.toTypedArray())
                 }
 
@@ -39,7 +37,6 @@ sealed class SnackbarMessage {
                 is ResourceSnackbarWithAction -> resources.getString(this.message)
             }
 
-            Log.v("SnackbarMessage", "toMessage($message)")
             return message
         }
 

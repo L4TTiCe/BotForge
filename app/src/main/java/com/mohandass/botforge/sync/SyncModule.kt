@@ -26,13 +26,15 @@ class SyncModule {
     @Provides
     @Singleton
     fun provideBotServiceImpl(
-        botDao: BotDao
-    ): BotService = BotServiceImpl(botDao)
+        botDao: BotDao,
+        logger: Logger
+    ): BotService = BotServiceImpl(botDao, logger)
 
     @Provides
     @Singleton
-    fun provideFirebaseDatabaseService()
-            : FirebaseDatabaseServiceImpl = FirebaseDatabaseServiceImpl()
+    fun provideFirebaseDatabaseService(
+        logger: Logger
+    ): FirebaseDatabaseServiceImpl = FirebaseDatabaseServiceImpl(logger)
 
     @Provides
     @Singleton

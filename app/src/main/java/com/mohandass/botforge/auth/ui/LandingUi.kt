@@ -1,6 +1,5 @@
 package com.mohandass.botforge.auth.ui
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -35,6 +34,8 @@ import com.mohandass.botforge.auth.ui.components.SkipSignInButton
 import com.mohandass.botforge.auth.viewmodel.LandingViewModel
 import com.slaviboy.composeunits.dh
 
+private const val TAG = "LandingUi"
+
 @Composable
 fun LandingUi(
     modifier: Modifier = Modifier,
@@ -44,12 +45,12 @@ fun LandingUi(
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
             if (!landingViewModel.isOnBoardingCompleted()) {
-                Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to OnBoardingUi")
+                viewModel.logger.logVerbose(TAG, "checkAuthentication: Authenticated, navigating to OnBoardingUi")
                 viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             } else {
-                Log.v("LandingUi", "checkAuthentication: Authenticated, navigating to MainUi")
+                viewModel.logger.logVerbose(TAG, "checkAuthentication: Authenticated, navigating to MainUi")
                 viewModel.navController.navigate(AppRoutes.Main.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
@@ -79,7 +80,7 @@ fun LandingUi(
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             } catch (it: ApiException) {
-                Log.w("LandingUi", "Google sign in failed", it)
+                viewModel.logger.logError(TAG, "Google sign in failed", it)
             }
         }
 

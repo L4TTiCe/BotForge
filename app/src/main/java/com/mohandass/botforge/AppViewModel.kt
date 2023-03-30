@@ -40,7 +40,7 @@ class AppViewModel @Inject constructor(
     preferencesDataStore: PreferencesDataStore,
     firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     firestoreService: FirestoreService,
-    private val logger: Logger,
+    val logger: Logger,
 ) : ViewModel() {
 
     // Keep the user preferences as a stream of changes

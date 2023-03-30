@@ -1,7 +1,6 @@
 package com.mohandass.botforge.settings.model.service.implementation
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.edit
 import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 
@@ -27,7 +26,6 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
         }
 
     override fun setAPIKey(apiKey: String) {
-        Log.v(TAG, "setAPIKey() $apiKey")
         sharedPreferences.edit {
             putString(API_KEY, apiKey)
         }

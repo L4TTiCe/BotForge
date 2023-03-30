@@ -1,11 +1,11 @@
 package com.mohandass.botforge.sync.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.model.services.AccountService
@@ -18,7 +18,6 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.service.BotService
 import com.mohandass.botforge.sync.model.service.FirestoreService
 import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
-import com.google.firebase.perf.metrics.AddTrace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,7 +61,7 @@ class BrowseViewModel @Inject constructor(
         viewModelScope.launch {
             _fetchedBots.clear()
             _fetchedBots.addAll(botService.searchBots(Utils.sanitizeSearchQuery(searchQuery.value)))
-            Log.v(TAG, "search: $_fetchedBots")
+            logger.logVerbose(TAG, "search: $_fetchedBots")
         }
     }
 

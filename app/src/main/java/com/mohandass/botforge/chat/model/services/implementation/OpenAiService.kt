@@ -1,6 +1,5 @@
 package com.mohandass.botforge.chat.model.services.implementation
 
-import android.util.Log
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
@@ -10,17 +9,20 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.model.services.OpenAiService
+import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.service.SharedPreferencesService
 
-class OpenAiServiceImpl private constructor(private val sharedPreferencesService: SharedPreferencesService) :
+class OpenAiServiceImpl private constructor(
+    private val sharedPreferencesService: SharedPreferencesService,
+    private val logger: Logger,
+) :
     OpenAiService {
 
     private fun getClient(): OpenAI {
         val apiKey = sharedPreferencesService.getApiKey()
-        Log.v(TAG, "getClient() |$apiKey|")
 
         if (apiKey == "") {
-            Log.e(TAG, "getClient() No API key found")
+            logger.logError(TAG, "getClient() No API key found")
             throw Throwable("No API key found")
         }
 
@@ -32,11 +34,11 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
         messages: List<Message>,
         modelId: ModelId
     ): Message {
-        Log.v(TAG, "getChatCompletion() ${messages.size}")
+        logger.logVerbose(TAG, "getChatCompletion() ${messages.size}")
         val chatMessages = messages.map { it.toChatMessage() }
 
         for (chatMessage in chatMessages) {
-            Log.v(TAG, "getChatCompletion() ${chatMessage.content}")
+            logger.logVerbose(TAG, "getChatCompletion() ${chatMessage.content}")
         }
 
         val chatCompletionRequest = ChatCompletionRequest(
@@ -45,9 +47,8 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
         )
 
         try {
-            Log.v(TAG, "getChatCompletion() start request")
+            logger.logVerbose(TAG, "getChatCompletion() start request")
             val completion: ChatCompletion = getClient().chatCompletion(chatCompletionRequest)
-            Log.v(TAG, "getChatCompletion() ${completion.choices[0].message?.content}")
 
             val metadata = MessageMetadata(
                 openAiId = completion.id,
@@ -66,7 +67,7 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
                 metadata = metadata,
             )
         } catch (e: Exception) {
-            Log.v("OpenAiService", "getChatCompletion() ${e.printStackTrace()}")
+            logger.logError(TAG, "getChatCompletion() ${e.printStackTrace()}", e)
             throw e
         }
     }
@@ -77,14 +78,17 @@ class OpenAiServiceImpl private constructor(private val sharedPreferencesService
         @Volatile
         private var INSTANCE: OpenAiService? = null
 
-        fun getInstance(sharedPreferencesService: SharedPreferencesService): OpenAiService {
+        fun getInstance(
+            sharedPreferencesService: SharedPreferencesService,
+            logger: Logger,
+        ): OpenAiService {
             val tempInstance = INSTANCE
 
             if (tempInstance != null) {
                 return tempInstance
             }
             synchronized(this) {
-                val instance = OpenAiServiceImpl(sharedPreferencesService)
+                val instance = OpenAiServiceImpl(sharedPreferencesService, logger)
                 INSTANCE = instance
                 return instance
             }

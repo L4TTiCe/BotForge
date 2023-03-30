@@ -1,8 +1,8 @@
 package com.mohandass.botforge.settings.model.service.implementation
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
+import com.mohandass.botforge.common.service.Logger
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.model.service.PreferencesDataStore
@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 
-class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
+class PreferencesDataStoreImpl(
+    private val dataStore: DataStore<Preferences>,
+    private val logger: Logger
+) :
     PreferencesDataStore {
     private object PreferencesKeys {
         val PREF_THEME = stringPreferencesKey(PreferencesDataStore.PREFERRED_THEME_KEY)
@@ -29,7 +32,7 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
         .catch { exception ->
             // dataStore.data throws an IOException when an error is encountered when reading data
             if (exception is IOException) {
-                Log.e(TAG, "Error reading preferences.", exception)
+                logger.logError(TAG, "Error reading preferences.", exception)
                 emit(emptyPreferences())
             } else {
                 throw exception
@@ -39,28 +42,28 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
         }
 
     override suspend fun updateTheme(preferredTheme: PreferredTheme) {
-        Log.v(TAG, "updateTheme() preferredTheme: $preferredTheme")
+        logger.logVerbose(TAG, "updateTheme() preferredTheme: $preferredTheme")
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.PREF_THEME] = preferredTheme.name
         }
     }
 
     override suspend fun setDynamicColor(newValue: Boolean) {
-        Log.v(TAG, "setDynamicColor() newValue: $newValue")
+        logger.logVerbose(TAG, "setDynamicColor() newValue: $newValue")
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.DYNAMIC_COLOR] = newValue
         }
     }
 
     override suspend fun updateLastSuccessfulSync() {
-        Log.v(TAG, "updateLastSuccessfulSync()")
+        logger.logVerbose(TAG, "updateLastSuccessfulSync()")
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] = System.currentTimeMillis()
         }
     }
 
     override suspend fun clearLastSuccessfulSync() {
-        Log.v(TAG, "clearLastSuccessfulSync()")
+        logger.logVerbose(TAG, "clearLastSuccessfulSync()")
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.LAST_SUCCESSFUL_SYNC] = 0L
         }
@@ -70,7 +73,7 @@ class PreferencesDataStoreImpl(private val dataStore: DataStore<Preferences>) :
         mapUserPreferences(dataStore.data.first().toPreferences())
 
     override suspend fun setUserGeneratedContent(newValue: Boolean) {
-        Log.v(TAG, "setUserGeneratedContent() newValue: $newValue")
+        logger.logVerbose(TAG, "setUserGeneratedContent() newValue: $newValue")
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.USER_GENERATED_CONTENT] = newValue
         }

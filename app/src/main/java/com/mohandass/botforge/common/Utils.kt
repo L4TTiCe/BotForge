@@ -1,6 +1,5 @@
 package com.mohandass.botforge.common
 
-import android.util.Log
 import com.google.gson.Gson
 import com.mohandass.botforge.BuildConfig
 import java.io.PrintWriter
@@ -31,7 +30,6 @@ class Utils {
                 }
                 if (line.contains("message")) {
                     val messageAsJson = "{${line.substring(0, line.length - 1)}}"
-                    Log.v("Utils", "parseStackTraceForErrorMessage($messageAsJson)")
                     val map = Gson().fromJson(messageAsJson, Map::class.java)
 
                     val message = map["message"] as String
@@ -72,14 +70,11 @@ class Utils {
         }
 
         fun sanitizeSearchQuery(query: String?): String {
-            Log.v(TAG, "sanitizeSearchQuery($query)")
             if (query == null) {
                 return ""
             }
             val queryWithEscapedQuotes = query.replace(Regex.fromLiteral("\""), "\"\"")
-            val sanitizedQuery = "*$queryWithEscapedQuotes*"
-            Log.v(TAG, "sanitizeSearchQuery: $sanitizedQuery")
-            return sanitizedQuery
+            return "*$queryWithEscapedQuotes*"
         }
 
         private const val TAG = "Utils"

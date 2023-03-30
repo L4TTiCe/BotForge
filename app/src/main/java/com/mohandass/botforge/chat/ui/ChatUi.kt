@@ -130,7 +130,8 @@ fun ChatUi(viewModel: AppViewModel) {
                 state = listState,
             ) {
                 item {
-                    Row(
+                    Row (
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -142,42 +143,38 @@ fun ChatUi(viewModel: AppViewModel) {
                                 )
                             else
                                 stringResource(id = R.string.chat),
-                            modifier = Modifier.padding(horizontal = 10.dp),
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp, vertical = 5.dp)
+                                .fillMaxWidth(0.85f),
                             style = MaterialTheme.typography.headlineSmall
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        if (expandCustomizePersona) {
-                            IconButton(
-                                onClick = {
+                        IconButton(
+                            onClick = {
+                                if (expandCustomizePersona) {
                                     viewModel.persona.updateExpandCustomizePersona(false)
-                                },
-                                modifier = Modifier.padding(10.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = R.drawable.baseline_keyboard_arrow_up_24
-                                    ),
-                                    contentDescription = stringResource(id = R.string.show_less_cd),
-                                    modifier = Modifier.size(36.dp)
-                                )
-                            }
-                        } else {
-                            IconButton(
-                                onClick = {
+                                } else {
                                     viewModel.persona.updateExpandCustomizePersona(true)
-                                },
-                                modifier = Modifier.padding(10.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = R.drawable.baseline_keyboard_arrow_down_24
-                                    ),
-                                    contentDescription = stringResource(id = R.string.show_more_cd),
-                                    modifier = Modifier.size(36.dp)
-                                )
-                            }
+                                }
+                            },
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(
+                                    id = if (expandCustomizePersona)
+                                        R.drawable.baseline_keyboard_arrow_up_24
+                                    else
+                                        R.drawable.baseline_keyboard_arrow_down_24
+                                ),
+                                contentDescription = stringResource(id =
+                                if (expandCustomizePersona)
+                                    R.string.show_less_cd
+                                else
+                                    R.string.show_more_cd),
+                                modifier = Modifier.size(36.dp)
+                            )
                         }
                     }
                 }

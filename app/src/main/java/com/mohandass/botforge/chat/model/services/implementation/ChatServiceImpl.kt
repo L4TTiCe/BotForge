@@ -1,6 +1,5 @@
 package com.mohandass.botforge.chat.model.services.implementation
 
-import android.util.Log
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
@@ -8,8 +7,12 @@ import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.entities.ChatE
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
+import com.mohandass.botforge.common.service.Logger
 
-class ChatServiceImpl(private val chatDao: ChatDao) {
+class ChatServiceImpl(
+    private val chatDao: ChatDao,
+    private val logger: Logger
+) {
 
     suspend fun saveChat(chat: Chat, messageList: List<Message>) {
         val chatE = ChatE.from(chat)
@@ -25,35 +28,35 @@ class ChatServiceImpl(private val chatDao: ChatDao) {
                 messageE.metadataOpenAiId = metadataE!!.openAiId
                 metadataEList.add(metadataE)
             } else {
-                Log.v(TAG, "saveChat() message.metadata is null")
+                logger.logVerbose(TAG, "saveChat() message.metadata is null")
                 messageE.metadataOpenAiId = null
             }
 
             messagesEList.add(messageE)
         }
 
-        Log.v(TAG, "saveChat() Saving chat: $chatE")
-        Log.v(TAG, "saveChat() Saving messageList: $messagesEList")
-        Log.v(TAG, "saveChat() Saving metadataList: $metadataEList")
+        logger.logVerbose(TAG, "saveChat() Saving chat: $chatE")
+        logger.logVerbose(TAG, "saveChat() Saving messageList: $messagesEList")
+        logger.logVerbose(TAG, "saveChat() Saving metadataList: $metadataEList")
 
         chatDao.insertChat(chatE)
 
         for (metadataE in metadataEList) {
-            Log.v(TAG, "saveChat() Saving metadata: $metadataE")
+            logger.logVerbose(TAG, "saveChat() Saving metadata: $metadataE")
             chatDao.insertMetadata(metadataE)
         }
 
         for (messageE in messagesEList) {
-            Log.v(TAG, "saveChat() Saving message: $messageE")
-            Log.v(TAG, "saveChat() Saving message: ${messageE.role}")
+            logger.logVerbose(TAG, "saveChat() Saving message: $messageE")
+            logger.logVerbose(TAG, "saveChat() Saving message: ${messageE.role}")
             chatDao.insertMessage(messageE)
         }
     }
 
     suspend fun getMessagesCount(chatUUID: String): Int {
-        Log.v(TAG, "getMessagesCount() chatUUID: $chatUUID")
+        logger.logVerbose(TAG, "getMessagesCount() chatUUID: $chatUUID")
         val count = chatDao.getMessageCount(chatUUID)
-        Log.v(TAG, "getMessagesCount() count: $count")
+        logger.logVerbose(TAG, "getMessagesCount() count: $count")
         return count
     }
 
