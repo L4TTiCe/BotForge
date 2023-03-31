@@ -12,5 +12,7 @@ interface BotService {
         offset: Int = 0
     ): List<BotE>
 
+    suspend fun deleteBot(uuid: String)
+
     suspend fun deleteAllBots()
 }

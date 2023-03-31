@@ -28,7 +28,8 @@ fun BotCard(
     botE: BotE,
     onClickButton: () -> Unit,
     onUpVote: () -> Unit,
-    onDownVote: () -> Unit
+    onDownVote: () -> Unit,
+    onReport: () -> Unit,
 ) {
     val showDetailDialog = remember { mutableStateOf(false) }
 
@@ -41,7 +42,8 @@ fun BotCard(
                 showDetailDialog.value = false
             },
             onUpVote = onUpVote,
-            onDownVote = onDownVote
+            onDownVote = onDownVote,
+            onReport = onReport,
         )
     }
 
@@ -137,7 +139,7 @@ fun BotCardPreviewLight(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeLightThemePreview {
-        BotCard(bot, {}, {}, {})
+        BotCard(bot, {}, {}, {}, {})
     }
 }
 
@@ -147,6 +149,6 @@ fun BotCardPreviewDark(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeDarkThemePreview {
-        BotCard(bot, {}, {}, {})
+        BotCard(bot, {}, {}, {}, {})
     }
 }

@@ -14,6 +14,7 @@ class FirestoreServiceImpl(
     private val db = Firebase.firestore
     private val upVoteRef = db.collection(UP_VOTES_COLLECTION)
     private val downVoteRef = db.collection(DOWN_VOTES_COLLECTION)
+    private val reportsRef = db.collection(REPORTS_COLLECTION)
 
     private suspend fun recordUpVote(botId: String, userId: String) {
         logger.logVerbose(TAG, "recordUpVote: $botId, user: $userId")
@@ -80,8 +81,12 @@ class FirestoreServiceImpl(
     override suspend fun addUpVote(botId: String, userId: String) {
         logger.logVerbose(TAG, "addUpVote: $botId, user: $userId")
         try {
-            deleteUpVote(botId, userId)
-            deleteDownVote(botId, userId)
+            if (checkUpVote(botId, userId)) {
+                return
+            }
+            if (checkDownVote(botId, userId)) {
+                deleteDownVote(botId, userId)
+            }
             recordUpVote(botId, userId)
         } catch (e: Exception) {
             logger.logError(TAG, "Error adding UpVote", e)
@@ -91,8 +96,12 @@ class FirestoreServiceImpl(
     override suspend fun addDownVote(botId: String, userId: String) {
         logger.logVerbose(TAG, "addDownVote: $botId, user: $userId")
         try {
-            deleteDownVote(botId, userId)
-            deleteUpVote(botId, userId)
+            if (checkDownVote(botId, userId)) {
+                return
+            }
+            if (checkUpVote(botId, userId)) {
+                deleteUpVote(botId, userId)
+            }
             recordDownVote(botId, userId)
         } catch (e: Exception) {
             logger.logError(TAG, "Error adding DownVote", e)
@@ -123,9 +132,52 @@ class FirestoreServiceImpl(
         }
     }
 
+    private suspend fun recordReport(botId: String, userId: String) {
+        logger.logVerbose(TAG, "recordReport: $botId, user: $userId")
+        val reportRecord = VoteRecord(botId, userId)
+        reportsRef.add(reportRecord).await()
+    }
+
+    private suspend fun deleteReport(botId: String, userId: String) {
+        logger.logVerbose(TAG, "deleteReport: $botId, user: $userId")
+        val querySnapshot = reportsRef.whereEqualTo("botId", botId)
+            .whereEqualTo("userId", userId)
+            .get()
+            .await()
+        if (!querySnapshot.isEmpty) {
+            querySnapshot.documents[0].reference.delete().await()
+        }
+    }
+
+    override suspend fun checkReport(botId: String, userId: String): Boolean {
+        logger.logVerbose(TAG, "checkReport: $botId, user: $userId")
+        return try {
+            val querySnapshot = reportsRef.whereEqualTo("botId", botId)
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+            !querySnapshot.isEmpty
+        } catch (e: Exception) {
+            logger.logError(TAG, "Error checking Report", e)
+            false
+        }
+    }
+
+    override suspend fun addReport(botId: String, userId: String) {
+        logger.logVerbose(TAG, "addReport: $botId, user: $userId")
+        try {
+            if (!checkReport(botId, userId)) {
+                recordReport(botId, userId)
+            }
+        } catch (e: Exception) {
+            logger.logError(TAG, "Error adding Report", e)
+        }
+    }
+
     companion object {
         const val TAG = "FirestoreServiceImpl"
         const val UP_VOTES_COLLECTION = "up_votes"
         const val DOWN_VOTES_COLLECTION = "down_votes"
+        const val REPORTS_COLLECTION = "reports"
     }
 }

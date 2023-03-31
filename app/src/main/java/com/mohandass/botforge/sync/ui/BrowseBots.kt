@@ -168,13 +168,16 @@ fun BrowseBots(viewModel: AppViewModel) {
                     BotCard(
                         botE = communityBots[idx],
                         onClickButton = {
-                            viewModel.browse.makePersona(topBots[idx])
+                            viewModel.browse.makePersona(communityBots[idx])
                         },
                         onUpVote = {
                             viewModel.browse.upVote(communityBots[idx].uuid)
                         },
                         onDownVote = {
                             viewModel.browse.downVote(communityBots[idx].uuid)
+                        },
+                        onReport = {
+                            viewModel.browse.report(communityBots[idx].uuid)
                         }
                     )
                 }
@@ -210,6 +213,9 @@ fun BrowseBots(viewModel: AppViewModel) {
                         },
                         onDownVote = {
                             viewModel.browse.downVote(topBots[idx].uuid)
+                        },
+                        onReport = {
+                            viewModel.browse.report(topBots[idx].uuid)
                         }
                     )
                 }

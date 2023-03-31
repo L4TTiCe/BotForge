@@ -87,6 +87,15 @@ class BrowseViewModel @Inject constructor(
         }
     }
 
+    fun report(botId: String) {
+        logger.logVerbose(TAG, "report()")
+        viewModelScope.launch {
+            botService.deleteBot(botId)
+            firestoreService.addReport(botId, accountService.currentUserId)
+            fetchBots()
+        }
+    }
+
     fun deleteAllBots() {
         logger.log(TAG, "deleteAllBots()")
         viewModelScope.launch {

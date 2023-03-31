@@ -219,6 +219,7 @@
     <string name="down_vote">Down-vote</string>
     <string name="add">Add</string>
     <string name="by">By</string>
+    <string name="report">Report</string>
 
     <!--    ChatUi   -->
     <string name="show_more_cd">Show more</string>

@@ -41,6 +41,11 @@ class BotServiceImpl(
         logger.logVerbose(TAG, "addBot: $botFts")
     }
 
+    override suspend fun deleteBot(uuid: String) {
+        botDao.deleteBot(uuid)
+        botDao.deleteBotFts(uuid)
+    }
+
     override suspend fun deleteAllBots() {
         botDao.deleteAllBots()
         botDao.deleteAllBotsFts()

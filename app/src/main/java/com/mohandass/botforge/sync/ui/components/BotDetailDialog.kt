@@ -35,6 +35,7 @@ fun BotDetailDialog(
     onClickAccept: () -> Unit,
     onUpVote: () -> Unit,
     onDownVote: () -> Unit,
+    onReport: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onClickDismiss,
@@ -167,7 +168,7 @@ fun BotDetailDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp),
+                    .padding(top = 5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.weight(1f))
@@ -210,15 +211,28 @@ fun BotDetailDialog(
             }
 
         },
-//        dismissButton = {
-////            TextButton(onClick = onClickDismiss) {
-////                Text(
-////                    text = stringResource(id = R.string.cancel),
-////                )
-////            }
-//
-//
-//        },
+        dismissButton = {
+            // Report button
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = onReport,
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error,
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.report),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        },
     )
 }
 
@@ -228,6 +242,6 @@ fun BotDetailDialogPreview(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeLightThemePreview {
-        BotDetailDialog(bot, {}, {}, {}, {})
+        BotDetailDialog(bot, {}, {}, {}, {}, {})
     }
 }

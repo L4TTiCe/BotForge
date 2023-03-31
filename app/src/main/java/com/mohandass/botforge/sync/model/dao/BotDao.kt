@@ -64,6 +64,13 @@ interface BotDao {
         offset: Int = 0
     ): List<BotE>
 
+    // Delete bot with uuid
+    @Query("DELETE FROM bots WHERE uuid = :uuid")
+    suspend fun deleteBot(uuid: String)
+
+    @Query("DELETE FROM bots_fts WHERE uuid = :uuid")
+    suspend fun deleteBotFts(uuid: String)
+
     // Delete all bots
     @Query("DELETE FROM bots")
     suspend fun deleteAllBots()

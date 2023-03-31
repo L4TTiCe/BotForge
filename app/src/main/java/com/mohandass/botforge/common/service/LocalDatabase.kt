@@ -27,7 +27,7 @@ import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
         BotFts::class,
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(CustomTypeConverters::class, CustomSyncTypeConverters::class)
 abstract class LocalDatabase : RoomDatabase() {
