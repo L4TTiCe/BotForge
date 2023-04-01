@@ -24,4 +24,7 @@
     <item name="dice" type="string">
         <a href="https://www.flaticon.com/free-icons/dice" title="dice icons">Dice icons created by Stockio - Flaticon</a>
     </item>
+    <item name="play_store_ic" type="string">
+        <a href="https://www.flaticon.com/free-icons/google" title="google icons">Google icons created by Freepik - Flaticon</a>
+    </item>
 </resources>

@@ -43,8 +43,6 @@ P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 p
 @app/src/main/java/com/mohandass/botforge/settings/ui/ApiKeyUi.kt,9/1/91e1d876035a737eb740666eb4666b9547edfbde
-x
-Happ/src/main/java/com/mohandass/botforge/settings/ui/AppInformationUi.kt,9/e/9e33af99d07ae566b878162a31bd5f6c28c924d7
 z
 Japp/src/main/java/com/mohandass/botforge/settings/ui/AppearanceSettings.kt,d/6/d68afe325bf7e2e6bb19388f72c202a723fab58b
 t

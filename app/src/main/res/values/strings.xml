@@ -183,6 +183,9 @@
     <string name="github_message">Submit an issue, bug or feature request</string>
     <string name="privacy_policy_link">https://dheshan.mohandass.com/posts/privacy</string>
     <string name="github_link">https://github.com/L4TTiCe/BotForge</string>
+    <string name="play_store">Play Store</string>
+    <string name="play_store_message">Rate the app on the Play Store.</string>
+    <string name="play_store_link">https://play.google.com/store/apps/details?id=com.mohandass.botforge</string>
 
     <string name="markdown">Markdown</string>
     <string name="markdown_default">Rendered as Markdown.</string>
