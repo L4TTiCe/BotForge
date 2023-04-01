@@ -8,16 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.auth.model.services.AccountService
-import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.settings.model.service.PreferencesDataStore
+import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.sync.model.dao.entities.BotE
-import com.mohandass.botforge.sync.model.service.BotService
-import com.mohandass.botforge.sync.model.service.FirestoreService
-import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.service.BotService
+import com.mohandass.botforge.sync.service.FirestoreService
+import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

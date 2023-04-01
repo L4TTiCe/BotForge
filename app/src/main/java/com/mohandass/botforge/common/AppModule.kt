@@ -3,9 +3,9 @@ package com.mohandass.botforge.common
 import android.app.Application
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.mohandass.botforge.common.service.LocalDatabase
-import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.common.service.implementation.FirebaseCrashlyticsLogger
+import com.mohandass.botforge.common.services.LocalDatabase
+import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.implementation.FirebaseCrashlyticsLogger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

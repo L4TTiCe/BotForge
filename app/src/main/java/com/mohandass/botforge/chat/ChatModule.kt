@@ -2,13 +2,13 @@ package com.mohandass.botforge.chat
 
 import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.PersonaDao
-import com.mohandass.botforge.chat.model.services.OpenAiService
-import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.chat.model.services.implementation.OpenAiServiceImpl
-import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.common.service.LocalDatabase
-import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.settings.model.service.SharedPreferencesService
+import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.chat.services.implementation.OpenAiServiceImpl
+import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.common.services.LocalDatabase
+import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.settings.service.SharedPreferencesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

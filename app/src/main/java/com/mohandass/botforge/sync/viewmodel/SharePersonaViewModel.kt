@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.auth.model.services.AccountService
+import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.sync.model.Bot
-import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject

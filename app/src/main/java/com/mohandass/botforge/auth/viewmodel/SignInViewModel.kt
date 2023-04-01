@@ -3,10 +3,10 @@ package com.mohandass.botforge.auth.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.auth.model.services.AccountService
+import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

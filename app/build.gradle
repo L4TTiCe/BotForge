@@ -43,10 +43,10 @@ android {
         applicationId "com.mohandass.botforge"
         minSdk 29
         targetSdk 33
-        versionCode 9
-        versionName "1.1"
+        versionCode 10
+        versionName "1.1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }

@@ -14,12 +14,12 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.chat.model.services.OpenAiService
-import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*

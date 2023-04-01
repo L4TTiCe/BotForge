@@ -11,10 +11,10 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.model.dao.entities.Persona
-import com.mohandass.botforge.chat.model.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject

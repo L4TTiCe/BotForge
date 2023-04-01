@@ -3,9 +3,9 @@ package com.mohandass.botforge.auth.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
-import com.mohandass.botforge.auth.model.services.AccountService
-import com.mohandass.botforge.common.service.Logger
-import com.mohandass.botforge.settings.model.service.SharedPreferencesService
+import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.settings.service.SharedPreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

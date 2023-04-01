@@ -10,9 +10,9 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.Message
-import com.mohandass.botforge.chat.model.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(

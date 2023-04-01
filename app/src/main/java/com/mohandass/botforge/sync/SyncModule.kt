@@ -1,13 +1,13 @@
 package com.mohandass.botforge.sync
 
-import com.mohandass.botforge.common.service.LocalDatabase
-import com.mohandass.botforge.common.service.Logger
+import com.mohandass.botforge.common.services.LocalDatabase
+import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.sync.model.dao.BotDao
-import com.mohandass.botforge.sync.model.service.BotService
-import com.mohandass.botforge.sync.model.service.FirestoreService
-import com.mohandass.botforge.sync.model.service.implementation.BotServiceImpl
-import com.mohandass.botforge.sync.model.service.implementation.FirebaseDatabaseServiceImpl
-import com.mohandass.botforge.sync.model.service.implementation.FirestoreServiceImpl
+import com.mohandass.botforge.sync.service.BotService
+import com.mohandass.botforge.sync.service.FirestoreService
+import com.mohandass.botforge.sync.service.implementation.BotServiceImpl
+import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
+import com.mohandass.botforge.sync.service.implementation.FirestoreServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
