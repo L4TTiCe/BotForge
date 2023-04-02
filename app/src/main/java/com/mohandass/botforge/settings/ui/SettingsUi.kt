@@ -26,7 +26,7 @@ import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @Composable
 fun SettingsUi(
@@ -221,6 +221,16 @@ fun SettingsUi(
         }
         item {
             SettingsItem(
+                title = "Icons and Images",
+                description = "Attributions for icons and images used in the app",
+                painter = painterResource(id = R.drawable.tag_black_shape),
+                onClick = ({
+                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.IconCredits.route)
+                })
+            )
+        }
+        item {
+            SettingsItem(
                 title = resources().getString(R.string.app_information),
                 description = resources().getString(R.string.app_information_message),
                 painter = painterResource(id = R.drawable.baseline_info_24),
@@ -230,7 +240,7 @@ fun SettingsUi(
             )
         }
         item {
-            Spacer(modifier = Modifier.height(0.1.dh))
+            Spacer(modifier = Modifier.height(0.1.adh))
         }
     }
 }

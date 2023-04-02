@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.*
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.viewmodel.SignUpViewModel
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,16 +35,16 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        Spacer(modifier = Modifier.size(0.10.dh))
+        Spacer(modifier = Modifier.size(0.10.adh))
 
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
-            modifier = Modifier.size(0.15.dh),
+            modifier = Modifier.size(0.15.adh),
             contentScale = ContentScale.Inside,
         )
 
-        Spacer(modifier = Modifier.size(0.05.dh))
+        Spacer(modifier = Modifier.size(0.05.adh))
 
         Text(
             text = stringResource(id = AppText.sign_up),
@@ -52,7 +52,7 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
             style = MaterialTheme.typography.headlineMedium,
         )
 
-        Spacer(modifier = Modifier.size(0.02.dh))
+        Spacer(modifier = Modifier.size(0.02.adh))
 
         OutlinedTextField(
             value = signUpViewModel.email,
@@ -63,7 +63,7 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
                 keyboardType = KeyboardType.Email
             )
         )
-        Spacer(modifier = Modifier.size(0.02.dh))
+        Spacer(modifier = Modifier.size(0.02.adh))
         OutlinedTextField(
             value = signUpViewModel.password,
             onValueChange = { signUpViewModel.onPasswordChange(it) },
@@ -93,7 +93,7 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
                 keyboardType = KeyboardType.Password
             )
         )
-        Spacer(modifier = Modifier.size(0.01.dh))
+        Spacer(modifier = Modifier.size(0.01.adh))
         OutlinedTextField(
             value = signUpViewModel.confirmPassword,
             onValueChange = { signUpViewModel.onConfirmPasswordChange(it) },
@@ -105,7 +105,7 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
             )
         )
 
-        Spacer(modifier = Modifier.size(0.03.dh))
+        Spacer(modifier = Modifier.size(0.03.adh))
 
         FilledTonalButton(
             onClick = {
@@ -122,7 +122,7 @@ fun SignUpUi(viewModel: AppViewModel, signUpViewModel: SignUpViewModel = hiltVie
                 modifier = Modifier.padding(8.dp)
             )
         }
-        Spacer(modifier = Modifier.size(0.01.dh))
+        Spacer(modifier = Modifier.size(0.01.adh))
         TextButton(
             onClick = {
                 viewModel.navController.navigate(AppRoutes.SignIn.route) {

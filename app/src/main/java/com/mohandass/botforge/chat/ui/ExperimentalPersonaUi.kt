@@ -31,8 +31,8 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
 import com.mohandass.botforge.common.SnackbarManager
-import com.slaviboy.composeunits.dh
-import com.slaviboy.composeunits.dw
+import com.slaviboy.composeunits.adh
+import com.slaviboy.composeunits.adw
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -93,11 +93,11 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                         label = { Text(text = "Alias") },
                     )
 
-                    Spacer(modifier = Modifier.height(0.02.dh))
+                    Spacer(modifier = Modifier.height(0.02.adh))
 
                     Text(text = "Alias is what is shown in the App's Top Bar / Header")
 
-                    Spacer(modifier = Modifier.height(0.01.dh))
+                    Spacer(modifier = Modifier.height(0.01.adh))
 
                     Text(text = "Try emoji's like 🤖")
                 }
@@ -132,7 +132,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                 )
 
                 Spacer(
-                    modifier = Modifier.height(0.01.dh)
+                    modifier = Modifier.height(0.01.adh)
                 )
 
                 LinearProgressIndicator(
@@ -207,7 +207,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                                 style = MaterialTheme.typography.headlineSmall
                             )
 
-                            Spacer(modifier = Modifier.height(0.02.dh))
+                            Spacer(modifier = Modifier.height(0.02.adh))
 
                             MessageList(
                                 modifier = Modifier
@@ -216,7 +216,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                                 viewModel = viewModel
                             )
 
-                            Spacer(modifier = Modifier.height(0.15.dh))
+                            Spacer(modifier = Modifier.height(0.15.adh))
 
                         }
                     }
@@ -224,7 +224,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                 }
 
             },
-            sheetPeekHeight = 0.15.dh,
+            sheetPeekHeight = 0.15.adh,
             sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
             sheetElevation = 4.dp,
         ) {
@@ -269,7 +269,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
                 }
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
 
                 OutlinedTextField(
                     value = personaName,
@@ -286,7 +286,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                         .fillMaxSize()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
 
                 Text(
                     text = stringResource(id = R.string.system_message),
@@ -304,11 +304,11 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                     },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .sizeIn(minHeight = 0.2.dh)
+                        .sizeIn(minHeight = 0.2.adh)
                         .fillMaxSize()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
 
                 Row(horizontalArrangement = Arrangement.SpaceAround) {
                     Button(
@@ -337,7 +337,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                             )
                         ) {
                             Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-                            Spacer(modifier = Modifier.width(0.01.dw))
+                            Spacer(modifier = Modifier.width(0.01.adw))
                             Text(text = stringResource(id = R.string.delete))
                         }
                     }
@@ -352,7 +352,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
                     }
                 }
 
-                Spacer(modifier = Modifier.height(0.2.dh))
+                Spacer(modifier = Modifier.height(0.2.adh))
             }
         }
     }

@@ -26,7 +26,7 @@ import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.sync.ui.BrowseBots
 import com.mohandass.botforge.sync.ui.SharePersona
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @Composable
 fun PersonaUi(viewModel: AppViewModel) {
@@ -92,7 +92,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 )
 
                 Spacer(
-                    modifier = Modifier.height(0.01.dh)
+                    modifier = Modifier.height(0.01.adh)
                 )
 
                 LinearProgressIndicator(

@@ -21,7 +21,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.ui.components.SettingsItem
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @Composable
 fun AppInformationUi() {
@@ -124,7 +124,7 @@ fun AppInformationUi() {
         }
 
         item {
-            Spacer(modifier = Modifier.height(0.2.dh))
+            Spacer(modifier = Modifier.height(0.2.adh))
         }
 
     }

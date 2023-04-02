@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,11 +62,11 @@ fun SetPersonaAliasDialog(
                     },
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
 
                 Text(text = stringResource(id = R.string.set_alias_message))
 
-                Spacer(modifier = Modifier.height(0.01.dh))
+                Spacer(modifier = Modifier.height(0.01.adh))
 
                 Text(text = stringResource(id = R.string.set_alias_message_2))
             }

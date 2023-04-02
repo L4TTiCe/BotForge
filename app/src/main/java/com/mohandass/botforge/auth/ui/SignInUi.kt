@@ -21,7 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.*
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.viewmodel.SignInViewModel
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 import com.mohandass.botforge.R.string as AppText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,16 +35,16 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        Spacer(modifier = Modifier.size(0.10.dh))
+        Spacer(modifier = Modifier.size(0.10.adh))
 
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
-            modifier = Modifier.size(0.15.dh),
+            modifier = Modifier.size(0.15.adh),
             contentScale = ContentScale.Inside,
         )
 
-        Spacer(modifier = Modifier.size(0.05.dh))
+        Spacer(modifier = Modifier.size(0.05.adh))
 
         Text(
             text = stringResource(id = AppText.sign_in),
@@ -52,7 +52,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
             style = MaterialTheme.typography.headlineMedium,
         )
 
-        Spacer(modifier = Modifier.size(0.02.dh))
+        Spacer(modifier = Modifier.size(0.02.adh))
 
         OutlinedTextField(
             value = signInViewModel.email,
@@ -63,7 +63,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
                 keyboardType = KeyboardType.Email
             )
         )
-        Spacer(modifier = Modifier.size(0.02.dh))
+        Spacer(modifier = Modifier.size(0.02.adh))
         OutlinedTextField(
             value = signInViewModel.password,
             onValueChange = { signInViewModel.onPasswordChange(it) },
@@ -94,7 +94,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
             )
         )
 
-        Spacer(modifier = Modifier.size(0.12.dh))
+        Spacer(modifier = Modifier.size(0.12.adh))
 
         FilledTonalButton(
             onClick = {
@@ -111,7 +111,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
                 modifier = Modifier.padding(8.dp)
             )
         }
-        Spacer(modifier = Modifier.size(0.01.dh))
+        Spacer(modifier = Modifier.size(0.01.adh))
         TextButton(
             onClick = {
                 viewModel.navController.navigate(AppRoutes.SignUp.route) {

@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="community_attr" type="string">
-        <a href="https://www.flaticon.com/free-icons/population" title="population icons">Population icons created by Uniconlabs - Flaticon</a>
-    </item>
-    <item name="empty_box_attr" type="string">
-        <a href="https://www.flaticon.com/free-icons/empty" title="empty icons">Empty icons created by Freepik - Flaticon</a>
-    </item>
-    <item name="swap_attr" type="string">
-        <a href="https://www.flaticon.com/free-icons/swap" title="swap icons">Swap icons created by bqlqn - Flaticon</a>
-    </item>
-    <item name="upvote" type="string">
-        <a href="https://www.flaticon.com/free-icons/up-arrow" title="up arrow icons">Up arrow icons created by Vitaly Gorbachev - Flaticon</a>
-    </item>
-    <item name="upvote_filled" type="string">
-        <a href="https://www.flaticon.com/free-icons/up-arrow" title="up arrow icons">Up arrow icons created by Pixel perfect - Flaticon</a>
-    </item>
-    <item name="downvote" type="string">
-        <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Vitaly Gorbachev - Flaticon</a>
-    </item>
-    <item name="downvote_filled" type="string">
-        <a href="https://www.flaticon.com/free-icons/download" title="download icons">Download icons created by Roundicons Premium - Flaticon</a>
-    </item>
-    <item name="dice" type="string">
-        <a href="https://www.flaticon.com/free-icons/dice" title="dice icons">Dice icons created by Stockio - Flaticon</a>
-    </item>
-    <item name="play_store_ic" type="string">
-        <a href="https://www.flaticon.com/free-icons/google" title="google icons">Google icons created by Freepik - Flaticon</a>
-    </item>
+    <string-array name="attribution_info">
+        <item>Community Icon, Population icons created by Uniconlabs - Flaticon, https://www.flaticon.com/free-icons/population</item>
+        <item>Empty Box Icon, Empty icons created by Freepik - Flaticon, https://www.flaticon.com/free-icons/empty</item>
+        <item>Swap Icon, Swap icons created by bqlqn - Flaticon, https://www.flaticon.com/free-icons/swap</item>
+        <item>Upvote Icon, Up arrow icons created by Vitaly Gorbachev - Flaticon, https://www.flaticon.com/free-icons/up-arrow</item>
+        <item>Upvote Icon (Filled), Up arrow icons created by Pixel perfect - Flaticon, https://www.flaticon.com/free-icons/up-arrow</item>
+        <item>Downvote Icon, Download icons created by Vitaly Gorbachev - Flaticon, https://www.flaticon.com/free-icons/download</item>
+        <item>Downvote Icon (Filled), Download icons created by Roundicons Premium - Flaticon, https://www.flaticon.com/free-icons/download</item>
+        <item>Dice Icon, Dice icons created by Stockio - Flaticon, https://www.flaticon.com/free-icons/dice</item>
+        <item>Play Store Icon, Google icons created by Freepik - Flaticon, https://www.flaticon.com/free-icons/google</item>
+        <item>Tag Icon, Tag icons created by Dave Gandy - Flaticon, https://www.flaticon.com/free-icons/tag</item>
+    </string-array>
+
+    <integer-array name="attribution_icons">
+        <item>@drawable/community</item>
+        <item>@drawable/empty_box</item>
+        <item>@drawable/swap</item>
+        <item>@drawable/upvote</item>
+        <item>@drawable/upvote_filled</item>
+        <item>@drawable/downvote</item>
+        <item>@drawable/downvote_filled</item>
+        <item>@drawable/dice</item>
+        <item>@drawable/play_store_ic</item>
+        <item>@drawable/tag_black_shape</item>
+    </integer-array>
 </resources>

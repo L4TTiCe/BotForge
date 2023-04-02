@@ -22,7 +22,7 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.sync.ui.components.BotCard
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -157,7 +157,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                 rows = GridCells.Adaptive(minSize = 100.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 0.4.dh),
+                    .heightIn(max = 0.4.adh),
                 contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
             ) {
                 // use Bot's UUID as key
@@ -195,7 +195,7 @@ fun BrowseBots(viewModel: AppViewModel) {
                 rows = GridCells.Adaptive(minSize = 100.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 0.4.dh),
+                    .heightIn(max = 0.4.adh),
                 contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
             ) {
                 // use Bot's UUID as key

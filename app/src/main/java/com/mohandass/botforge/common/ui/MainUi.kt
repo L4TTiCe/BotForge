@@ -20,6 +20,7 @@ import com.mohandass.botforge.chat.ui.PersonaUi
 import com.mohandass.botforge.chat.ui.components.header.TopBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.ui.ApiKeyUi
+import com.mohandass.botforge.settings.ui.IconCreditsUi
 import com.mohandass.botforge.ui.settings.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -345,6 +346,56 @@ fun MainUi(viewModel: AppViewModel) {
                             }
                         ) {
                             OpenSourceLibrariesUi(viewModel = viewModel)
+                        }
+                        composable(
+                            route = AppRoutes.MainRoutes.IconCredits.route,
+                            enterTransition = {
+                                slideInHorizontally(
+                                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeIn(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+
+                            },
+                            exitTransition = {
+                                slideOutHorizontally(
+                                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeOut(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            },
+                            popEnterTransition = {
+                                slideInHorizontally(
+                                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeIn(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            },
+                            popExitTransition = {
+                                slideOutHorizontally(
+                                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeOut(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            }
+                        ) {
+                            IconCreditsUi()
                         }
                         composable(
                             route = AppRoutes.MainRoutes.AppInformation.route,

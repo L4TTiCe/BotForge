@@ -22,7 +22,7 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,7 +105,7 @@ fun SharePersona(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -156,7 +156,7 @@ fun SharePersona(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(0.01.dh))
+                Spacer(modifier = Modifier.height(0.01.adh))
 
                 Text(
                     text = stringResource(id = R.string.alias_message_1),
@@ -164,7 +164,7 @@ fun SharePersona(
                     style = MaterialTheme.typography.labelLarge,
                 )
 
-                Spacer(modifier = Modifier.height(0.01.dh))
+                Spacer(modifier = Modifier.height(0.01.adh))
 
                 Text(
                     text = stringResource(id = R.string.alias_message_2),
@@ -172,7 +172,7 @@ fun SharePersona(
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -191,7 +191,7 @@ fun SharePersona(
                         .fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -208,11 +208,11 @@ fun SharePersona(
                     },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .sizeIn(minHeight = 0.1.dh)
+                        .sizeIn(minHeight = 0.1.adh)
                         .fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -265,7 +265,7 @@ fun SharePersona(
                         .fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -285,11 +285,11 @@ fun SharePersona(
                     },
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .sizeIn(minHeight = 0.2.dh)
+                        .sizeIn(minHeight = 0.2.adh)
                         .fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(0.02.dh))
+                Spacer(modifier = Modifier.height(0.02.adh))
             }
 
             item {
@@ -320,7 +320,7 @@ fun SharePersona(
             }
 
             item {
-                Spacer(modifier = Modifier.height(0.1.dh))
+                Spacer(modifier = Modifier.height(0.1.adh))
             }
         }
 

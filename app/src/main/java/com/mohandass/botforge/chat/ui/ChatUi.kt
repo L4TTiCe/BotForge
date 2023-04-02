@@ -26,7 +26,7 @@ import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.dw
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -229,7 +229,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                 }
                             }
 
-                            Spacer(modifier = Modifier.height(0.02.dh))
+                            Spacer(modifier = Modifier.height(0.02.adh))
 
                             OutlinedTextField(
                                 value = personaName,
@@ -246,7 +246,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     .fillMaxWidth()
                             )
 
-                            Spacer(modifier = Modifier.height(0.02.dh))
+                            Spacer(modifier = Modifier.height(0.02.adh))
 
                             Text(
                                 text = stringResource(id = R.string.system_message),
@@ -264,11 +264,11 @@ fun ChatUi(viewModel: AppViewModel) {
                                 },
                                 modifier = Modifier
                                     .padding(horizontal = 10.dp, vertical = 4.dp)
-                                    .sizeIn(minHeight = 0.2.dh)
+                                    .sizeIn(minHeight = 0.2.adh)
                                     .fillMaxWidth()
                             )
 
-                            Spacer(modifier = Modifier.height(0.02.dh))
+                            Spacer(modifier = Modifier.height(0.02.adh))
 
                             Row(horizontalArrangement = Arrangement.SpaceAround) {
                                 Button(
@@ -319,7 +319,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                 }
                             }
 
-                            Spacer(modifier = Modifier.height(0.02.dh))
+                            Spacer(modifier = Modifier.height(0.02.adh))
                         }
                     }
                 }
@@ -378,7 +378,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         Spacer(modifier = Modifier.width(0.01.dw))
                     }
 
-                    Spacer(modifier = Modifier.height(0.02.dh))
+                    Spacer(modifier = Modifier.height(0.02.adh))
                 }
 
                 item {
@@ -388,7 +388,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         viewModel = viewModel
                     )
 
-                    Spacer(modifier = Modifier.height(0.2.dh))
+                    Spacer(modifier = Modifier.height(0.2.adh))
                 }
             }
         }

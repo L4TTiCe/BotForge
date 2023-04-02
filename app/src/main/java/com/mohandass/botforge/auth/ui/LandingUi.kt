@@ -32,7 +32,7 @@ import com.mohandass.botforge.auth.Constants
 import com.mohandass.botforge.auth.ui.components.GoogleSignInButton
 import com.mohandass.botforge.auth.ui.components.SkipSignInButton
 import com.mohandass.botforge.auth.viewmodel.LandingViewModel
-import com.slaviboy.composeunits.dh
+import com.slaviboy.composeunits.adh
 
 private const val TAG = "LandingUi"
 
@@ -93,7 +93,7 @@ fun LandingUi(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        Spacer(modifier = Modifier.size(0.2.dh))
+        Spacer(modifier = Modifier.size(0.2.adh))
 
         Text(
             text = stringResource(id = R.string.app_name),
@@ -101,7 +101,7 @@ fun LandingUi(
             style = MaterialTheme.typography.headlineLarge,
         )
 
-        Spacer(modifier = Modifier.size(0.05.dh))
+        Spacer(modifier = Modifier.size(0.05.adh))
 
         Image(
             painter = painterResource(id = R.drawable.logo),
@@ -109,9 +109,9 @@ fun LandingUi(
             contentScale = ContentScale.Crop,
         )
 
-        Spacer(modifier = Modifier.size(0.1.dh))
+        Spacer(modifier = Modifier.size(0.1.adh))
 
-        Spacer(modifier = Modifier.size(0.01.dh))
+        Spacer(modifier = Modifier.size(0.01.adh))
 
         GoogleSignInButton {
             val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
