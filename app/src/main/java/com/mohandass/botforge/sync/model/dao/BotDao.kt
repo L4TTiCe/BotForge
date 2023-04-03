@@ -19,6 +19,9 @@ interface BotDao {
     @Query("SELECT EXISTS(SELECT 1 FROM bots_fts WHERE uuid = :uuid)")
     suspend fun botFtsExists(uuid: String): Boolean
 
+    @Query("SELECT * FROM bots WHERE uuid = :uuid")
+    suspend fun getBot(uuid: String): BotE?
+
     // Update BotFts with uuid
     @Query(
         """

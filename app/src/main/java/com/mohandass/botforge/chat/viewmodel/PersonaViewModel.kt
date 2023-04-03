@@ -1,6 +1,8 @@
 package com.mohandass.botforge.chat.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -15,6 +17,8 @@ import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.sync.model.dao.entities.BotE
+import com.mohandass.botforge.sync.service.BotService
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -22,6 +26,7 @@ import javax.inject.Inject
 class PersonaViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val personaService: PersonaServiceImpl,
+    private val botService: BotService,
     private val logger: Logger,
 ) : ViewModel() {
 
@@ -40,28 +45,53 @@ class PersonaViewModel @Inject constructor(
     private val _personaSelected = mutableStateOf("")
     val selectedPersona: MutableState<String> = _personaSelected
 
+    private val _personaSelectedParentUuid = mutableStateOf("")
+    val selectedPersonaParentUuid: State<String> = _personaSelectedParentUuid
+
     private val _openDeletePersonaDialog = mutableStateOf(false)
-    val openDeleteDialog: androidx.compose.runtime.State<Boolean> = _openDeletePersonaDialog
+    val openDeleteDialog: State<Boolean> = _openDeletePersonaDialog
+
+    private val _parentBot: MutableState<BotE?> = mutableStateOf(null)
+    val parentBot: State<BotE?> = _parentBot
+
+    private fun updateParentBot(bot: BotE?) {
+        _parentBot.value = bot
+    }
+
+    private fun updateSelectedPersonaParentUuid(uuid: String) {
+        _personaSelectedParentUuid.value = uuid
+
+        if (uuid.isNotEmpty() || uuid.isNotBlank()) {
+            viewModelScope.launch {
+                updateParentBot(botService.getBot(uuid))
+                Log.v("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
+            }
+        } else {
+            updateParentBot(null)
+            Log.v("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
+        }
+    }
 
     fun updateDeletePersonaDialogState(state: Boolean) {
         _openDeletePersonaDialog.value = state
     }
 
     private val _expandCustomizePersona = mutableStateOf(false)
-    val expandCustomizePersona: androidx.compose.runtime.State<Boolean> = _expandCustomizePersona
+    val expandCustomizePersona: State<Boolean> = _expandCustomizePersona
 
     fun updateExpandCustomizePersona(state: Boolean) {
         _expandCustomizePersona.value = state
     }
 
-    private val _state = mutableStateOf(State())
+    private val _state = mutableStateOf(UiState())
 
-    class State {
+    class UiState {
         var chatType: ChatType = ChatType.CREATE
         var personaName: String = ""
         var personaSystemMessage: String = ""
         var personaAlias: String = ""
         var personaSelected: String = ""
+        var personaSelectedParentUuid: String = ""
     }
 
     private val _chatType = mutableStateOf(ChatType.CREATE)
@@ -118,6 +148,7 @@ class PersonaViewModel @Inject constructor(
         _state.value.personaSystemMessage = personaSystemMessage.value
         _state.value.personaAlias = personaAlias.value
         _state.value.personaSelected = selectedPersona.value
+        _state.value.personaSelectedParentUuid = selectedPersonaParentUuid.value
     }
 
     fun restoreState() {
@@ -126,6 +157,7 @@ class PersonaViewModel @Inject constructor(
         personaSystemMessage.value = _state.value.personaSystemMessage
         personaAlias.value = _state.value.personaAlias
         selectedPersona.value = _state.value.personaSelected
+        updateSelectedPersonaParentUuid(_state.value.personaSelectedParentUuid)
     }
 
     val clearSelection: () -> Unit = {
@@ -133,6 +165,7 @@ class PersonaViewModel @Inject constructor(
         _personaAlias.value = ""
         _personaSystemMessage.value = ""
         _personaSelected.value = ""
+        updateSelectedPersonaParentUuid("")
     }
 
     fun selectPersona(uuid: String) {
@@ -145,6 +178,7 @@ class PersonaViewModel @Inject constructor(
             personaAlias.value = persona.alias
             personaSystemMessage.value = persona.systemMessage
             _personaSelected.value = persona.uuid
+            updateSelectedPersonaParentUuid(persona.parentUuid)
 
             chatType.value = ChatType.CHAT
             updateExpandCustomizePersona(false)
@@ -208,6 +242,7 @@ class PersonaViewModel @Inject constructor(
         }
 
         val persona = Persona(
+            parentUuid = selectedPersonaParentUuid.value,
             name = newName,
             alias = _personaAlias.value,
             systemMessage = _personaSystemMessage.value,
@@ -218,6 +253,7 @@ class PersonaViewModel @Inject constructor(
     fun saveUpdatePersona() {
         val persona = Persona(
             uuid = _personaSelected.value,
+            parentUuid = selectedPersonaParentUuid.value,
             name = _personaName.value,
             alias = _personaAlias.value,
             systemMessage = _personaSystemMessage.value,

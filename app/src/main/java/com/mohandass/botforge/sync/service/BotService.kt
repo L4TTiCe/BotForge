@@ -5,6 +5,8 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 interface BotService {
     suspend fun addBot(bot: BotE)
 
+    suspend fun getBot(uuid: String): BotE?
+
     suspend fun searchBots(query: String): List<BotE>
 
     suspend fun getBots(

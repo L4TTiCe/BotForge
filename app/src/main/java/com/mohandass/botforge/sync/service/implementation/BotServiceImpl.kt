@@ -9,18 +9,6 @@ class BotServiceImpl(
     private val botDao: BotDao,
     private val logger: Logger
 ) : BotService {
-
-    override suspend fun searchBots(query: String): List<BotE> {
-        return botDao.search("*$query*")
-    }
-
-    override suspend fun getBots(
-        limit: Int,
-        offset: Int
-    ): List<BotE> {
-        return botDao.getBots(limit, offset)
-    }
-
     override suspend fun addBot(bot: BotE) {
         botDao.addBot(bot)
         val botFts = bot.toBotFts()
@@ -39,6 +27,21 @@ class BotServiceImpl(
         }
 
         logger.logVerbose(TAG, "addBot: $botFts")
+    }
+
+    override suspend fun getBot(uuid: String): BotE? {
+        return botDao.getBot(uuid)
+    }
+
+    override suspend fun searchBots(query: String): List<BotE> {
+        return botDao.search("*$query*")
+    }
+
+    override suspend fun getBots(
+        limit: Int,
+        offset: Int
+    ): List<BotE> {
+        return botDao.getBots(limit, offset)
     }
 
     override suspend fun deleteBot(uuid: String) {

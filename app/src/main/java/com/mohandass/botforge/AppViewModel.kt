@@ -116,6 +116,7 @@ class AppViewModel @Inject constructor(
     private val _personaViewModel = PersonaViewModel(
         viewModel = this,
         personaService = personaService,
+        botService = botService,
         logger = logger
     )
     val persona: PersonaViewModel
