@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -54,6 +55,15 @@ fun ChatUi(viewModel: AppViewModel) {
     val openSaveChatDialog by viewModel.chat.openSaveChatDialog
     val openAliasDialog by viewModel.chat.openAliasDialog
     val showDetailDialog = remember { mutableStateOf(false) }
+
+    var isUserGeneratedContentEnabled by remember {
+        mutableStateOf(false)
+    }
+
+    val userPreferences by viewModel.userPreferences.observeAsState()
+    userPreferences?.let {
+        isUserGeneratedContentEnabled = it.enableUserGeneratedContent
+    }
 
     if (showDetailDialog.value) {
         parentBot?.let {
@@ -235,7 +245,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                             style = MaterialTheme.typography.headlineSmall
                                         )
 
-                                        if (parentBot != null) {
+                                        if (parentBot != null && isUserGeneratedContentEnabled) {
                                             IconButton(
                                                 onClick = {
                                                     showDetailDialog.value = true
