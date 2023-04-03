@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/L4TTiCe/BotForge/blob/master/app/src/main/res/drawable/logo.png" width="200">
+  <img src="app/src/main/res/drawable/logo.png" width="200">
   <br>BotForge<br>
 </h1>
 
@@ -18,6 +18,13 @@ BotForge is an unofficial OpenAI Chat API's Android client that allows you to cr
 ## Installation
 
 To install BotForge, you can either download it from the Google Play Store (link coming soon) or clone this repository and import it into Android Studio.
+
+## Screenshots
+
+| <img src="assets/BotForge/Phone%201phone_1.png" width="400"> | <img src="assets/BotForge/Phone%202phone_2.png" width="400"> | <img src="assets/BotForge/Phone%203phone_3.png" width="400"> |
+|-------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
+| <img src="assets/BotForge/Phone%204phone_4.png" width="400"> | <img src="assets/BotForge/Phone%205phone_5.png" width="400"> | <img src="assets/BotForge/Phone%206phone_6.png" width="400"> |
+
 
 ## Usage
 
