@@ -13,8 +13,11 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -30,10 +33,12 @@ import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.dw
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ChatUi(viewModel: AppViewModel) {
     val listState = rememberLazyListState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     val expandCustomizePersona by viewModel.persona.expandCustomizePersona
 
@@ -90,6 +95,8 @@ fun ChatUi(viewModel: AppViewModel) {
                 onClick = {
                     if (!isLoading) {
                         viewModel.chat.getChatCompletion(hapticFeedback)
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
                     } else {
                         viewModel.chat.handleInterrupt()
                     }
