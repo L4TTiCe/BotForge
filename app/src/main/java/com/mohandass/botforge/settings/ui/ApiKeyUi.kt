@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -35,6 +36,7 @@ fun ApiKeyUi(
     val scrollState = rememberScrollState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
     Column(
@@ -144,6 +146,7 @@ fun ApiKeyUi(
                 onClick = {
                     settingsViewModel.setApiKey(apiKey.value)
                     keyboardController?.hide()
+                    focusManager.clearFocus()
                 }
             ) {
                 Text(text = resources().getString(R.string.save))
