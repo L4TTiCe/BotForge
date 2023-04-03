@@ -17,7 +17,9 @@ BotForge is an unofficial OpenAI Chat API's Android client that allows you to cr
 
 ## Installation
 
-To install BotForge, you can either download it from the Google Play Store (link coming soon) or clone this repository and import it into Android Studio.
+To install BotForge, you can either download it from the Google Play Store or clone this repository and import it into Android Studio.
+
+<a href='https://play.google.com/store/apps/details?id=com.mohandass.botforge&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img  width="200" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 ## Screenshots
 
