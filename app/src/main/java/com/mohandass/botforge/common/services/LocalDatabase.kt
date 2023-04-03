@@ -1,6 +1,7 @@
 package com.mohandass.botforge.common.services
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -26,7 +27,10 @@ import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
         BotE::class,
         BotFts::class,
     ],
-    version = 1,
+    version = 2,
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ],
     exportSchema = true
 )
 @TypeConverters(CustomTypeConverters::class, CustomSyncTypeConverters::class)

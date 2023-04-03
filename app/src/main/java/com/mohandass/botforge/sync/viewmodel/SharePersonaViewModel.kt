@@ -70,6 +70,7 @@ class SharePersonaViewModel @Inject constructor(
     fun shareBot() {
         val bot = Bot(
             uuid = UUID.randomUUID().toString(),
+            parentUuid = viewModel.persona.selectedPersonaParentUuid.value.ifEmpty { "" },
             name = viewModel.persona.personaName.value,
             alias = viewModel.persona.personaAlias.value,
             systemMessage = viewModel.persona.personaSystemMessage.value,

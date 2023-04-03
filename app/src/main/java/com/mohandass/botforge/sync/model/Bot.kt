@@ -6,6 +6,7 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 @IgnoreExtraProperties
 data class Bot(
     val uuid: String? = null,
+    val parentUuid: String? = null,
     val name: String? = null,
     var alias: String? = null,
     val systemMessage: String? = null,
@@ -24,6 +25,7 @@ data class Bot(
     fun toBotE(): BotE {
         return BotE(
             uuid = uuid!!,
+            parentUuid = parentUuid!!,
             name = name!!,
             alias = alias!!,
             systemMessage = systemMessage!!,

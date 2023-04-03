@@ -31,6 +31,7 @@ import java.util.*
 @Composable
 fun BotDetailDialog(
     bot: BotE,
+    showAdd: Boolean = true,
     onClickDismiss: () -> Unit,
     onClickAccept: () -> Unit,
     onUpVote: () -> Unit,
@@ -203,10 +204,18 @@ fun BotDetailDialog(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                TextButton(onClick = onClickAccept) {
-                    Text(
-                        text = stringResource(id = R.string.add),
-                    )
+                if (showAdd) {
+                    TextButton(onClick = onClickAccept) {
+                        Text(
+                            text = stringResource(id = R.string.add),
+                        )
+                    }
+                } else {
+                    TextButton(onClick = onClickDismiss) {
+                        Text(
+                            text = stringResource(id = R.string.dismiss),
+                        )
+                    }
                 }
             }
 
@@ -242,6 +251,6 @@ fun BotDetailDialogPreview(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
     BotForgeLightThemePreview {
-        BotDetailDialog(bot, {}, {}, {}, {}, {})
+        BotDetailDialog(bot, showAdd = true, {}, {}, {}, {}, {})
     }
 }

@@ -29,6 +29,7 @@ import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.chat.ui.components.messages.MessageList
+import com.mohandass.botforge.sync.ui.components.BotDetailDialog
 import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.dw
 
@@ -47,10 +48,30 @@ fun ChatUi(viewModel: AppViewModel) {
     val personaName by viewModel.persona.personaName
     val personaSystemMessage by viewModel.persona.personaSystemMessage
     val isLoading by viewModel.chat.isLoading
+    val parentBot by viewModel.persona.parentBot
 
     val openDeleteDialog by viewModel.persona.openDeleteDialog
     val openSaveChatDialog by viewModel.chat.openSaveChatDialog
     val openAliasDialog by viewModel.chat.openAliasDialog
+    val showDetailDialog = remember { mutableStateOf(false) }
+
+    if (showDetailDialog.value) {
+        parentBot?.let {
+            BotDetailDialog(
+                it,
+                showAdd = false,
+                onClickDismiss = { showDetailDialog.value = false },
+                onClickAccept = {
+                    showDetailDialog.value = false
+                },
+                onUpVote = {
+                    viewModel.browse.upVote(it.uuid)
+                },
+                onDownVote = { viewModel.browse.downVote(it.uuid) },
+                onReport = { viewModel.browse.report(it.uuid) },
+            )
+        }
+    }
 
     if (openDeleteDialog) {
         DeletePersonaDialog(
@@ -205,11 +226,32 @@ fun ChatUi(viewModel: AppViewModel) {
                         Column {
                             Row {
                                 Column {
-                                    Text(
-                                        text = stringResource(id = R.string.customise_persona),
-                                        modifier = Modifier.padding(10.dp),
-                                        style = MaterialTheme.typography.headlineSmall
-                                    )
+                                    Row {
+                                        Text(
+                                            text = stringResource(id = R.string.customise_persona),
+                                            modifier = Modifier
+                                                .padding(vertical = 10.dp)
+                                                .padding(start = 10.dp),
+                                            style = MaterialTheme.typography.headlineSmall
+                                        )
+
+                                        if (parentBot != null) {
+                                            IconButton(
+                                                onClick = {
+                                                    showDetailDialog.value = true
+                                                },
+                                                modifier = Modifier.padding()
+                                            ) {
+                                                Icon(
+                                                    painter = painterResource(
+                                                        id = R.drawable.community
+                                                    ),
+                                                    contentDescription = stringResource(id = R.string.info_cd),
+                                                    modifier = Modifier.size(24.dp)
+                                                )
+                                            }
+                                        }
+                                    }
 
                                     Text(
                                         text = stringResource(id = R.string.create_persona_message),
@@ -224,7 +266,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     onClick = {
                                         viewModel.chat.updateAliasDialogState(true)
                                     },
-                                    modifier = Modifier.padding(10.dp)
+                                    modifier = Modifier.padding(horizontal = 5.dp)
                                 ) {
                                     Icon(
                                         painter = painterResource(
@@ -234,6 +276,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                         modifier = Modifier.size(36.dp)
                                     )
                                 }
+
                             }
 
                             Spacer(modifier = Modifier.height(0.02.adh))
