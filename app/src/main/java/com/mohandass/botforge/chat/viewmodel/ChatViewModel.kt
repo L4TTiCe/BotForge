@@ -21,6 +21,7 @@ import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessage
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -70,12 +71,35 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    private lateinit var timerJob: Job
+
     private val _isLoading = mutableStateOf(false)
-    val isLoading: MutableState<Boolean>
+    val isLoading: State<Boolean>
         get() = _isLoading
 
-    fun setLoading(isLoading: Boolean) {
+    private fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
+
+        if (isLoading) {
+            updateLastTimestamp()
+            timerJob = viewModelScope.launch {
+                while (true) {
+                    delay(100)
+                    _timeMillis.value = Date().time - _lastTimestamp.value
+                }
+            }
+        } else {
+            timerJob.cancel()
+            _timeMillis.value = 0
+        }
+    }
+
+    private val _lastTimestamp = mutableStateOf(0L)
+    private val _timeMillis = mutableStateOf(0L)
+    val timeMillis: State<Long> = _timeMillis
+
+    private fun updateLastTimestamp() {
+        _lastTimestamp.value = Date().time
     }
 
     @AddTrace(name = "getChatCompletion", enabled = true)

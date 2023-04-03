@@ -19,6 +19,11 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Composable
 fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
@@ -27,6 +32,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     val messageIsFocussed by viewModel.chat.isMessageInFocus
 
     val isLoading by viewModel.chat.isLoading
+    val timerMillis by viewModel.chat.timeMillis
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -74,7 +80,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
 
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth(0.88f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
@@ -85,6 +91,15 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                     )
 
                     TypingIndicator(modifier = Modifier.padding(horizontal = 12.dp))
+
+                    Spacer(modifier = modifier.weight(1f))
+
+                    Text(
+                        text = formatTime(timerMillis),
+                        modifier = Modifier,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.tertiary,
+                    )
                 }
             }
 
@@ -110,4 +125,18 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
             }
         }
     }
+}
+
+private fun formatTime(time: Long): String {
+    val localDateTime = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(time),
+        ZoneId.systemDefault()
+    )
+
+    val formatter = DateTimeFormatter.ofPattern(
+        "s",
+        Locale.getDefault()
+    )
+
+    return localDateTime.format(formatter)
 }
