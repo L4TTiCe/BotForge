@@ -61,7 +61,7 @@ class ChatViewModel @Inject constructor(
         if (this::job.isInitialized) {
             job.cancel()
         }
-        viewModel.setLoading(false)
+        setLoading(false)
     }
 
     fun handleInterrupt() {
@@ -70,10 +70,18 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    private val _isLoading = mutableStateOf(false)
+    val isLoading: MutableState<Boolean>
+        get() = _isLoading
+
+    fun setLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
     @AddTrace(name = "getChatCompletion", enabled = true)
     fun getChatCompletion(hapticFeedback: HapticFeedback) {
         logger.log(TAG, "getChatCompletion()")
-        viewModel.setLoading(true)
+        setLoading(true)
 
         val messages = mutableListOf<Message>()
         val personaSystemMessage = viewModel.persona.personaSystemMessage.value
@@ -134,7 +142,7 @@ class ChatViewModel @Inject constructor(
                 }
             }
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-            viewModel.setLoading(false)
+            setLoading(false)
         }
     }
 

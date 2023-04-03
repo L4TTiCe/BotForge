@@ -48,7 +48,7 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
     val personaName by viewModel.persona.personaName
     val personaAlias by viewModel.persona.personaAlias
     val personaSystemMessage by viewModel.persona.personaSystemMessage
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.chat.isLoading
 
     if (openDeleteDialog.value) {
         AlertDialog(onDismissRequest = { openDeleteDialog.value = false },

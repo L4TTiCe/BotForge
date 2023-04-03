@@ -41,7 +41,7 @@ fun ChatUi(viewModel: AppViewModel) {
 
     val personaName by viewModel.persona.personaName
     val personaSystemMessage by viewModel.persona.personaSystemMessage
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.chat.isLoading
 
     val openDeleteDialog by viewModel.persona.openDeleteDialog
     val openSaveChatDialog by viewModel.chat.openSaveChatDialog

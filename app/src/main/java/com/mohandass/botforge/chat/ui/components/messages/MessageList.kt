@@ -26,7 +26,7 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     val handleDelete by viewModel.chat.handleDelete
     val messageIsFocussed by viewModel.chat.isMessageInFocus
 
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.chat.isLoading
 
     val coroutineScope = rememberCoroutineScope()
 

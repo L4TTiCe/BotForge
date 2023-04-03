@@ -33,7 +33,7 @@ fun PersonaUi(viewModel: AppViewModel) {
     val navController = rememberNavController()
     viewModel.setNavControllerPersona(navController)
 
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.chat.isLoading
 
     LaunchedEffect(viewModel) {
         viewModel.persona.fetchPersonas()

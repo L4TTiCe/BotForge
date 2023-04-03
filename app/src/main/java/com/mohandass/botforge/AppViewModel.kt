@@ -1,7 +1,5 @@
 package com.mohandass.botforge
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -73,16 +71,6 @@ class AppViewModel @Inject constructor(
     )
     val history: HistoryViewModel
         get() = _historyViewModel
-
-    // State
-
-    private val _isLoading = mutableStateOf(false)
-    val isLoading: MutableState<Boolean>
-        get() = _isLoading
-
-    fun setLoading(isLoading: Boolean) {
-        _isLoading.value = isLoading
-    }
 
 
     // Navigation
