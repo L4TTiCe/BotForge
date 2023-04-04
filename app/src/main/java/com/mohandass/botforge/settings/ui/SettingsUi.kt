@@ -201,7 +201,7 @@ fun SettingsUi(
             SettingsItem(
                 title = resources().getString(R.string.enable_shake),
                 description = resources().getString(R.string.enable_shake_message),
-                icon = painterResource(id = R.drawable.baseline_vibration_24),
+                icon = painterResource(id = R.drawable.phone_vibration),
                 switchState = isShakeToClearEnabled,
                 onCheckChange = {
                     settingsViewModel.setShakeToClear(it)
