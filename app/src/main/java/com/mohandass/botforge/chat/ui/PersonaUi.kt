@@ -24,10 +24,18 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.settings.model.PreferredTheme
-import com.mohandass.botforge.sync.ui.BrowseBots
-import com.mohandass.botforge.sync.ui.SharePersona
+import com.mohandass.botforge.sync.ui.BrowseBotsUi
+import com.mohandass.botforge.sync.ui.SharePersonaUi
 import com.slaviboy.composeunits.adh
 
+/**
+ * Main UI for the persona screen
+ *
+ * Has NavigationHost for the different screens, including the
+ * Chat, History, Browse and Share screens
+ *
+ * App Hierarchy: MainActivity -> MainUi -> PersonaUi -> ...
+ */
 @Composable
 fun PersonaUi(viewModel: AppViewModel) {
     val navController = rememberNavController()
@@ -57,6 +65,7 @@ fun PersonaUi(viewModel: AppViewModel) {
 
     val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
 
+    // set the status bar and navigation bar colors to App theme colors
     DisposableEffect(systemUiController, activeTheme) {
 
         systemUiController.setStatusBarColor(
@@ -80,6 +89,7 @@ fun PersonaUi(viewModel: AppViewModel) {
         onDispose {}
     }
 
+    // Avatar bar and progress bar on top of the screen
     Column {
         Surface(
             tonalElevation = 4.dp,
@@ -103,6 +113,7 @@ fun PersonaUi(viewModel: AppViewModel) {
             }
         }
 
+        // Navigation host for the different screens within
         NavHost(
             navController = navController,
             startDestination = AppRoutes.MainRoutes.PersonaRoutes.Chat.route
@@ -114,10 +125,10 @@ fun PersonaUi(viewModel: AppViewModel) {
                 HistoryUi(viewModel = viewModel)
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
-                BrowseBots(viewModel = viewModel)
+                BrowseBotsUi(viewModel = viewModel)
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.Share.route) {
-                SharePersona(viewModel = viewModel)
+                SharePersonaUi(viewModel = viewModel)
             }
         }
     }

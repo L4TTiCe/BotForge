@@ -50,6 +50,9 @@
     <string name="customise_persona">Customise Persona</string>
     <string name="create_persona_message">Create a persona to represent your bot</string>
 
+    <string name="default_persona">Default Persona</string>
+    <string name="deleted_persona">Deleted Persona</string>
+
     <string name="chat">Chat</string>
     <string name="chat_with_persona_name">Chatting with %1$s</string>
     <string name="send">"Send"</string>

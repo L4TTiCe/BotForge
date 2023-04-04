@@ -24,6 +24,7 @@ import com.mohandass.botforge.auth.viewmodel.SignInViewModel
 import com.slaviboy.composeunits.adh
 import com.mohandass.botforge.R.string as AppText
 
+// Sign In Using Email and Password
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltViewModel()) {

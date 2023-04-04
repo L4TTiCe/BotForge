@@ -26,7 +26,7 @@ import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SharePersona(
+fun SharePersonaUi(
     viewModel: AppViewModel
 ) {
     val personaName by viewModel.persona.personaName

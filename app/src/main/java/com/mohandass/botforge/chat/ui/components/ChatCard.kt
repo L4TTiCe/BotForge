@@ -10,13 +10,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.*
 
+// Displays a chat card with the persona icon, number of messages, and time since saved
 @Composable
 fun ChatCard(
     chat: Chat,
@@ -28,6 +32,7 @@ fun ChatCard(
 ) {
     var messageCount by remember { mutableStateOf(initialMessageCount) }
 
+    // Check if the Persona used in the chat is deleted
     val isDeleted by remember {
         if (chat.personaUuid == null) {
             mutableStateOf(false)
@@ -80,9 +85,10 @@ fun ChatCard(
                         onClick = { }
                     )
                 } else {
+                    // Deleted Persona or Default Persona
                     Icon(
-                        painter = painterResource(id = com.mohandass.botforge.R.drawable.logo),
-                        contentDescription = "Person",
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = stringResource(id = R.string.default_persona),
                         modifier = Modifier
                             .padding(10.dp)
                             .size(80.dp),
@@ -96,26 +102,32 @@ fun ChatCard(
             ) {
 
                 Row {
+                    // Chat name and persona name
                     Column {
                         Text(
                             text = chat.name,
                             style = MaterialTheme.typography.titleMedium
                         )
 
+                        // Determine if the Persona used in the chat is available, deleted,
+                        // or default
                         if (persona != null) {
+                            // Persona is available
                             Text(
                                 text = (persona.name),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         } else {
                             if (isDeleted) {
+                                // Persona is deleted
                                 Text(
-                                    text = "Deleted Persona",
+                                    text = stringResource(id = R.string.deleted_persona),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             } else {
+                                // Default Persona
                                 Text(
-                                    text = "Default Persona",
+                                    text = stringResource(id = R.string.default_persona),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
@@ -124,12 +136,13 @@ fun ChatCard(
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    // Delete button
                     IconButton(
                         onClick = onDelete
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(id = R.string.delete),
                             modifier = Modifier
                                 .size(20.dp),
                         )
@@ -143,6 +156,7 @@ fun ChatCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
+                    // Message count
                     Text(
                         text = messageCount.toString(),
                         style = MaterialTheme.typography.labelMedium
@@ -151,8 +165,8 @@ fun ChatCard(
                     Spacer(modifier = Modifier.width(3.dp))
 
                     Icon(
-                        painter = painterResource(id = com.mohandass.botforge.R.drawable.baseline_message_24),
-                        contentDescription = "Message",
+                        painter = painterResource(id = R.drawable.baseline_message_24),
+                        contentDescription = stringResource(id = R.string.messages),
                         modifier = Modifier
                             .size(20.dp),
                         tint = MaterialTheme.colorScheme.onSurface
@@ -160,6 +174,7 @@ fun ChatCard(
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    // Time since saved
                     Text(
                         modifier = Modifier.padding(horizontal = 5.dp),
                         text = time.toString(),
@@ -169,4 +184,21 @@ fun ChatCard(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun ChatCardPreview() {
+    ChatCard(
+        chat = Chat(
+            name = "Chat",
+            savedAt = 1620000000000,
+            personaUuid = null
+        ),
+        persona = null,
+        initialMessageCount = 12,
+        getMessage = {},
+        onClick = {},
+        onDelete = {}
+    )
 }

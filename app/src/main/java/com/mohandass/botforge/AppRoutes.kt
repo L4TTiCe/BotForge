@@ -2,6 +2,29 @@ package com.mohandass.botforge
 
 /**
  * Routes for the app
+ *
+ * AppRoutes:
+ * All routes are defined here:
+ *  [ -> represents a NavHost with the children as composable routes ]
+ * MainActivity: ->
+ *   - SplashUi
+ *   - LandingUi
+ *   - SignUpUi (deprecated)
+ *   - SignInUi (deprecated)
+ *   - OnBoardingUi
+ *   - MainUi: ->
+ *     - SettingsUi
+ *     - ApiKeyUi
+ *     - ApiUsageUi
+ *     - ManageAccountUi
+ *     - OpenSourceLibrariesUi
+ *     - IconCreditsUi
+ *     - AppInformationUi
+ *     - PersonaUi: ->
+ *       - ChatUi
+ *       - HistoryUi
+ *       - BrowseBotsUi
+ *       - SharePersonaUi
  */
 sealed class AppRoutes(val route: String) {
     object Splash : AppRoutes("splash_ui")

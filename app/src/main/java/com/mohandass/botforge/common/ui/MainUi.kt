@@ -27,6 +27,15 @@ import com.mohandass.botforge.ui.settings.AppInformationUi
 import com.mohandass.botforge.ui.settings.ManageAccountUi
 import com.mohandass.botforge.ui.settings.OpenSourceLibrariesUi
 
+/**
+ * Main UI for the app
+ *
+ * Has NavigationHost for the different screens, including the
+ * Persona, Settings, ApiKey, ApiUsage, AppInformation, ManageAccount,
+ * OpenSourceLibraries and IconCredits screens
+ *
+ * App Hierarchy: MainActivity -> MainUi -> PersonaUi -> ...
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MainUi(viewModel: AppViewModel) {

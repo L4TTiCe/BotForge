@@ -43,7 +43,21 @@ import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 
-
+/**
+ * Main Activity.
+ *
+ * Holds the main Navigation Graph. The Navigation Graph is composed of the following destinations:
+ * - Splash Screen
+ * - Landing Screen
+ * - Sign In Screen
+ * - Sign Up Screen
+ * - Main Screen
+ * - OnBoarding Screen
+ *
+ * Also holds the SnackbarLauncher responsible for showing snackbars.
+ *
+ * App Hierarchy: MainActivity -> MainUi -> PersonaUi -> ...
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)

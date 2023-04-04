@@ -193,6 +193,7 @@ fun ChatUi(viewModel: AppViewModel) {
 
                             Spacer(modifier = Modifier.height(0.02.adh))
 
+                            // Customise Persona
                             CustomisePersona(
                                 personaName = personaName,
                                 personaSystemMessage = personaSystemMessage,

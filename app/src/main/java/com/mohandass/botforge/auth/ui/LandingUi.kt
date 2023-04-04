@@ -42,6 +42,8 @@ fun LandingUi(
     viewModel: AppViewModel,
     landingViewModel: LandingViewModel = hiltViewModel()
 ) {
+    // On Start, check if the user is authenticated, if yes, then check if the OnBoarding is
+    // completed, if yes, then navigate to the MainUi, otherwise navigate to the OnBoardingUi.
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
             if (!landingViewModel.isOnBoardingCompleted()) {
@@ -64,6 +66,7 @@ fun LandingUi(
         }
     }
 
+    // set the system bars color to transparent
     val systemUiController = rememberSystemUiController()
     DisposableEffect(systemUiController) {
         systemUiController.setSystemBarsColor(
@@ -73,6 +76,7 @@ fun LandingUi(
         onDispose {}
     }
 
+    // launch google sign in activity and get the result
     val context = LocalContext.current
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {

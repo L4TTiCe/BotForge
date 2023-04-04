@@ -26,7 +26,7 @@ import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BrowseBots(viewModel: AppViewModel) {
+fun BrowseBotsUi(viewModel: AppViewModel) {
     val searchText by viewModel.browse.searchQuery
     val communityBots = viewModel.browse.fetchedBots
     val topBots = viewModel.browse.topBots

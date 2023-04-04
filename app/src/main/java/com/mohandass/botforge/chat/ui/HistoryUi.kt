@@ -76,6 +76,7 @@ fun HistoryUi(viewModel: AppViewModel) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
+                // Clear all button
                 IconButton(onClick = {
                     viewModel.history.updateDeleteDialogState(true)
                 }) {
@@ -89,6 +90,7 @@ fun HistoryUi(viewModel: AppViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Show empty box if no chats are bookmarked yet
             if (chats.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(
@@ -116,6 +118,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                 }
             }
 
+            // Show chats, if any, are bookmarked
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -126,6 +129,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                     count = chats.size,
                     key = { index -> chats[index].uuid }
                 ) { index ->
+                    // Each chat as a card
                     ChatCard(
                         chat = chats[index],
                         persona = personas.firstOrNull { it.uuid == chats[index].personaUuid },
