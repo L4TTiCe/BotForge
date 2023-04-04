@@ -42,6 +42,7 @@ class SnackbarLauncher(
                     snackbarHostState.showSnackbar(
                         text,
                         duration = SnackbarDuration.Short,
+                        withDismissAction = true,
                     )
                 }
             }
