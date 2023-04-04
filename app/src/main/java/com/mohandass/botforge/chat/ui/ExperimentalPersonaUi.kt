@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
-import com.mohandass.botforge.chat.ui.components.messages.MessageList
+import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.adw
@@ -170,7 +171,11 @@ fun ExperimentalPersonaUi(viewModel: AppViewModel) {
 
                             ExtendedFloatingActionButton(
                                 onClick = {
-                                    viewModel.chat.getChatCompletion(hapticFeedback)
+                                    viewModel.chat.getChatCompletion {
+                                        hapticFeedback.performHapticFeedback(
+                                            HapticFeedbackType.TextHandleMove
+                                        )
+                                    }
                                 },
                             ) {
                                 Icon(
