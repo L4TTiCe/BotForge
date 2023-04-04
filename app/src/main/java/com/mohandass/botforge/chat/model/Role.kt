@@ -1,7 +1,12 @@
 package com.mohandass.botforge.chat.model
 
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatRole
+import com.mohandass.botforge.R
 
 class Role(val ordinal: Int) {
 
@@ -43,6 +48,82 @@ class Role(val ordinal: Int) {
             USER -> ChatRole.User
             BOT -> ChatRole.Assistant
             SYSTEM -> ChatRole.System
+            else -> {
+                throw IllegalArgumentException("Unknown role: $this")
+            }
+        }
+    }
+
+    // Used to determine the color of Message Box at MessageEntry.kt
+    @Composable
+    fun cardColors(): CardColors {
+        return when (this) {
+            USER -> CardDefaults.cardColors()
+            BOT -> CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            SYSTEM -> CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+            else -> {
+                throw IllegalArgumentException("Unknown role: $this")
+            }
+        }
+    }
+
+    @Composable
+    fun labelColor(): Color {
+        return when (this) {
+            USER -> MaterialTheme.colorScheme.primary
+            BOT -> MaterialTheme.colorScheme.tertiary
+            SYSTEM -> MaterialTheme.colorScheme.secondary
+            else -> {
+                throw IllegalArgumentException("Unknown role: $this")
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun textFieldColors(): TextFieldColors {
+        return when (this) {
+            USER -> TextFieldDefaults.textFieldColors()
+            BOT -> TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                cursorColor = MaterialTheme.colorScheme.tertiary,
+                focusedIndicatorColor = MaterialTheme.colorScheme.tertiary
+            )
+            SYSTEM -> TextFieldDefaults.textFieldColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                focusedIndicatorColor = MaterialTheme.colorScheme.secondary
+            )
+            else -> {
+                throw IllegalArgumentException("Unknown role: $this")
+            }
+        }
+    }
+
+    @Composable
+    fun markdownColor(): Color {
+        return when (this) {
+            USER -> MaterialTheme.colorScheme.onBackground
+            BOT -> MaterialTheme.colorScheme.onTertiaryContainer
+            SYSTEM -> MaterialTheme.colorScheme.onSecondaryContainer
+            else -> {
+                throw IllegalArgumentException("Unknown role: $this")
+            }
+        }
+    }
+
+    @Composable
+    fun asString(): String {
+        return when (this) {
+            USER -> stringResource(id = R.string.user)
+            BOT -> stringResource(id = R.string.bot)
+            SYSTEM -> stringResource(id = R.string.system)
             else -> {
                 throw IllegalArgumentException("Unknown role: $this")
             }
