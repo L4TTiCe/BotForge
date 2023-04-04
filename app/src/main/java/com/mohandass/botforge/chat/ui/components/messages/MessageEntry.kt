@@ -1,6 +1,5 @@
 package com.mohandass.botforge.chat.ui.components.messages
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.ui.ShakeDetector
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -49,7 +51,8 @@ fun MessageEntry(
     val focusRequester = remember { FocusRequester() }
     var isFocused by remember { mutableStateOf(false) }
 
-    var messageContent by remember { mutableStateOf(message.text) }
+    var removedMessageContent by remember { mutableStateOf("") }
+    var messageContent by remember { mutableStateOf (TextFieldValue (text = message.text)) }
     var role by remember { mutableStateOf(message.role) }
 
     val messageIsFocussed by viewModel.chat.isMessageInFocus
@@ -114,7 +117,7 @@ fun MessageEntry(
                 MarkdownText(
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onSurface,
-                    markdown = messageContent
+                    markdown = messageContent.text
                 )
             },
             confirmButton = {
@@ -148,7 +151,7 @@ fun MessageEntry(
     fun updateMessage() {
         viewModel.chat.updateMessage(
             Message(
-                text = messageContent,
+                text = messageContent.text,
                 role = role,
                 uuid = message.uuid,
                 isActive = isActive.value,
@@ -235,7 +238,7 @@ fun MessageEntry(
                 }]
             )
 
-            if (Utils.containsMarkdown(messageContent)) {
+            if (Utils.containsMarkdown(messageContent.text)) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(0.88f)
@@ -277,7 +280,7 @@ fun MessageEntry(
                     modifier = Modifier
                         .weight(0.88f)
                 ) {
-                    if (Utils.containsMarkdown(messageContent) && showAsMarkdown.value) {
+                    if (Utils.containsMarkdown(messageContent.text) && showAsMarkdown.value) {
                         Card(
                             modifier = modifier
                                 .fillMaxWidth(),
@@ -296,7 +299,7 @@ fun MessageEntry(
                                         throw Exception(INVALID_ROLE)
                                     }
                                 },
-                                markdown = messageContent
+                                markdown = messageContent.text
                             )
                         }
                     } else {
@@ -308,8 +311,22 @@ fun MessageEntry(
                             }
 
                             ShakeDetector(shakeThreshold = shakeThreshold) {
-                                Log.v("ShakeDetector", "Shake detected")
-                                messageContent = ""
+                                removedMessageContent = messageContent.text
+                                messageContent = TextFieldValue()
+
+                                SnackbarManager.showMessageWithAction(
+                                    message = R.string.message_cleared,
+                                    dismissLabel = R.string.undo,
+                                    dismissAction = {
+                                        messageContent = TextFieldValue(removedMessageContent)
+
+                                        // Move Cursor to end of text
+                                        messageContent = TextFieldValue(
+                                            text = messageContent.text,
+                                            selection = TextRange(messageContent.text.length)
+                                        )
+                                    }
+                                )
                             }
                         }
                         TextField(

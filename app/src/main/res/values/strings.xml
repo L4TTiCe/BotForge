@@ -157,6 +157,11 @@
     <string name="enable_shake">Enable Shake to Clear</string>
     <string name="enable_shake_message">Shake your phone to clear Chat message</string>
     <string name="shake_sensitivity">Shake Sensitivity</string>
+    <string name="shake_test">Shake to test</string>
+    <string name="shake_trigger_message">Shake triggered!</string>
+
+    <string name="message_cleared">Message cleared! (Shake)</string>
+    <string name="undo">Undo</string>
 
     <string name="open_source_libraries">Open Source Libraries</string>
 

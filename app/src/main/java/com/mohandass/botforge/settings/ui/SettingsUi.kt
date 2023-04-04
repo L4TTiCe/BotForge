@@ -25,6 +25,8 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.ui.ShakeDetector
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
@@ -206,17 +208,38 @@ fun SettingsUi(
                 }
             )
 
+            if (isShakeToClearEnabled.value) {
+                val shakeThreshold = remember(shakeSensitivity) {
+                    val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+                    (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+                }
+
+                ShakeDetector(shakeThreshold = shakeThreshold) {
+                    SnackbarManager.showMessage(R.string.shake_trigger_message)
+                }
+            }
+
             AnimatedVisibility(
                 visible = isShakeToClearEnabled.value,
                 enter = expandVertically(),
                 exit = shrinkVertically()
             ) {
                 Column {
-                    Text(
-                        text = resources().getString(R.string.shake_sensitivity),
-                        modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                    Row {
+                        Text(
+                            text = resources().getString(R.string.shake_sensitivity),
+                            modifier = Modifier.padding(10.dp),
+                            style = MaterialTheme.typography.labelLarge
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Text(
+                            text = stringResource(id = R.string.shake_test),
+                            modifier = Modifier.padding(10.dp),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
 
                     Slider(
                         value = shakeSensitivity,
