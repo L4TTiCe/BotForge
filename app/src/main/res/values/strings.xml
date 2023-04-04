@@ -154,13 +154,22 @@
     <string name="manage_account">Manage Account</string>
     <string name="manage_account_message">View or change your account information.</string>
 
+    <string name="enable_shake">Enable Shake to Clear</string>
+    <string name="enable_shake_message">Shake your phone to clear Chat message</string>
+    <string name="shake_sensitivity">Shake Sensitivity</string>
+
     <string name="open_source_libraries">Open Source Libraries</string>
 
     <string name="open_ai_status">OpenAI Status Page</string>
     <string name="open_ai_status_message">Check the status of OpenAI\'s API.</string>
     <string name="open_ai_status_link">https://status.openai.com/</string>
 
+    <string name="enable_ugc">Enable User Generated Content</string>
+    <string name="enable_ugc_message">Allow bots from the community to be displayed in the app</string>
+
     <string name="about">About</string>
+    <string name="icons_images">Icons and Images</string>
+    <string name="icons_images_message">Attributions for icons and images used in the app.</string>
     <string name="licenses_and_acknowledgements">Licenses and Acknowledgement</string>
     <string name="licenses_and_acknowledgements_message">View the licenses and acknowledgements of the libraries used in this app.</string>
 

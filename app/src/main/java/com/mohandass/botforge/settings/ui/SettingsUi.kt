@@ -1,8 +1,7 @@
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -31,6 +30,7 @@ import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
+import com.mohandass.botforge.ui.settings.AppearanceSettings
 import com.slaviboy.composeunits.adh
 
 @Composable
@@ -83,8 +83,6 @@ fun SettingsUi(
         isUserGeneratedContentEnabled.value = it.enableUserGeneratedContent
         isShakeToClearEnabled.value = it.enableShakeToClear
         shakeSensitivity = it.shakeToClearSensitivity
-
-        Log.v("SettingsUi", "shakeSensitivity: ${it.shakeToClearSensitivity}")
     }
 
     DisposableEffect(
@@ -195,12 +193,12 @@ fun SettingsUi(
             )
         }
         item {
-            SettingsCategory(title = "Chat")
+            SettingsCategory(title = resources().getString(R.string.chat))
         }
         item {
             SettingsItem(
-                title = "Enable Shake to Clear",
-                description = "Shake your phone to clear Chat message",
+                title = resources().getString(R.string.enable_shake),
+                description = resources().getString(R.string.enable_shake_message),
                 icon = painterResource(id = R.drawable.baseline_vibration_24),
                 switchState = isShakeToClearEnabled,
                 onCheckChange = {
@@ -215,7 +213,7 @@ fun SettingsUi(
             ) {
                 Column {
                     Text(
-                        text = "Shake Sensitivity",
+                        text = resources().getString(R.string.shake_sensitivity),
                         modifier = Modifier.padding(10.dp),
                         style = MaterialTheme.typography.labelLarge
                     )
@@ -239,8 +237,8 @@ fun SettingsUi(
         }
         item {
             SettingsItem(
-                title = "Enable User Generated Content",
-                description = "Allow bots from the community to be displayed in the app",
+                title = resources().getString(R.string.enable_ugc),
+                description = resources().getString(R.string.enable_ugc_message),
                 icon = painterResource(id = R.drawable.baseline_color_lens_24),
                 switchState = isUserGeneratedContentEnabled,
                 onCheckChange = {
@@ -274,8 +272,8 @@ fun SettingsUi(
         }
         item {
             SettingsItem(
-                title = "Icons and Images",
-                description = "Attributions for icons and images used in the app",
+                title = resources().getString(R.string.icons_images),
+                description = resources().getString(R.string.icons_images_message),
                 painter = painterResource(id = R.drawable.tag_black_shape),
                 onClick = ({
                     viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.IconCredits.route)

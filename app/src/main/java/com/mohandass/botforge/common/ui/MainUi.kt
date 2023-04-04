@@ -21,6 +21,7 @@ import com.mohandass.botforge.chat.ui.components.header.TopBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.ui.ApiKeyUi
 import com.mohandass.botforge.settings.ui.IconCreditsUi
+import com.mohandass.botforge.settings.ui.SettingsUi
 import com.mohandass.botforge.ui.settings.*
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
