@@ -16,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -125,7 +126,9 @@ fun ChatUi(viewModel: AppViewModel) {
             FloatingActionButton(
                 onClick = {
                     if (!isLoading) {
-                        viewModel.chat.getChatCompletion(hapticFeedback)
+                        viewModel.chat.getChatCompletion {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                        }
                         keyboardController?.hide()
                         focusManager.clearFocus()
                     } else {

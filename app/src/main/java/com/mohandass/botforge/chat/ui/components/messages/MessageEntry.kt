@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -304,6 +306,7 @@ fun MessageEntry(
                         }
                     } else {
                         if (isShakeToClearEnabled && isFocused) {
+                            val hapticFeedback = LocalHapticFeedback.current
 
                             val shakeThreshold = remember(shakeSensitivity) {
                                 val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
@@ -327,6 +330,8 @@ fun MessageEntry(
                                         )
                                     }
                                 )
+
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             }
                         }
                         TextField(

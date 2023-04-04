@@ -3,8 +3,6 @@ package com.mohandass.botforge.chat.viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.perf.metrics.AddTrace
@@ -103,7 +101,7 @@ class ChatViewModel @Inject constructor(
     }
 
     @AddTrace(name = "getChatCompletion", enabled = true)
-    fun getChatCompletion(hapticFeedback: HapticFeedback) {
+    fun getChatCompletion(onComplete: () -> Unit) {
         logger.log(TAG, "getChatCompletion()")
         setLoading(true)
 
@@ -165,7 +163,7 @@ class ChatViewModel @Inject constructor(
 
                 }
             }
-            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            onComplete()
             setLoading(false)
         }
     }
