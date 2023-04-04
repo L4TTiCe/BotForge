@@ -239,6 +239,7 @@
     <string name="report">Report</string>
 
     <!--    ChatUi   -->
+    <string name="messages">Messages</string>
     <string name="show_more_cd">Show more</string>
     <string name="show_less_cd">Show less</string>
     <string name="add_to_bookmarks_cd">Add to Bookmarks</string>

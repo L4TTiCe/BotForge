@@ -5,11 +5,6 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,21 +15,21 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.chat.CustomisePersona
+import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
+import com.mohandass.botforge.chat.ui.components.chat.headers.CustomisePersonaHeader
+import com.mohandass.botforge.chat.ui.components.chat.headers.MessagesHeader
+import com.mohandass.botforge.chat.ui.components.chat.headers.PersonaChatHeader
+import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
-import com.mohandass.botforge.chat.ui.components.messages.MessageList
 import com.mohandass.botforge.sync.ui.components.BotDetailDialog
 import com.slaviboy.composeunits.adh
-import com.slaviboy.composeunits.dw
 
+// Main Chat UI, with Customise Persona and Messages
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -66,6 +61,7 @@ fun ChatUi(viewModel: AppViewModel) {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
     }
 
+    // Show bot detail dialog for Bots from Community
     if (showDetailDialog.value) {
         parentBot?.let {
             BotDetailDialog(
@@ -84,6 +80,7 @@ fun ChatUi(viewModel: AppViewModel) {
         }
     }
 
+    // Confirm delete dialog
     if (openDeleteDialog) {
         DeletePersonaDialog(
             onDismiss = {
@@ -95,6 +92,7 @@ fun ChatUi(viewModel: AppViewModel) {
             })
     }
 
+    // Asks for chat name to save
     if (openSaveChatDialog) {
         SavePersonaDialog(
             onDismiss = {
@@ -108,6 +106,7 @@ fun ChatUi(viewModel: AppViewModel) {
         )
     }
 
+    // Sets alias for persona
     if (openAliasDialog) {
         SetPersonaAliasDialog(
             onDismiss = {
@@ -123,40 +122,20 @@ fun ChatUi(viewModel: AppViewModel) {
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    if (!isLoading) {
-                        viewModel.chat.getChatCompletion {
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        }
-                        keyboardController?.hide()
-                        focusManager.clearFocus()
-                    } else {
-                        viewModel.chat.handleInterrupt()
+            // Sends or Cancels request
+            SendFloatingActionButton(
+                isLoading = isLoading,
+                onSend = {
+                    viewModel.chat.getChatCompletion {
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                     }
+                    keyboardController?.hide()
+                    focusManager.clearFocus()
                 },
-                containerColor =
-                if (isLoading)
-                    MaterialTheme.colorScheme.errorContainer
-                else
-                    MaterialTheme.colorScheme.primaryContainer,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    if (!isLoading) {
-                        Icon(
-                            imageVector = Icons.Filled.Send,
-                            contentDescription = stringResource(id = R.string.send),
-                            modifier = Modifier.size(24.dp),
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = stringResource(id = R.string.cancel),
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
+                onCancel = {
+                    viewModel.chat.handleInterrupt()
                 }
-            }
+            )
         },
     ) {
         Surface(
@@ -171,53 +150,17 @@ fun ChatUi(viewModel: AppViewModel) {
                 state = listState,
             ) {
                 item {
-                    Row (
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = if (personaName != "")
-                                stringResource(
-                                    id = R.string.chat_with_persona_name,
-                                    personaName
-                                )
-                            else
-                                stringResource(id = R.string.chat),
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp, vertical = 5.dp)
-                                .fillMaxWidth(0.85f),
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        IconButton(
-                            onClick = {
-                                if (expandCustomizePersona) {
-                                    viewModel.persona.updateExpandCustomizePersona(false)
-                                } else {
-                                    viewModel.persona.updateExpandCustomizePersona(true)
-                                }
-                            },
-                            modifier = Modifier.padding(10.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(
-                                    id = if (expandCustomizePersona)
-                                        R.drawable.baseline_keyboard_arrow_up_24
-                                    else
-                                        R.drawable.baseline_keyboard_arrow_down_24
-                                ),
-                                contentDescription = stringResource(id =
-                                if (expandCustomizePersona)
-                                    R.string.show_less_cd
-                                else
-                                    R.string.show_more_cd),
-                                modifier = Modifier.size(36.dp)
-                            )
+                    PersonaChatHeader(
+                        personaName = personaName,
+                        expandCustomizePersona = expandCustomizePersona,
+                        onExpandOrCollapse = {
+                            if (expandCustomizePersona) {
+                                viewModel.persona.updateExpandCustomizePersona(false)
+                            } else {
+                                viewModel.persona.updateExpandCustomizePersona(true)
+                            }
                         }
-                    }
+                    )
                 }
 
                 item {
@@ -237,152 +180,34 @@ fun ChatUi(viewModel: AppViewModel) {
                         )
                     ) {
                         Column {
-                            Row {
-                                Column {
-                                    Row {
-                                        Text(
-                                            text = stringResource(id = R.string.customise_persona),
-                                            modifier = Modifier
-                                                .padding(vertical = 10.dp)
-                                                .padding(start = 10.dp),
-                                            style = MaterialTheme.typography.headlineSmall
-                                        )
-
-                                        if (parentBot != null && isUserGeneratedContentEnabled) {
-                                            IconButton(
-                                                onClick = {
-                                                    showDetailDialog.value = true
-                                                },
-                                                modifier = Modifier.padding()
-                                            ) {
-                                                Icon(
-                                                    painter = painterResource(
-                                                        id = R.drawable.community
-                                                    ),
-                                                    contentDescription = stringResource(id = R.string.info_cd),
-                                                    modifier = Modifier.size(24.dp)
-                                                )
-                                            }
-                                        }
-                                    }
-
-                                    Text(
-                                        text = stringResource(id = R.string.create_persona_message),
-                                        modifier = Modifier.padding(horizontal = 10.dp),
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-
-                                Spacer(modifier = Modifier.weight(1f))
-
-                                IconButton(
-                                    onClick = {
-                                        viewModel.chat.updateAliasDialogState(true)
-                                    },
-                                    modifier = Modifier.padding(horizontal = 5.dp)
-                                ) {
-                                    Icon(
-                                        painter = painterResource(
-                                            id = R.drawable.baseline_drive_file_rename_outline_24
-                                        ),
-                                        contentDescription = stringResource(id = R.string.customise_persona),
-                                        modifier = Modifier.size(36.dp)
-                                    )
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.height(0.02.adh))
-
-                            OutlinedTextField(
-                                value = personaName,
-                                onValueChange = { viewModel.persona.updatePersonaName(it) },
-                                label = {
-                                    Text(text = stringResource(id = R.string.persona_name))
+                            CustomisePersonaHeader(
+                                showCommunityBadge =
+                                    parentBot != null && isUserGeneratedContentEnabled,
+                                onCommunityBadgeClick = {
+                                    showDetailDialog.value = true
                                 },
-                                keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Next,
-                                    keyboardType = KeyboardType.Text
-                                ),
-                                modifier = Modifier
-                                    .padding(horizontal = 10.dp)
-                                    .fillMaxWidth()
-                            )
-
-                            Spacer(modifier = Modifier.height(0.02.adh))
-
-                            Text(
-                                text = stringResource(id = R.string.system_message),
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                style = MaterialTheme.typography.labelLarge,
-                            )
-
-                            OutlinedTextField(
-                                value = personaSystemMessage,
-                                onValueChange = { viewModel.persona.updatePersonaSystemMessage(it) },
-                                placeholder = {
-                                    Text(
-                                        text = stringResource(id = R.string.system_message_hint)
-                                    )
+                                onEditPersonaClick = {
+                                    viewModel.chat.updateAliasDialogState(true)
                                 },
-                                modifier = Modifier
-                                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                                    .sizeIn(minHeight = 0.2.adh)
-                                    .fillMaxWidth()
                             )
 
                             Spacer(modifier = Modifier.height(0.02.adh))
 
-                            Row(horizontalArrangement = Arrangement.SpaceAround) {
-                                Button(
-                                    onClick = {
-                                        viewModel.persona.showSharePersona()
-                                    },
-                                    modifier = Modifier.padding(horizontal = 10.dp)
-                                ) {
-                                    Text(text = stringResource(id = R.string.share))
-                                }
-
-                                Button(
-                                    onClick = {
-                                        viewModel.persona.saveUpdatePersona()
-                                    },
-                                ) {
-                                    Text(text = stringResource(id = R.string.save))
-                                }
-
-                                Spacer(modifier = Modifier.weight(1f))
-
-                                if (viewModel.persona.selectedPersona.value != "") {
-                                    Button(
-                                        onClick = {
-                                            viewModel.persona.updateDeletePersonaDialogState(true)
-                                        },
-                                        modifier = Modifier.padding(horizontal = 10.dp),
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.error
-                                        )
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Delete,
-                                            contentDescription = stringResource(id = R.string.delete)
-                                        )
-                                        Spacer(modifier = Modifier.width(0.01.dw))
-                                        Text(text = stringResource(id = R.string.delete))
-                                    }
-                                }
-                            }
-
-                            if (viewModel.persona.selectedPersona.value != "") {
-                                Button(
-                                    onClick = { viewModel.persona.saveAsNewPersona() },
-                                    modifier = Modifier.padding(horizontal = 10.dp)
-                                ) {
-                                    Text(text = stringResource(id = R.string.make_copy))
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(0.02.adh))
+                            CustomisePersona(
+                                personaName = personaName,
+                                personaSystemMessage = personaSystemMessage,
+                                hasSelectedPersona = viewModel.persona.selectedPersona.value != "",
+                                onPersonaNameChange = { viewModel.persona.updatePersonaName(it) },
+                                onPersonaSystemMessageChange = {
+                                    viewModel.persona.updatePersonaSystemMessage(it)
+                                },
+                                onShare = { viewModel.persona.showSharePersona() },
+                                onSave = { viewModel.persona.saveUpdatePersona() },
+                                onDelete = {
+                                    viewModel.persona.updateDeletePersonaDialogState(true)
+                                },
+                                onCopy = { viewModel.persona.saveAsNewPersona() },
+                            )
                         }
                     }
                 }
@@ -396,50 +221,14 @@ fun ChatUi(viewModel: AppViewModel) {
                 }
 
                 item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Messages",
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        IconButton(
-                            onClick = {
-                                viewModel.chat.updateSaveChatDialogState(true)
-                            },
-                        ) {
-                            Icon(
-                                painter = painterResource(
-                                    id = R.drawable.baseline_bookmark_add_24
-                                ),
-                                contentDescription = stringResource(id = R.string.add_to_bookmarks_cd),
-                                modifier = Modifier.size(24.dp)
-                            )
+                    MessagesHeader(
+                        onBookmarkClick = {
+                            viewModel.chat.updateSaveChatDialogState(true)
+                        },
+                        onClearAllClick = {
+                            viewModel.chat.handleDelete(true)
                         }
-
-                        IconButton(
-                            onClick = { viewModel.chat.handleDelete(true) },
-                            modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp),
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = MaterialTheme.colorScheme.error
-                            )
-                        ) {
-                            Icon(
-                                painter = painterResource(
-                                    id = R.drawable.baseline_clear_all_24
-                                ),
-                                contentDescription = stringResource(id = R.string.clear_all_cd),
-                                modifier = Modifier.size(36.dp)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(0.01.dw))
-                    }
+                    )
 
                     Spacer(modifier = Modifier.height(0.02.adh))
                 }

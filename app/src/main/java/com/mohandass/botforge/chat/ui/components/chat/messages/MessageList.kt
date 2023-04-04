@@ -1,4 +1,4 @@
-package com.mohandass.botforge.chat.ui.components.messages
+package com.mohandass.botforge.chat.ui.components.chat.messages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
