@@ -12,6 +12,8 @@ interface PreferencesDataStore {
     suspend fun updateLastSuccessfulSync()
     suspend fun clearLastSuccessfulSync()
     suspend fun setUserGeneratedContent(newValue: Boolean)
+    suspend fun setShakeToClear(newValue: Boolean)
+    suspend fun setShakeToClearSensitivity(newValue: Float)
 
     companion object {
         const val PREFERENCES_NAME = "botforge_preferences"
@@ -19,6 +21,8 @@ interface PreferencesDataStore {
         const val DYNAMIC_COLOR = "dynamic_color"
         const val LAST_SUCCESSFUL_SYNC = "last_successful_sync"
         const val USER_GENERATED_CONTENT = "user_generated_content"
+        const val SHAKE_TO_CLEAR = "shake_to_clear"
+        const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
     }
 }
 

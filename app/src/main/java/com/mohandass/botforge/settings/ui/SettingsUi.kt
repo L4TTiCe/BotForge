@@ -2,6 +2,10 @@ package com.mohandass.botforge.ui.settings
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -21,6 +25,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
@@ -58,6 +63,10 @@ fun SettingsUi(
     val isUserGeneratedContentEnabled = remember {
         mutableStateOf(true)
     }
+    val isShakeToClearEnabled = remember {
+        mutableStateOf(false)
+    }
+    var shakeSensitivity by remember { mutableStateOf(0f) }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
 
@@ -72,6 +81,10 @@ fun SettingsUi(
         activeTheme = it.preferredTheme
         useDynamicColor = it.useDynamicColors
         isUserGeneratedContentEnabled.value = it.enableUserGeneratedContent
+        isShakeToClearEnabled.value = it.enableShakeToClear
+        shakeSensitivity = it.shakeToClearSensitivity
+
+        Log.v("SettingsUi", "shakeSensitivity: ${it.shakeToClearSensitivity}")
     }
 
     DisposableEffect(
@@ -180,6 +193,46 @@ fun SettingsUi(
                     viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ManageAccountSettings.route)
                 })
             )
+        }
+        item {
+            SettingsCategory(title = "Chat")
+        }
+        item {
+            SettingsItem(
+                title = "Enable Shake to Clear",
+                description = "Shake your phone to clear Chat message",
+                icon = painterResource(id = R.drawable.baseline_vibration_24),
+                switchState = isShakeToClearEnabled,
+                onCheckChange = {
+                    settingsViewModel.setShakeToClear(it)
+                }
+            )
+
+            AnimatedVisibility(
+                visible = isShakeToClearEnabled.value,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Column {
+                    Text(
+                        text = "Shake Sensitivity",
+                        modifier = Modifier.padding(10.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Slider(
+                        value = shakeSensitivity,
+                        onValueChange = {
+                            shakeSensitivity = it
+                        },
+                        onValueChangeFinished = {
+                            settingsViewModel.setShakeToClearSensitivity(shakeSensitivity)
+                        },
+                        valueRange = 0f..Constants.MAX_SENSITIVITY_THRESHOLD,
+                        modifier = Modifier.padding(horizontal = 15.dp)
+                    )
+                }
+            }
         }
         item {
             SettingsCategory(title = resources().getString(R.string.community))

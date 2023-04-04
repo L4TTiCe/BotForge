@@ -74,6 +74,20 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setShakeToClear(value: Boolean) {
+        logger.log(TAG, "setShakeToClear() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setShakeToClear(value)
+        }
+    }
+
+    fun setShakeToClearSensitivity(value: Float) {
+        logger.log(TAG, "setShakeToClearSensitivity() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setShakeToClearSensitivity(value)
+        }
+    }
+
     fun regenerateDisplayName() {
         logger.log(TAG, "regenerateDisplayName()")
         viewModelScope.launch {

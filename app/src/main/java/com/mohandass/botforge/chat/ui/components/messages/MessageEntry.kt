@@ -1,5 +1,6 @@
 package com.mohandass.botforge.chat.ui.components.messages
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,10 +9,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,7 +24,9 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.ui.ShakeDetector
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,6 +47,7 @@ fun MessageEntry(
     val isActive = remember { mutableStateOf(message.isActive) }
     val showAllIcons = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    var isFocused by remember { mutableStateOf(false) }
 
     var messageContent by remember { mutableStateOf(message.text) }
     var role by remember { mutableStateOf(message.role) }
@@ -50,6 +56,19 @@ fun MessageEntry(
 
     val showMarkdownDialog = remember { mutableStateOf(false) }
     val showAsMarkdown = remember { mutableStateOf(true) }
+
+    var isShakeToClearEnabled by remember {
+        mutableStateOf(false)
+    }
+    var shakeSensitivity by remember {
+        mutableStateOf(0f)
+    }
+
+    val userPreferences = viewModel.userPreferences.observeAsState()
+    userPreferences.value?.let {
+        isShakeToClearEnabled = it.enableShakeToClear
+        shakeSensitivity = it.shakeToClearSensitivity
+    }
 
     val cardColors = when (role) {
         Role.USER -> CardDefaults.cardColors()
@@ -281,10 +300,25 @@ fun MessageEntry(
                             )
                         }
                     } else {
+                        if (isShakeToClearEnabled && isFocused) {
+
+                            val shakeThreshold = remember(shakeSensitivity) {
+                                val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+                                (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+                            }
+
+                            ShakeDetector(shakeThreshold = shakeThreshold) {
+                                Log.v("ShakeDetector", "Shake detected")
+                                messageContent = ""
+                            }
+                        }
                         TextField(
                             modifier = modifier
                                 .fillMaxWidth()
                                 .focusRequester(focusRequester)
+                                .onFocusChanged { focusState ->
+                                    isFocused = focusState.isFocused
+                                }
                                 .sizeIn(minHeight = 100.dp),
                             value = messageContent,
                             onValueChange = {

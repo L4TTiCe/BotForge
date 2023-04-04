@@ -5,6 +5,8 @@ data class UserPreferences(
     val useDynamicColors: Boolean,
     val lastSuccessfulSync: Long,
     val enableUserGeneratedContent: Boolean,
+    val enableShakeToClear: Boolean,
+    val shakeToClearSensitivity: Float = 0f,
 ) {
     override fun toString(): String {
         return "UserPreferences(" +
@@ -12,6 +14,8 @@ data class UserPreferences(
                 "useDynamicColors=$useDynamicColors, " +
                 "lastSuccessfulSync=$lastSuccessfulSync" +
                 "enableUserGeneratedContent=$enableUserGeneratedContent" +
+                "enableShakeToClear=$enableShakeToClear" +
+                "shakeToClearSensitivity=$shakeToClearSensitivity" +
                 ")"
     }
 }
