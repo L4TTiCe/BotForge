@@ -15,7 +15,8 @@ fun ShakeDetector(
     shakeThreshold: Float = 0f,
     onShake: () -> Unit,
 ) {
-    val sensorManager = LocalContext.current.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    val sensorManager =
+        LocalContext.current.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     val shakeThresholdGravity = 2f + shakeThreshold
     val shakeSlopTimeMs = 500
@@ -44,7 +45,7 @@ fun ShakeDetector(
                 }
                 shakeTimestamp = now
                 // trigger shake event
-               onShake()
+                onShake()
             }
         }
     }

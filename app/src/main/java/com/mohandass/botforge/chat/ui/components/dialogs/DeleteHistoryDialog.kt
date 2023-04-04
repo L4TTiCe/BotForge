@@ -41,6 +41,7 @@ fun DeleteHistoryDialog(
         containerColor = MaterialTheme.colorScheme.errorContainer,
     )
 }
+
 @Preview
 @Composable
 fun DeleteHistoryDialogPreview() {

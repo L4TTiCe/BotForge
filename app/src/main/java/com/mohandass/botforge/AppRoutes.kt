@@ -1,5 +1,8 @@
 package com.mohandass.botforge
 
+/**
+ * Routes for the app
+ */
 sealed class AppRoutes(val route: String) {
     object Splash : AppRoutes("splash_ui")
     object Landing : AppRoutes("landing_ui")

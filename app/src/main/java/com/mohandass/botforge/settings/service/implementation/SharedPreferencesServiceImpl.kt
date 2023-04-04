@@ -9,6 +9,12 @@ private const val API_KEY = "open_ai_api_key"
 private const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
 private const val ON_BOARDING_COMPLETED = "on_boarding_completed"
 
+/**
+ * Implementation of the SharedPreferencesService
+ *
+ * Uses SharedPreferences to store the user preferences.
+ * Used for storing the API key and other settings, that don't other things to be reactive.
+ */
 class SharedPreferencesServiceImpl private constructor(context: Context) :
     SharedPreferencesService {
 

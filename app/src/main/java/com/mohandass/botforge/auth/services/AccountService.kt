@@ -4,6 +4,9 @@ import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.auth.model.User
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * An interface to abstract the Account Service
+ */
 interface AccountService {
     val currentUserId: String
     val hasUser: Boolean
@@ -11,6 +14,7 @@ interface AccountService {
 
     val currentUser: Flow<User>
 
+    // Randomly generate a username and set it as the display name
     suspend fun generateAndSetDisplayName()
     suspend fun setDisplayName(displayName: String)
     suspend fun authenticate(email: String, password: String)

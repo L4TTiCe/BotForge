@@ -182,7 +182,7 @@ fun ChatUi(viewModel: AppViewModel) {
                         Column {
                             CustomisePersonaHeader(
                                 showCommunityBadge =
-                                    parentBot != null && isUserGeneratedContentEnabled,
+                                parentBot != null && isUserGeneratedContentEnabled,
                                 onCommunityBadgeClick = {
                                     showDetailDialog.value = true
                                 },

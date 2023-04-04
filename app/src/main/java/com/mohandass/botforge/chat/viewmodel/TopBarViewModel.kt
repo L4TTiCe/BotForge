@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.mohandass.botforge.R
 
+/**
+ * A ViewModel to handle the top bar
+ */
 class TopBarViewModel : ViewModel() {
     private val _topBarTitle = mutableStateOf(R.string.app_name)
     val title: MutableState<Int>

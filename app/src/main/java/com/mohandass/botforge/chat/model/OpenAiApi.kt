@@ -5,6 +5,11 @@ import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import java.util.*
 
+/*
+* This file contains extensions to convert between the
+* OpenAI API response to BotForge's data classes
+*/
+
 @OptIn(BetaOpenAI::class)
 fun ChatMessage.toMessage(): Message {
     return Message(

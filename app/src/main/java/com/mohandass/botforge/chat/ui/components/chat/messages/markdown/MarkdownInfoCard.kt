@@ -25,7 +25,7 @@ fun MarkdownInfoCard(
         modifier = modifier
             .padding(vertical = 8.dp)
             .clickable {
-               onClick()
+                onClick()
             },
         colors = cardColors,
         shape = MaterialTheme.shapes.small,

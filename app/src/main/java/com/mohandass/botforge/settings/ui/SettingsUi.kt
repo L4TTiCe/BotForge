@@ -210,8 +210,8 @@ fun SettingsUi(
 
             if (isShakeToClearEnabled.value) {
                 val shakeThreshold = remember(shakeSensitivity) {
-                    val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
-                    (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+                    val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
+                    (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
                 }
 
                 ShakeDetector(shakeThreshold = shakeThreshold) {

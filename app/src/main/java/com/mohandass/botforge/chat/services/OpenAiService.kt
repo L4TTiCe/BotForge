@@ -3,6 +3,9 @@ package com.mohandass.botforge.chat.services
 import com.aallam.openai.api.model.ModelId
 import com.mohandass.botforge.chat.model.Message
 
+/**
+ * An interface to represent the OpenAI API
+ */
 interface OpenAiService {
 
     suspend fun getChatCompletion(

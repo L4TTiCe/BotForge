@@ -5,6 +5,11 @@ import androidx.room.Relation
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 
+/**
+ * A data class to represent a Message with its Metadata
+ *
+ * This relation is used to get a reference to the Message and its Metadata
+ */
 data class MessageAndMetadata(
     @Embedded val message: MessageE,
 

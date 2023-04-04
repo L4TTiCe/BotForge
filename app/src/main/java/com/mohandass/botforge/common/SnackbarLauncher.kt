@@ -13,6 +13,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
+// Derived from
+// https://github.com/FirebaseExtended/make-it-so-android
+
+/**
+ * A class that launches a snackbar when a [SnackbarMessage] is received on [SnackbarManager.snackbarMessages].
+ *
+ * @param snackbarHostState The [SnackbarHostState] that will be used to show the snackbar.
+ * @param snackbarManager The [SnackbarManager] that will be used to observe [SnackbarMessage]s.
+ * @param resources The [Resources] that will be used to resolve the [SnackbarMessage]s.
+ * @param coroutineScope The [CoroutineScope] that will be used to launch the snackbar.
+ */
 @Stable
 class SnackbarLauncher(
     val snackbarHostState: SnackbarHostState,

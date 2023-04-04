@@ -2,6 +2,9 @@ package com.mohandass.botforge.sync.service
 
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 
+/**
+ * A service to perform operations on the BotE entity
+ */
 interface BotService {
     suspend fun addBot(bot: BotE)
 

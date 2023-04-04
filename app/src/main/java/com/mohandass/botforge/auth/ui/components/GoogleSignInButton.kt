@@ -25,9 +25,9 @@ fun GoogleSignInButton(
         modifier = Modifier.padding(8.dp),
         onClick = onClick,
     ) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_google),
                 contentDescription = null,

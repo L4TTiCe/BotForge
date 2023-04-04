@@ -12,19 +12,33 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-
+/**
+ * Implementation of the PreferencesDataStore
+ *
+ * Uses the DataStore library to store the preferences.
+ * Stores themes, dynamic colors, last successful sync, user generated content, shake to clear,
+ * and shake to clear sensitivity.
+ *
+ * Maps stored data as a [UserPreferences] object.
+ *
+ * @param dataStore DataStore to store preferences
+ * @param logger Logger to log errors
+ */
 class PreferencesDataStoreImpl(
     private val dataStore: DataStore<Preferences>,
     private val logger: Logger
-) :
-    PreferencesDataStore {
+) : PreferencesDataStore {
+
+    // Keys for the preferences
     private object PreferencesKeys {
         val PREF_THEME = stringPreferencesKey(PreferencesDataStore.PREFERRED_THEME_KEY)
         val DYNAMIC_COLOR = booleanPreferencesKey(PreferencesDataStore.DYNAMIC_COLOR)
         val LAST_SUCCESSFUL_SYNC = longPreferencesKey(PreferencesDataStore.LAST_SUCCESSFUL_SYNC)
-        val USER_GENERATED_CONTENT = booleanPreferencesKey(PreferencesDataStore.USER_GENERATED_CONTENT)
+        val USER_GENERATED_CONTENT =
+            booleanPreferencesKey(PreferencesDataStore.USER_GENERATED_CONTENT)
         val SHAKE_TO_CLEAR = booleanPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR)
-        val SHAKE_TO_CLEAR_SENSITIVITY = floatPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR_SENSITIVITY)
+        val SHAKE_TO_CLEAR_SENSITIVITY =
+            floatPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR_SENSITIVITY)
     }
 
     /**
@@ -95,6 +109,7 @@ class PreferencesDataStoreImpl(
         }
     }
 
+    // Maps the preferences to a UserPreferences object
     private fun mapUserPreferences(preferences: Preferences): UserPreferences {
         val preferredTheme = PreferredTheme.valueOf(
             preferences[PreferencesKeys.PREF_THEME] ?: PreferredTheme.AUTO.name
@@ -106,7 +121,7 @@ class PreferencesDataStoreImpl(
         val shakeToClearSensitivity = preferences[PreferencesKeys.SHAKE_TO_CLEAR_SENSITIVITY] ?: 0f
         return UserPreferences(
             preferredTheme = preferredTheme,
-            useDynamicColors =  useDynamicColors,
+            useDynamicColors = useDynamicColors,
             lastSuccessfulSync = lastSuccessfulSync,
             enableUserGeneratedContent = enableUserGeneratedContent,
             enableShakeToClear = enableShakeToClear,

@@ -15,6 +15,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Module to provide services related to the chat, persona, and OpenAi
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class ChatModule {

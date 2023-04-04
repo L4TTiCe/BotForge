@@ -59,7 +59,7 @@ fun MessageEntryField(
 @Composable
 fun MessageEntryFieldPreviewEnabled() {
     var role by remember { mutableStateOf(Role.USER) }
-    var messageContent by remember { mutableStateOf (TextFieldValue (text = "")) }
+    var messageContent by remember { mutableStateOf(TextFieldValue(text = "")) }
 
     MessageEntryField(
         isActive = true,
@@ -79,7 +79,7 @@ fun MessageEntryFieldPreviewEnabled() {
 @Composable
 fun MessageEntryFieldPreviewDisabled() {
     var role by remember { mutableStateOf(Role.USER) }
-    var messageContent by remember { mutableStateOf (TextFieldValue (text = "")) }
+    var messageContent by remember { mutableStateOf(TextFieldValue(text = "")) }
 
     MessageEntryField(
         isActive = false,

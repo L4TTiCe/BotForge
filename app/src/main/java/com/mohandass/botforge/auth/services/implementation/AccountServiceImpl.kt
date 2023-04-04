@@ -15,17 +15,26 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+/**
+ * Implementation of the AccountService interface
+ *
+ * This class is responsible for all the authentication and account management
+ */
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val logger: Logger,
     application: Application,
 ) : AccountService {
 
+    // Name Generation
+    // Reads the adjectives and animals arrays from the resources
     private val adjectives =
         application.applicationContext.resources.getStringArray(R.array.adjectives)
     private val animals = application.applicationContext.resources.getStringArray(R.array.animals)
 
     private fun generateUsername() = "${adjectives.random()}${animals.random()}"
+    // End Name Generation
+
 
     override val currentUserId: String
         get() = auth.currentUser?.uid.orEmpty()

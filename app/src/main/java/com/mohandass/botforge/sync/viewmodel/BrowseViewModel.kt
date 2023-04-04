@@ -21,6 +21,12 @@ import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServic
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Browse screen.
+ *
+ * Handles fetching and searching of bots from the Community, stored locally in the Room database.
+ * Also handles the syncing of bots from the Community to the local database.
+ */
 class BrowseViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val botService: BotService,
@@ -104,6 +110,7 @@ class BrowseViewModel @Inject constructor(
         }
     }
 
+    // Syncs bots from the Community to the local database
     @AddTrace(name = "syncWithDatabase", enabled = true)
     fun syncWithDatabase() {
         val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync

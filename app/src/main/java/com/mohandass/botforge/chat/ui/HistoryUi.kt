@@ -129,8 +129,11 @@ fun HistoryUi(viewModel: AppViewModel) {
                     ChatCard(
                         chat = chats[index],
                         persona = personas.firstOrNull { it.uuid == chats[index].personaUuid },
-                        getMessage = {onSuccess ->
-                            viewModel.history.getMessagesCount(chats[index].uuid, onSuccess = onSuccess)
+                        getMessage = { onSuccess ->
+                            viewModel.history.getMessagesCount(
+                                chats[index].uuid,
+                                onSuccess = onSuccess
+                            )
                         },
                         onClick = {
                             viewModel.history.selectChat(chats[index])

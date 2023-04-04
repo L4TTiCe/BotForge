@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.mohandass.botforge.R.string as AppText
 
+/*
+ * A ViewModel to handle the logic for the Sign In Screen
+ */
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val accountService: AccountService,
@@ -26,6 +29,7 @@ class SignInViewModel @Inject constructor(
 
         _email.value = _email.value.trim()
 
+        // Validation
         if (Utils.validateEmail(email).not()) {
             SnackbarManager.showMessage(AppText.email_invalid)
             logger.logVerbose(TAG, "signIn() email invalid")
@@ -37,6 +41,7 @@ class SignInViewModel @Inject constructor(
             return
         }
 
+        // Authentication
         viewModelScope.launch {
             logger.logVerbose(TAG, "signIn() Authenticating...")
             try {

@@ -15,6 +15,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Settings screen
+ *
+ * Handles various settings for the app, such as preferred theme, API key, Account, etc.
+ */
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val accountService: AccountService,
@@ -102,7 +107,11 @@ class SettingsViewModel @Inject constructor(
                 SnackbarManager.showMessage(R.string.account_linked)
                 onSuccess()
             } catch (e: Exception) {
-                SnackbarManager.showMessage(SnackbarMessage.StringSnackbar(e.message ?: "Error linking account"))
+                SnackbarManager.showMessage(
+                    SnackbarMessage.StringSnackbar(
+                        e.message ?: "Error linking account"
+                    )
+                )
             }
         }
     }

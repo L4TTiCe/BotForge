@@ -3,6 +3,9 @@ package com.mohandass.botforge.common.services.implementation
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.common.services.Logger
 
+/**
+ * A logger that uses Firebase Crashlytics
+ */
 class FirebaseCrashlyticsLogger : Logger {
     override fun log(tag: String, message: String) {
         FirebaseCrashlytics.getInstance().log("$tag: $message")

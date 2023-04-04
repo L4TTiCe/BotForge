@@ -14,7 +14,7 @@ fun DeletePersonaDialog(
     onConfirm: () -> Unit,
 ) {
     AlertDialog(
-        onDismissRequest =  onDismiss,
+        onDismissRequest = onDismiss,
         title = {
             Text(text = stringResource(id = R.string.delete_persona))
         },

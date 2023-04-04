@@ -98,7 +98,7 @@ fun BotCard(
                 Spacer(modifier = Modifier.height(1.dp))
 
                 Text(
-                    text = stringResource(id =R.string.by) + " " + botE.createdBy,
+                    text = stringResource(id = R.string.by) + " " + botE.createdBy,
                     style = MaterialTheme.typography.bodySmall,
                 )
 

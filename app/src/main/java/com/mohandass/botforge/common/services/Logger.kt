@@ -1,5 +1,8 @@
 package com.mohandass.botforge.common.services
 
+/**
+ * An interface to abstract the logging mechanism
+ */
 interface Logger {
     fun log(tag: String, message: String)
     fun logVerbose(tag: String, message: String)

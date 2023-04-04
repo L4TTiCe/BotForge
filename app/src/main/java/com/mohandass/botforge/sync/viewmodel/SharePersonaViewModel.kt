@@ -17,6 +17,11 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Share Persona screen.
+ *
+ * Handles the sharing of a persona to the Community.
+ */
 class SharePersonaViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val accountService: AccountService,
@@ -67,6 +72,7 @@ class SharePersonaViewModel @Inject constructor(
         _personaTags.remove(tag)
     }
 
+    // Share Persona
     fun shareBot() {
         val bot = Bot(
             uuid = UUID.randomUUID().toString(),

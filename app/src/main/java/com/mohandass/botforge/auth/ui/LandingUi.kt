@@ -45,12 +45,18 @@ fun LandingUi(
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
             if (!landingViewModel.isOnBoardingCompleted()) {
-                viewModel.logger.logVerbose(TAG, "checkAuthentication: Authenticated, navigating to OnBoardingUi")
+                viewModel.logger.logVerbose(
+                    TAG,
+                    "checkAuthentication: Authenticated, navigating to OnBoardingUi"
+                )
                 viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             } else {
-                viewModel.logger.logVerbose(TAG, "checkAuthentication: Authenticated, navigating to MainUi")
+                viewModel.logger.logVerbose(
+                    TAG,
+                    "checkAuthentication: Authenticated, navigating to MainUi"
+                )
                 viewModel.navController.navigate(AppRoutes.Main.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
@@ -114,7 +120,7 @@ fun LandingUi(
         Spacer(modifier = Modifier.size(0.01.adh))
 
         GoogleSignInButton {
-            val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Constants.WEB_CLIENT_ID)
                 .build()
 

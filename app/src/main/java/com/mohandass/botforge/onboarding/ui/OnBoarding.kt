@@ -52,7 +52,8 @@ fun OnBoarding(
                 modifier = Modifier.weight(10f),
                 pageCount = pageCount,
                 state = pagerState,
-            ) { position -> when (position) {
+            ) { position ->
+                when (position) {
                     0 -> OnBoardingUi1()
                     1 -> OnBoardingUi2(
                         onNext = {

@@ -21,7 +21,7 @@ fun PersonaChatHeader(
     expandCustomizePersona: Boolean,
     onExpandOrCollapse: () -> Unit,
 ) {
-    Row (
+    Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -55,11 +55,13 @@ fun PersonaChatHeader(
                     else
                         R.drawable.baseline_keyboard_arrow_down_24
                 ),
-                contentDescription = stringResource(id =
-                if (expandCustomizePersona)
-                    R.string.show_less_cd
-                else
-                    R.string.show_more_cd),
+                contentDescription = stringResource(
+                    id =
+                    if (expandCustomizePersona)
+                        R.string.show_less_cd
+                    else
+                        R.string.show_more_cd
+                ),
                 modifier = Modifier.size(36.dp)
             )
         }

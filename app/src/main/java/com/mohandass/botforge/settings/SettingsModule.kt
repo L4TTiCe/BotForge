@@ -13,10 +13,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+// Preferences DataStore
 private val Context.dataStore by preferencesDataStore(
     name = PreferencesDataStore.PREFERENCES_NAME,
 )
 
+// Provides SharedPreferences and PreferencesDataStore
 @Module
 @InstallIn(SingletonComponent::class)
 class SettingsModule {

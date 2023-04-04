@@ -12,6 +12,11 @@ import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
+/**
+ * An implementation of the OpenAiService interface
+ *
+ * CAUTION: DO NOT LOG API KEY
+ */
 class OpenAiServiceImpl private constructor(
     private val sharedPreferencesService: SharedPreferencesService,
     private val logger: Logger,

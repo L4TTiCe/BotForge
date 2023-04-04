@@ -1,5 +1,8 @@
 package com.mohandass.botforge.settings.service
 
+/**
+ * Interface for the SharedPreferencesService
+ */
 interface SharedPreferencesService {
 
     // API Key

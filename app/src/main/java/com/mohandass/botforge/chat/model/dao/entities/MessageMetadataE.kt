@@ -4,6 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.MessageMetadata
 
+/**
+ * A data class to represent a Message Metadata
+ *
+ * This class is used to represent a Saved Message Metadata in the Database
+ */
 @Entity
 data class MessageMetadataE(
     @PrimaryKey val openAiId: String = "",
@@ -25,6 +30,7 @@ data class MessageMetadataE(
     }
 
     companion object {
+        // This function is used to convert a MessageMetadata to a MessageMetadataE
         fun from(messageMetadata: MessageMetadata): MessageMetadataE? {
             return messageMetadata.openAiId?.let {
                 MessageMetadataE(

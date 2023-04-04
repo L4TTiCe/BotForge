@@ -9,16 +9,22 @@ import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 import com.mohandass.botforge.common.services.Logger
 
+/**
+ * This Class calls the DAO to perform CRUD operations on the Chat table
+ */
 class ChatServiceImpl(
     private val chatDao: ChatDao,
     private val logger: Logger
 ) {
 
+    // Save a chat and its messages
     suspend fun saveChat(chat: Chat, messageList: List<Message>) {
         val chatE = ChatE.from(chat)
 
         val messagesEList = mutableListOf<MessageE>()
         val metadataEList = mutableListOf<MessageMetadataE>()
+
+        // Split the messages into two lists, one for the messages and one for the metadata
         messageList.map { message ->
             val messageE = MessageE.from(message)
             messageE.chatUuid = chatE.uuid
@@ -39,6 +45,7 @@ class ChatServiceImpl(
         logger.logVerbose(TAG, "saveChat() Saving messageList: $messagesEList")
         logger.logVerbose(TAG, "saveChat() Saving metadataList: $metadataEList")
 
+        // Save the chat, messages and metadata
         chatDao.insertChat(chatE)
 
         for (metadataE in metadataEList) {
@@ -53,6 +60,7 @@ class ChatServiceImpl(
         }
     }
 
+    // Get the number of messages in a chat
     suspend fun getMessagesCount(chatUUID: String): Int {
         logger.logVerbose(TAG, "getMessagesCount() chatUUID: $chatUUID")
         val count = chatDao.getMessageCount(chatUUID)
@@ -60,6 +68,7 @@ class ChatServiceImpl(
         return count
     }
 
+    // Get all chats
     suspend fun getChats(): List<Chat> {
         val chatEList = chatDao.getAllChats()
         val chatList = mutableListOf<Chat>()
@@ -76,6 +85,7 @@ class ChatServiceImpl(
         return chatList
     }
 
+    // Get all messages in a chat, with their metadata, if any, and return them as a list
     suspend fun getMessagesFromChat(chatUUID: String): List<Message> {
         val chatWithMessagesEList = chatDao.getChatWithMessages(chatUUID)
         val messageList = mutableListOf<Message>()

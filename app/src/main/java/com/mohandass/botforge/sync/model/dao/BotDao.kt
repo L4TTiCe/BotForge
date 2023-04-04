@@ -7,6 +7,9 @@ import androidx.room.Query
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotFts
 
+/**
+ * A DAO to interact with the [BotE] and [BotFts] entities
+ */
 @Dao
 interface BotDao {
 

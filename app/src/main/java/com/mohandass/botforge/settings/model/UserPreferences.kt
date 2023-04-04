@@ -1,5 +1,8 @@
 package com.mohandass.botforge.settings.model
 
+/**
+ * User preferences for the app
+ */
 data class UserPreferences(
     val preferredTheme: PreferredTheme,
     val useDynamicColors: Boolean,

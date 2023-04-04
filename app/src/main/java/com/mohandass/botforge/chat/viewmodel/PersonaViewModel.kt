@@ -23,6 +23,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/*
+ * A ViewModel to handle active, and available personas
+ */
 class PersonaViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val personaService: PersonaServiceImpl,
@@ -85,6 +88,7 @@ class PersonaViewModel @Inject constructor(
 
     private val _state = mutableStateOf(UiState())
 
+    // Represents the current state of the UI
     class UiState {
         var chatType: ChatType = ChatType.CREATE
         var personaName: String = ""
@@ -103,6 +107,7 @@ class PersonaViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
     }
 
+    // Move to the History screen
     fun showHistory() {
         logger.logVerbose(TAG, "showHistory()")
         saveState()
@@ -113,6 +118,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Move to the Create Persona screen
     fun showCreate() {
         logger.logVerbose(TAG, "showCreate()")
         clearSelection()
@@ -124,6 +130,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Move to the Browse Persona screen
     fun showMarketplace() {
         logger.logVerbose(TAG, "showBrowse()")
         clearSelection()
@@ -134,6 +141,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Move to the Share Persona screen
     fun showSharePersona() {
         logger.logVerbose(TAG, "showSavePersona()")
         saveState()
@@ -142,6 +150,7 @@ class PersonaViewModel @Inject constructor(
         viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Share.route)
     }
 
+    // Saves the current state of the UI
     fun saveState() {
         _state.value.chatType = chatType.value
         _state.value.personaName = personaName.value
@@ -151,6 +160,7 @@ class PersonaViewModel @Inject constructor(
         _state.value.personaSelectedParentUuid = selectedPersonaParentUuid.value
     }
 
+    // Restores the state of the UI from the last saved state
     fun restoreState() {
         chatType.value = _state.value.chatType
         personaName.value = _state.value.personaName
@@ -160,6 +170,7 @@ class PersonaViewModel @Inject constructor(
         updateSelectedPersonaParentUuid(_state.value.personaSelectedParentUuid)
     }
 
+    // Clears the currently selected persona
     val clearSelection: () -> Unit = {
         _personaName.value = ""
         _personaAlias.value = ""
@@ -168,6 +179,7 @@ class PersonaViewModel @Inject constructor(
         updateSelectedPersonaParentUuid("")
     }
 
+    // Marks a persona as selected
     fun selectPersona(uuid: String) {
         logger.log(TAG, "selectPersona() persona: $uuid")
 
@@ -191,6 +203,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Gets all personas from the database
     fun fetchPersonas() {
         logger.log(TAG, "fetchPersonas()")
         viewModelScope.launch {
@@ -204,6 +217,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Saves a persona to the database, returns true if successful
     private fun savePersona(persona: Persona): Boolean {
         var customMessage = true
 
@@ -229,6 +243,9 @@ class PersonaViewModel @Inject constructor(
         return true
     }
 
+    // Saves a copy of the selected persona to the database
+    // If the name ends with a number, increment it
+    // Otherwise, append " v2" to the name
     fun saveAsNewPersona() {
         var newName = _personaName.value
 
@@ -241,6 +258,7 @@ class PersonaViewModel @Inject constructor(
             newName = "$newName v2"
         }
 
+        // UUID is regenerated, but parent UUID is the same
         val persona = Persona(
             parentUuid = selectedPersonaParentUuid.value,
             name = newName,
@@ -250,6 +268,7 @@ class PersonaViewModel @Inject constructor(
         savePersona(persona)
     }
 
+    // Saves a new persona or Updates an existing to the database
     fun saveUpdatePersona() {
         val persona = Persona(
             uuid = _personaSelected.value,
@@ -261,11 +280,13 @@ class PersonaViewModel @Inject constructor(
 
         logger.log(TAG, "savePersona() persona: $persona")
 
+        // If alias is empty, generate a random emoji as the alias
         if (persona.alias == "") {
             persona.alias = Utils.randomEmojiUnicode()
             logger.log(TAG, "savePersona() generated alias: ${persona.alias}")
         }
 
+        // If persona is new, generate a UUID and save it
         if (persona.uuid.isEmpty()) {
             logger.log(TAG, "savePersona() new persona")
             val uuid = UUID.randomUUID().toString()
@@ -291,6 +312,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Deletes a persona from the database
     fun deletePersona() {
         val persona = _personas.find { it.uuid == _personaSelected.value }
         if (persona != null) {
@@ -307,6 +329,7 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
+    // Deletes all personas saved in the database
     fun deleteAllPersonas() {
         viewModelScope.launch {
             personaService.deleteAllPersonas()

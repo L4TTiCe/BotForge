@@ -5,6 +5,11 @@ import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.Chat
 import java.util.*
 
+/**
+ * A data class to represent a Chat
+ *
+ * This class is used to represent a Saved Chat in the Database
+ */
 @Entity(tableName = "chats")
 data class ChatE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),

@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.mohandass.botforge.R.string as AppText
 
+/*
+ * A ViewModel to handle the logic for the Sign Up Screen
+ */
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val accountService: AccountService,
@@ -23,6 +26,7 @@ class SignUpViewModel @Inject constructor(
     private val _passwordVisibility = mutableStateOf(false)
 
     fun onSignUp(onSuccess: () -> Unit) {
+        // Validation
         if (Utils.validateEmail(_email.value).not()) {
             logger.logVerbose(TAG, "onSignUp() email invalid")
             SnackbarManager.showMessage(AppText.email_invalid)
@@ -43,7 +47,7 @@ class SignUpViewModel @Inject constructor(
         logger.logVerbose(TAG, "onSignUp() Authenticating...")
 
         viewModelScope.launch {
-
+            // Create an Anonymous Account and link it with the email and password
             accountService.createAnonymousAccount()
             accountService.linkAccount(_email.value, _password.value)
 

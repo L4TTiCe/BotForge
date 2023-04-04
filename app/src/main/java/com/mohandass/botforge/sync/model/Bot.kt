@@ -3,6 +3,11 @@ package com.mohandass.botforge.sync.model
 import com.google.firebase.database.IgnoreExtraProperties
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 
+/**
+ * A data class to represent a Bot
+ *
+ * This class is used to represent a Bot.
+ */
 @IgnoreExtraProperties
 data class Bot(
     val uuid: String? = null,
@@ -22,6 +27,7 @@ data class Bot(
     val updatedAt: Long = System.currentTimeMillis(),
     val createdBy: String? = null,
 ) {
+    // Convert to BotE for Database operations
     fun toBotE(): BotE {
         return BotE(
             uuid = uuid!!,

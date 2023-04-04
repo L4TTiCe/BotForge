@@ -6,6 +6,11 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import java.util.*
 
+/**
+ * A data class to represent a Message
+ *
+ * This class is used to represent a Saved Message in the Database
+ */
 @Entity(
     tableName = "messages",
     foreignKeys = [
@@ -44,6 +49,7 @@ data class MessageE(
     }
 
     companion object {
+        // This function is used to convert a Message to a MessageE
         fun from(message: Message): MessageE {
             return MessageE(
                 text = message.text,

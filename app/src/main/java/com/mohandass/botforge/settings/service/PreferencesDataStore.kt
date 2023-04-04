@@ -4,6 +4,9 @@ import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Interface for the PreferencesDataStore
+ */
 interface PreferencesDataStore {
     val userPreferencesFlow: Flow<UserPreferences>
     suspend fun fetchInitialPreferences(): UserPreferences

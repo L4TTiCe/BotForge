@@ -28,6 +28,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * The ViewModel for the AppState
+ *
+ * Holds references to the services that are used throughout the app, and
+ * other viewModels.
+ *
+ * Could be considered the "root" ViewModel of the app [!] BAD PRACTICE
+ */
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val accountService: AccountService,

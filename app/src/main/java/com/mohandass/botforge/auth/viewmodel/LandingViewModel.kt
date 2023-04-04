@@ -10,6 +10,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/*
+ * A ViewModel to handle the logic for the Landing Screen
+ *
+ * This class is handles Checking Authentication, OnBoarding, and Sign In
+ */
 @HiltViewModel
 class LandingViewModel @Inject constructor(
     private val sharedPreferencesService: SharedPreferencesService,
@@ -30,6 +35,7 @@ class LandingViewModel @Inject constructor(
         return sharedPreferencesService.getOnBoardingCompleted()
     }
 
+    // Creates an anonymous account and signs in
     fun onSkip(onSuccess: () -> Unit) {
         viewModelScope.launch {
 

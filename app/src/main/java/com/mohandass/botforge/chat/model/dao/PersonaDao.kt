@@ -3,6 +3,9 @@ package com.mohandass.botforge.chat.model.dao
 import androidx.room.*
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 
+/**
+ * A DAO to interact with the [Persona] entity
+ */
 @Dao
 interface PersonaDao {
 

@@ -1,5 +1,10 @@
 package com.mohandass.botforge.sync.service
 
+/**
+ * A service to perform operations on the the Firestore Database
+ *
+ * Supports operations on the UpVotes, DownVotes and Reports collections
+ */
 interface FirestoreService {
     suspend fun addUpVote(botId: String, userId: String)
     suspend fun addDownVote(botId: String, userId: String)

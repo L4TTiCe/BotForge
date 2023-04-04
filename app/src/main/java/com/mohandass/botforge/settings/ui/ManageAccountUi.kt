@@ -139,7 +139,7 @@ fun ManageAccountUi(
                 description = stringResource(id = R.string.link_account_message),
                 painter = painterResource(id = R.drawable.baseline_add_link_24),
             ) {
-                val gso= GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(Constants.WEB_CLIENT_ID)
                     .build()
 

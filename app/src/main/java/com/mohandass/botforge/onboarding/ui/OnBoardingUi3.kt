@@ -50,7 +50,7 @@ fun OnBoardingUi3(
             drawRect(
                 color = backgroundColor,
                 topLeft = Offset(0f, 0f),
-                size = Size(width , height)
+                size = Size(width, height)
             )
         }
 

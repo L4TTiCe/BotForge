@@ -5,6 +5,9 @@ import com.mohandass.botforge.BuildConfig
 import java.io.PrintWriter
 import java.io.StringWriter
 
+/**
+ * A class that contains utility functions
+ */
 class Utils {
     companion object {
         fun validateEmail(email: String): Boolean {
@@ -19,6 +22,7 @@ class Utils {
             return BuildConfig.VERSION_CODE
         }
 
+        // Parses the stack trace of a throwable to get the error message from OpenAI API
         fun parseStackTraceForErrorMessage(throwable: Throwable): Throwable {
             val stringWriter = StringWriter()
             throwable.printStackTrace(PrintWriter(stringWriter))
@@ -45,10 +49,12 @@ class Utils {
             return Throwable("")
         }
 
+        // Checks if a string contains markdown
         fun containsMarkdown(string: String): Boolean {
             return markdownRegex.containsMatchIn(string)
         }
 
+        // Randomly generates an emoji
         fun randomEmojiUnicode(): String {
             // A list of ranges of code points for emoji blocks
             val emojiRanges = listOf(
@@ -69,6 +75,7 @@ class Utils {
             return Character.toChars(codePoint).joinToString("")
         }
 
+        // Sanitizes a search query for the search API
         fun sanitizeSearchQuery(query: String?): String {
             if (query == null) {
                 return ""

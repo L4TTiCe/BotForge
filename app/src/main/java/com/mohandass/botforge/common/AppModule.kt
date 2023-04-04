@@ -12,6 +12,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Module to provide the common services like the database, logger, and Firebase
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {

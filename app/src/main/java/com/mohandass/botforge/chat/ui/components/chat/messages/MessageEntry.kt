@@ -45,7 +45,7 @@ fun MessageEntry(
     var isFocused by remember { mutableStateOf(false) }
 
     var removedMessageContent by remember { mutableStateOf("") }
-    var messageContent by remember { mutableStateOf (TextFieldValue (text = message.text)) }
+    var messageContent by remember { mutableStateOf(TextFieldValue(text = message.text)) }
     var role by remember { mutableStateOf(message.role) }
 
     val messageIsFocussed by viewModel.chat.isMessageInFocus
@@ -155,7 +155,8 @@ fun MessageEntry(
                     modifier = modifier
                         .fillMaxWidth(0.88f),
                     isShownAsMarkdown = showAsMarkdown,
-                    cardColors = role.cardColors()) {
+                    cardColors = role.cardColors()
+                ) {
                     showAsMarkdown = !showAsMarkdown
                 }
             }
@@ -277,8 +278,8 @@ fun ShakeWithHaptic(
     val hapticFeedback = LocalHapticFeedback.current
 
     val shakeThreshold = remember(shakeSensitivity) {
-        val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
-        (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2 )
+        val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
+        (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
     }
 
     ShakeDetector(shakeThreshold = shakeThreshold) {

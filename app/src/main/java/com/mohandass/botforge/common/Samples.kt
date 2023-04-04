@@ -1,5 +1,8 @@
 package com.mohandass.botforge.common
 
+/**
+ * A class to hold sample data
+ */
 class Samples {
     companion object {
 

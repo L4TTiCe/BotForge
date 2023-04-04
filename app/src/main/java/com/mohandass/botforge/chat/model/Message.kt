@@ -6,6 +6,11 @@ import com.aallam.openai.api.chat.ChatMessage
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import java.util.*
 
+/**
+ * A data class to represent a Message
+ *
+ * This class is used to represent a Message in the Chat
+ */
 data class Message(
     val text: String = "",
     val role: Role = Role.USER,
@@ -47,7 +52,7 @@ data class Message(
             )
         }
 
-        class MessageProvider: PreviewParameterProvider<Message> {
+        class MessageProvider : PreviewParameterProvider<Message> {
             override val values: Sequence<Message>
                 get() = sequenceOf(
                     Message(

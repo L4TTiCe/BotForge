@@ -13,6 +13,9 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotFts
 import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
 
+/**
+ * A singleton database to store all the data locally in a Room database
+ */
 @androidx.room.Database(
     entities = [
         // Personas
@@ -29,7 +32,7 @@ import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
     ],
     version = 2,
     autoMigrations = [
-        AutoMigration (from = 1, to = 2)
+        AutoMigration(from = 1, to = 2)
     ],
     exportSchema = true
 )

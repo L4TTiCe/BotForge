@@ -9,12 +9,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the OnBoarding screen
+ *
+ * Helps the users to set their API key and other settings before using the app
+ */
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val sharedPreferencesService: SharedPreferencesService,
     private val preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
-): ViewModel() {
+) : ViewModel() {
     fun getApiKey(): String = sharedPreferencesService.getApiKey()
 
     fun setApiKey(value: String) {

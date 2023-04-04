@@ -15,6 +15,9 @@ import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.launch
 
+/*
+ * A ViewModel to handle the History Screen
+ */
 class HistoryViewModel(
     private val chatService: ChatServiceImpl,
     private val viewModel: AppViewModel,
@@ -30,6 +33,7 @@ class HistoryViewModel(
         _openDeleteHistoryDialog.value = state
     }
 
+    // Fetch all saved chats from the database
     fun fetchChats(onSuccess: () -> Unit = {}) {
         logger.log(TAG, "fetchChats()")
         _chats.clear()
@@ -48,6 +52,7 @@ class HistoryViewModel(
         return false
     }
 
+    // Get the messages for the selected chat
     private fun fetchMessages(chatUUID: String, onSuccess: () -> Unit) {
         logger.log(TAG, "fetchMessages()")
         viewModelScope.launch {
@@ -79,6 +84,8 @@ class HistoryViewModel(
         }
     }
 
+    // Select a chat and navigate to the chat screen
+    // Loads the messages for the selected chat, sets the persona and navigates to the chat screen
     fun selectChat(chat: Chat) {
         logger.log(TAG, "selectChat()")
 

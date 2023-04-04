@@ -14,6 +14,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Module to provide services related to the syncing of the bots
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class SyncModule {
@@ -40,6 +43,5 @@ class SyncModule {
     @Singleton
     fun provideFirestoreService(
         logger: Logger
-    )
-            : FirestoreService = FirestoreServiceImpl(logger)
+    ): FirestoreService = FirestoreServiceImpl(logger)
 }

@@ -4,6 +4,9 @@ import android.content.res.Resources
 import androidx.annotation.StringRes
 import com.mohandass.botforge.R.string as AppText
 
+/**
+ * A sealed class that represents a snackbar message.
+ */
 sealed class SnackbarMessage {
     class StringSnackbar(val message: String) : SnackbarMessage()
     class ResourceSnackbar(@StringRes val message: Int) : SnackbarMessage()

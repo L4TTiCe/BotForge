@@ -32,10 +32,10 @@ fun SendFloatingActionButton(
             }
         },
         containerColor =
-            if (isLoading)
-                MaterialTheme.colorScheme.errorContainer
-            else
-                MaterialTheme.colorScheme.primaryContainer,
+        if (isLoading)
+            MaterialTheme.colorScheme.errorContainer
+        else
+            MaterialTheme.colorScheme.primaryContainer,
     ) {
         Box(contentAlignment = Alignment.Center) {
             if (!isLoading) {

@@ -147,7 +147,7 @@ fun SettingsItemSwitchPreview() {
         title = "Title",
         description = "Description",
         icon = painterResource(id = R.drawable.baseline_manage_accounts_24),
-        switchState = remember {mutableStateOf(true) },
+        switchState = remember { mutableStateOf(true) },
         onCheckChange = {}
     )
 }

@@ -7,6 +7,9 @@ import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 import com.mohandass.botforge.chat.model.dao.entities.relations.ChatWithMessages
 import com.mohandass.botforge.chat.model.dao.entities.relations.MessageAndMetadata
 
+/**
+ * A DAO to interact with the [ChatE], [MessageE] and [MessageMetadataE] entities
+ */
 @Dao
 interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

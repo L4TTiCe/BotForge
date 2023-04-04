@@ -8,6 +8,11 @@ import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatRole
 import com.mohandass.botforge.R
 
+/**
+ * An enum class to represent the Role associated with a message
+ *
+ * Roles are also used to determine the color of their associated UI elements
+ */
 class Role(val ordinal: Int) {
 
     companion object {
@@ -29,6 +34,7 @@ class Role(val ordinal: Int) {
             return values.values.toList()
         }
 
+        // Maps OpenAI ChatRole to 'this' Role
         @OptIn(BetaOpenAI::class)
         fun from(charRole: ChatRole): Role {
             return when (charRole) {

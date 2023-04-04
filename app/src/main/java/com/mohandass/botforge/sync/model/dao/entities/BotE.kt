@@ -7,6 +7,11 @@ import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import java.util.*
 
+/**
+ * A data class to represent a Bot
+ *
+ * This class is used to represent a Bot in the Database
+ */
 @Entity(tableName = "bots")
 data class BotE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
@@ -27,6 +32,7 @@ data class BotE(
     val createdBy: String,
 ) {
 
+    // Convert to BotFts to write to FTS table
     fun toBotFts(): BotFts {
         return BotFts(
             uuid = uuid,
@@ -39,6 +45,7 @@ data class BotE(
         )
     }
 
+    // Convert to Persona, when a Bot is selected
     fun toPersona(): Persona {
         return Persona(
             uuid = UUID.randomUUID().toString(),
@@ -70,6 +77,7 @@ data class BotE(
     }
 }
 
+// Provide a preview of BotE
 class BotEProvider : PreviewParameterProvider<BotE> {
     private val bot1 = BotE(
         uuid = UUID.randomUUID().toString(),

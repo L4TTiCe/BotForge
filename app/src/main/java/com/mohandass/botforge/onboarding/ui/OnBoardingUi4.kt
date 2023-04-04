@@ -42,7 +42,7 @@ fun OnBoardingUi4(
             drawRect(
                 color = backgroundColor,
                 topLeft = Offset(0f, 0f),
-                size = Size(width , height)
+                size = Size(width, height)
             )
         }
 
@@ -176,7 +176,7 @@ fun UserGeneratedContentSwitch(
 @Composable
 fun OnBoardingUi4Preview() {
     OnBoardingUi4(
-        saveUserGeneratedContent = {  },
-        onComplete = {  }
+        saveUserGeneratedContent = { },
+        onComplete = { }
     )
 }

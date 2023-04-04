@@ -2,6 +2,9 @@ package com.mohandass.botforge.chat.model
 
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 
+/**
+ * A data class to represent a Message's Metadata
+ */
 data class MessageMetadata(
     val openAiId: String? = null,
     val finishReason: String? = null,

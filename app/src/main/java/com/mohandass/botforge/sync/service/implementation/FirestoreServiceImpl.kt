@@ -8,6 +8,11 @@ import com.mohandass.botforge.sync.model.VoteRecord
 import com.mohandass.botforge.sync.service.FirestoreService
 import kotlinx.coroutines.tasks.await
 
+/**
+ * A service to perform operations on the the Firestore Database
+ *
+ * Supports operations on the UpVotes, DownVotes and Reports collections
+ */
 class FirestoreServiceImpl(
     private val logger: Logger
 ) : FirestoreService {
@@ -78,6 +83,8 @@ class FirestoreServiceImpl(
         }
     }
 
+    // Check if the user has downvoted the bot, if so, remove the downvote, then
+    // Check if the user has upvoted the bot, else add an upvote
     override suspend fun addUpVote(botId: String, userId: String) {
         logger.logVerbose(TAG, "addUpVote: $botId, user: $userId")
         try {
@@ -93,6 +100,8 @@ class FirestoreServiceImpl(
         }
     }
 
+    // Check if the user has upvoted the bot, if so, remove the upvote, then
+    // Check if the user has downvoted the bot, else add a downvote
     override suspend fun addDownVote(botId: String, userId: String) {
         logger.logVerbose(TAG, "addDownVote: $botId, user: $userId")
         try {
@@ -108,6 +117,7 @@ class FirestoreServiceImpl(
         }
     }
 
+    // Unused
     override suspend fun getUpVotes(botId: String): Long {
         return try {
             val query = upVoteRef.whereEqualTo("botId", botId)
@@ -120,6 +130,7 @@ class FirestoreServiceImpl(
         }
     }
 
+    // Unused
     override suspend fun getDownVotes(botId: String): Long {
         return try {
             val query = downVoteRef.whereEqualTo("botId", botId)
@@ -163,6 +174,7 @@ class FirestoreServiceImpl(
         }
     }
 
+    // Check if user has already reported the bot, if not, record the report
     override suspend fun addReport(botId: String, userId: String) {
         logger.logVerbose(TAG, "addReport: $botId, user: $userId")
         try {

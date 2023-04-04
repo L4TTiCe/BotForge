@@ -29,8 +29,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
+import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.common.SnackbarManager
 import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.adw

@@ -24,6 +24,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
+/*
+ * A ViewModel to handle the chat Screen
+ */
 class ChatViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val openAiService: OpenAiService,
@@ -53,6 +56,7 @@ class ChatViewModel @Inject constructor(
 
     private lateinit var job: Job
 
+    // Interrupts the current request, if any, to the OpenAI API
     private fun interruptRequest() {
         if (_requestInProgress.value) {
             _requestInProgress.value = false
@@ -63,12 +67,14 @@ class ChatViewModel @Inject constructor(
         setLoading(false)
     }
 
+    // Confirms if the user wants to cancel the current request
     fun handleInterrupt() {
         SnackbarManager.showMessageWithAction(R.string.waiting_for_response, R.string.cancel) {
             interruptRequest()
         }
     }
 
+    // Shows the time elapsed since starting the request
     private lateinit var timerJob: Job
 
     private val _isLoading = mutableStateOf(false)
@@ -100,14 +106,17 @@ class ChatViewModel @Inject constructor(
         _lastTimestamp.value = Date().time
     }
 
+    // Uses the ChatService to request Chat Completion from the OpenAI API
     @AddTrace(name = "getChatCompletion", enabled = true)
     fun getChatCompletion(onComplete: () -> Unit) {
         logger.log(TAG, "getChatCompletion()")
         setLoading(true)
 
+        // Construct the request
         val messages = mutableListOf<Message>()
         val personaSystemMessage = viewModel.persona.personaSystemMessage.value
 
+        // If no persona is selected, use the default persona
         if (personaSystemMessage != "") {
             messages.add(Message(personaSystemMessage, Role.SYSTEM))
         } else {
@@ -140,6 +149,7 @@ class ChatViewModel @Inject constructor(
                     logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
                     val message = Utils.parseStackTraceForErrorMessage(e)
 
+                    // Attempt to parse the error message
                     when (message.message) {
                         Utils.INVALID_API_KEY_ERROR_MESSAGE -> {
                             SnackbarManager.showMessageWithAction(
@@ -209,6 +219,7 @@ class ChatViewModel @Inject constructor(
         logger.logVerbose(TAG, "Messages: ${activeChat.value}")
     }
 
+    // Clears all messages, and adds a new empty message
     fun clearMessages() {
         logger.log(TAG, "clearMessages()")
         while (_activeChat.value.isNotEmpty()) {
@@ -218,6 +229,7 @@ class ChatViewModel @Inject constructor(
         autoAddMessage()
     }
 
+    // Replace all messages with a new list of messages
     fun setMessages(messages: List<Message>) {
         _activeChat.value = messages
     }
@@ -228,6 +240,7 @@ class ChatViewModel @Inject constructor(
         _chatName.value = name
     }
 
+    // Saves the current chat to the database
     @AddTrace(name = "saveChat", enabled = true)
     fun saveChat() {
         val personaSelected = viewModel.persona.selectedPersona.value
