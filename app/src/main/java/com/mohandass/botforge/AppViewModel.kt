@@ -63,7 +63,8 @@ class AppViewModel @Inject constructor(
             lastSuccessfulSync = userPreference.lastSuccessfulSync,
             enableUserGeneratedContent = userPreference.enableUserGeneratedContent,
             enableShakeToClear = userPreference.enableShakeToClear,
-            shakeToClearSensitivity = userPreference.shakeToClearSensitivity
+            shakeToClearSensitivity = userPreference.shakeToClearSensitivity,
+            lastModerationIndexProcessed = userPreference.lastModerationIndexProcessed,
         )
     }
 

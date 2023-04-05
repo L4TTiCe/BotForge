@@ -14,6 +14,7 @@ data class UserPreferences(
     val enableUserGeneratedContent: Boolean,
     val enableShakeToClear: Boolean,
     val shakeToClearSensitivity: Float = 0f,
+    val lastModerationIndexProcessed: Int,
 ) {
     override fun toString(): String {
         return "UserPreferences(" +
@@ -23,6 +24,7 @@ data class UserPreferences(
                 "enableUserGeneratedContent=$enableUserGeneratedContent" +
                 "enableShakeToClear=$enableShakeToClear" +
                 "shakeToClearSensitivity=$shakeToClearSensitivity" +
+                "lastModerationIndex=$lastModerationIndexProcessed" +
                 ")"
     }
 }

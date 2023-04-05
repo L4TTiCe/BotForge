@@ -21,6 +21,7 @@ interface PreferencesDataStore {
     suspend fun setUserGeneratedContent(newValue: Boolean)
     suspend fun setShakeToClear(newValue: Boolean)
     suspend fun setShakeToClearSensitivity(newValue: Float)
+    suspend fun setLastModerationIndexProcessed(newValue: Int)
 
     companion object {
         const val PREFERENCES_NAME = "botforge_preferences"
@@ -30,5 +31,6 @@ interface PreferencesDataStore {
         const val USER_GENERATED_CONTENT = "user_generated_content"
         const val SHAKE_TO_CLEAR = "shake_to_clear"
         const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
+        const val LAST_MODERATION_INDEX_PROCESSED = "last_moderation_index_processed"
     }
 }

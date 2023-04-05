@@ -47,6 +47,7 @@ class BrowseViewModel @Inject constructor(
     private val _topBots = mutableStateListOf<BotE>()
     val topBots = _topBots
 
+    // Populate the top bots list with the bots from the Community
     fun fetchBots() {
         logger.logVerbose(TAG, "fetchBots()")
         viewModelScope.launch {
@@ -67,7 +68,9 @@ class BrowseViewModel @Inject constructor(
     private val _fetchedBots = mutableStateListOf<BotE>()
     val fetchedBots = _fetchedBots
 
-    fun search() {
+    // Clears the fetched bots list and fetches new bots from the Community,
+    // based on the search query.
+    private fun search() {
         viewModelScope.launch {
             _fetchedBots.clear()
             _fetchedBots.addAll(botService.searchBots(Utils.sanitizeSearchQuery(searchQuery.value)))
@@ -75,6 +78,7 @@ class BrowseViewModel @Inject constructor(
         }
     }
 
+    // Makes a persona from the bot and adds it to the local database
     fun makePersona(bot: BotE) {
         logger.logVerbose(TAG, "makePersona()")
         viewModelScope.launch {
@@ -128,6 +132,38 @@ class BrowseViewModel @Inject constructor(
                 preferencesDataStore.updateLastSuccessfulSync()
             }
             fetchBots()
+
+            applyContentModeration()
+        }
+    }
+
+    // Deletes bots from the local database that have been marked for deletion in the Community
+    private fun applyContentModeration() {
+        val lastModerationIndexProcessed =
+            viewModel.userPreferences.value?.lastModerationIndexProcessed
+        logger.log(TAG, "applyContentModeration: " +
+                "lastModerationIndexProcessed: $lastModerationIndexProcessed")
+        viewModelScope.launch {
+            val deletionRecords = firebaseDatabaseService.fetchBotsDeletedAfter(
+                lastModerationIndexProcessed!!
+            )
+
+            if (deletionRecords.isNotEmpty()) {
+                for (deletionRecord in deletionRecords) {
+                    deletionRecord.botId?.let { botService.deleteBot(it) }
+                }
+
+                logger.log(TAG, "applyContentModeration: " +
+                        "deletionRecordsCount: ${deletionRecords.size}")
+
+                // Find the largest index in the deletion records
+                val maxIndex = deletionRecords.maxByOrNull { it.index!! }?.index
+
+                // Update the last moderation index processed
+                preferencesDataStore.setLastModerationIndexProcessed(maxIndex!!)
+
+                fetchBots()
+            }
         }
     }
 
