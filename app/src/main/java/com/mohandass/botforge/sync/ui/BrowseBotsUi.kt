@@ -252,6 +252,8 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(0.1.adh))
         }
     }
 }
