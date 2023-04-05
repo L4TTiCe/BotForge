@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.chat.services.implementation
 
 import com.aallam.openai.api.BetaOpenAI

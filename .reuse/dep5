@@ -1,0 +1,44 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: BotForge
+Upstream-Contact: Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+Source: https://github.com/L4TTiCe/BotForge
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
+
+Files: assets/* app/src/main/ic_launcher-playstore.png app/src/main/res/*/* README.md
+Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+License: MIT
+
+Files: app/build.gradle app/proguard-rules.pro app/src/main/AndroidManifest.xml build.gradle
+Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+License: MIT
+
+Files: gradle/wrapper/* gradle.properties settings.gradle
+Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+License: MIT
+
+Files: app/schemas/*/*
+Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+License: MIT
+
+Files: .idea/* .gitignore app/.gitignore
+Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
+License: CC0-1.0
+
+# From Android Studio's Vector Asset
+Files: app/src/main/res/drawable/baseline_*.xml
+Copyright: The original author or authors.
+License: Apache-2.0
+
+# From Flaticons
+Files: app/src/main/res/drawable/*.png
+Copyright: Flaticons
+License: LicenseRef-Flaticons-License
+
+Files: gradlew gradlew.bat
+Copyright: 2015 The original author or authors
+License: Apache-2.0

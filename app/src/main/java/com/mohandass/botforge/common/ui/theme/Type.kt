@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.common.ui.theme
 
 import androidx.compose.material3.Typography

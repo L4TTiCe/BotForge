@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.settings.service
 
 import com.mohandass.botforge.settings.model.PreferredTheme
@@ -28,4 +32,3 @@ interface PreferencesDataStore {
         const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
     }
 }
-

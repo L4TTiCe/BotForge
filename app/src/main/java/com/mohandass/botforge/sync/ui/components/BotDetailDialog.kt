@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.sync.ui.components
 
 import androidx.compose.foundation.background
@@ -25,7 +29,6 @@ import com.mohandass.botforge.common.ui.theme.BotForgeLightThemePreview
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotEProvider
 import java.util.*
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
