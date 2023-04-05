@@ -35,7 +35,7 @@ import com.mohandass.botforge.resources
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardingUi3(
+fun OnBoardingUi3Api(
     initialApiKey: String = "",
     saveApiKey: (String) -> Unit,
     onNext: () -> Unit
@@ -224,7 +224,7 @@ fun GetKey(title: String, description: String, painter: Painter, onClick: () -> 
 @Preview
 @Composable
 fun OnBoardingUi3Preview() {
-    OnBoardingUi3(
+    OnBoardingUi3Api(
         saveApiKey = {},
         onNext = {}
     )

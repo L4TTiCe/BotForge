@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 
 @Composable
-fun OnBoardingUi2(
+fun OnBoardingUi2Welcome(
     onNext: () -> Unit
 ) {
     val leftColor = colorResource(id = R.color.teal)
@@ -132,5 +132,5 @@ fun OnBoardingUi2(
 @Preview
 @Composable
 fun OnBoardingUi2Preview() {
-    OnBoardingUi2 {}
+    OnBoardingUi2Welcome {}
 }

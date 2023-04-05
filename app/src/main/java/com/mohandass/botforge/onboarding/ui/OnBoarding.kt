@@ -58,15 +58,15 @@ fun OnBoarding(
                 state = pagerState,
             ) { position ->
                 when (position) {
-                    0 -> OnBoardingUi1()
-                    1 -> OnBoardingUi2(
+                    0 -> OnBoardingUi1Logo()
+                    1 -> OnBoardingUi2Welcome(
                         onNext = {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(2)
                             }
                         }
                     )
-                    2 -> OnBoardingUi3(
+                    2 -> OnBoardingUi3Api(
                         initialApiKey = onBoardingViewModel.getApiKey(),
                         saveApiKey = {
                             onBoardingViewModel.setApiKey(it)
@@ -77,7 +77,7 @@ fun OnBoarding(
                             }
                         }
                     )
-                    3 -> OnBoardingUi4(
+                    3 -> OnBoardingUi4Ugc(
                         saveUserGeneratedContent = {
                             onBoardingViewModel.setUserGeneratedContent(it)
                         },
@@ -88,7 +88,7 @@ fun OnBoarding(
                             }
                         }
                     )
-                    else -> OnBoardingUi1()
+                    else -> OnBoardingUi1Logo()
                 }
             }
         }

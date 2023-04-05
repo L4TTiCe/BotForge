@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 
 @Composable
-fun OnBoardingUi4(
+fun OnBoardingUi4Ugc(
     initialUserGenerated: Boolean = true,
     saveUserGeneratedContent: (Boolean) -> Unit,
     onComplete: () -> Unit
@@ -179,7 +179,7 @@ fun UserGeneratedContentSwitch(
 @Preview
 @Composable
 fun OnBoardingUi4Preview() {
-    OnBoardingUi4(
+    OnBoardingUi4Ugc(
         saveUserGeneratedContent = { },
         onComplete = { }
     )

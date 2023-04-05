@@ -22,7 +22,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.R
 
 @Composable
-fun OnBoardingUi1() {
+fun OnBoardingUi1Logo() {
     val leftColor = colorResource(id = R.color.teal)
     val rightColor = colorResource(id = R.color.orange)
     val backgroundColor = colorResource(id = R.color.logoBorder)
@@ -86,6 +86,6 @@ fun OnBoardingUi1() {
 @Composable
 fun OnBoardingUi1Preview() {
     MaterialTheme {
-        OnBoardingUi1()
+        OnBoardingUi1Logo()
     }
 }
