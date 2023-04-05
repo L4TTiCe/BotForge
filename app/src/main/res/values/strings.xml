@@ -233,6 +233,7 @@
     <string name="community_browse_message">Browse community bots and templates.</string>
     <string name="community_most_popular">Most Popular Bots</string>
     <string name="sync_cd">Sync</string>
+    <string name="no_bots_found">No bots matching your search found.</string>
 
     <!--    Community BotDetailDialog   -->
     <string name="up_vote">Up-vote</string>

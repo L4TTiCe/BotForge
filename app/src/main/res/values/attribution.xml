@@ -12,6 +12,7 @@
         <item>Play Store Icon, Google icons created by Freepik - Flaticon, https://www.flaticon.com/free-icons/google</item>
         <item>Tag Icon, Tag icons created by Dave Gandy - Flaticon, https://www.flaticon.com/free-icons/tag</item>
         <item>Phone Vibration Icon, Vibration icons created by Bharat Icons - Flaticon, https://www.flaticon.com/free-icon/phone-vibration_7167854</item>
+        <item>No Results Icon, No results icons created by Design Circle - Flaticon, https://www.flaticon.com/free-icon/no-results_7465664</item>
     </string-array>
 
     <integer-array name="attribution_icons">
@@ -26,5 +27,6 @@
         <item>@drawable/play_store_ic</item>
         <item>@drawable/tag_black_shape</item>
         <item>@drawable/phone_vibration</item>
+        <item>@drawable/no_results</item>
     </integer-array>
 </resources>

@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -157,33 +158,60 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            LazyHorizontalGrid(
-                rows = GridCells.Adaptive(minSize = 100.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 0.4.adh),
-                contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
-            ) {
-                // use Bot's UUID as key
-                items(
-                    count = communityBots.size,
-                    key = { communityBots[it].uuid }
-                ) { idx ->
-                    BotCard(
-                        botE = communityBots[idx],
-                        onClickButton = {
-                            viewModel.browse.makePersona(communityBots[idx])
-                        },
-                        onUpVote = {
-                            viewModel.browse.upVote(communityBots[idx].uuid)
-                        },
-                        onDownVote = {
-                            viewModel.browse.downVote(communityBots[idx].uuid)
-                        },
-                        onReport = {
-                            viewModel.browse.report(communityBots[idx].uuid)
-                        }
-                    )
+            if (communityBots.isNotEmpty()) {
+                LazyHorizontalGrid(
+                    rows = GridCells.Adaptive(minSize = 100.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 0.4.adh),
+                    contentPadding = PaddingValues(horizontal = 5.dp, vertical = 5.dp)
+                ) {
+                    // use Bot's UUID as key
+                    items(
+                        count = communityBots.size,
+                        key = { communityBots[it].uuid }
+                    ) { idx ->
+                        BotCard(
+                            botE = communityBots[idx],
+                            onClickButton = {
+                                viewModel.browse.makePersona(communityBots[idx])
+                            },
+                            onUpVote = {
+                                viewModel.browse.upVote(communityBots[idx].uuid)
+                            },
+                            onDownVote = {
+                                viewModel.browse.downVote(communityBots[idx].uuid)
+                            },
+                            onReport = {
+                                viewModel.browse.report(communityBots[idx].uuid)
+                            }
+                        )
+                    }
+                }
+            } else if (searchText.isNotEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.no_results),
+                            modifier = Modifier
+                                .size(80.dp)
+                                .alpha(0.8f),
+                            contentDescription = stringResource(id = R.string.no_bots_found)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.no_bots_found),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
                 }
             }
 
