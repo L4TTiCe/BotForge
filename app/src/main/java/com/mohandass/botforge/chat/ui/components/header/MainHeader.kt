@@ -25,6 +25,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
+import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.adw
 
@@ -47,7 +48,7 @@ fun MainHeader(
             contentDescription = stringResource(id = R.string.logo_cd),
             contentScale = ContentScale.Inside,
             modifier = modifier
-                .size(if (90.dp < 0.20.adw) 90.dp else 0.20.adw)
+                .size(if (Constants.ICONS_SIZE.dp < 0.20.adw) Constants.ICONS_SIZE.dp else 0.20.adw)
                 .padding(10.dp)
         )
 
