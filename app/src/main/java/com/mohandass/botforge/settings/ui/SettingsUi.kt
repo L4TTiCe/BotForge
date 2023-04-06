@@ -31,6 +31,7 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.ui.ShakeDetector
+import com.mohandass.botforge.common.ui.ShakeWithHaptic
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
@@ -212,12 +213,7 @@ fun SettingsUi(
             )
 
             if (isShakeToClearEnabled.value) {
-                val shakeThreshold = remember(shakeSensitivity) {
-                    val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
-                    (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
-                }
-
-                ShakeDetector(shakeThreshold = shakeThreshold) {
+                ShakeWithHaptic(shakeSensitivity = shakeSensitivity) {
                     SnackbarManager.showMessage(R.string.shake_trigger_message)
                 }
             }

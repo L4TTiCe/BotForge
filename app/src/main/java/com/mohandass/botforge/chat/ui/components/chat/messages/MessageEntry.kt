@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
@@ -26,10 +24,9 @@ import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownCard
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownInfoCard
 import com.mohandass.botforge.chat.ui.components.dialogs.MarkdownDialog
-import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.ui.ShakeDetector
+import com.mohandass.botforge.common.ui.ShakeWithHaptic
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -268,26 +265,5 @@ fun MessageEntry(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ShakeWithHaptic(
-    shakeSensitivity: Float,
-    isEnabled: Boolean,
-    onShake: () -> Unit,
-) {
-    if (!isEnabled) return
-
-    val hapticFeedback = LocalHapticFeedback.current
-
-    val shakeThreshold = remember(shakeSensitivity) {
-        val threshold = shakeSensitivity - (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
-        (threshold * -1) + (Constants.MAX_SENSITIVITY_THRESHOLD / 2)
-    }
-
-    ShakeDetector(shakeThreshold = shakeThreshold) {
-        onShake()
-        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
     }
 }
