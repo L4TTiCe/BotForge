@@ -36,7 +36,6 @@ import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
-import com.mohandass.botforge.ui.settings.AppearanceSettings
 import com.slaviboy.composeunits.adh
 
 @Composable
