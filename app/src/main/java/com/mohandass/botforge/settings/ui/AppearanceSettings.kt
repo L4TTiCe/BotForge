@@ -2,8 +2,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
+import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -123,14 +124,18 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
             Spacer(modifier = Modifier.weight(1f))
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
-        SettingsItem(
-            title = resources().getString(R.string.dynamic_colors),
-            description = resources().getString(R.string.dynamic_colors_message),
-            icon = painterResource(id = R.drawable.baseline_color_lens_24),
-            switchState = useDynamicColors,
-            onCheckChange = { settingsViewModel.updateDynamicColor(it) }
-        )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            SettingsItem(
+                title = resources().getString(R.string.dynamic_colors),
+                description = resources().getString(R.string.dynamic_colors_message),
+                icon = painterResource(id = R.drawable.baseline_color_lens_24),
+                switchState = useDynamicColors,
+                onCheckChange = { settingsViewModel.updateDynamicColor(it) }
+            )
+
+        }
     }
 }
