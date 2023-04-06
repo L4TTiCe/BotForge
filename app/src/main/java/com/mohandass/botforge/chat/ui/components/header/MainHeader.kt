@@ -25,8 +25,8 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
-import com.slaviboy.composeunits.dh
-import com.slaviboy.composeunits.dw
+import com.slaviboy.composeunits.adh
+import com.slaviboy.composeunits.adw
 
 @Composable
 fun MainHeader(
@@ -47,7 +47,7 @@ fun MainHeader(
             contentDescription = stringResource(id = R.string.logo_cd),
             contentScale = ContentScale.Inside,
             modifier = modifier
-                .size(if (150.dp < 0.20.dw) 150.dp else 0.20.dw)
+                .size(if (90.dp < 0.20.adw) 90.dp else 0.20.adw)
                 .padding(10.dp)
         )
 
@@ -65,7 +65,7 @@ fun MainHeader(
 
             menu()
 
-            Spacer(modifier = Modifier.width(0.02.dw))
+            Spacer(modifier = Modifier.width(0.02.adw))
         } else {
             DefaultDropdownMenu(modifier, viewModel)
         }
@@ -94,16 +94,16 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
             imageVector = Icons.Default.MoreVert,
             contentDescription = stringResource(id = R.string.more_options_cd),
             modifier = modifier
-                .size(0.05.dh)
+                .size(0.05.adh)
         )
     }
 
-    Spacer(modifier = Modifier.width(0.02.dw))
+    Spacer(modifier = Modifier.width(0.02.adw))
 
     DropdownMenu(
         expanded = displayOptionsMenu,
         onDismissRequest = { displayOptionsMenu = false },
-        offset = DpOffset(0.8.dw, (0.01).dh),
+        offset = DpOffset(0.8.adw, (0.01).adh),
     ) {
         DropdownMenuItem(
             onClick = {
