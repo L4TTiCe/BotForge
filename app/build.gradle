@@ -41,12 +41,11 @@ android {
 
     defaultConfig {
         applicationId "com.mohandass.botforge"
-        minSdk 29
+        minSdk 28
         targetSdk 33
         versionCode 17
         versionName "1.1.7"
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -168,13 +167,6 @@ dependencies {
     // Compose Markdown
     implementation "com.github.jeziellago:compose-markdown:$compose_markdown_version"
     implementation("io.coil-kt:coil-compose:$coil_version")
-
-
-
-//    testImplementation 'junit:junit:4.13.2'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-//    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
 }
 
 // Dependency Injection with Hilt
