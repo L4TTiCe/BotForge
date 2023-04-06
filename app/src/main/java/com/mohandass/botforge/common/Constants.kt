@@ -9,6 +9,8 @@ class Constants {
         const val ANIMATION_DURATION = 400
         const val ANIMATION_OFFSET = 400
 
+        const val ICONS_SIZE = 90
+
         const val MAX_SENSITIVITY_THRESHOLD = 5f
     }
 }

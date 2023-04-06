@@ -26,6 +26,7 @@ import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.chat.ui.components.icons.TintedIconButton
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.R.string as AppText
 
@@ -56,7 +57,7 @@ fun AvatarsBar(
                     icon = R.drawable.plus,
                     iconTint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
-                        .size(90.dp)
+                        .size(Constants.ICONS_SIZE.dp)
                         .padding(6.dp),
                     isAnimated = chatType == ChatType.CREATE,
                     contentDescription = stringResource(id = AppText.create_persona),
@@ -77,7 +78,7 @@ fun AvatarsBar(
                         iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
                         scale = 0.8f,
                         modifier = Modifier
-                            .size(90.dp)
+                            .size(Constants.ICONS_SIZE.dp)
                             .padding(6.dp),
                         isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
                         contentDescription = stringResource(id = AppText.community_ab_icon_cd),
@@ -112,7 +113,7 @@ fun AvatarsBar(
                                 else
                                     personas[index].name
                                 ),
-                        modifier = Modifier.size(90.dp),
+                        modifier = Modifier.size(Constants.ICONS_SIZE.dp),
                         onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
                     )
 
@@ -126,7 +127,7 @@ fun AvatarsBar(
                                 else
                                     personas[index].name
                                 ),
-                        modifier = Modifier.size(90.dp),
+                        modifier = Modifier.size(Constants.ICONS_SIZE.dp),
                         onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
                     )
 
@@ -146,7 +147,7 @@ fun AvatarsBar(
                     icon = R.drawable.logo,
                     contentDescription = stringResource(id = AppText.persona_placeholder_cd),
                     modifier = Modifier
-                        .size(90.dp)
+                        .size(Constants.ICONS_SIZE.dp)
                         .padding(6.dp),
                     onClick = {
                         SnackbarManager.showMessage(AppText.no_personas_yet)
@@ -163,7 +164,7 @@ fun AvatarsBar(
             Column {
                 Column(
                     modifier = modifier
-                        .size(90.dp)
+                        .size(Constants.ICONS_SIZE.dp)
                         .clip(CircleShape)
                         .clickable { viewModel.persona.showHistory() }
                         .padding(6.dp),
@@ -174,7 +175,7 @@ fun AvatarsBar(
                         painter = painterResource(id = R.drawable.baseline_bookmarks_24),
                         contentDescription = stringResource(id = AppText.show_bookmarks_cd),
                         modifier = modifier
-                            .size(90.dp)
+                            .size(Constants.ICONS_SIZE.dp)
                             .aspectRatio(1f, matchHeightConstraintsFirst = true)
                             .padding(10.dp)
                             .clip(CircleShape)
