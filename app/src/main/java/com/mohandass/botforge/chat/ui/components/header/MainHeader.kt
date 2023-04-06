@@ -15,6 +15,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,7 +65,12 @@ fun MainHeader(
             modifier = modifier.padding(10.dp)
         )
 
+        // If there is more space than the threshold, show the avatars bar on Header
+        // Allows more space for the Messages Below
+        // Triggered when in landscape mode, Fold-able of Tablet
         if (1.adw > Constants.FOLDABLE_THRESHOLD.dp
+            // If overrideMenu is true, don't show the avatars bar
+            // As the App is in a different screen (Settings, About, etc.) than Chat
             && !overrideMenu) {
             Box(
                 modifier = Modifier
@@ -68,7 +78,34 @@ fun MainHeader(
                     .padding(horizontal = 0.02.adw),
             ) {
                 AvatarsBar(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                        // Fade out the gradient at the start and end of the bar
+                        // Reference:
+                        // https://stackoverflow.com/questions/66762472/how-to-add-fading-edge-effect-to-android-jetpack-compose-column-or-row
+
+                        // Workaround to enable alpha compositing
+                        .graphicsLayer { alpha = 0.99F }
+                        .drawWithContent {
+                            val maxElements = 8
+
+                            // Create a list with a transparent color at the start and end,
+                            // with 5 black colors in between
+                            val colors = List(maxElements) { index ->
+                                if (index == 0 || index == maxElements - 1) {
+                                    Color.Transparent
+                                } else {
+                                    Color.Black
+                                }
+                            }
+
+                            drawContent()
+                            drawRect(
+                                brush = Brush.horizontalGradient(colors),
+                                blendMode = BlendMode.DstIn
+                            )
+                        },
                     viewModel = viewModel
                 )
             }
@@ -158,7 +195,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 displayOptionsMenu = false
             },
             text = {
-                Text(text = "Sign Out")
+                Text(text = stringResource(id = R.string.sign_out))
             },
             trailingIcon = {
                 Icon(
@@ -172,7 +209,7 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 openDeleteConfirmationDialog.value = true
             },
             text = {
-                Text(text = "Delete All Personas")
+                Text(text = stringResource(id = R.string.delete_all_persona))
             },
             trailingIcon = {
                 Icon(
