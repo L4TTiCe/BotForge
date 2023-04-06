@@ -46,27 +46,32 @@ fun LandingUi(
     viewModel: AppViewModel,
     landingViewModel: LandingViewModel = hiltViewModel()
 ) {
+
+    val onLoginSuccess = {
+        if (!landingViewModel.isOnBoardingCompleted()) {
+            viewModel.logger.logVerbose(
+                TAG,
+                "checkAuthentication: Authenticated, navigating to OnBoardingUi"
+            )
+            viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
+                popUpTo(AppRoutes.Landing.route) { inclusive = true }
+            }
+        } else {
+            viewModel.logger.logVerbose(
+                TAG,
+                "checkAuthentication: Authenticated, navigating to MainUi"
+            )
+            viewModel.navController.navigate(AppRoutes.Main.route) {
+                popUpTo(AppRoutes.Landing.route) { inclusive = true }
+            }
+        }
+    }
+
     // On Start, check if the user is authenticated, if yes, then check if the OnBoarding is
     // completed, if yes, then navigate to the MainUi, otherwise navigate to the OnBoardingUi.
     LaunchedEffect(Unit) {
         landingViewModel.checkAuthentication {
-            if (!landingViewModel.isOnBoardingCompleted()) {
-                viewModel.logger.logVerbose(
-                    TAG,
-                    "checkAuthentication: Authenticated, navigating to OnBoardingUi"
-                )
-                viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
-                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
-                }
-            } else {
-                viewModel.logger.logVerbose(
-                    TAG,
-                    "checkAuthentication: Authenticated, navigating to MainUi"
-                )
-                viewModel.navController.navigate(AppRoutes.Main.route) {
-                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
-                }
-            }
+            onLoginSuccess()
         }
     }
 
@@ -84,15 +89,13 @@ fun LandingUi(
     val context = LocalContext.current
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
+                val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
                 val result = account.getResult(ApiException::class.java)
                 val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
                 landingViewModel.onGoogleSignIn(credentials)
 
-                viewModel.navController.navigate(AppRoutes.Landing.route) {
-                    popUpTo(AppRoutes.Landing.route) { inclusive = true }
-                }
+                onLoginSuccess()
             } catch (it: ApiException) {
                 viewModel.logger.logError(TAG, "Google sign in failed", it)
             }
