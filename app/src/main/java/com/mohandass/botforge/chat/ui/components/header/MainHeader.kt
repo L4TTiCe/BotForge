@@ -39,7 +39,7 @@ fun MainHeader(
     val menu by viewModel.topBar.menu
 
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -60,7 +60,21 @@ fun MainHeader(
             modifier = modifier.padding(10.dp)
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (1.adw > Constants.FOLDABLE_THRESHOLD.dp
+            && !overrideMenu) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 0.02.adw),
+            ) {
+                AvatarsBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    viewModel = viewModel
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         if (overrideMenu) {
 
