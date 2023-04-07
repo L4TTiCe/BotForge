@@ -187,6 +187,8 @@ class ChatViewModel @Inject constructor(
     private val _activeChat = mutableStateOf(listOf(Message()))
     val activeChat: MutableState<List<Message>> = _activeChat
 
+    private var _activeChatBackup = mutableStateOf(listOf(Message()))
+
     private val _handleDelete = mutableStateOf(false)
     val handleDelete: MutableState<Boolean> = _handleDelete
 
@@ -224,13 +226,37 @@ class ChatViewModel @Inject constructor(
     }
 
     // Clears all messages, and adds a new empty message
+    // Also shows a snackbar with an undo action
     fun clearMessages() {
+        val isChatEmpty = _activeChat.value.isEmpty() || _activeChat.value[0].text.isBlank()
+
+        // Make a copy (backup) of the current chat before clearing it
+        // if not empty
+        if (isChatEmpty.not()) {
+            _activeChatBackup.value = _activeChat.value
+        }
+
         logger.log(TAG, "clearMessages()")
         while (_activeChat.value.isNotEmpty()) {
             deleteMessage(_activeChat.value.last().uuid)
         }
 
         autoAddMessage()
+
+        if (isChatEmpty.not()) {
+            SnackbarManager.showMessageWithAction(
+                R.string.active_chat_cleared,
+                R.string.undo
+            ) {
+                undoClearMessages()
+            }
+        }
+    }
+
+    // Restores the chat to the state before it was cleared
+    private fun undoClearMessages() {
+        logger.log(TAG, "undoClearMessages()")
+        _activeChat.value = _activeChatBackup.value
     }
 
     // Replace all messages with a new list of messages
