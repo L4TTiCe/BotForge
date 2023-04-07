@@ -7,6 +7,7 @@ package com.mohandass.botforge.sync.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
@@ -28,6 +29,7 @@ import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnim
 import com.mohandass.botforge.common.ui.theme.BotForgeLightThemePreview
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotEProvider
+import com.slaviboy.composeunits.adh
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -45,6 +47,7 @@ fun BotDetailDialog(
         onDismissRequest = onClickDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false),
         modifier = Modifier
+            .heightIn(max = 0.9.adh)
             .padding(24.dp),
         title = {
             Row(
@@ -71,39 +74,43 @@ fun BotDetailDialog(
             }
         },
         text = {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
+            LazyColumn {
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
 //                        .padding(8.dp)
-                ) {
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.by),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Text(
+                            text = bot.createdBy,
+                            modifier = Modifier
+                                .padding(2.dp),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                }
+
+                item {
                     Text(
-                        text = stringResource(id = R.string.by),
+                        text = stringResource(id = R.string.description),
                         style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold
                     )
-
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = bot.createdBy,
+                        text = bot.description,
                         modifier = Modifier
-                            .padding(2.dp),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = stringResource(id = R.string.description),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = bot.description,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                            .fillMaxWidth(),
 //                        .background(
 //                            color = MaterialTheme.colorScheme.background
 //                        )
@@ -113,57 +120,63 @@ fun BotDetailDialog(
 //                            shape = MaterialTheme.shapes.extraSmall
 //                        )
 //                        .padding(8.dp),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = stringResource(id = R.string.system_message),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = bot.systemMessage,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.background
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.background,
-                            shape = MaterialTheme.shapes.extraSmall
-                        )
-                        .padding(8.dp),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                if (bot.tags.isNotEmpty()) {
-                    Text(
-                        text = stringResource(id = R.string.tags),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.bodyMedium
                     )
 
-                    LazyRow {
-                        items(bot.tags.size) { tag ->
-                            Chip(
-                                onClick = { },
-                                modifier = Modifier.padding(horizontal = 2.dp),
-                                colors = ChipDefaults.chipColors(
-                                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            ) {
-                                Text(
-                                    text = bot.tags[tag],
-                                    style = MaterialTheme.typography.bodySmall
-                                )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
+                item {
+                    Text(
+                        text = stringResource(id = R.string.system_message),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = bot.systemMessage,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = MaterialTheme.colorScheme.background
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.background,
+                                shape = MaterialTheme.shapes.extraSmall
+                            )
+                            .padding(8.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
+                if (bot.tags.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.tags),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+
+                        LazyRow {
+                            items(bot.tags.size) { tag ->
+                                Chip(
+                                    onClick = { },
+                                    modifier = Modifier.padding(horizontal = 2.dp),
+                                    colors = ChipDefaults.chipColors(
+                                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    )
+                                ) {
+                                    Text(
+                                        text = bot.tags[tag],
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                }
                             }
                         }
+
                     }
                 }
             }
