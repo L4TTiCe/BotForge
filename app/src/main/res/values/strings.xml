@@ -260,6 +260,8 @@
     <string name="bookmarked">Bookmarked</string>
     <string name="no_bookmarks_cd">No Bookmarks</string>
     <string name="no_bookmarks">No Bookmarks yet.</string>
+    <string name="delete_bookmarked_success">Bookmark deleted!</string>
+    <string name="delete_bookmarked_cancelled">Bookmark restored!</string>
 
     <!--    MessageList   -->
     <string name="user">User</string>

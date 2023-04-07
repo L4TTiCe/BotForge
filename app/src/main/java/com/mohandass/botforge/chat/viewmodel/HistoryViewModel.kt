@@ -17,6 +17,8 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.services.Logger
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /*
@@ -116,14 +118,35 @@ class HistoryViewModel(
         }
     }
 
-    fun deleteChat(chatUUID: String) {
-        viewModelScope.launch {
+    private lateinit var deleteJob: Job
 
+    // Starts a Coroutine to delete the chat, that will delete the chat after 5 seconds
+    // If the user cancels the delete operation, the chat will not be deleted
+    //
+    // In the meanwhile,
+    // the chat will be removed from the list (only UI) and the user will be notified
+    fun deleteChat(chatUUID: String) {
+        deleteJob = viewModelScope.launch {
             logger.log(TAG, "deleteChat() chatUUID: $chatUUID")
-            chatService.deleteChatByUUID(chatUUID)
             _chats.removeIf { it.uuid == chatUUID }
 
+            SnackbarManager.showMessageWithAction(
+                R.string.delete_bookmarked_success,
+                R.string.undo,
+                this@HistoryViewModel::cancelDeleteChat
+            )
+
+            delay(5000)
+
+            chatService.deleteChatByUUID(chatUUID)
         }
+    }
+
+    // Cancel the delete chat operation
+    private fun cancelDeleteChat() {
+        deleteJob.cancel()
+        fetchChats()
+        SnackbarManager.showMessage(R.string.delete_bookmarked_cancelled)
     }
 
     companion object {
