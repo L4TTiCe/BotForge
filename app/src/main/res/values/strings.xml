@@ -249,6 +249,7 @@
     <string name="add_to_bookmarks_cd">Add to Bookmarks</string>
     <string name="clear_all_cd">Clear All Messages</string>
     <string name="persona_placeholder_cd">Persona Placeholder</string>
+    <string name="active_chat_cleared">Active chat cleared!</string>
 
     <!--    Dropdown Menu   -->
     <string name="more_options_cd">More Options</string>
@@ -259,6 +260,8 @@
     <string name="bookmarked">Bookmarked</string>
     <string name="no_bookmarks_cd">No Bookmarks</string>
     <string name="no_bookmarks">No Bookmarks yet.</string>
+    <string name="delete_bookmarked_success">Bookmark deleted!</string>
+    <string name="delete_bookmarked_cancelled">Bookmark restored!</string>
 
     <!--    MessageList   -->
     <string name="user">User</string>
