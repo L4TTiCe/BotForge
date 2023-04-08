@@ -12,11 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,7 +23,7 @@ import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adw
 
 @Composable
-fun MainHeader(
+fun MinimalHeader(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel
 ) {
@@ -75,34 +70,7 @@ fun MainHeader(
                     .padding(horizontal = 0.02.adw),
             ) {
                 AvatarsBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-
-                        // Fade out the gradient at the start and end of the bar
-                        // Reference:
-                        // https://stackoverflow.com/questions/66762472/how-to-add-fading-edge-effect-to-android-jetpack-compose-column-or-row
-
-                        // Workaround to enable alpha compositing
-                        .graphicsLayer { alpha = 0.99F }
-                        .drawWithContent {
-                            val maxElements = 8
-
-                            // Create a list with a transparent color at the start and end,
-                            // with 5 black colors in between
-                            val colors = List(maxElements) { index ->
-                                if (index == 0 || index == maxElements - 1) {
-                                    Color.Transparent
-                                } else {
-                                    Color.Black
-                                }
-                            }
-
-                            drawContent()
-                            drawRect(
-                                brush = Brush.horizontalGradient(colors),
-                                blendMode = BlendMode.DstIn
-                            )
-                        },
+                    modifier = modifierWithFadeEdges,
                     viewModel = viewModel
                 )
             }

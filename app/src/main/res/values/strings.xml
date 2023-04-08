@@ -137,8 +137,7 @@
     <string name="dynamic_colors_message">Changes the
         app\'s color scheme based on your system\'s theme.</string>
     <string name="use_minimal_header">Use Minimal Header</string>
-    <string name="use_minimal_header_message">Removes the
-        header\'s background and title, and makes the header transparent.</string>
+    <string name="use_minimal_header_message">Makes the header more compact, minimal branding.</string>
 
     <string name="account">Account</string>
     <string name="logged_in_as_anonymous">Logged in as Anonymous</string>

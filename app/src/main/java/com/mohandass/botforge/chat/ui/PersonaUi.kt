@@ -26,10 +26,14 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
+import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.sync.ui.BrowseBotsUi
 import com.mohandass.botforge.sync.ui.SharePersonaUi
 import com.slaviboy.composeunits.adh
+import com.slaviboy.composeunits.adw
 
 /**
  * Main UI for the persona screen
@@ -58,9 +62,14 @@ fun PersonaUi(viewModel: AppViewModel) {
     var activeTheme = remember {
         PreferredTheme.AUTO
     }
+    var preferredHeader = remember {
+        PreferredHeader.DEFAULT_HEADER
+    }
+
     val userPreferences = viewModel.userPreferences.observeAsState()
     userPreferences.value?.let {
         activeTheme = it.preferredTheme
+        preferredHeader = it.preferredHeader
     }
 
     val systemUiController = rememberSystemUiController()
@@ -100,11 +109,16 @@ fun PersonaUi(viewModel: AppViewModel) {
                 .fillMaxWidth()
         ) {
             Column {
-//                if (1.adw < Constants.FOLDABLE_THRESHOLD.dp) {
-//                    AvatarsBar(
-//                        viewModel = viewModel
-//                    )
-//                }
+
+                // Show avatars bar, If using Default Header,
+                // and the screen size in small
+                // Else, Avatar Bar will be in Header
+                if (1.adw < Constants.FOLDABLE_THRESHOLD.dp &&
+                    preferredHeader == PreferredHeader.DEFAULT_HEADER) {
+                    AvatarsBar(
+                        viewModel = viewModel
+                    )
+                }
 
                 Spacer(
                     modifier = Modifier.height(0.01.adh)
