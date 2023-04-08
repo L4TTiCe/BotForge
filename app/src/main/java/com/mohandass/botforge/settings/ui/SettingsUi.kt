@@ -274,7 +274,7 @@ fun SettingsUi(
                 painter = painterResource(id = R.drawable.baseline_delete_24),
                 onClick = ({
                     viewModel.browse.deleteAllBots()
-                    settingsViewModel.clearLastSyncTime()
+                    settingsViewModel.clearSyncInfo()
                 })
             )
         }

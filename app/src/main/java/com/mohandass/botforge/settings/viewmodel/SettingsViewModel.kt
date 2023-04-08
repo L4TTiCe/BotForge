@@ -77,10 +77,11 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun clearLastSyncTime() {
+    fun clearSyncInfo() {
         logger.log(TAG, "clearLastSyncTime()")
         viewModelScope.launch {
             preferencesDataStore.clearLastSuccessfulSync()
+            preferencesDataStore.setLastModerationIndexProcessed(0)
         }
     }
 
