@@ -17,9 +17,10 @@ import com.mohandass.botforge.chat.viewmodel.ChatViewModel
 import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
 import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.sync.service.BotService
@@ -72,6 +73,12 @@ class AppViewModel @Inject constructor(
     }
 
     val userPreferences = _userPreferencesFlow.asLiveData()
+
+    // Snackbar
+    fun setActiveSnackbar(location: SnackbarLauncherLocation) {
+        SnackbarManager.setSnackbarLocation(location)
+        SnackbarManager.clearMessage()
+    }
 
     // TopBar
 

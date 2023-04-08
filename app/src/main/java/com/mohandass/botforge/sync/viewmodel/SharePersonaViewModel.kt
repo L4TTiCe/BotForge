@@ -13,7 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.sync.model.Bot
 import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl

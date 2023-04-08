@@ -24,7 +24,7 @@ import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownCard
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownInfoCard
 import com.mohandass.botforge.chat.ui.components.dialogs.MarkdownDialog
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.ui.ShakeWithHaptic
 import kotlinx.coroutines.delay
