@@ -306,7 +306,13 @@ class ChatViewModel @Inject constructor(
 
         viewModelScope.launch {
             chatService.saveChat(chat, messages)
-            SnackbarManager.showMessage(R.string.chat_saved)
+            SnackbarManager.showMessageWithAction(
+                R.string.chat_saved,
+                R.string.bookmarks,
+            ) {
+                viewModel.navControllerPersona
+                    .navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
+            }
         }
     }
 
