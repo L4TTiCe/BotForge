@@ -4,6 +4,7 @@
 
 package com.mohandass.botforge.settings.service
 
+import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
@@ -14,10 +15,17 @@ import kotlinx.coroutines.flow.Flow
 interface PreferencesDataStore {
     val userPreferencesFlow: Flow<UserPreferences>
     suspend fun fetchInitialPreferences(): UserPreferences
+
+    // Appearance
     suspend fun updateTheme(preferredTheme: PreferredTheme)
     suspend fun setDynamicColor(newValue: Boolean)
+    suspend fun setPreferredHeader(newValue: PreferredHeader)
+
+    //Sync
     suspend fun updateLastSuccessfulSync()
     suspend fun clearLastSuccessfulSync()
+
+    //Settings
     suspend fun setUserGeneratedContent(newValue: Boolean)
     suspend fun setShakeToClear(newValue: Boolean)
     suspend fun setShakeToClearSensitivity(newValue: Float)
@@ -27,6 +35,7 @@ interface PreferencesDataStore {
         const val PREFERENCES_NAME = "botforge_preferences"
         const val PREFERRED_THEME_KEY = "theme"
         const val DYNAMIC_COLOR = "dynamic_color"
+        const val PREFERRED_HEADER = "header"
         const val LAST_SUCCESSFUL_SYNC = "last_successful_sync"
         const val USER_GENERATED_CONTENT = "user_generated_content"
         const val SHAKE_TO_CLEAR = "shake_to_clear"

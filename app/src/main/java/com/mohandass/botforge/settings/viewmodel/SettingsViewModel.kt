@@ -12,6 +12,7 @@ import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.SnackbarMessage
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.settings.service.SharedPreferencesService
@@ -66,6 +67,13 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "updateDynamicColor() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setDynamicColor(value)
+        }
+    }
+
+    fun updatePreferredHeader(value: PreferredHeader) {
+        logger.log(TAG, "updatePreferredHeader() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setPreferredHeader(value)
         }
     }
 

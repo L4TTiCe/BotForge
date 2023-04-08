@@ -60,11 +60,14 @@ class AppViewModel @Inject constructor(
         UserPreferences(
             preferredTheme = userPreference.preferredTheme,
             useDynamicColors = userPreference.useDynamicColors,
+            preferredHeader = userPreference.preferredHeader,
+
             lastSuccessfulSync = userPreference.lastSuccessfulSync,
+            lastModerationIndexProcessed = userPreference.lastModerationIndexProcessed,
+
             enableUserGeneratedContent = userPreference.enableUserGeneratedContent,
             enableShakeToClear = userPreference.enableShakeToClear,
             shakeToClearSensitivity = userPreference.shakeToClearSensitivity,
-            lastModerationIndexProcessed = userPreference.lastModerationIndexProcessed,
         )
     }
 
