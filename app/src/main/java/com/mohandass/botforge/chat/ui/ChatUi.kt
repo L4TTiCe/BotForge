@@ -30,6 +30,9 @@ import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
+import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.rememberSnackbarLauncher
 import com.mohandass.botforge.sync.ui.components.BotDetailDialog
 import com.slaviboy.composeunits.adh
 
@@ -124,7 +127,22 @@ fun ChatUi(viewModel: AppViewModel) {
         )
     }
 
+    DisposableEffect(Unit) {
+        viewModel.setActiveSnackbar(SnackbarLauncherLocation.CHAT)
+
+        onDispose {
+            viewModel.setActiveSnackbar(SnackbarLauncherLocation.MAIN)
+        }
+    }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    rememberSnackbarLauncher(
+        snackbarHostState,
+        snackbarManager = SnackbarManager.getInstance(SnackbarLauncherLocation.CHAT)
+    )
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             // Sends or Cancels request
             SendFloatingActionButton(

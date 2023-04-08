@@ -27,7 +27,7 @@ import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.chat.ui.components.icons.TintedIconButton
 import com.mohandass.botforge.common.Constants
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.R.string as AppText
 
 @Composable

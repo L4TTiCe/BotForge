@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.common
+package com.mohandass.botforge.common.services.snackbar
 
 import android.content.res.Resources
 import androidx.annotation.StringRes

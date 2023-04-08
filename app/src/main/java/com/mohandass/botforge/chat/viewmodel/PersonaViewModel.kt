@@ -4,7 +4,6 @@
 
 package com.mohandass.botforge.chat.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -18,9 +17,9 @@ import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.common.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
 import kotlinx.coroutines.launch
@@ -71,11 +70,11 @@ class PersonaViewModel @Inject constructor(
         if (uuid.isNotEmpty() || uuid.isNotBlank()) {
             viewModelScope.launch {
                 updateParentBot(botService.getBot(uuid))
-                Log.v("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
+                logger.logVerbose("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
             }
         } else {
             updateParentBot(null)
-            Log.v("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
+            logger.logVerbose("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
         }
     }
 

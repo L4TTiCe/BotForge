@@ -14,7 +14,7 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.PreferencesDataStore

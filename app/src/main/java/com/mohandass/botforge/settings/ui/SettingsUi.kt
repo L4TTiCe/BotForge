@@ -29,7 +29,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Constants
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.ui.ShakeWithHaptic
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.model.PreferredTheme

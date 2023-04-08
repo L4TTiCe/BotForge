@@ -18,8 +18,8 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.common.SnackbarManager
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toSnackbarMessageWithAction
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.Job

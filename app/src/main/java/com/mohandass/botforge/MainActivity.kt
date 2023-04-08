@@ -17,10 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -36,8 +33,9 @@ import com.mohandass.botforge.auth.ui.LandingUi
 import com.mohandass.botforge.auth.ui.SignInUi
 import com.mohandass.botforge.auth.ui.SignUpUi
 import com.mohandass.botforge.common.Constants
-import com.mohandass.botforge.common.SnackbarLauncher
-import com.mohandass.botforge.common.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarLauncher
+import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.ui.MainUi
 import com.mohandass.botforge.common.ui.SplashUi
 import com.mohandass.botforge.common.ui.theme.BotForgeTheme
@@ -90,7 +88,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val snackbarHostState = remember { SnackbarHostState() }
-                    rememberSnackbarLauncher(snackbarHostState)
+                    rememberSnackbarLauncher(
+                        snackbarHostState,
+                        snackbarManager = SnackbarManager.getInstance(SnackbarLauncherLocation.MAIN)
+                    )
 
                     viewModel.setNavController(rememberAnimatedNavController())
 
@@ -111,7 +112,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun rememberSnackbarLauncher(
     snackbarHostState: SnackbarHostState,
-    snackbarManager: SnackbarManager = SnackbarManager,
+    snackbarManager: SnackbarManager,
     resources: Resources = resources(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) = remember(snackbarHostState, snackbarManager, resources, coroutineScope) {

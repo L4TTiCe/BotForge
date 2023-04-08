@@ -2,17 +2,17 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.common
+package com.mohandass.botforge.common.services.snackbar
 
 import android.content.res.Resources
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Stable
-import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissAction
-import com.mohandass.botforge.common.SnackbarMessage.Companion.getDismissLabel
-import com.mohandass.botforge.common.SnackbarMessage.Companion.hasAction
-import com.mohandass.botforge.common.SnackbarMessage.Companion.toMessage
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.getDismissAction
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.getDismissLabel
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.hasAction
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @Stable
 class SnackbarLauncher(
     val snackbarHostState: SnackbarHostState,
-    private val snackbarManager: SnackbarManager = SnackbarManager,
+    private val snackbarManager: SnackbarManager,
     private val resources: Resources,
     coroutineScope: CoroutineScope
 ) {
