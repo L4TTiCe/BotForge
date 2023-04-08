@@ -32,6 +32,7 @@ import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SwipeableSnackbarHost
 import com.mohandass.botforge.rememberSnackbarLauncher
 import com.mohandass.botforge.sync.ui.components.BotDetailDialog
 import com.slaviboy.composeunits.adh
@@ -142,7 +143,7 @@ fun ChatUi(viewModel: AppViewModel) {
     )
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SwipeableSnackbarHost(snackbarHostState) },
         floatingActionButton = {
             // Sends or Cancels request
             SendFloatingActionButton(

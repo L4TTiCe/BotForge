@@ -36,6 +36,7 @@ import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncher
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SwipeableSnackbarHost
 import com.mohandass.botforge.common.ui.MainUi
 import com.mohandass.botforge.common.ui.SplashUi
 import com.mohandass.botforge.common.ui.theme.BotForgeTheme
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity() {
                     viewModel.setNavController(rememberAnimatedNavController())
 
                     Scaffold(
-                        snackbarHost = { SnackbarHost(snackbarHostState) },
+                        snackbarHost = { SwipeableSnackbarHost(snackbarHostState) },
                     ) {
                         Navigation(
                             modifier = Modifier.padding(top = it.calculateTopPadding()),
