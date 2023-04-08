@@ -14,13 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.common.Constants
 
 @Composable
 fun ActiveIndicator(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .height(18.dp) // Matches the height of other elements in the row
-            .width(90.dp),
+            .width(Constants.ICONS_SIZE.dp),
         contentAlignment = Alignment.Center // Centers its content vertically and horizontally
     ) {
         Spacer(

@@ -15,12 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mohandass.botforge.common.Constants
 
 @Composable
 fun VerticalDivider() {
     Box(
         modifier = Modifier
-            .height(90.dp) // Matches the height of other elements in the row
+            .height(Constants.ICONS_SIZE.dp) // Matches the height of other elements in the row
             .width(18.dp),
         contentAlignment = Alignment.Center // Centers its content vertically and horizontally
     ) {

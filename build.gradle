@@ -5,7 +5,7 @@ buildscript {
         core_version = "1.9.0"
         lifecycleVersion = "2.6.1"
         nav_version = "2.5.3"
-        compose_runtime_version = "1.4.0"
+        compose_runtime_version = "1.4.1"
         datastore_preferences_version = "1.0.0"
         room_version = "2.5.1"
         dagger_hilt_version = "2.44"

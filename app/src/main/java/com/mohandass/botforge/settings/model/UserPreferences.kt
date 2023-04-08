@@ -10,6 +10,7 @@ package com.mohandass.botforge.settings.model
 data class UserPreferences(
     val preferredTheme: PreferredTheme,
     val useDynamicColors: Boolean,
+    val preferredHeader: PreferredHeader,
     val lastSuccessfulSync: Long,
     val enableUserGeneratedContent: Boolean,
     val enableShakeToClear: Boolean,
@@ -20,6 +21,7 @@ data class UserPreferences(
         return "UserPreferences(" +
                 "preferredTheme=$preferredTheme, " +
                 "useDynamicColors=$useDynamicColors, " +
+                "preferredHeader=$preferredHeader, " +
                 "lastSuccessfulSync=$lastSuccessfulSync" +
                 "enableUserGeneratedContent=$enableUserGeneratedContent" +
                 "enableShakeToClear=$enableShakeToClear" +

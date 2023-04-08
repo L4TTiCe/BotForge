@@ -209,7 +209,7 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            ApiKeyUi(settingsViewModel = hiltViewModel())
+                            ApiKeyUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
                         }
                         composable(
                             route = AppRoutes.MainRoutes.ApiUsageSettings.route,

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
+import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
@@ -33,11 +34,15 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
     val useDynamicColors = remember {
         mutableStateOf(false)
     }
+    val preferMinimalHeader = remember {
+        mutableStateOf(false)
+    }
 
     val userPreferences = viewModel.userPreferences.observeAsState()
     userPreferences.value?.let {
         activeTheme = it.preferredTheme
         useDynamicColors.value = it.useDynamicColors
+        preferMinimalHeader.value = it.preferredHeader == PreferredHeader.MINIMAL_HEADER
     }
 
     Column {
@@ -137,5 +142,19 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
             )
 
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        SettingsItem(
+            title = resources().getString(R.string.use_minimal_header),
+            description = resources().getString(R.string.use_minimal_header_message),
+            icon = painterResource(id = R.drawable.baseline_view_headline_24),
+            switchState = preferMinimalHeader,
+            onCheckChange = {
+                settingsViewModel.updatePreferredHeader(
+                    if (it) PreferredHeader.MINIMAL_HEADER else PreferredHeader.DEFAULT_HEADER
+                )
+            }
+        )
     }
 }
