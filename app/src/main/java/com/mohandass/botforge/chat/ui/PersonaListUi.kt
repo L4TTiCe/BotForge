@@ -63,28 +63,33 @@ fun PersonaListUi(
             modifier = Modifier
                 .padding(10.dp)
         ) {
-            HeaderWithActionIcon(
-                text = stringResource(id = R.string.personas),
-                leadingIcon = painterResource(id = R.drawable.list),
-                trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
-                trailingIconContentDescription = stringResource(id = R.string.clear_all_cd),
-                trailingIconOnClick = {
-                    showDeleteAllPersonaDialog = true
-                }
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            ImageWithMessage(
-                visible = personas.isEmpty(),
-                painter = painterResource(id = R.drawable.empty_box),
-                message = stringResource(id = R.string.no_personas_yet),
-            )
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+
+                item {
+                    HeaderWithActionIcon(
+                        text = stringResource(id = R.string.personas),
+                        leadingIcon = painterResource(id = R.drawable.list),
+                        trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
+                        trailingIconContentDescription = stringResource(id = R.string.clear_all_cd),
+                        trailingIconOnClick = {
+                            showDeleteAllPersonaDialog = true
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
+                item {
+                    ImageWithMessage(
+                        visible = personas.isEmpty(),
+                        painter = painterResource(id = R.drawable.empty_box),
+                        message = stringResource(id = R.string.no_personas_yet),
+                    )
+                }
 
                 items(
                     count = personas.size,
