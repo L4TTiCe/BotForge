@@ -59,11 +59,7 @@ fun PersonaListUi(
             .fillMaxSize(),
         tonalElevation = 0.1.dp,
     ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-        ) {
-
+        Column{
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -71,6 +67,8 @@ fun PersonaListUi(
 
                 item {
                     HeaderWithActionIcon(
+                        modifier = Modifier
+                            .padding(10.dp),
                         text = stringResource(id = R.string.personas),
                         leadingIcon = painterResource(id = R.drawable.list),
                         trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
