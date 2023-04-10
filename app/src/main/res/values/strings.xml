@@ -278,6 +278,9 @@
 
     <!--    PersonaListUi   -->
     <string name="personas">Personas</string>
+    <string name="search_personas">Search Personas</string>
+    <string name="search_results">Search Results</string>
+    <string name="all_personas">All Personas</string>
 
     <!--    OnBoarding   -->
     <string name="next_cd">Move to next page.</string>

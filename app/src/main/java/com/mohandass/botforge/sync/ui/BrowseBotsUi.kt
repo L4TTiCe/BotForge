@@ -9,27 +9,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.common.ui.components.NoMatches
+import com.mohandass.botforge.common.ui.components.SearchBar
 import com.mohandass.botforge.sync.ui.components.BotCard
 import com.slaviboy.composeunits.adh
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BrowseBotsUi(viewModel: AppViewModel) {
     val searchText by viewModel.browse.searchQuery
@@ -110,40 +107,15 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                 }
             }
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                value = searchText,
-                onValueChange = {
-                    viewModel.browse.updateSearchQuery(it)
+            SearchBar(
+                searchQuery = searchText,
+                onClear = {
+                    viewModel.browse.updateSearchQuery("")
                 },
-                label = {
-                    Text(stringResource(id = R.string.community_search))
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_search_24),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(30.dp)
-                    )
-                },
-                trailingIcon = {
-                    IconButton(onClick = { viewModel.browse.updateSearchQuery("") }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_clear_24),
-                            contentDescription = stringResource(id = R.string.clear),
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Search,
-                    keyboardType = KeyboardType.Text
-                )
-            )
+                label = stringResource(id = R.string.community_search)
+            ) {
+                viewModel.browse.updateSearchQuery(it)
+            }
 
             Text(
                 text = stringResource(id = R.string.community_browse),
@@ -190,30 +162,7 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                     }
                 }
             } else if (searchText.isNotEmpty()) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            painterResource(id = R.drawable.no_results),
-                            modifier = Modifier
-                                .size(80.dp)
-                                .alpha(0.8f),
-                            contentDescription = stringResource(id = R.string.no_bots_found)
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Text(
-                            text = stringResource(id = R.string.no_bots_found),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
-                }
+                NoMatches()
             }
 
             Text(

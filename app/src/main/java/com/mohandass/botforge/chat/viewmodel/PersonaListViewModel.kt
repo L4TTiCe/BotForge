@@ -4,10 +4,12 @@
 
 package com.mohandass.botforge.chat.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
@@ -21,10 +23,37 @@ class PersonaListViewModel (
     private val botService: BotService,
     private val logger: Logger
 ): ViewModel() {
-    val showDeleteAllPersonaDialog = mutableStateOf(false)
     val personas = viewModel.persona.personas
+    var matchedPersonas = mutableStateListOf<Persona>()
+
+    val showDeleteAllPersonaDialog = mutableStateOf(false)
+    val searchQuery = mutableStateOf("")
 
     private val bots = mutableMapOf<String, BotE?>()
+
+    fun updateSearchQuery(query: String) {
+        logger.logVerbose(TAG, "onSearchQueryChange $query")
+        searchQuery.value = query
+        filterPersonas()
+    }
+
+    private fun filterPersonas() {
+        logger.logVerbose(TAG, "filterPersonas")
+        matchedPersonas.clear()
+
+        if (searchQuery.value.isEmpty() || searchQuery.value.isBlank()) {
+            return
+        }
+        personas.filterTo(matchedPersonas) { persona ->
+
+            persona.name.contains(searchQuery.value, ignoreCase = true) ||
+                    persona.alias.contains(searchQuery.value, ignoreCase = true) ||
+                    persona.systemMessage.contains(searchQuery.value, ignoreCase = true)
+
+        }
+
+        logger.logVerbose(TAG, "filterPersonas ${matchedPersonas.size}")
+    }
 
     fun onBack() {
         viewModel.persona.restoreState()
