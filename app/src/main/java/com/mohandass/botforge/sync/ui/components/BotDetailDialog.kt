@@ -32,17 +32,23 @@ import com.mohandass.botforge.sync.model.dao.entities.BotEProvider
 import com.slaviboy.composeunits.adh
 import java.util.*
 
+data class BotDetailDialogConfig(
+    val bot: BotE,
+    val onUpVote: () -> Unit,
+    val onDownVote: () -> Unit,
+    val onReport: () -> Unit,
+)
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BotDetailDialog(
-    bot: BotE,
     showAdd: Boolean = true,
     onClickDismiss: () -> Unit,
     onClickAccept: () -> Unit,
-    onUpVote: () -> Unit,
-    onDownVote: () -> Unit,
-    onReport: () -> Unit,
+    config: BotDetailDialogConfig,
 ) {
+    val bot = config.bot
+
     AlertDialog(
         onDismissRequest = onClickDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -195,7 +201,7 @@ fun BotDetailDialog(
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                IconButton(onClick = onUpVote) {
+                IconButton(onClick = config.onUpVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.upvote_filled),
                         contentDescription = stringResource(id = R.string.up_vote),
@@ -204,7 +210,7 @@ fun BotDetailDialog(
                     )
                 }
 
-                IconButton(onClick = onDownVote) {
+                IconButton(onClick = config.onDownVote) {
                     Icon(
                         painter = painterResource(id = R.drawable.downvote_filled),
                         contentDescription = stringResource(id = R.string.down_vote),
@@ -246,7 +252,7 @@ fun BotDetailDialog(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = onReport,
+                    onClick = config.onReport,
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error,
                     )
@@ -266,7 +272,14 @@ fun BotDetailDialog(
 fun BotDetailDialogPreview(
     @PreviewParameter(BotEProvider::class) bot: BotE,
 ) {
+    val config = BotDetailDialogConfig(
+        bot = bot,
+        onUpVote = {},
+        onDownVote = {},
+        onReport = {},
+    )
+
     BotForgeLightThemePreview {
-        BotDetailDialog(bot, showAdd = true, {}, {}, {}, {}, {})
+        BotDetailDialog(showAdd = true, {}, {}, config)
     }
 }

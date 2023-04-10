@@ -22,6 +22,8 @@ import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -36,7 +38,7 @@ class PersonaViewModel @Inject constructor(
     private val logger: Logger,
 ) : ViewModel() {
 
-    private val _personas = mutableStateListOf<Persona>()
+    private var _personas = mutableStateListOf<Persona>()
     val personas = _personas
 
     private val _personaName = mutableStateOf("")
@@ -93,7 +95,6 @@ class PersonaViewModel @Inject constructor(
 
     // Represents the current state of the UI
     class UiState {
-        var chatType: ChatType = ChatType.CREATE
         var personaName: String = ""
         var personaSystemMessage: String = ""
         var personaAlias: String = ""
@@ -108,6 +109,17 @@ class PersonaViewModel @Inject constructor(
     fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
         FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
+    }
+
+    // Move to List Screen
+    fun showList() {
+        logger.logVerbose(TAG, "showList()")
+        saveState()
+        clearSelection()
+        setChatType(ChatType.LIST)
+        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.List.route) {
+            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.List.route)
+        }
     }
 
     // Move to the History screen
@@ -155,7 +167,6 @@ class PersonaViewModel @Inject constructor(
 
     // Saves the current state of the UI
     fun saveState() {
-        _state.value.chatType = chatType.value
         _state.value.personaName = personaName.value
         _state.value.personaSystemMessage = personaSystemMessage.value
         _state.value.personaAlias = personaAlias.value
@@ -165,7 +176,6 @@ class PersonaViewModel @Inject constructor(
 
     // Restores the state of the UI from the last saved state
     fun restoreState() {
-        chatType.value = _state.value.chatType
         personaName.value = _state.value.personaName
         personaSystemMessage.value = _state.value.personaSystemMessage
         personaAlias.value = _state.value.personaAlias
@@ -327,6 +337,32 @@ class PersonaViewModel @Inject constructor(
 
             }
             showCreate()
+        } else {
+            SnackbarManager.showMessage(R.string.generic_error)
+        }
+    }
+
+    fun deletePersona(uuid: String) {
+        var deleteJob: Job = Job()
+
+        val persona = _personas.find { it.uuid == uuid }
+        if (persona != null) {
+            // Remove persona from the list
+            _personas.remove(persona)
+
+            SnackbarManager.showMessageWithAction(
+                R.string.deleted_persona,
+                R.string.undo
+            ) {
+                _personas.add(persona)
+                deleteJob.cancel()
+            }
+
+            deleteJob = viewModelScope.launch {
+                delay(5000)
+                personaService.deletePersona(persona)
+                logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
+            }
         } else {
             SnackbarManager.showMessage(R.string.generic_error)
         }

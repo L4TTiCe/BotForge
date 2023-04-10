@@ -2,13 +2,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.header
+package com.mohandass.botforge.chat.ui.components.header.top
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -91,6 +90,23 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
         )
         DropdownMenuItem(
             onClick = {
+                viewModel.persona.showList()
+                displayOptionsMenu = false
+            },
+            text = {
+                Text(text = stringResource(id = R.string.personas))
+                Spacer(modifier = Modifier.width(0.25.adw))
+            },
+            trailingIcon = {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.list),
+                    contentDescription = null
+                )
+            }
+        )
+        DropdownMenuItem(
+            onClick = {
                 viewModel.signOut {
                     viewModel.navController.navigate(AppRoutes.Landing.route)
                 }
@@ -103,20 +119,6 @@ fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) 
                 Icon(
                     imageVector = Icons.Default.ExitToApp,
                     contentDescription = stringResource(id = R.string.sign_out)
-                )
-            }
-        )
-        DropdownMenuItem(
-            onClick = {
-                openDeleteConfirmationDialog.value = true
-            },
-            text = {
-                Text(text = stringResource(id = R.string.delete_all_persona))
-            },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id = R.string.delete_all_persona)
                 )
             }
         )

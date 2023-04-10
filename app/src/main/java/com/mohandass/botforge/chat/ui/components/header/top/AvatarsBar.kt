@@ -4,25 +4,21 @@
 
 package com.mohandass.botforge.chat.ui.components.header
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.ui.components.icons.AvatarBarIcon
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.chat.ui.components.icons.TintedIconButton
@@ -160,29 +156,12 @@ fun AvatarsBar(
         }
 
         item {
-
             Column {
-                Column(
-                    modifier = modifier
-                        .size(Constants.ICONS_SIZE.dp)
-                        .clip(CircleShape)
-                        .clickable { viewModel.persona.showHistory() }
-                        .padding(6.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                AvatarBarIcon(
+                    icon = painterResource(id = R.drawable.baseline_bookmarks_24),
+                    iconContentDescription = stringResource(id = AppText.show_bookmarks_cd)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                        contentDescription = stringResource(id = AppText.show_bookmarks_cd),
-                        modifier = modifier
-                            .size(Constants.ICONS_SIZE.dp)
-                            .aspectRatio(1f, matchHeightConstraintsFirst = true)
-                            .padding(10.dp)
-                            .clip(CircleShape)
-                            .scale(0.8f)
-                            .alpha(0.8f),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
+                    viewModel.persona.showHistory()
                 }
 
                 if (chatType == ChatType.HISTORY) {
@@ -191,8 +170,27 @@ fun AvatarsBar(
                     ActiveIndicator(modifier = Modifier.alpha(0f))
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.width(10.dp))
+        item {
+            Column {
+                AvatarBarIcon(
+                    icon = painterResource(id = R.drawable.list),
+                    iconContentDescription = "List View"
+                ) {
+                    viewModel.persona.showList()
+                }
+
+                if (chatType == ChatType.LIST) {
+                    ActiveIndicator()
+                } else {
+                    ActiveIndicator(modifier = Modifier.alpha(0f))
+                }
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.width(15.dp))
         }
     }
 }

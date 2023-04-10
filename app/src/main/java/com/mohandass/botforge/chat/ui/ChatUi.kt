@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.chat.CustomisePersona
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.chat.headers.CustomisePersonaHeader
@@ -35,6 +36,7 @@ import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SwipeableSnackbarHost
 import com.mohandass.botforge.rememberSnackbarLauncher
 import com.mohandass.botforge.sync.ui.components.BotDetailDialog
+import com.mohandass.botforge.sync.ui.components.BotDetailDialogConfig
 import com.slaviboy.composeunits.adh
 
 // Main Chat UI, with Customise Persona and Messages
@@ -64,6 +66,14 @@ fun ChatUi(viewModel: AppViewModel) {
         mutableStateOf(false)
     }
 
+    LaunchedEffect(Unit) {
+        if (viewModel.persona.selectedPersona.value == "") {
+            viewModel.persona.setChatType(ChatType.CREATE)
+        } else {
+            viewModel.persona.setChatType(ChatType.CHAT)
+        }
+    }
+
     val userPreferences by viewModel.userPreferences.observeAsState()
     userPreferences?.let {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
@@ -72,18 +82,22 @@ fun ChatUi(viewModel: AppViewModel) {
     // Show bot detail dialog for Bots from Community
     if (showDetailDialog.value) {
         parentBot?.let {
-            BotDetailDialog(
-                it,
-                showAdd = false,
-                onClickDismiss = { showDetailDialog.value = false },
-                onClickAccept = {
-                    showDetailDialog.value = false
-                },
+            val botDetailDialogConfig = BotDetailDialogConfig(
+                bot = it,
                 onUpVote = {
                     viewModel.browse.upVote(it.uuid)
                 },
                 onDownVote = { viewModel.browse.downVote(it.uuid) },
                 onReport = { viewModel.browse.report(it.uuid) },
+            )
+
+            BotDetailDialog(
+                showAdd = false,
+                onClickDismiss = { showDetailDialog.value = false },
+                onClickAccept = {
+                    showDetailDialog.value = false
+                },
+                config = botDetailDialogConfig
             )
         }
     }
