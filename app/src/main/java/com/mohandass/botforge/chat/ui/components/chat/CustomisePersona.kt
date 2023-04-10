@@ -126,7 +126,7 @@ fun CustomisePersona(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CustomisePersonaPreview() {
     var personaName by remember { mutableStateOf("Persona Name") }
@@ -149,7 +149,7 @@ fun CustomisePersonaPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CustomisePersonaPreviewOnUnSavedPersona() {
     var personaName by remember { mutableStateOf("Persona Name") }

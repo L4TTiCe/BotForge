@@ -38,16 +38,21 @@ fun BotCard(
     val showDetailDialog = remember { mutableStateOf(false) }
 
     if (showDetailDialog.value) {
+        val botDetailDialogConfig = BotDetailDialogConfig(
+            bot = botE,
+            onUpVote = onUpVote,
+            onDownVote = onDownVote,
+            onReport = onReport,
+        )
+
         BotDetailDialog(
-            botE,
+            showAdd = true,
             onClickDismiss = { showDetailDialog.value = false },
             onClickAccept = {
                 onClickButton()
                 showDetailDialog.value = false
             },
-            onUpVote = onUpVote,
-            onDownVote = onDownVote,
-            onReport = onReport,
+            config = botDetailDialogConfig
         )
     }
 

@@ -44,6 +44,7 @@ sealed class AppRoutes(val route: String) {
             object History : PersonaRoutes("history_persona")
             object Marketplace : PersonaRoutes("share_persona")
             object Share : PersonaRoutes("create_persona")
+            object List : PersonaRoutes("list_persona")
         }
 
         object Settings : MainRoutes("main_settings")

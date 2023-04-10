@@ -57,6 +57,7 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
     }
 
     LaunchedEffect(Unit) {
+        viewModel.persona.setChatType(ChatType.BROWSE)
         viewModel.browse.fetchBots()
         viewModel.browse.syncWithDatabase()
     }

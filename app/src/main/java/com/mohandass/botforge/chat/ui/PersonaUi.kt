@@ -149,6 +149,9 @@ fun PersonaUi(viewModel: AppViewModel) {
             composable(AppRoutes.MainRoutes.PersonaRoutes.Share.route) {
                 SharePersonaUi(viewModel = viewModel)
             }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.List.route) {
+                PersonaListUi(viewModel = viewModel)
+            }
         }
     }
 }

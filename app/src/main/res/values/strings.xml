@@ -276,6 +276,9 @@
     <string name="set_message_inactive_cd">Set Message Inactive</string>
     <string name="set_message_active_cd">Set Message Active</string>
 
+    <!--    PersonaListUi   -->
+    <string name="personas">Personas</string>
+
     <!--    OnBoarding   -->
     <string name="next_cd">Move to next page.</string>
 

@@ -13,10 +13,7 @@ import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.chat.viewmodel.ChatViewModel
-import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
-import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
-import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
+import com.mohandass.botforge.chat.viewmodel.*
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -146,6 +143,14 @@ class AppViewModel @Inject constructor(
     )
     val persona: PersonaViewModel
         get() = _personaViewModel
+
+    private val _personaListViewModel = PersonaListViewModel(
+        viewModel = this,
+        botService = botService,
+        logger = logger
+    )
+    val personaList: PersonaListViewModel
+        get() = _personaListViewModel
 
     // Sync
 
