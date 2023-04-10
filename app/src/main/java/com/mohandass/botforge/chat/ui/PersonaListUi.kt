@@ -25,6 +25,7 @@ import com.mohandass.botforge.chat.ui.components.PersonaInfo
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.sync.ui.components.BotDetailDialogConfig
+import com.slaviboy.composeunits.adh
 
 @Composable
 fun PersonaListUi(
@@ -108,6 +109,9 @@ fun PersonaListUi(
 
                     PersonaInfo(
                         persona = personas[index],
+                        onClick = {
+                            viewModel.persona.selectPersona(personas[index].uuid)
+                        },
                         onClickDelete = {
                             personaListViewModel.deletePersona(personas[index].uuid)
                         },
@@ -116,6 +120,10 @@ fun PersonaListUi(
 
                     Divider()
 
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(0.2.adh))
                 }
             }
         }

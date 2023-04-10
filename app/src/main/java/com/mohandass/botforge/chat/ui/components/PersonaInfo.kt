@@ -5,6 +5,7 @@
 package com.mohandass.botforge.chat.ui.components
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -37,6 +38,7 @@ fun PersonaInfo(
     persona: Persona,
     onClickDelete: () -> Unit,
     botDetailDialogConfig: BotDetailDialogConfig? = null,
+    onClick: () -> Unit = {}
 ) {
 
     var showDetailDialog by remember {
@@ -89,7 +91,7 @@ fun PersonaInfo(
                         ),
                 modifier = Modifier.size(90.dp),
                 borderColor = Color.Transparent,
-                onClick = { }
+                onClick = onClick
             )
         }
 
@@ -106,6 +108,9 @@ fun PersonaInfo(
 
                     Row {
                         Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onClick() },
                             text = persona.name,
                             style = MaterialTheme.typography.titleMedium
                         )
@@ -120,7 +125,11 @@ fun PersonaInfo(
                     )
 
                     Text (
-                        modifier = Modifier.animateContentSize(),
+                        modifier = Modifier
+                            .animateContentSize()
+                            .clickable {
+                                isExpanded = !isExpanded
+                            },
                         text = persona.systemMessage,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = if (isExpanded) Int.MAX_VALUE else 2,
@@ -177,12 +186,16 @@ fun PersonaInfo(
                 if (hasOverflow || isEllipsized) {
 
                     Text(
+                        modifier = Modifier
+                            .clickable {
+                                isExpanded = !isExpanded
+                            },
                         text = if (isExpanded) "Show Less" else "Show More",
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.secondary
                     )
 
                     Spacer(modifier = Modifier.width(3.dp))
-
 
                     IconButton(
                         modifier = Modifier.padding(0.dp),
@@ -190,7 +203,10 @@ fun PersonaInfo(
                             isExpanded = !isExpanded
                         }) {
                         val icon =
-                            if (isExpanded) R.drawable.baseline_keyboard_arrow_up_24 else R.drawable.baseline_keyboard_arrow_down_24
+                            if (isExpanded)
+                                R.drawable.baseline_keyboard_arrow_up_24
+                            else
+                                R.drawable.baseline_keyboard_arrow_down_24
 
                         Icon(
                             painter = painterResource(id = icon),
