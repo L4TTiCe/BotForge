@@ -4,9 +4,11 @@
 
 package com.mohandass.botforge.chat.model.dao.entities
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.mohandass.botforge.common.Samples
 import java.util.*
 
 /**
@@ -39,4 +41,48 @@ data class Persona(
                 "lastUsed=$lastUsed" +
                 ")"
     }
+}
+
+class PersonaProvider: PreviewParameterProvider<Persona> {
+    private val shortMessage = Persona(
+                uuid = UUID.randomUUID().toString(),
+                parentUuid = UUID.randomUUID().toString(),
+                name = Samples.name,
+                alias = Samples.emoji,
+                systemMessage = Samples.systemMessage2,
+                createdAt = System.currentTimeMillis(),
+                lastUsed = System.currentTimeMillis(),
+            )
+
+    private val community = Persona(
+                uuid = UUID.randomUUID().toString(),
+                parentUuid = UUID.randomUUID().toString(),
+                name = Samples.name,
+                alias = Samples.emoji,
+                systemMessage = Samples.systemMessage,
+                createdAt = System.currentTimeMillis(),
+                lastUsed = System.currentTimeMillis(),
+            )
+
+    private val default = Persona(
+                uuid = UUID.randomUUID().toString(),
+                parentUuid = "",
+                name = Samples.name,
+                alias = Samples.emoji,
+                systemMessage = Samples.systemMessage,
+                createdAt = System.currentTimeMillis(),
+                lastUsed = System.currentTimeMillis(),
+            )
+
+    private val longName = Persona(
+                uuid = UUID.randomUUID().toString(),
+                parentUuid = UUID.randomUUID().toString(),
+                name = Samples.name + Samples.name + Samples.name + Samples.name + Samples.name,
+                alias = Samples.emoji,
+                systemMessage = Samples.systemMessage,
+                createdAt = System.currentTimeMillis(),
+                lastUsed = System.currentTimeMillis(),
+            )
+
+    override val values: Sequence<Persona> = sequenceOf(shortMessage, community, default, longName)
 }

@@ -7,20 +7,21 @@ package com.mohandass.botforge.chat.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.ChatCard
+import com.mohandass.botforge.chat.ui.components.ImageWithMessage
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteHistoryDialog
+import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 
 @Composable
 fun HistoryUi(viewModel: AppViewModel) {
@@ -43,6 +44,7 @@ fun HistoryUi(viewModel: AppViewModel) {
     val personas = viewModel.persona.personas
 
     LaunchedEffect(Unit) {
+        viewModel.persona.setChatType(ChatType.HISTORY)
         viewModel.history.fetchChats(onSuccess = {})
     }
 
@@ -61,66 +63,26 @@ fun HistoryUi(viewModel: AppViewModel) {
                 .padding(10.dp)
         ) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_bookmarks_24),
-                    contentDescription = stringResource(id = R.string.bookmarks),
-                    modifier = Modifier
-                )
-                Text(
-                    text = stringResource(id = R.string.bookmarked),
-                    modifier = Modifier.padding(10.dp),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Clear all button
-                IconButton(onClick = {
+            HeaderWithActionIcon(
+                text = stringResource(id = R.string.bookmarked),
+                leadingIcon = painterResource(id = R.drawable.baseline_bookmarks_24),
+                leadingIconContentDescription = stringResource(id = R.string.bookmarks),
+                trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
+                trailingIconContentDescription = stringResource(id = R.string.clear_all_cd),
+                trailingIconOnClick = {
                     viewModel.history.updateDeleteDialogState(true)
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_clear_all_24),
-                        contentDescription = stringResource(id = R.string.clear_all_cd),
-                        tint = MaterialTheme.colorScheme.error
-                    )
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             // Show empty box if no chats are bookmarked yet
-            if (chats.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            painterResource(id = R.drawable.empty_box),
-                            modifier = Modifier
-                                .size(150.dp)
-                                .alpha(0.8f),
-                            contentDescription = stringResource(id = R.string.no_bookmarks_cd)
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Text(
-                            text = stringResource(id = R.string.no_bookmarks),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
-                }
-            }
+            ImageWithMessage(
+                visible = chats.isEmpty(),
+                painter = painterResource(id = R.drawable.empty_box),
+                imageContentDescription = stringResource(id = R.string.no_bookmarks_cd),
+                message = stringResource(id = R.string.no_bookmarks),
+            )
 
             // Show chats, if any, are bookmarked
             LazyColumn(

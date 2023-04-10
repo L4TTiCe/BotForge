@@ -97,6 +97,6 @@ fun RoundedIconFromStringAnimatedPreview() {
 fun RoundedIconFromStringAnimatedPreviewEmoji() {
     RoundedIconFromString(
         modifier = Modifier.size(90.dp),
-        text = "\uD83D\uDD25"
+        text = "F"
     )
 }

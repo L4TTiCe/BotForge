@@ -247,5 +247,11 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 *here be dragons*
 :::
         """
+
+        val name = "Celsius"
+        val emoji = "\uD83D\uDD25"
+        val systemMessage = "You are Celsius, a bot that can help users convert " +
+                "temperatures from Celsius to Fahrenheit and vice versa."
+        val systemMessage2 = "You are Celsius"
     }
 }
