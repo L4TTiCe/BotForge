@@ -19,8 +19,8 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="50%"><img src="assets/ui/onboarding/OnBoardingUi1Logo.png"/></td>
-            <td width="50%"><img src="assets/ui/onboarding/OnBoardingUi2Welcome.png"/></td>
+            <td width="50%"><img src="/assets/ui/onboarding/OnBoardingUi1Logo.png"/></td>
+            <td width="50%"><img src="/assets/ui/onboarding/OnBoardingUi2Welcome.png"/></td>
         </tr>
     </tbody>
 </table>
@@ -37,8 +37,8 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="50%"><img src="assets/ui/onboarding/OnBoardingUi3Api.png"/></td>
-            <td width="50%"><img src="assets/ui/onboarding/OnBoardingUi4Ugc.png"/></td>
+            <td width="50%"><img src="/assets/ui/onboarding/OnBoardingUi3Api.png"/></td>
+            <td width="50%"><img src="/assets/ui/onboarding/OnBoardingUi4Ugc.png"/></td>
         </tr>
         <tr>
             <td width="50%"><code> OnBoardingUi3Api</code>: Allows User to enter their API key as part of OnBoarding</td>

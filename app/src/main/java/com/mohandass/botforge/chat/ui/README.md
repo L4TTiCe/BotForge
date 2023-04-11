@@ -20,9 +20,9 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="33%"><img src="assets/ui/chat/ChatUi.png"/></td>
-            <td width="33%"><img src="assets/ui/chat/HistoryUi.png"/></td>
-            <td width="33%"><img src="assets/ui/chat/PersonaListUi.png"/></td>    
+            <td width="33%"><img src="/assets/ui/chat/ChatUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/HistoryUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/PersonaListUi.png"/></td>    
         </tr>
         <tr>
             <td width="33%"><code> ChatUi</code>: To Chat with and Customise Personas</td>
