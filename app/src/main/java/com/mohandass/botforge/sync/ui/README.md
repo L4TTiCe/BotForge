@@ -19,8 +19,8 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="50%"><img src="assets/ui/sync/BrowseBotsUi.png"/></td>
-            <td width="50%"><img src="assets/ui/sync/SharePersonaUi.png"/></td>
+            <td width="50%"><img src="/assets/ui/sync/BrowseBotsUi.png"/></td>
+            <td width="50%"><img src="/assets/ui/sync/SharePersonaUi.png"/></td>
         </tr>
         <tr>
             <td width="50%"><code> BrowseBotsUi</code>: Allows User to search through Community Bots</td>
@@ -40,7 +40,7 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="50%"><img src="assets/ui/sync/components/BotDetailDialog.png"/></td>
+            <td width="50%"><img src="/assets/ui/sync/components/BotDetailDialog.png"/></td>
         </tr>
     </tbody>
 </table>

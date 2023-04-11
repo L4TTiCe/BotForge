@@ -20,9 +20,9 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="33%"><img src="assets/ui/settings/SettingsUi.png"/></td>
-            <td width="33%"><img src="assets/ui/settings/ApiKeyUi.png"/></td>
-            <td width="33%"><img src="assets/ui/settings/ApiUsageUi.png"/></td>    
+            <td width="33%"><img src="/assets/ui/settings/SettingsUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/settings/ApiKeyUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/settings/ApiUsageUi.png"/></td>    
         </tr>
         <tr>
             <td width="33%"><code> SettingsUi</code>: Displays all top level SettingsItems</td>
@@ -45,9 +45,9 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="33%"><img src="assets/ui/settings/ManageAccountUi.png"/></td>
-            <td width="33%"><img src="assets/ui/settings/IconCreditsUi.png"/></td>
-            <td width="33%"><img src="assets/ui/settings/AppInformationUi.png"/></td>    
+            <td width="33%"><img src="/assets/ui/settings/ManageAccountUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/settings/IconCreditsUi.png"/></td>
+            <td width="33%"><img src="/assets/ui/settings/AppInformationUi.png"/></td>    
         </tr>
         <tr>
             <td width="33%"><code> ManageAccountUi</code>: Allows Managing Account - Sign Out, Delete Account, Regenerate Name, etc.</td>
