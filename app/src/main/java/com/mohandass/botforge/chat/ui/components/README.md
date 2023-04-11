@@ -20,9 +20,9 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/MessageEntry.png"/></td>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/AvatarBar.png"/></td>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/ChatCard.png"/></td>    
+            <td width="33%"><img src="/assets/ui/chat/components/MessageEntry.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/components/AvatarBar.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/components/ChatCard.png"/></td>    
         </tr>
         <tr>
             <td width="33%"><code> MessageEntry</code>: Display's Message, along with Metadata, if present.</td>
@@ -50,9 +50,9 @@ code { background-color: dark-grey; color: white; }
     </thead>
     <tbody>
         <tr>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/DefaultHeader.png"/></td>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/MinimalHeader.png"/></td>
-            <td width="33%"><img src="/home/master/AndroidStudioProjects/BotForge2/assets/ui/chat/components/PersonaInfo.png"/></td>    
+            <td width="33%"><img src="/assets/ui/chat/components/DefaultHeader.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/components/MinimalHeader.png"/></td>
+            <td width="33%"><img src="/assets/ui/chat/components/PersonaInfo.png"/></td>    
         </tr>
         <tr>
             <td width="33%"><code> DefaultHeader</code>: Shows AvatarBar, with App branding.</td>
