@@ -24,7 +24,7 @@ To install BotForge, you can either download it from the Google Play Store or cl
 ## Screenshots
 
 | <img src="assets/BotForge/Phone%201phone_1.png" width="400"> | <img src="assets/BotForge/Phone%202phone_2.png" width="400"> | <img src="assets/BotForge/Phone%203phone_3.png" width="400"> |
-|-------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
+|--------------------------------------------------------------|--------------------------------------------------------------|--------------------------------------------------------------|
 | <img src="assets/BotForge/Phone%204phone_4.png" width="400"> | <img src="assets/BotForge/Phone%205phone_5.png" width="400"> | <img src="assets/BotForge/Phone%206phone_6.png" width="400"> |
 
 
