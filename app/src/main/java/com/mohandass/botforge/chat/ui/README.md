@@ -8,9 +8,6 @@ SPDX-License-Identifier: MIT
 Screenshots:
 
 <table width="100%">
-<style type="text/css">
-code { background-color: dark-grey; color: white; }
-</style>
     <thead>
         <tr>
             <th width="33%">ChatUi</th>

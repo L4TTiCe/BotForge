@@ -8,9 +8,6 @@ SPDX-License-Identifier: MIT
 Screenshots:
 
 <table width="100%">
-<style type="text/css">
-code { background-color: dark-grey; color: white; }
-</style>
     <thead>
         <tr>
             <th width="50%">BrowseBotsUi</th>
@@ -30,9 +27,6 @@ code { background-color: dark-grey; color: white; }
 </table>
 
 <table width="100%">
-<style type="text/css">
-code { background-color: dark-grey; color: white; }
-</style>
     <thead>
         <tr>
             <th width="50%">BotDetailDialog</th>
