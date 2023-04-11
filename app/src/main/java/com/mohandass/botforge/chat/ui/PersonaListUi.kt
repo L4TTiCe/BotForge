@@ -95,6 +95,10 @@ fun PersonaListUi(
 
                 item {
 
+                    if (personas.isEmpty()) {
+                        return@item
+                    }
+
                     SearchBar(
                         searchQuery = searchQuery,
                         onClear = {
