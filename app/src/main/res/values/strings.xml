@@ -234,6 +234,8 @@
     <string name="community_browse">Browse Bots</string>
     <string name="community_browse_message">Browse community bots and templates.</string>
     <string name="community_most_popular">Most Popular Bots</string>
+    <string name="community_explore">Explore</string>
+    <string name="community_most_recent">Most Recent</string>
     <string name="sync_cd">Sync</string>
     <string name="no_bots_found">No bots matching your search found.</string>
 

@@ -74,6 +74,30 @@ interface BotDao {
         offset: Int = 0
     ): List<BotE>
 
+    @Query(
+        """
+        SELECT * FROM bots 
+        ORDER BY bots.createdAt DESC 
+        LIMIT :limit OFFSET :offset
+        """
+    )
+    suspend fun getMostRecentBots(
+        limit: Int = 15,
+        offset: Int = 0
+    )
+    : List<BotE>
+
+    @Query(
+        """
+        SELECT * FROM bots 
+        ORDER BY RANDOM()
+        LIMIT :limit
+        """
+    )
+    suspend fun getRandomBots(
+        limit: Int = 15,
+    ): List<BotE>
+
     // Delete bot with uuid
     @Query("DELETE FROM bots WHERE uuid = :uuid")
     suspend fun deleteBot(uuid: String)

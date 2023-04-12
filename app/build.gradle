@@ -29,8 +29,8 @@ android {
         applicationId "com.mohandass.botforge"
         minSdk 28
         targetSdk 33
-        versionCode 22
-        versionName "1.2.2"
+        versionCode 23
+        versionName "1.2.3"
 
         vectorDrawables {
             useSupportLibrary true
@@ -126,7 +126,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf-ktx'
     implementation 'com.google.firebase:firebase-appcheck-ktx'
 
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
 
     // gson
     implementation "com.google.code.gson:gson:$gson_version"
