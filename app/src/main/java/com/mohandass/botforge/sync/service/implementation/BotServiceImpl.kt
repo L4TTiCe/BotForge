@@ -42,6 +42,14 @@ class BotServiceImpl(
         return botDao.getBot(uuid)
     }
 
+    override suspend fun getMostRecentBots(limit: Int, offset: Int): List<BotE> {
+        return botDao.getMostRecentBots(limit, offset)
+    }
+
+    override suspend fun getRandomBots(limit: Int): List<BotE> {
+        return botDao.getRandomBots(limit)
+    }
+
     // Get bots that match the query
     override suspend fun searchBots(query: String): List<BotE> {
         return botDao.search("*$query*")

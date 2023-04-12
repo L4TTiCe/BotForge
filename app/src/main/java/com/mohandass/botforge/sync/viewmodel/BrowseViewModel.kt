@@ -47,12 +47,26 @@ class BrowseViewModel @Inject constructor(
     private val _topBots = mutableStateListOf<BotE>()
     val topBots = _topBots
 
+    private val _recentBots = mutableStateListOf<BotE>()
+    val recentBots = _recentBots
+
+    private val _randomBots = mutableStateListOf<BotE>()
+    val randomBots = _randomBots
+
     // Populate the top bots list with the bots from the Community
     fun fetchBots() {
         logger.logVerbose(TAG, "fetchBots()")
         viewModelScope.launch {
             _topBots.clear()
             _topBots.addAll(botService.getBots())
+        }
+        viewModelScope.launch {
+            _recentBots.clear()
+            _recentBots.addAll(botService.getMostRecentBots())
+        }
+        viewModelScope.launch {
+            _randomBots.clear()
+            _randomBots.addAll(botService.getRandomBots())
         }
     }
 

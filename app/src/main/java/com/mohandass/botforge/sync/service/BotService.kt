@@ -14,6 +14,10 @@ interface BotService {
 
     suspend fun getBot(uuid: String): BotE?
 
+    suspend fun getMostRecentBots(limit: Int = 15, offset: Int = 0): List<BotE>
+
+    suspend fun getRandomBots(limit: Int = 15): List<BotE>
+
     suspend fun searchBots(query: String): List<BotE>
 
     suspend fun getBots(
