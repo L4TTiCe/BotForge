@@ -18,6 +18,10 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.ext.tables.TableTheme
 
+/**
+ * This class wraps the PdfDocument class and provides methods to write
+ * text and markdown to a PDF file.
+ */
 class PdfWriter(
     val pdfDocument: PdfDocument,
     val margin: Float,
@@ -33,15 +37,19 @@ class PdfWriter(
     private var maxWidth: Float
     private var yAxis: Float = margin
 
+    // Initialize the PdfWriter
     init {
         currentPage = pdfDocument.startPage(pageInfo)
         canvas = currentPage.canvas
 
-        maxWidth = pageWidth - (2 * margin)
+        // maxWidth = pageWidth - (2 * margin)
+        maxWidth = pageWidth.toFloat()
 
         renderHeader()
     }
 
+    // Render the header of the PDF file
+    // This includes the title and the time of export
     private fun renderHeader() {
         val paint = TextPaint()
         paint.isFakeBoldText = true
@@ -58,6 +66,7 @@ class PdfWriter(
         addPadding(10f)
     }
 
+    // Starts a new page in the PDF file
     private fun startNextPage() {
         pdfDocument.finishPage(currentPage)
 
@@ -69,6 +78,10 @@ class PdfWriter(
         yAxis = margin
     }
 
+    // Write text to the PDF file
+    //
+    // This method will automatically start a new page if the text
+    // exceeds the page height
     fun write(text: String, paint: TextPaint) {
         val staticLayout: StaticLayout = StaticLayout.Builder.obtain(
             text,
@@ -92,6 +105,15 @@ class PdfWriter(
         yAxis += staticLayout.height
     }
 
+    // Write markdown to the PDF file
+    //
+    // This method will automatically start a new page if the text
+    // exceeds the page height
+    // Limitations:
+    // - Tables have limited support
+    //   - Tables are not rendered properly
+    //   - All Columns have the same width
+    //   - No multi-line support - leads to overwriting of text
     fun writeMarkdown(
         markdown: String,
         paint: TextPaint,
@@ -147,10 +169,12 @@ class PdfWriter(
         yAxis += newHeight
     }
 
+    // Add padding to the PDF file
     fun addPadding(padding: Float) {
         yAxis += padding
     }
 
+    // Finish the PDF file and return the PdfDocument
     fun finish(): PdfDocument {
         pdfDocument.finishPage(currentPage)
         return pdfDocument

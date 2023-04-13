@@ -21,11 +21,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
 
+/**
+ * This class contains methods to export chat data to a file
+ */
 class FileUtils {
 
     companion object {
         private const val TAG = "FileManagementService"
 
+        // Share a URI with other apps on the device
         private fun shareUri(
             context: Context,
             uri: Uri,
@@ -58,6 +62,7 @@ class FileUtils {
                         )
                     )
                 } else {
+                    // Deprecated in API 33
                     context.packageManager.queryIntentActivities(
                         chooser,
                         PackageManager.MATCH_DEFAULT_ONLY
@@ -76,6 +81,8 @@ class FileUtils {
             context.startActivity(chooser)
         }
 
+        // Export a chat as a PDF file
+        // Constructs a PDF file using the PdfWriter class
         fun exportChatAsPdf(
             title: String = "ChatExport",
             chatInfo: ExportedChat,
@@ -187,6 +194,8 @@ class FileUtils {
             shareUri(context, pdfUri, "application/pdf", title)
         }
 
+        // Export a chat as a JSON file
+        // Constructs a JSON string using the Gson library
         fun exportChatAsJson(
             title: String = "ChatExport",
             jsonString: String,
