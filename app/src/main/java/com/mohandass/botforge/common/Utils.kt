@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.mohandass.botforge.BuildConfig
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.text.SimpleDateFormat
 
 /**
  * A class that contains utility functions
@@ -56,6 +57,11 @@ class Utils {
         // Checks if a string contains markdown
         fun containsMarkdown(string: String): Boolean {
             return markdownRegex.containsMatchIn(string)
+        }
+
+        fun formatTimeLong(time: Long = System.currentTimeMillis()): String {
+            val format = SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a z")
+             return format.format(time)
         }
 
         // Randomly generates an emoji

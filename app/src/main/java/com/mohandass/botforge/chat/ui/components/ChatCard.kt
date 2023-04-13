@@ -179,7 +179,7 @@ fun ChatCard(
 
                     IconButton(onClick = onExport) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_data_object_24),
+                            painter = painterResource(id = R.drawable.baseline_document_scanner_24),
                             contentDescription = stringResource(id = R.string.export_chat_cd),
                             modifier = Modifier
                                 .size(20.dp),

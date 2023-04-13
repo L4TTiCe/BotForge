@@ -8,173 +8,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
-import android.text.Layout
-import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.core.content.FileProvider
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Role
+import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
-import io.noties.markwon.Markwon
-import io.noties.markwon.ext.tables.TablePlugin
-import io.noties.markwon.ext.tables.TableTheme
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
-import java.text.SimpleDateFormat
 
-
-class PdfWriter(
-    val pdfDocument: PdfDocument,
-    val margin: Float,
-    val pageWidth: Int,
-    val pageHeight: Int,
-) {
-    private val TAG = "PdfConfig"
-    private var pageNumber: Int = 1
-    private var pageInfo: PdfDocument.PageInfo =
-        PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
-    private var currentPage: PdfDocument.Page
-    private var canvas: Canvas
-    private var maxWidth: Float
-    private var yAxis: Float = margin
-
-    init {
-        currentPage = pdfDocument.startPage(pageInfo)
-        canvas = currentPage.canvas
-
-        maxWidth = pageWidth - (2 * margin)
-
-        renderHeader()
-    }
-
-    private fun renderHeader() {
-        val paint = TextPaint()
-        paint.isFakeBoldText = true
-        paint.color = Color.BLACK
-        paint.alpha = 200
-        paint.textSize = 14f
-
-        var text = "Exported Chat"
-        write(text, paint)
-
-        val format = SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a z")
-        text = "Time: ${format.format(System.currentTimeMillis())}"
-        write(text, paint)
-
-        addPadding(10f)
-    }
-
-    private fun startNextPage() {
-        pdfDocument.finishPage(currentPage)
-
-        val pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber + 1).create()
-        currentPage = pdfDocument.startPage(pageInfo)
-        canvas = currentPage.canvas
-
-        pageNumber += 1
-        yAxis = margin
-    }
-
-    fun write(text: String, paint: TextPaint) {
-        val staticLayout: StaticLayout = StaticLayout.Builder.obtain(
-            text,
-            0,
-            text.length,
-            paint,
-            maxWidth.toInt()
-        )
-            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
-            .build()
-
-        if (yAxis + staticLayout.height > pageHeight) {
-            startNextPage()
-        }
-
-        canvas.save()
-        canvas.translate(margin, yAxis) // position the text
-        staticLayout.draw(canvas)
-        canvas.restore()
-
-        yAxis += staticLayout.height
-    }
-
-    fun writeMarkdown(
-        markdown: String,
-        paint: TextPaint,
-        context: Context
-    ) {
-
-        val tableTheme = TableTheme.Builder()
-            .tableBorderColor(Color.BLACK)
-            .tableBorderWidth(0)
-            .tableCellPadding(0)
-            .build()
-
-        val markwon: Markwon =  Markwon.builder(context)
-            .usePlugin(TablePlugin.create(tableTheme))
-            .build()
-        val spanned = markwon.toMarkdown(markdown)
-
-        val staticLayout: StaticLayout = StaticLayout.Builder.obtain(
-            spanned,
-            0,
-            spanned.length,
-            paint,
-            maxWidth.toInt()
-        )
-            .setAlignment(Layout.Alignment.ALIGN_NORMAL)
-            .build()
-
-        if (yAxis + staticLayout.height > pageHeight) {
-            startNextPage()
-        }
-
-        canvas.save()
-        canvas.translate(margin, yAxis) // position the text
-        staticLayout.draw(canvas)
-        canvas.restore()
-
-        yAxis += staticLayout.height
-    }
-
-    fun writeImage(bitmap: Bitmap) {
-        val imageWidth = bitmap.width
-        val imageHeight = bitmap.height
-
-        val ratio = imageWidth.toFloat() / imageHeight.toFloat()
-        val newHeight = maxWidth / ratio
-
-        if (yAxis + newHeight > pageHeight) {
-            startNextPage()
-        }
-
-        canvas.drawBitmap(bitmap, margin, yAxis, Paint())
-
-        yAxis += newHeight
-    }
-
-    fun addPadding(padding: Float) {
-        yAxis += padding
-    }
-
-    fun finish(): PdfDocument {
-        pdfDocument.finishPage(currentPage)
-        return pdfDocument
-    }
-}
-
-class FileManagementService {
+class FileUtils {
 
     companion object {
         private const val TAG = "FileManagementService"
+
         private fun shareUri(
             context: Context,
             uri: Uri,
@@ -232,9 +83,17 @@ class FileManagementService {
         ) {
             val pdfDocument = PdfDocument()
 
+            val textSize = 14f
+            val headingSize = 18f
+
             val messagePaint = TextPaint()
-            messagePaint.textSize = 14f
+            messagePaint.textSize = textSize
             messagePaint.isAntiAlias = true
+
+            val headingPaint = TextPaint()
+            headingPaint.textSize = headingSize
+            headingPaint.isFakeBoldText = true
+
 
             val rolePaint = TextPaint()
             rolePaint.isFakeBoldText = true
@@ -245,6 +104,22 @@ class FileManagementService {
                 pageWidth = 595,
                 pageHeight = 842,
             )
+
+            if (chatInfo.chatInfo != null) {
+                pdfWriter.write("Chat Details", headingPaint)
+
+                pdfWriter.write("Title: ${chatInfo.chatInfo.name}", messagePaint)
+                pdfWriter.write(
+                    "Saved at: ${Utils.formatTimeLong(chatInfo.chatInfo.savedAt)}",
+                    messagePaint)
+                pdfWriter.write("Messages Count: ${chatInfo.messages.size}", messagePaint)
+
+                pdfWriter.addPadding(16f)
+            }
+
+            pdfWriter.write("Message Log", headingPaint)
+
+            pdfWriter.addPadding(16f)
 
             for (message in chatInfo.messages) {
                 rolePaint.color = when (message.role) {

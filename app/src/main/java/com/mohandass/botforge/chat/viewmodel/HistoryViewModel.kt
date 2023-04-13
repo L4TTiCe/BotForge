@@ -17,7 +17,7 @@ import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.common.services.FileManagementService
+import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import kotlinx.coroutines.Job
@@ -115,9 +115,9 @@ class HistoryViewModel(
                 messages = messages
             )
 
-            FileManagementService.exportChatAsJson(
-                title = chat!!.name,
-                jsonString = data.toPrettyJson(),
+            FileUtils.exportChatAsPdf(
+                title = chat?.name ?: "ChatExport",
+                chatInfo = data,
                 context = context
             )
         }

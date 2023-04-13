@@ -21,7 +21,7 @@ import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.services.FileManagementService
+import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
@@ -305,7 +305,7 @@ class ChatViewModel @Inject constructor(
             messages = messages
         )
 
-        FileManagementService.exportChatAsPdf(
+        FileUtils.exportChatAsPdf(
             chatInfo = data,
             context = context
         )
@@ -319,7 +319,7 @@ class ChatViewModel @Inject constructor(
             messages = messages
         )
 
-        FileManagementService.exportChatAsJson(
+        FileUtils.exportChatAsJson(
             jsonString = data.toPrettyJson(),
             context = context
         )
