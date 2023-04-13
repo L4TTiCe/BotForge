@@ -86,6 +86,10 @@ fun PersonaListUi(
                 }
 
                 item {
+                    if (personas.isNotEmpty()) {
+                        return@item
+                    }
+                    Spacer(modifier = Modifier.height(0.15.adh))
                     ImageWithMessage(
                         visible = personas.isEmpty(),
                         painter = painterResource(id = R.drawable.empty_box),

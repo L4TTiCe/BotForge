@@ -4,6 +4,7 @@
 
 package com.mohandass.botforge.chat.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -14,14 +15,16 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
+import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.FileUtils
+import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
-import com.mohandass.botforge.common.Utils
-import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -270,12 +273,63 @@ class ChatViewModel @Inject constructor(
         _chatName.value = name
     }
 
+    private fun getAllMessages(includeSystemMessage: Boolean = true): List<Message> {
+        val messages = mutableListOf<Message>()
+
+        if (includeSystemMessage) {
+            val personaSystemMessage = viewModel.persona.personaSystemMessage.value
+
+            if (personaSystemMessage != "") {
+                val systemMessage = Message(
+                        text = personaSystemMessage,
+                        role = Role.SYSTEM
+                    )
+                messages.add(systemMessage)
+            }
+        }
+
+        for (message in _activeChat.value) {
+            if (message.text != "") {
+                messages.add(message)
+            }
+        }
+
+        return messages
+    }
+
+    fun exportAsPdf(context: Context) {
+        val messages = getAllMessages()
+
+        val data = ExportedChat(
+            messageCount = messages.size,
+            messages = messages
+        )
+
+        FileUtils.exportChatAsPdf(
+            chatInfo = data,
+            context = context
+        )
+    }
+
+    fun exportChatAsJson(context: Context) {
+        val messages = getAllMessages()
+
+        val data = ExportedChat(
+            messageCount = messages.size,
+            messages = messages
+        )
+
+        FileUtils.exportChatAsJson(
+            jsonString = data.toPrettyJson(),
+            context = context
+        )
+    }
+
     // Saves the current chat to the database
     @AddTrace(name = "saveChat", enabled = true)
     fun saveChat() {
         val personaSelected = viewModel.persona.selectedPersona.value
-        val personaSystemMessage = viewModel.persona.personaSystemMessage.value
-        val messages = mutableListOf<Message>()
+        val messages = getAllMessages()
 
         val chat = Chat(
             uuid = UUID.randomUUID().toString(),
@@ -287,22 +341,6 @@ class ChatViewModel @Inject constructor(
                 personaSelected
             }
         )
-
-        if (personaSystemMessage != "") {
-            val systemMessage = Message(
-                text = personaSystemMessage,
-                role = Role.SYSTEM,
-            )
-            logger.logVerbose(TAG, "saveChat() systemMessage: $systemMessage")
-            messages.add(systemMessage)
-        }
-
-        for (message in _activeChat.value) {
-            logger.logVerbose(TAG, "saveChat() message: $message")
-            if (message.text != "") {
-                messages.add(message)
-            }
-        }
 
         viewModelScope.launch {
             chatService.saveChat(chat, messages)

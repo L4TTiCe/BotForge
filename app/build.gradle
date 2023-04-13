@@ -167,6 +167,9 @@ dependencies {
     // Compose Markdown
     implementation "com.github.jeziellago:compose-markdown:$compose_markdown_version"
     implementation("io.coil-kt:coil-compose:$coil_version")
+
+    implementation "io.noties.markwon:core:${markwon_version}"
+    implementation group: 'io.noties.markwon', name: 'ext-tables', version: '4.6.2'
 }
 
 // Dependency Injection with Hilt

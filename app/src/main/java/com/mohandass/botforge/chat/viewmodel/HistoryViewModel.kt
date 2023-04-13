@@ -4,6 +4,7 @@
 
 package com.mohandass.botforge.chat.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,10 +14,12 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
+import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -99,6 +102,25 @@ class HistoryViewModel(
             viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
 
+    }
+
+    fun exportChat(chatUUID: String, context: Context) {
+        viewModelScope.launch {
+            val chat = _chats.find { it.uuid == chatUUID }
+            val messages: List<Message> = chatService.getMessagesFromChat(chatUUID)
+
+            val data = ExportedChat(
+                chatInfo = chat,
+                messageCount = messages.size,
+                messages = messages
+            )
+
+            FileUtils.exportChatAsPdf(
+                title = chat?.name ?: "ChatExport",
+                chatInfo = data,
+                context = context
+            )
+        }
     }
 
     fun getMessagesCount(chatUUID: String, onSuccess: (Int) -> Unit) {
