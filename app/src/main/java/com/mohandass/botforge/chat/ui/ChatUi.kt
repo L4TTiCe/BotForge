@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -25,7 +26,7 @@ import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.chat.CustomisePersona
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.chat.headers.CustomisePersonaHeader
-import com.mohandass.botforge.chat.ui.components.chat.headers.MessagesHeader
+import com.mohandass.botforge.chat.ui.components.header.MessagesHeader
 import com.mohandass.botforge.chat.ui.components.chat.headers.PersonaChatHeader
 import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
@@ -46,11 +47,12 @@ import com.slaviboy.composeunits.adh
 fun ChatUi(viewModel: AppViewModel) {
     val listState = rememberLazyListState()
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val hapticFeedback = LocalHapticFeedback.current
 
     val expandCustomizePersona by viewModel.persona.expandCustomizePersona
-
-    val hapticFeedback = LocalHapticFeedback.current
 
     val personaName by viewModel.persona.personaName
     val personaSystemMessage by viewModel.persona.personaSystemMessage
@@ -260,6 +262,12 @@ fun ChatUi(viewModel: AppViewModel) {
 
                 item {
                     MessagesHeader(
+                        onPdfExport = {
+                            viewModel.chat.exportAsPdf(context)
+                        },
+                        onExportClick = {
+                            viewModel.chat.exportChatAsJson(context)
+                        },
                         onBookmarkClick = {
                             viewModel.chat.updateSaveChatDialogState(true)
                         },

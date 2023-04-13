@@ -11,4 +11,8 @@
     <color name="orange">#F7AA36</color>
     <color name="teal">#11C6DF</color>
     <color name="logoBorder">#251822</color>
+
+    <color name="primary">#FF006876</color>
+    <color name="secondary">#FF5954A8</color>
+    <color name="tertiary">#FF8E4E00</color>
 </resources>

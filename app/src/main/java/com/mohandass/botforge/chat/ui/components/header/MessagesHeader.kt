@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.chat.headers
+package com.mohandass.botforge.chat.ui.components.header
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -18,6 +18,8 @@ import com.slaviboy.composeunits.dw
 
 @Composable
 fun MessagesHeader(
+    onPdfExport: () -> Unit = {},
+    onExportClick: () -> Unit = {},
     onBookmarkClick: () -> Unit = {},
     onClearAllClick: () -> Unit = {},
 ) {
@@ -32,6 +34,30 @@ fun MessagesHeader(
         )
 
         Spacer(modifier = Modifier.weight(1f))
+
+        IconButton(
+            onClick = onPdfExport,
+        ) {
+            Icon(
+                painter = painterResource(
+                    id = R.drawable.baseline_document_scanner_24
+                ),
+                contentDescription = stringResource(id = R.string.export_chat_cd),
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+        IconButton(
+            onClick = onExportClick,
+        ) {
+            Icon(
+                painter = painterResource(
+                    id = R.drawable.baseline_data_object_24
+                ),
+                contentDescription = stringResource(id = R.string.export_chat_cd),
+                modifier = Modifier.size(24.dp)
+            )
+        }
 
         IconButton(
             onClick = onBookmarkClick,
@@ -65,7 +91,7 @@ fun MessagesHeader(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun MessagesHeaderPreview() {
     MessagesHeader()

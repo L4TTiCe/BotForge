@@ -10,6 +10,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatRole
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import com.mohandass.botforge.R
 
 /**
@@ -150,5 +153,20 @@ class Role(val ordinal: Int) {
 
     override fun toString(): String {
         return values.entries.find { it.value == this }?.key ?: "Unknown"
+    }
+}
+
+// A custom type adapter for Role class
+class RoleAdapter : TypeAdapter<Role>() {
+
+    override fun write(out: JsonWriter, value: Role) {
+        // Write the role name as a string
+        out.value(value.toString())
+    }
+
+    override fun read(`in`: JsonReader): Role {
+        // Read the role name as a string and return the corresponding Role object
+        val name = `in`.nextString()
+        return Role.valueOf(name) ?: Role.USER // default to USER if unknown
     }
 }
