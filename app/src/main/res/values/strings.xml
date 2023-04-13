@@ -305,6 +305,11 @@
     <string name="user_generated_content_message">Allow bots from the community to be displayed in the app</string>
     <string name="get_started">Get Started</string>
 
+    <!--    Export JSON  -->
+    <string name="export">Export</string>
+    <string name="export_chat_cd">Export chat</string>
+    <string name="export_dir_create_failed">Export directory creation failed.</string>
+
     <string name="save_persona_dialog_title">Name your Chat</string>
     <string name="save_persona_dialog_chat_title">Chat Title</string>
 

@@ -33,6 +33,7 @@ fun ChatCard(
     getMessage: ((Int) -> Unit) -> Unit,
     onClick: () -> Unit,
     onDelete: () -> Unit,
+    onExport: () -> Unit,
 ) {
     var messageCount by remember { mutableStateOf(initialMessageCount) }
 
@@ -176,6 +177,16 @@ fun ChatCard(
                         tint = MaterialTheme.colorScheme.onSurface
                     )
 
+                    IconButton(onClick = onExport) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_data_object_24),
+                            contentDescription = stringResource(id = R.string.export_chat_cd),
+                            modifier = Modifier
+                                .size(20.dp),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
                     Spacer(modifier = Modifier.weight(1f))
 
                     // Time since saved
@@ -203,6 +214,7 @@ fun ChatCardPreview() {
         initialMessageCount = 12,
         getMessage = {},
         onClick = {},
-        onDelete = {}
+        onDelete = {},
+        onExport = {}
     )
 }
