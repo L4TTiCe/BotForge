@@ -42,8 +42,7 @@ class PdfWriter(
         currentPage = pdfDocument.startPage(pageInfo)
         canvas = currentPage.canvas
 
-        // maxWidth = pageWidth - (2 * margin)
-        maxWidth = pageWidth.toFloat()
+        maxWidth = (pageWidth - (1.5 * margin)).toFloat()
 
         renderHeader()
     }
