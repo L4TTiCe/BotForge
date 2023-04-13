@@ -43,8 +43,8 @@ android {
         applicationId "com.mohandass.botforge"
         minSdk 28
         targetSdk 33
-        versionCode 24
-        versionName "1.2.4"
+        versionCode 25
+        versionName "1.2.5"
 
         vectorDrawables {
             useSupportLibrary true
