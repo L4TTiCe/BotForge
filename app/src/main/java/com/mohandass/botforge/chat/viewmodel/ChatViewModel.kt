@@ -15,7 +15,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
-import com.mohandass.botforge.chat.model.ExportedChatJson
+import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.services.OpenAiService
@@ -297,10 +297,24 @@ class ChatViewModel @Inject constructor(
         return messages
     }
 
-    fun exportChat(context: Context) {
+    fun exportAsPdf(context: Context) {
         val messages = getAllMessages()
 
-        val data = ExportedChatJson(
+        val data = ExportedChat(
+            messageCount = messages.size,
+            messages = messages
+        )
+
+        FileManagementService.exportChatAsPdf(
+            chatInfo = data,
+            context = context
+        )
+    }
+
+    fun exportChatAsJson(context: Context) {
+        val messages = getAllMessages()
+
+        val data = ExportedChat(
             messageCount = messages.size,
             messages = messages
         )

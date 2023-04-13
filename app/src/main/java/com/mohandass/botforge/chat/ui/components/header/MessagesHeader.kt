@@ -18,6 +18,7 @@ import com.slaviboy.composeunits.dw
 
 @Composable
 fun MessagesHeader(
+    onPdfExport: () -> Unit = {},
     onExportClick: () -> Unit = {},
     onBookmarkClick: () -> Unit = {},
     onClearAllClick: () -> Unit = {},
@@ -33,6 +34,18 @@ fun MessagesHeader(
         )
 
         Spacer(modifier = Modifier.weight(1f))
+
+        IconButton(
+            onClick = onPdfExport,
+        ) {
+            Icon(
+                painter = painterResource(
+                    id = R.drawable.baseline_document_scanner_24
+                ),
+                contentDescription = stringResource(id = R.string.export_chat_cd),
+                modifier = Modifier.size(24.dp)
+            )
+        }
 
         IconButton(
             onClick = onExportClick,

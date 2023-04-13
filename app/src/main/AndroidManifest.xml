@@ -43,6 +43,10 @@
         </intent>
         <intent>
             <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="plain/pdf" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
             <data android:mimeType="plain/text" />
         </intent>
     </queries>

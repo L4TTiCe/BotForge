@@ -6,7 +6,7 @@ package com.mohandass.botforge.chat.model
 
 import com.google.gson.GsonBuilder
 
-data class ExportedChatJson(
+data class ExportedChat(
     val timestamp: Long = System.currentTimeMillis(),
     val chatInfo: Chat? = null,
     val messageCount: Int,

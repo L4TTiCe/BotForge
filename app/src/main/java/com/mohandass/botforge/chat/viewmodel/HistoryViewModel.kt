@@ -14,7 +14,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
-import com.mohandass.botforge.chat.model.ExportedChatJson
+import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.services.FileManagementService
@@ -109,14 +109,14 @@ class HistoryViewModel(
             val chat = _chats.find { it.uuid == chatUUID }
             val messages: List<Message> = chatService.getMessagesFromChat(chatUUID)
 
-            val data = ExportedChatJson(
+            val data = ExportedChat(
                 chatInfo = chat,
                 messageCount = messages.size,
                 messages = messages
             )
 
             FileManagementService.exportChatAsJson(
-                title = chat?.name,
+                title = chat!!.name,
                 jsonString = data.toPrettyJson(),
                 context = context
             )

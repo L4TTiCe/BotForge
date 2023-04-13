@@ -262,8 +262,11 @@ fun ChatUi(viewModel: AppViewModel) {
 
                 item {
                     MessagesHeader(
+                        onPdfExport = {
+                            viewModel.chat.exportAsPdf(context)
+                        },
                         onExportClick = {
-                            viewModel.chat.exportChat(context)
+                            viewModel.chat.exportChatAsJson(context)
                         },
                         onBookmarkClick = {
                             viewModel.chat.updateSaveChatDialogState(true)
