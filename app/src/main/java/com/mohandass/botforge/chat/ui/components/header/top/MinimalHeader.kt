@@ -76,7 +76,7 @@ fun MinimalHeader(
                 )
             }
 
-            DefaultDropdownMenu(modifier, viewModel)
+            DefaultDropdownMenu(viewModel)
         }
     }
 }
