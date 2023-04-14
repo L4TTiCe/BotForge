@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.common.services
 
 import com.mohandass.botforge.settings.model.PreferredTheme
@@ -14,6 +18,7 @@ interface Analytics {
     fun logIsShakeToClearEnabled(boolean: Boolean)
     fun logShakeToClearSensitivity(sensitivity: Float)
 
+    fun logIsAnalyticsEnabled(boolean: Boolean)
     fun logIsUgcEnabled(boolean: Boolean)
     fun logCommunitySyncWithRemote(timestamp: Long)
     fun logBotSharedWithCommunity()
@@ -32,6 +37,7 @@ interface Analytics {
         const val IS_SHAKE_TO_CLEAR_ENABLED = "is_shake_to_clear_enabled"
         const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
 
+        const val IS_ANALYTICS_ENABLED = "is_analytics_enabled"
         const val IS_UGC_ENABLED = "is_ugc_enabled"
         const val COMMUNITY_SYNC_WITH_REMOTE = "community_sync_with_remote"
         const val BOT_SHARED_WITH_COMMUNITY = "bot_shared_with_community"

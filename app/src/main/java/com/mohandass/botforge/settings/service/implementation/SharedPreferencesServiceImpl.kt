@@ -8,11 +8,6 @@ import android.content.Context
 import androidx.core.content.edit
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
-private const val USER_PREFERENCES_NAME = "user_preferences"
-private const val API_KEY = "open_ai_api_key"
-private const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
-private const val ON_BOARDING_COMPLETED = "on_boarding_completed"
-
 /**
  * Implementation of the SharedPreferencesService
  *
@@ -23,7 +18,7 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
     SharedPreferencesService {
 
     private val sharedPreferences =
-        context.applicationContext.getSharedPreferences(USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        context.applicationContext.getSharedPreferences(SharedPreferencesService.USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     override fun getApiKey(): String {
         return _apiKey
@@ -31,13 +26,13 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
 
     private val _apiKey: String
         get() {
-            val order = sharedPreferences.getString(API_KEY, "")
+            val order = sharedPreferences.getString(SharedPreferencesService.API_KEY, "")
             return order ?: ""
         }
 
     override fun setAPIKey(apiKey: String) {
         sharedPreferences.edit {
-            putString(API_KEY, apiKey)
+            putString(SharedPreferencesService.API_KEY, apiKey)
         }
     }
 
@@ -47,24 +42,24 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
 
     private val _usageTokens: Long
         get() {
-            return sharedPreferences.getLong(API_USAGE_AS_TOKENS, 0)
+            return sharedPreferences.getLong(SharedPreferencesService.API_USAGE_AS_TOKENS, 0)
         }
 
     override fun incrementUsageTokens(tokens: Int) {
         sharedPreferences.edit {
-            putLong(API_USAGE_AS_TOKENS, _usageTokens + tokens)
+            putLong(SharedPreferencesService.API_USAGE_AS_TOKENS, _usageTokens + tokens)
         }
     }
 
     override fun resetUsageTokens() {
         sharedPreferences.edit {
-            putLong(API_USAGE_AS_TOKENS, 0)
+            putLong(SharedPreferencesService.API_USAGE_AS_TOKENS, 0)
         }
     }
 
     private val _onBoardingCompleted: Boolean
         get() {
-            return sharedPreferences.getBoolean(ON_BOARDING_COMPLETED, false)
+            return sharedPreferences.getBoolean(SharedPreferencesService.ON_BOARDING_COMPLETED, false)
         }
 
     override fun getOnBoardingCompleted(): Boolean {
@@ -73,7 +68,22 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
 
     override fun setOnBoardingCompleted(value: Boolean) {
         sharedPreferences.edit {
-            putBoolean(ON_BOARDING_COMPLETED, value)
+            putBoolean(SharedPreferencesService.ON_BOARDING_COMPLETED, value)
+        }
+    }
+
+    private val _analyticsOptOut: Boolean
+        get() {
+            return sharedPreferences.getBoolean(SharedPreferencesService.ANALYTICS_OPT_OUT, false)
+        }
+
+    override fun getAnalyticsOptOut(): Boolean {
+        return _analyticsOptOut
+    }
+
+    override fun setAnalyticsOptOut(value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(SharedPreferencesService.ANALYTICS_OPT_OUT, value)
         }
     }
 

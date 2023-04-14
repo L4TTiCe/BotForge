@@ -13,11 +13,11 @@ Files: assets/* app/src/main/ic_launcher-playstore.png app/src/main/res/*/* READ
 Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
 License: MIT
 
-Files: app/build.gradle app/proguard-rules.pro app/src/main/AndroidManifest.xml build.gradle
+Files: app/build.gradle.kts app/proguard-rules.pro app/src/main/AndroidManifest.xml build.gradle.kts
 Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
 License: MIT
 
-Files: gradle/wrapper/* gradle.properties settings.gradle .github/**/*
+Files: gradle/wrapper/* gradle.properties settings.gradle.kts .github/**/*
 Copyright: 2023 Dheshan Mohandass (L4TTiCe) <dheshan@mohandass.com>
 License: MIT
 

@@ -71,6 +71,9 @@ fun SettingsUi(
     val isShakeToClearEnabled = remember {
         mutableStateOf(false)
     }
+    val isAnalyticsEnabled = remember {
+        mutableStateOf(settingsViewModel.isAnalyticsEnabled)
+    }
     var shakeSensitivity by remember { mutableStateOf(0f) }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
@@ -278,6 +281,23 @@ fun SettingsUi(
                 })
             )
         }
+
+        item {
+            SettingsCategory(title = resources().getString(R.string.analytics))
+        }
+        item {
+            SettingsItem(
+                title = resources().getString(R.string.enable_analytics),
+                description = resources().getString(R.string.enable_analytics_message),
+                icon = painterResource(id = R.drawable.outline_analytics_24),
+                switchState = isAnalyticsEnabled,
+                onCheckChange = {
+                    settingsViewModel.setAnalyticsEnabled(it)
+                    isAnalyticsEnabled.value = it
+                }
+            )
+        }
+
         item {
             SettingsCategory(title = resources().getString(R.string.about))
         }

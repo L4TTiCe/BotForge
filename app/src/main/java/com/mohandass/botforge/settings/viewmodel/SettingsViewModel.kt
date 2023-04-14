@@ -114,6 +114,17 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    val isAnalyticsEnabled: Boolean
+        get() = !sharedPreferencesService.getAnalyticsOptOut()
+
+    fun setAnalyticsEnabled(value: Boolean) {
+        logger.log(TAG, "setAnalyticsEnabled() value: $value")
+        viewModelScope.launch {
+            sharedPreferencesService.setAnalyticsOptOut(!value)
+            analytics.logIsAnalyticsEnabled(value)
+        }
+    }
+
     fun regenerateDisplayName() {
         logger.log(TAG, "regenerateDisplayName()")
         viewModelScope.launch {

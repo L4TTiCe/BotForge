@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 Dheshan Mohandass (L4TTiCe)
+//
+// SPDX-License-Identifier: MIT
+
 package com.mohandass.botforge.common.services.implementation
 
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -20,6 +24,12 @@ class FirebaseAnalyticsImpl: Analytics {
 
     override fun logNameChanged() {
         firebaseAnalytics.logEvent(Analytics.NAME_CHANGED) {  }
+    }
+
+    override fun logIsAnalyticsEnabled(boolean: Boolean) {
+        firebaseAnalytics.logEvent(Analytics.IS_ANALYTICS_ENABLED) {
+            param(Analytics.IS_ANALYTICS_ENABLED, boolean.toString())
+        }
     }
 
     override fun logPreferredTheme(theme: PreferredTheme) {

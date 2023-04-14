@@ -11,7 +11,9 @@ import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.LocalDatabase
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.implementation.AndroidLogger
+import com.mohandass.botforge.common.services.implementation.DisabledAnalytics
 import com.mohandass.botforge.common.services.implementation.FirebaseAnalyticsImpl
+import com.mohandass.botforge.settings.service.SharedPreferencesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,8 +43,21 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAnalyticsService(): Analytics {
+    fun provideAnalyticsService(
+        logger: Logger,
+        preferences: SharedPreferencesService
+    ): Analytics {
         // If the user has opted out of analytics, return a dummy implementation
+        if (preferences.getAnalyticsOptOut()) {
+            logger.log(TAG, "No Analytics")
+            return DisabledAnalytics()
+        }
+
+        logger.log(TAG, "Analytics Enabled")
         return FirebaseAnalyticsImpl()
+    }
+
+    companion object {
+        const val TAG = "AppModule"
     }
 }

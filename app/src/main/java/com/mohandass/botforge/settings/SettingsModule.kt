@@ -28,7 +28,7 @@ private val Context.dataStore by preferencesDataStore(
 class SettingsModule {
     @Provides
     @Singleton
-    fun provideDataStore(
+    fun provideSharedPreferences(
         app: Application
     ) = SharedPreferencesServiceImpl.getInstance(app)
 

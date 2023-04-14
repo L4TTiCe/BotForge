@@ -177,6 +177,10 @@
     <string name="enable_ugc">Enable User Generated Content</string>
     <string name="enable_ugc_message">Allow bots from the community to be displayed in the app</string>
 
+    <string name="analytics">Analytics</string>
+    <string name="enable_analytics">Enable Analytics</string>
+    <string name="enable_analytics_message">Helps prioritize features, and improve the app.</string>
+
     <string name="about">About</string>
     <string name="icons_images">Icons and Images</string>
     <string name="icons_images_message">Attributions for icons and images used in the app.</string>
