@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.header
+package com.mohandass.botforge.chat.ui.components.header.top
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,7 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.header.top.DefaultDropdownMenu
+import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
+import com.mohandass.botforge.chat.ui.components.header.modifierWithFadeEdges
 import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adw
 
@@ -80,7 +81,7 @@ fun DefaultHeader(
 
             Spacer(modifier = Modifier.width(0.02.adw))
         } else {
-            DefaultDropdownMenu(modifier, viewModel)
+            DefaultDropdownMenu(viewModel)
         }
 
     }

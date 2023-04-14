@@ -14,9 +14,10 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
@@ -40,6 +41,7 @@ class BrowseViewModel @Inject constructor(
     private val accountService: AccountService,
     private val preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
+    private val analytics: Analytics
 ) : ViewModel() {
     private val _searchQuery = mutableStateOf("")
     val searchQuery: State<String> = _searchQuery
@@ -95,6 +97,7 @@ class BrowseViewModel @Inject constructor(
     // Makes a persona from the bot and adds it to the local database
     fun makePersona(bot: BotE) {
         logger.logVerbose(TAG, "makePersona()")
+        analytics.logCommunityBotDownloaded()
         viewModelScope.launch {
             personaService.addPersona(bot.toPersona())
             viewModel.persona.fetchPersonas()
@@ -137,8 +140,9 @@ class BrowseViewModel @Inject constructor(
     fun syncWithDatabase() {
         val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync
         logger.log(TAG, "syncWithDatabase: lastSyncedAt: $lastSyncedAt")
+        analytics.logCommunitySyncWithRemote(lastSyncedAt!!)
         viewModelScope.launch {
-            val bots = firebaseDatabaseService.fetchBotsUpdatedAfter(lastSyncedAt!!)
+            val bots = firebaseDatabaseService.fetchBotsUpdatedAfter(lastSyncedAt)
             for (bot in bots) {
                 botService.addBot(bot.toBotE())
             }

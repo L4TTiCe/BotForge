@@ -17,6 +17,7 @@ import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -31,6 +32,7 @@ class HistoryViewModel(
     private val chatService: ChatServiceImpl,
     private val viewModel: AppViewModel,
     private val logger: Logger,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val _chats = mutableStateListOf<Chat>()
     val chats = _chats
@@ -120,6 +122,8 @@ class HistoryViewModel(
                 chatInfo = data,
                 context = context
             )
+
+            analytics.logPdfExported()
         }
     }
 

@@ -27,7 +27,7 @@ import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.adw
 
 @Composable
-fun DefaultDropdownMenu(modifier: Modifier = Modifier, viewModel: AppViewModel) {
+fun DefaultDropdownMenu(viewModel: AppViewModel) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
     val openDeleteConfirmationDialog = remember { mutableStateOf(false) }
 

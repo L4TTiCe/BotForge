@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.chat.ui.components.header.top.DefaultHeader
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.slaviboy.composeunits.adh
 
