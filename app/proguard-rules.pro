@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.aallam.openai.** { *; }
+-keep class com.google.android.gms.internal.** { *; }
 
 -keep class com.mohandass.botforge.chat.model.** { *; }
 -keep class com.mohandass.botforge.sync.model.** { *; }

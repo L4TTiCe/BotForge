@@ -22,6 +22,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(System.getenv("ANDROID_KEYSTORE_FILE"))
+            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+            keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+        }
+    }
     namespace = "com.mohandass.botforge"
     compileSdk = 33
 
@@ -50,7 +58,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+            @Suppress("UnstableApiUsage")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
