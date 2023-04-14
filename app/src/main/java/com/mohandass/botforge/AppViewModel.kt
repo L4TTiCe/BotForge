@@ -14,6 +14,7 @@ import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
 import com.mohandass.botforge.chat.viewmodel.*
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -49,6 +50,7 @@ class AppViewModel @Inject constructor(
     firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     firestoreService: FirestoreService,
     val logger: Logger,
+    val analytics: Analytics
 ) : ViewModel() {
 
     // Keep the user preferences as a stream of changes
@@ -89,7 +91,8 @@ class AppViewModel @Inject constructor(
     private val _historyViewModel: HistoryViewModel = HistoryViewModel(
         viewModel = this,
         chatService = chatService,
-        logger = logger
+        logger = logger,
+        analytics = analytics
     )
     val history: HistoryViewModel
         get() = _historyViewModel
@@ -130,7 +133,8 @@ class AppViewModel @Inject constructor(
         viewModel = this,
         chatService = chatService,
         openAiService = openAiService,
-        logger = logger
+        logger = logger,
+        analytics = analytics
     )
     val chat: ChatViewModel
         get() = _chatViewModel
@@ -162,7 +166,8 @@ class AppViewModel @Inject constructor(
         firestoreService = firestoreService,
         accountService = accountService,
         preferencesDataStore = preferencesDataStore,
-        logger = logger
+        logger = logger,
+        analytics = analytics
     )
     val browse: BrowseViewModel
         get() = _browseViewModel
@@ -171,7 +176,8 @@ class AppViewModel @Inject constructor(
         viewModel = this,
         accountService = accountService,
         firebaseDatabaseServiceImpl = firebaseDatabaseServiceImpl,
-        logger = logger
+        logger = logger,
+        analytics = analytics
     )
     val sharePersona: SharePersonaViewModel
         get() = _sharePersonaViewModel

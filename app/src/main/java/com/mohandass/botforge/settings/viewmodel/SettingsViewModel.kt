@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage
 import com.mohandass.botforge.common.services.Logger
@@ -31,6 +32,7 @@ class SettingsViewModel @Inject constructor(
     private val sharedPreferencesService: SharedPreferencesService,
     private val preferencesDataStore: PreferencesDataStore,
     private val logger: Logger,
+    private val analytics: Analytics,
 ) : ViewModel() {
     fun getApiKey(): String = sharedPreferencesService.getApiKey()
 
@@ -60,6 +62,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "updateTheme() preferredTheme: $preferredTheme")
         viewModelScope.launch {
             preferencesDataStore.updateTheme(preferredTheme)
+            analytics.logPreferredTheme(preferredTheme)
         }
     }
 
@@ -67,6 +70,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "updateDynamicColor() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setDynamicColor(value)
+            analytics.logIsDynamicColorEnabled(value)
         }
     }
 
@@ -74,6 +78,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "updatePreferredHeader() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setPreferredHeader(value)
+            analytics.logIsMinimalHeaderEnabled(value == PreferredHeader.MINIMAL_HEADER)
         }
     }
 
@@ -89,6 +94,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "setUserGeneratedContent() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setUserGeneratedContent(value)
+            analytics.logIsUgcEnabled(value)
         }
     }
 
@@ -96,6 +102,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "setShakeToClear() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setShakeToClear(value)
+            analytics.logIsShakeToClearEnabled(value)
         }
     }
 
@@ -103,6 +110,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "setShakeToClearSensitivity() value: $value")
         viewModelScope.launch {
             preferencesDataStore.setShakeToClearSensitivity(value)
+            analytics.logShakeToClearSensitivity(value)
         }
     }
 
@@ -110,6 +118,7 @@ class SettingsViewModel @Inject constructor(
         logger.log(TAG, "regenerateDisplayName()")
         viewModelScope.launch {
             accountService.generateAndSetDisplayName()
+            analytics.logNameChanged()
         }
     }
 
@@ -117,6 +126,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 accountService.linkWithCredential(credential)
+                analytics.logLinkedWithGoogle()
                 SnackbarManager.showMessage(R.string.account_linked)
                 onSuccess()
             } catch (e: Exception) {

@@ -21,6 +21,7 @@ import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -39,6 +40,7 @@ class ChatViewModel @Inject constructor(
     private val openAiService: OpenAiService,
     private val chatService: ChatServiceImpl,
     private val logger: Logger,
+    private val analytics: Analytics,
 ) : ViewModel() {
 
     // Dialog State
@@ -309,6 +311,8 @@ class ChatViewModel @Inject constructor(
             chatInfo = data,
             context = context
         )
+
+        analytics.logPdfExported()
     }
 
     fun exportChatAsJson(context: Context) {
@@ -323,6 +327,8 @@ class ChatViewModel @Inject constructor(
             jsonString = data.toPrettyJson(),
             context = context
         )
+
+        analytics.logJsonExported()
     }
 
     // Saves the current chat to the database

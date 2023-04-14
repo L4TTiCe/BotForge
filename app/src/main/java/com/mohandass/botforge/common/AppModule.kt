@@ -7,9 +7,11 @@ package com.mohandass.botforge.common
 import android.app.Application
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.LocalDatabase
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.implementation.AndroidLogger
+import com.mohandass.botforge.common.services.implementation.FirebaseAnalyticsImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +38,11 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLogger(): Logger = AndroidLogger()
+
+    @Provides
+    @Singleton
+    fun provideAnalyticsService(): Analytics {
+        // If the user has opted out of analytics, return a dummy implementation
+        return FirebaseAnalyticsImpl()
+    }
 }

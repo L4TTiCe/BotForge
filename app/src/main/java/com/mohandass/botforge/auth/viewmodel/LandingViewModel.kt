@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ class LandingViewModel @Inject constructor(
     private val sharedPreferencesService: SharedPreferencesService,
     private val accountService: AccountService,
     private val logger: Logger,
+    private val analytics: Analytics,
 ) : ViewModel() {
 
     fun checkAuthentication(onSuccess: () -> Unit) {
@@ -32,6 +34,7 @@ class LandingViewModel @Inject constructor(
                 logger.logVerbose(TAG, "checkAuthentication() Authenticated")
                 onSuccess()
             }
+            analytics.logAppOpened()
         }
     }
 

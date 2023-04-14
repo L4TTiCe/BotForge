@@ -13,12 +13,14 @@ import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
-import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.sync.model.Bot
 import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -31,6 +33,7 @@ class SharePersonaViewModel @Inject constructor(
     private val accountService: AccountService,
     private val firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     private val logger: Logger,
+    private val analytics: Analytics
 ) : ViewModel() {
 
     val backHandler = {
@@ -96,6 +99,7 @@ class SharePersonaViewModel @Inject constructor(
 
         viewModelScope.launch {
             firebaseDatabaseServiceImpl.writeNewBot(bot)
+            analytics.logBotSharedWithCommunity()
             SnackbarManager.showMessage(R.string.share_persona_success)
             clear()
             backHandler()
