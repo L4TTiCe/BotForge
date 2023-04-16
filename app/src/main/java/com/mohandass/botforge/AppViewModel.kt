@@ -4,6 +4,7 @@
 
 package com.mohandass.botforge
 
+import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -52,6 +53,7 @@ class AppViewModel @Inject constructor(
     val logger: Logger,
     val analytics: Analytics
 ) : ViewModel() {
+    lateinit var resources: Resources
 
     // Keep the user preferences as a stream of changes
     private val userPreferencesFlow = preferencesDataStore.userPreferencesFlow

@@ -80,6 +80,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: AppViewModel = hiltViewModel()
+            viewModel.resources = resources()
+
             BotForgeTheme(viewModel = viewModel) {
                 // A surface container using the 'background' color from the theme
                 Surface(

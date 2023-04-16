@@ -190,6 +190,7 @@ dependencies {
     // Accompanist Navigation Animation
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
 
     // Compose Markdown
     implementation("com.github.jeziellago:compose-markdown:$composeMarkdownVersion")

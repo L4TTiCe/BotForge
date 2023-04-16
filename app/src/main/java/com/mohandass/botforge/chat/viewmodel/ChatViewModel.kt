@@ -117,29 +117,17 @@ class ChatViewModel @Inject constructor(
 
     // Uses the ChatService to request Chat Completion from the OpenAI API
     @AddTrace(name = "getChatCompletion", enabled = true)
-    fun getChatCompletion(onComplete: () -> Unit) {
+    fun getChatCompletion(
+        onComplete: () -> Unit
+    ) {
         logger.log(TAG, "getChatCompletion()")
         setLoading(true)
 
         // Construct the request
-        val messages = mutableListOf<Message>()
-        val personaSystemMessage = viewModel.persona.personaSystemMessage.value
-
-        // If no persona is selected, use the default persona
-        if (personaSystemMessage != "") {
-            messages.add(Message(personaSystemMessage, Role.SYSTEM))
-        } else {
-            messages.add(Message("You are a helpful assistant.", Role.SYSTEM))
-        }
-
-        for (message in _activeChat.value) {
-            if (message.isActive) {
-                messages.add(message)
-                logger.logVerbose(TAG, "getChatCompletion() message: $message")
-            }
-        }
-
-        logger.logVerbose(TAG, "getChatCompletion() messages: $messages")
+        val messages = getAllMessages(
+            includeSystemMessage = true,
+            includeInactiveMessages = false
+        )
 
         job = viewModelScope.launch {
             try {
@@ -275,13 +263,22 @@ class ChatViewModel @Inject constructor(
         _chatName.value = name
     }
 
-    private fun getAllMessages(includeSystemMessage: Boolean = true): List<Message> {
+    private fun getAllMessages(
+        includeSystemMessage: Boolean,
+        includeInactiveMessages: Boolean
+    ): List<Message> {
         val messages = mutableListOf<Message>()
 
         if (includeSystemMessage) {
             val personaSystemMessage = viewModel.persona.personaSystemMessage.value
 
-            if (personaSystemMessage != "") {
+            if (personaSystemMessage == "") {
+                val systemMessage = Message(
+                    text = viewModel.resources.getString(R.string.system_message_default),
+                    role = Role.SYSTEM
+                )
+                messages.add(systemMessage)
+            } else {
                 val systemMessage = Message(
                         text = personaSystemMessage,
                         role = Role.SYSTEM
@@ -292,7 +289,13 @@ class ChatViewModel @Inject constructor(
 
         for (message in _activeChat.value) {
             if (message.text != "") {
-                messages.add(message)
+                if (includeInactiveMessages) {
+                    messages.add(message)
+                } else {
+                    if (message.isActive) {
+                        messages.add(message)
+                    }
+                }
             }
         }
 
@@ -300,7 +303,10 @@ class ChatViewModel @Inject constructor(
     }
 
     fun exportAsPdf(context: Context) {
-        val messages = getAllMessages()
+        val messages = getAllMessages(
+            includeSystemMessage = true,
+            includeInactiveMessages = true
+        )
 
         val data = ExportedChat(
             messageCount = messages.size,
@@ -316,7 +322,10 @@ class ChatViewModel @Inject constructor(
     }
 
     fun exportChatAsJson(context: Context) {
-        val messages = getAllMessages()
+        val messages = getAllMessages(
+            includeSystemMessage = true,
+            includeInactiveMessages = true
+        )
 
         val data = ExportedChat(
             messageCount = messages.size,
@@ -335,7 +344,10 @@ class ChatViewModel @Inject constructor(
     @AddTrace(name = "saveChat", enabled = true)
     fun saveChat() {
         val personaSelected = viewModel.persona.selectedPersona.value
-        val messages = getAllMessages()
+        val messages = getAllMessages(
+            includeSystemMessage = true,
+            includeInactiveMessages = true
+        )
 
         val chat = Chat(
             uuid = UUID.randomUUID().toString(),
@@ -357,6 +369,35 @@ class ChatViewModel @Inject constructor(
                 viewModel.navControllerPersona
                     .navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
             }
+        }
+    }
+
+    // Generates a chat name using API
+    fun generateChatName(
+        onComplete: (String) -> Unit
+    ) {
+        val systemMessageInitial = Message(
+            text = viewModel.resources.getString(R.string.system_message_chat_name_initial),
+            role = Role.SYSTEM
+        )
+
+        val messages = mutableListOf(systemMessageInitial)
+        messages.addAll(
+            getAllMessages(
+                includeSystemMessage = false,
+                includeInactiveMessages = false
+            )
+        )
+
+        val systemMessageFinal = Message(
+            text =viewModel.resources.getString(R.string.system_message_chat_name_final),
+            role = Role.SYSTEM
+        )
+        messages.add(systemMessageFinal)
+
+        viewModelScope.launch {
+            val chatName = openAiService.getChatCompletion(messages)
+            onComplete(chatName.text)
         }
     }
 
