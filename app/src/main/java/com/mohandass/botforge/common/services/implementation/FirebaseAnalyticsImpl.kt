@@ -68,6 +68,12 @@ class FirebaseAnalyticsImpl: Analytics {
         }
     }
 
+    override fun logIsAutoGenerateChatTitleEnabled(boolean: Boolean) {
+        firebaseAnalytics.logEvent(Analytics.IS_AUTO_GENERATE_CHAT_TITLE_ENABLED) {
+            param(Analytics.IS_AUTO_GENERATE_CHAT_TITLE_ENABLED, boolean.toString())
+        }
+    }
+
     override fun logCommunitySyncWithRemote(timestamp: Long) {
         firebaseAnalytics.logEvent(Analytics.COMMUNITY_SYNC_WITH_REMOTE) {
             param(Analytics.COMMUNITY_SYNC_WITH_REMOTE, timestamp)

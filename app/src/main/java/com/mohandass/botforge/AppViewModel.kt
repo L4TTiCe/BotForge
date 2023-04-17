@@ -70,6 +70,7 @@ class AppViewModel @Inject constructor(
             enableUserGeneratedContent = userPreference.enableUserGeneratedContent,
             enableShakeToClear = userPreference.enableShakeToClear,
             shakeToClearSensitivity = userPreference.shakeToClearSensitivity,
+            autoGenerateChatTitle = userPreference.autoGenerateChatTitle
         )
     }
 

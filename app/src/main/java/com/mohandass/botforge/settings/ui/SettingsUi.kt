@@ -74,6 +74,9 @@ fun SettingsUi(
     val isAnalyticsEnabled = remember {
         mutableStateOf(settingsViewModel.isAnalyticsEnabled)
     }
+    val isAutoChatNameEnabled = remember {
+        mutableStateOf(true)
+    }
     var shakeSensitivity by remember { mutableStateOf(0f) }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
@@ -91,6 +94,7 @@ fun SettingsUi(
         isUserGeneratedContentEnabled.value = it.enableUserGeneratedContent
         isShakeToClearEnabled.value = it.enableShakeToClear
         shakeSensitivity = it.shakeToClearSensitivity
+        isAutoChatNameEnabled.value = it.autoGenerateChatTitle
     }
 
     DisposableEffect(
@@ -204,6 +208,16 @@ fun SettingsUi(
             SettingsCategory(title = resources().getString(R.string.chat))
         }
         item {
+            SettingsItem(
+                title = "Auto-Generate Chat Title",
+                description = "Automatically generates Title when saving Chats, uses OpenAI API",
+                icon = painterResource(id = R.drawable.baseline_title_24),
+                switchState = isAutoChatNameEnabled,
+                onCheckChange = {
+                    settingsViewModel.setAutoGenerateChatTitle(it)
+                }
+            )
+
             SettingsItem(
                 title = resources().getString(R.string.enable_shake),
                 description = resources().getString(R.string.enable_shake_message),
