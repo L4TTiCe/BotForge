@@ -127,6 +127,7 @@ fun ChatUi(viewModel: AppViewModel) {
                 viewModel.chat.saveChat()
                 viewModel.chat.updateSaveChatDialogState(false)
             },
+            isAutoGenerateChatNameEnabled = userPreferences?.autoGenerateChatTitle ?: true,
             generateChatName = viewModel.chat::generateChatName
         )
     }

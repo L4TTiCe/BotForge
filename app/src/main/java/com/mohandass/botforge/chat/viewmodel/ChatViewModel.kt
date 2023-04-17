@@ -25,11 +25,13 @@ import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessage
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 /*
@@ -396,8 +398,16 @@ class ChatViewModel @Inject constructor(
         messages.add(systemMessageFinal)
 
         viewModelScope.launch {
-            val chatName = openAiService.getChatCompletion(messages)
-            onComplete(chatName.text)
+            try {
+                val chatName = openAiService.getChatCompletion(messages)
+                onComplete(chatName.text)
+            } catch (e: Exception) {
+                logger.logError(TAG, "Error generating chat name: ${e.message}")
+                onComplete("")
+                SnackbarManager.showMessage(
+                   e.toSnackbarMessage()
+                )
+            }
         }
     }
 

@@ -36,22 +36,28 @@ fun SaveChatDialog(
     generatedChatName: String = "",
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit,
+    isAutoGenerateChatNameEnabled: Boolean = true,
     generateChatName: KFunction1<(String) -> Unit, Unit>
 ) {
     val chatName = remember { mutableStateOf(initialChatName) }
     val generatedName = remember { mutableStateOf(generatedChatName) }
 
     LaunchedEffect(Unit) {
-        generateChatName {
-            generatedName.value = it
+        if (isAutoGenerateChatNameEnabled) {
+            generateChatName {
+                generatedName.value = it
 
-            if (chatName.value.isEmpty() || chatName.value.isBlank()) {
-                chatName.value = it
+                if (chatName.value.isEmpty() || chatName.value.isBlank()) {
+                    chatName.value = it
+                }
             }
         }
     }
 
     AlertDialog(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(320.dp),
         onDismissRequest = onDismiss,
         title = {
             Text(text = stringResource(id = R.string.save_chat_dialog_title))
@@ -61,30 +67,33 @@ fun SaveChatDialog(
                 modifier = Modifier
                     .padding(10.dp)
             ) {
-                Text(
-                    text = stringResource(id = R.string.save_chat_dialog_chat_title_hint),
-                    style = MaterialTheme.typography.labelLarge
-                )
-                Text(
-                    text = generatedName.value,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            chatName.value = generatedName.value
-                        }
-                        .placeholder(
-                            visible = generatedName.value.isEmpty() ||
-                                    generatedName.value.isBlank(),
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
-                            highlight = PlaceholderHighlight.shimmer(),
-                        )
-                )
+                if (isAutoGenerateChatNameEnabled) {
+                    Text(
+                        text = stringResource(id = R.string.save_chat_dialog_chat_title_hint),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Text(
+                        text = generatedName.value,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                chatName.value = generatedName.value
+                            }
+                            .placeholder(
+                                visible = generatedName.value.isEmpty() ||
+                                        generatedName.value.isBlank(),
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                                highlight = PlaceholderHighlight.shimmer(),
+                            )
+                    )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
 
                 OutlinedTextField(
                     value = chatName.value,
+                    singleLine = true,
                     onValueChange = { chatName.value = it },
                     label = {
                         Text(text = stringResource(id = R.string.save_chat_dialog_chat_title))
