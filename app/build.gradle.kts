@@ -29,8 +29,8 @@ android {
         applicationId = "com.mohandass.botforge"
         minSdk = 28
         targetSdk = 33
-        versionCode = 26
-        versionName = "1.2.6"
+        versionCode = 27
+        versionName = "1.2.7"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -181,6 +181,7 @@ dependencies {
     // Accompanist Navigation Animation
     implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-placeholder-material:$accompanistVersion")
 
     // Compose Markdown
     implementation("com.github.jeziellago:compose-markdown:$composeMarkdownVersion")

@@ -52,6 +52,8 @@ class PreferencesDataStoreImpl(
         val SHAKE_TO_CLEAR = booleanPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR)
         val SHAKE_TO_CLEAR_SENSITIVITY =
             floatPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR_SENSITIVITY)
+        val AUTO_GENERATE_CHAT_TITLE =
+            booleanPreferencesKey(PreferencesDataStore.AUTO_GENERATE_CHAT_TITLE)
     }
 
     /**
@@ -133,6 +135,13 @@ class PreferencesDataStoreImpl(
         }
     }
 
+    override suspend fun setAutoGenerateChatTitle(newValue: Boolean) {
+        logger.logVerbose(TAG, "setAutoGenerateChatTitle() newValue: $newValue")
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.AUTO_GENERATE_CHAT_TITLE] = newValue
+        }
+    }
+
     override suspend fun fetchInitialPreferences() =
         mapUserPreferences(dataStore.data.first().toPreferences())
 
@@ -156,6 +165,7 @@ class PreferencesDataStoreImpl(
         val enableUserGeneratedContent = preferences[PreferencesKeys.USER_GENERATED_CONTENT] ?: true
         val enableShakeToClear = preferences[PreferencesKeys.SHAKE_TO_CLEAR] ?: false
         val shakeToClearSensitivity = preferences[PreferencesKeys.SHAKE_TO_CLEAR_SENSITIVITY] ?: 0f
+        val autoGenerateChatTitle = preferences[PreferencesKeys.AUTO_GENERATE_CHAT_TITLE] ?: true
 
         return UserPreferences(
             preferredTheme = preferredTheme,
@@ -165,7 +175,8 @@ class PreferencesDataStoreImpl(
             enableUserGeneratedContent = enableUserGeneratedContent,
             enableShakeToClear = enableShakeToClear,
             shakeToClearSensitivity = shakeToClearSensitivity,
-            lastModerationIndexProcessed = lastModerationIndexProcessed
+            lastModerationIndexProcessed = lastModerationIndexProcessed,
+            autoGenerateChatTitle = autoGenerateChatTitle
         )
     }
 

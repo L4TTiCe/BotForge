@@ -125,6 +125,14 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setAutoGenerateChatTitle(value: Boolean) {
+        logger.log(TAG, "setAutoGenerateChatTitle() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setAutoGenerateChatTitle(value)
+            analytics.logIsAutoGenerateChatTitleEnabled(value)
+        }
+    }
+
     fun regenerateDisplayName() {
         logger.log(TAG, "regenerateDisplayName()")
         viewModelScope.launch {

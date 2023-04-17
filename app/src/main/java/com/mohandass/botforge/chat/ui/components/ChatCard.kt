@@ -108,7 +108,10 @@ fun ChatCard(
 
                 Row {
                     // Chat name and persona name
-                    Column {
+                    Column(
+                        modifier = Modifier
+                            .weight(0.8f)
+                    ) {
                         Text(
                             text = chat.name,
                             style = MaterialTheme.typography.titleMedium
@@ -139,10 +142,10 @@ fun ChatCard(
                         }
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     // Delete button
                     IconButton(
+                        modifier = Modifier
+                            .weight(0.2f),
                         onClick = onDelete
                     ) {
                         Icon(

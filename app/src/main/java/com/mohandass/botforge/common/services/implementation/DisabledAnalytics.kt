@@ -48,6 +48,10 @@ class DisabledAnalytics: Analytics {
         // Do nothing
     }
 
+    override fun logIsAutoGenerateChatTitleEnabled(boolean: Boolean) {
+        // Do nothing
+    }
+
     override fun logCommunitySyncWithRemote(timestamp: Long) {
         // Do nothing
     }

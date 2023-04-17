@@ -30,6 +30,7 @@ interface PreferencesDataStore {
     suspend fun setShakeToClear(newValue: Boolean)
     suspend fun setShakeToClearSensitivity(newValue: Float)
     suspend fun setLastModerationIndexProcessed(newValue: Int)
+    suspend fun setAutoGenerateChatTitle(newValue: Boolean)
 
     companion object {
         const val PREFERENCES_NAME = "botforge_preferences"
@@ -41,5 +42,6 @@ interface PreferencesDataStore {
         const val SHAKE_TO_CLEAR = "shake_to_clear"
         const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
         const val LAST_MODERATION_INDEX_PROCESSED = "last_moderation_index_processed"
+        const val AUTO_GENERATE_CHAT_TITLE = "auto_generate_chat_title"
     }
 }

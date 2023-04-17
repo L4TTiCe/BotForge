@@ -20,6 +20,7 @@ interface Analytics {
 
     fun logIsAnalyticsEnabled(boolean: Boolean)
     fun logIsUgcEnabled(boolean: Boolean)
+    fun logIsAutoGenerateChatTitleEnabled(boolean: Boolean)
     fun logCommunitySyncWithRemote(timestamp: Long)
     fun logBotSharedWithCommunity()
     fun logCommunityBotDownloaded()
@@ -39,6 +40,7 @@ interface Analytics {
 
         const val IS_ANALYTICS_ENABLED = "is_analytics_enabled"
         const val IS_UGC_ENABLED = "is_ugc_enabled"
+        const val IS_AUTO_GENERATE_CHAT_TITLE_ENABLED = "is_auto_generate_chat_title_enabled"
         const val COMMUNITY_SYNC_WITH_REMOTE = "community_sync_with_remote"
         const val BOT_SHARED_WITH_COMMUNITY = "bot_shared_with_community"
         const val COMMUNITY_BOT_DOWNLOADED = "community_bot_downloaded"

@@ -30,7 +30,7 @@ import com.mohandass.botforge.chat.ui.components.header.MessagesHeader
 import com.mohandass.botforge.chat.ui.components.chat.headers.PersonaChatHeader
 import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
-import com.mohandass.botforge.chat.ui.components.dialogs.SavePersonaDialog
+import com.mohandass.botforge.chat.ui.components.dialogs.SaveChatDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -118,7 +118,7 @@ fun ChatUi(viewModel: AppViewModel) {
 
     // Asks for chat name to save
     if (openSaveChatDialog) {
-        SavePersonaDialog(
+        SaveChatDialog(
             onDismiss = {
                 viewModel.chat.updateSaveChatDialogState(false)
             },
@@ -126,7 +126,9 @@ fun ChatUi(viewModel: AppViewModel) {
                 viewModel.chat.updateChatName(it)
                 viewModel.chat.saveChat()
                 viewModel.chat.updateSaveChatDialogState(false)
-            }
+            },
+            isAutoGenerateChatNameEnabled = userPreferences?.autoGenerateChatTitle ?: true,
+            generateChatName = viewModel.chat::generateChatName
         )
     }
 

@@ -77,18 +77,14 @@ class HistoryViewModel(
             viewModel.chat.setMessages(messages)
 
 
-            if (chat?.personaUuid != null) {
-                if (isPersonaDeleted(chat.personaUuid)) {
-                    viewModel.persona.clearSelection()
-                    viewModel.persona.updatePersonaSystemMessage(messages.first().text)
-                    viewModel.chat.setMessages(messages.subList(1, messages.size))
-                } else {
-                    // ignore first message
-                    viewModel.chat.setMessages(messages.subList(1, messages.size))
-                    viewModel.persona.selectPersona(chat.personaUuid)
-                }
-            } else {
+            if (chat?.personaUuid == null || isPersonaDeleted(chat.personaUuid)) {
                 viewModel.persona.clearSelection()
+                viewModel.persona.updatePersonaSystemMessage(messages.first().text)
+                viewModel.chat.setMessages(messages.subList(1, messages.size))
+            } else {
+                // ignore first message
+                viewModel.chat.setMessages(messages.subList(1, messages.size))
+                viewModel.persona.selectPersona(chat.personaUuid)
             }
             onSuccess()
 
