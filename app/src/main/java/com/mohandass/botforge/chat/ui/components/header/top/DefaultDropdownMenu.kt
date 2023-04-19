@@ -107,7 +107,7 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
         )
         DropdownMenuItem(
             onClick = {
-                viewModel.signOut {
+                viewModel.chat.signOut {
                     viewModel.navController.navigate(AppRoutes.Landing.route)
                 }
                 displayOptionsMenu = false

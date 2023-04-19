@@ -14,6 +14,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
@@ -39,6 +40,7 @@ import javax.inject.Inject
  */
 class ChatViewModel @Inject constructor(
     private val viewModel: AppViewModel,
+    private val accountService: AccountService,
     private val openAiService: OpenAiService,
     private val chatService: ChatServiceImpl,
     private val logger: Logger,
@@ -408,6 +410,13 @@ class ChatViewModel @Inject constructor(
                    e.toSnackbarMessage()
                 )
             }
+        }
+    }
+
+    fun signOut(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            accountService.signOut()
+            onSuccess()
         }
     }
 

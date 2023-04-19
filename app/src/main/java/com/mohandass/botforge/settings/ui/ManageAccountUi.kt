@@ -76,7 +76,7 @@ fun ManageAccountUi(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.deleteAccount {
+                    settingsViewModel.deleteAccount {
                         viewModel.navController.navigate(AppRoutes.Landing.route)
                         openDeleteDialog.value = false
                     }
@@ -167,7 +167,7 @@ fun ManageAccountUi(
             description = stringResource(id = R.string.sign_out_message),
             painter = painterResource(id = R.drawable.baseline_logout_24),
         ) {
-            viewModel.signOut {
+            settingsViewModel.signOut {
                 viewModel.navController.navigate(AppRoutes.Landing.route)
             }
         }

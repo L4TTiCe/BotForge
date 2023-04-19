@@ -7,7 +7,6 @@ package com.mohandass.botforge
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.mohandass.botforge.auth.services.AccountService
@@ -22,7 +21,6 @@ import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
-import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.sync.service.BotService
 import com.mohandass.botforge.sync.service.FirestoreService
@@ -30,7 +28,6 @@ import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServic
 import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -43,8 +40,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val accountService: AccountService,
     personaService: PersonaRepository,
+    accountService: AccountService,
     openAiService: OpenAiService,
     chatService: ChatServiceImpl,
     botService: BotService,
@@ -107,6 +104,7 @@ class AppViewModel @Inject constructor(
     private val _chatViewModel = ChatViewModel(
         viewModel = this,
         chatService = chatService,
+        accountService = accountService,
         openAiService = openAiService,
         logger = logger,
         analytics = analytics
@@ -158,30 +156,6 @@ class AppViewModel @Inject constructor(
     val sharePersona: SharePersonaViewModel
         get() = _sharePersonaViewModel
 
-    // Account
-    fun signOut(onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            accountService.signOut()
-            onSuccess()
-        }
-    }
-
-    fun deleteAccount(onSuccess: () -> Unit) {
-        viewModelScope.launch {
-            try {
-                accountService.deleteAccount()
-                SnackbarManager.showMessage(R.string.delete_account_success)
-                onSuccess()
-            } catch (e: Exception) {
-                e.toSnackbarMessageWithAction(R.string.sign_out) {
-                    signOut(onSuccess)
-                }.let { message ->
-                    SnackbarManager.showMessage(message)
-                }
-
-            }
-        }
-    }
 
     companion object {
         private const val TAG = "AppViewModel"
