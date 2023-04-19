@@ -13,7 +13,7 @@ import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
-import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class BrowseViewModel @Inject constructor(
     private val viewModel: AppViewModel,
     private val botService: BotService,
-    private val personaService: PersonaServiceImpl,
+    private val personaService: PersonaRepository,
     private val firebaseDatabaseService: FirebaseDatabaseServiceImpl,
     private val firestoreService: FirestoreService,
     private val accountService: AccountService,
@@ -100,7 +100,6 @@ class BrowseViewModel @Inject constructor(
         analytics.logCommunityBotDownloaded()
         viewModelScope.launch {
             personaService.addPersona(bot.toPersona())
-            viewModel.persona.fetchPersonas()
         }
     }
 

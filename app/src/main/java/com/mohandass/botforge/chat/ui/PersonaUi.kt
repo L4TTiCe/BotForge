@@ -26,7 +26,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
+import com.mohandass.botforge.chat.ui.components.header.top.AvatarsBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
@@ -49,10 +49,6 @@ fun PersonaUi(viewModel: AppViewModel) {
     viewModel.setNavControllerPersona(navController)
 
     val isLoading by viewModel.chat.isLoading
-
-    LaunchedEffect(viewModel) {
-        viewModel.persona.fetchPersonas()
-    }
 
     LaunchedEffect(Unit) {
         viewModel.topBar.title.value = R.string.app_name

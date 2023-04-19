@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.header
+package com.mohandass.botforge.chat.ui.components.header.top
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.ui.components.header.ActiveIndicator
+import com.mohandass.botforge.chat.ui.components.header.VerticalDivider
 import com.mohandass.botforge.chat.ui.components.icons.AvatarBarIcon
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
@@ -31,7 +33,7 @@ fun AvatarsBar(
     modifier: Modifier = Modifier,
     viewModel: AppViewModel,
 ) {
-    val personas = viewModel.persona.personas
+    val personas by viewModel.persona.personas.observeAsState(initial = emptyList())
     val chatType by viewModel.persona.chatType
 
     var isUserGeneratedContentEnabled by remember {

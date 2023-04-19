@@ -11,16 +11,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
-import com.mohandass.botforge.chat.viewmodel.*
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaListViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
+import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
-import com.mohandass.botforge.settings.model.UserPreferences
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 import com.mohandass.botforge.sync.service.BotService
 import com.mohandass.botforge.sync.service.FirestoreService
@@ -28,7 +30,6 @@ import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServic
 import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,7 +44,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val accountService: AccountService,
-    personaService: PersonaServiceImpl,
+    personaService: PersonaRepository,
     openAiService: OpenAiService,
     chatService: ChatServiceImpl,
     botService: BotService,
@@ -57,24 +58,7 @@ class AppViewModel @Inject constructor(
 
     // Keep the user preferences as a stream of changes
     private val userPreferencesFlow = preferencesDataStore.userPreferencesFlow
-
-    private val _userPreferencesFlow = userPreferencesFlow.map { userPreference ->
-        UserPreferences(
-            preferredTheme = userPreference.preferredTheme,
-            useDynamicColors = userPreference.useDynamicColors,
-            preferredHeader = userPreference.preferredHeader,
-
-            lastSuccessfulSync = userPreference.lastSuccessfulSync,
-            lastModerationIndexProcessed = userPreference.lastModerationIndexProcessed,
-
-            enableUserGeneratedContent = userPreference.enableUserGeneratedContent,
-            enableShakeToClear = userPreference.enableShakeToClear,
-            shakeToClearSensitivity = userPreference.shakeToClearSensitivity,
-            autoGenerateChatTitle = userPreference.autoGenerateChatTitle
-        )
-    }
-
-    val userPreferences = _userPreferencesFlow.asLiveData()
+    val userPreferences = userPreferencesFlow.asLiveData()
 
     // Snackbar
     fun setActiveSnackbar(location: SnackbarLauncherLocation) {
@@ -87,18 +71,6 @@ class AppViewModel @Inject constructor(
     private val _topBarViewModel: TopBarViewModel = TopBarViewModel()
     val topBar: TopBarViewModel
         get() = _topBarViewModel
-
-
-    // History
-
-    private val _historyViewModel: HistoryViewModel = HistoryViewModel(
-        viewModel = this,
-        chatService = chatService,
-        logger = logger,
-        analytics = analytics
-    )
-    val history: HistoryViewModel
-        get() = _historyViewModel
 
 
     // Navigation
@@ -154,6 +126,7 @@ class AppViewModel @Inject constructor(
     private val _personaListViewModel = PersonaListViewModel(
         viewModel = this,
         botService = botService,
+        personaRepository = personaService,
         logger = logger
     )
     val personaList: PersonaListViewModel

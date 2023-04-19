@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
 import com.mohandass.botforge.chat.ui.components.header.modifierWithFadeEdges
 import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adw

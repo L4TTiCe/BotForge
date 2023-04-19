@@ -8,7 +8,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
@@ -16,7 +18,7 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.model.dao.entities.Persona
-import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -25,7 +27,7 @@ import com.mohandass.botforge.sync.service.BotService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 /*
@@ -33,14 +35,10 @@ import javax.inject.Inject
  */
 class PersonaViewModel @Inject constructor(
     private val viewModel: AppViewModel,
-    private val personaService: PersonaServiceImpl,
+    private val personaService: PersonaRepository,
     private val botService: BotService,
     private val logger: Logger,
 ) : ViewModel() {
-
-    private var _personas = mutableStateListOf<Persona>()
-    val personas = _personas
-
     private val _personaName = mutableStateOf("")
     val personaName: MutableState<String> = _personaName
 
@@ -61,6 +59,27 @@ class PersonaViewModel @Inject constructor(
 
     private val _parentBot: MutableState<BotE?> = mutableStateOf(null)
     val parentBot: State<BotE?> = _parentBot
+
+    val personas = personaService.personas.asLiveData()
+    private var _personas = mutableStateListOf<Persona>()
+
+    // Reference:
+    // https://stackoverflow.com/questions/48396092/should-i-include-lifecycleowner-in-viewmodel
+    private val observer: (List<Persona>) -> Unit = {
+        _personas.clear()
+        _personas.addAll(it)
+    }
+
+    init {
+        personas.observeForever(observer)
+        _personas = personas.value?.toMutableStateList() ?: mutableStateListOf()
+    }
+
+    override fun onCleared() {
+        personas.removeObserver(observer)
+        super.onCleared()
+    }
+
 
     private fun updateParentBot(bot: BotE?) {
         _parentBot.value = bot
@@ -216,20 +235,6 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
-    // Gets all personas from the database
-    fun fetchPersonas() {
-        logger.log(TAG, "fetchPersonas()")
-        viewModelScope.launch {
-            try {
-                _personas.clear()
-            } catch (e: Throwable) {
-                logger.logError(TAG, "fetchPersonas() _personas.clear() failed", e)
-            }
-            _personas.addAll(personaService.allPersonas())
-
-        }
-    }
-
     // Saves a persona to the database, returns true if successful
     private fun savePersona(persona: Persona): Boolean {
         var customMessage = true
@@ -250,8 +255,6 @@ class PersonaViewModel @Inject constructor(
             } else {
                 SnackbarManager.showMessage(R.string.using_default_system_message)
             }
-            fetchPersonas()
-
         }
         return true
     }
@@ -321,7 +324,6 @@ class PersonaViewModel @Inject constructor(
         viewModelScope.launch {
             personaService.updatePersona(persona)
             SnackbarManager.showMessage(R.string.saved_persona)
-            fetchPersonas()
         }
     }
 
@@ -333,8 +335,6 @@ class PersonaViewModel @Inject constructor(
                 personaService.deletePersona(persona)
                 logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
                 SnackbarManager.showMessage(R.string.delete_persona_success, persona.name)
-                fetchPersonas()
-
             }
             showCreate()
         } else {
@@ -373,7 +373,6 @@ class PersonaViewModel @Inject constructor(
         viewModelScope.launch {
             personaService.deleteAllPersonas()
             SnackbarManager.showMessage(R.string.delete_all_personas_success)
-            fetchPersonas()
         }
     }
 

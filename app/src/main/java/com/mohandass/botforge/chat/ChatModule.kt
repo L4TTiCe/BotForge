@@ -9,7 +9,7 @@ import com.mohandass.botforge.chat.model.dao.PersonaDao
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.chat.services.implementation.OpenAiServiceImpl
-import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.services.LocalDatabase
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.SharedPreferencesService
@@ -34,8 +34,9 @@ class ChatModule {
     @Provides
     @Singleton
     fun providePersonaServiceImpl(
-        personaDao: PersonaDao
-    ) = PersonaServiceImpl(personaDao)
+        personaDao: PersonaDao,
+        logger: Logger,
+    ) = PersonaRepository(personaDao, logger)
 
     @Provides
     @Singleton

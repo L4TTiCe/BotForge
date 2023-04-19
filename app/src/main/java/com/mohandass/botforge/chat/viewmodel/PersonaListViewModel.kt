@@ -7,9 +7,11 @@ package com.mohandass.botforge.chat.viewmodel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.chat.model.dao.entities.Persona
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
@@ -20,10 +22,27 @@ import kotlinx.coroutines.launch
  */
 class PersonaListViewModel (
     private val viewModel: AppViewModel,
+    personaRepository: PersonaRepository,
     private val botService: BotService,
     private val logger: Logger
 ): ViewModel() {
-    val personas = viewModel.persona.personas
+    private var _personas = mutableStateListOf<Persona>()
+    val personas = personaRepository.personas.asLiveData()
+    // Reference:
+    // https://stackoverflow.com/questions/48396092/should-i-include-lifecycleowner-in-viewmodel
+    private val observer: (List<Persona>) -> Unit = {
+        _personas.clear()
+        _personas.addAll(it)
+    }
+
+    init {
+        personas.observeForever(observer)
+    }
+
+    override fun onCleared() {
+        personas.removeObserver(observer)
+        super.onCleared()
+    }
     var matchedPersonas = mutableStateListOf<Persona>()
 
     val showDeleteAllPersonaDialog = mutableStateOf(false)
@@ -44,7 +63,7 @@ class PersonaListViewModel (
         if (searchQuery.value.isEmpty() || searchQuery.value.isBlank()) {
             return
         }
-        personas.filterTo(matchedPersonas) { persona ->
+        personas.value!!.filterTo(matchedPersonas) { persona ->
 
             persona.name.contains(searchQuery.value, ignoreCase = true) ||
                     persona.alias.contains(searchQuery.value, ignoreCase = true) ||
@@ -76,7 +95,7 @@ class PersonaListViewModel (
 
     fun fetchBots() {
         logger.logVerbose(TAG, "fetchBots")
-        for (persona in personas) {
+        for (persona in personas.value!!) {
             viewModelScope.launch {
                 bots[persona.parentUuid] = botService.getBot(persona.parentUuid)
                 logger.logVerbose(TAG, "fetchBots ${persona.parentUuid} ${bots[persona.parentUuid]}")

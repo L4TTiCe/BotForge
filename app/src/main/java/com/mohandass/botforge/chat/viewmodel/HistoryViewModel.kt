@@ -58,8 +58,8 @@ class HistoryViewModel(
     }
 
     private fun isPersonaDeleted(personaUuid: String): Boolean {
-        val personas = viewModel.persona.personas
-        personas.firstOrNull { it.uuid == personaUuid } ?: return true
+        val personas = viewModel.persona.personas.value
+        personas!!.firstOrNull { it.uuid == personaUuid } ?: return true
         return false
     }
 

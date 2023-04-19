@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,7 +37,7 @@ fun PersonaListUi(
 ) {
     val personaListViewModel = viewModel.personaList
 
-    val personas = personaListViewModel.personas
+    val personas by viewModel.persona.personas.observeAsState(initial = emptyList())
     val matchedPersonas = personaListViewModel.matchedPersonas
 
     var showDeleteAllPersonaDialog by personaListViewModel.showDeleteAllPersonaDialog
