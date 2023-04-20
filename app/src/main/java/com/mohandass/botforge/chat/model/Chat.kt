@@ -4,7 +4,7 @@
 
 package com.mohandass.botforge.chat.model
 
-import java.util.*
+import java.util.UUID
 
 /**
  * A data class to represent a Chat

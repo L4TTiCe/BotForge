@@ -7,11 +7,13 @@ SPDX-License-Identifier: MIT
 
 - `sync`: Handles syncing, and sharing Bots.
     - UI:
-        - `BrowseBotsUi`: Displays a list of Community Bots stored locally in Room Database. Allows user to search, and sync with remote database. Displays each Bot using a `BotCard`
+        - `BrowseBotsUi`: Displays a list of Community Bots stored locally in Room Database. Allows
+          user to search, and sync with remote database. Displays each Bot using a `BotCard`
         - `SharePersonaUi`: Allows users to share their Persona with other users.
         - Components:
             - `BotCard`: Displays a Bot with its name, description, and a button to Add the Bot.
-            - `BotDetailDialog`: Displays the details of a Bot. Supports UpVoting, DownVoting, and Reporting the Bot.
+            - `BotDetailDialog`: Displays the details of a Bot. Supports UpVoting, DownVoting, and
+              Reporting the Bot.
     - Dependencies:
         - `BotService`: Handles syncing with remote database, and storing Bots locally. Depends on:
             - `FirebaseRealtimeDatabase`: Remote Database to store Community Bots.
@@ -32,7 +34,7 @@ Room's MATCH query.
 
 #### Content Moderation
 
-Bots marked for deletion are stored in a different collection, and are indexed incrementally. 
-The last processed index is stored in `UserPreferences` in `PreferencesDataStore`. The index is 
-used to fetch the next batch of bots to be moderated. The index is then updated to the highest 
+Bots marked for deletion are stored in a different collection, and are indexed incrementally.
+The last processed index is stored in `UserPreferences` in `PreferencesDataStore`. The index is
+used to fetch the next batch of bots to be moderated. The index is then updated to the highest
 index processed.

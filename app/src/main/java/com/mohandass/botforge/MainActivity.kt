@@ -11,8 +11,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -22,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -45,6 +42,7 @@ import com.mohandass.botforge.ui.*
 import com.slaviboy.composeunits.initSize
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
 
 /**
  * Main Activity.
@@ -63,6 +61,10 @@ import kotlinx.coroutines.CoroutineScope
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var appState: AppState
+
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,10 +81,9 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            val viewModel: AppViewModel = hiltViewModel()
-            viewModel.resources = resources()
+            appState.resources = resources()
 
-            BotForgeTheme(viewModel = viewModel) {
+            BotForgeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
@@ -96,14 +97,14 @@ class MainActivity : ComponentActivity() {
                         snackbarManager = SnackbarManager.getInstance(SnackbarLauncherLocation.MAIN)
                     )
 
-                    viewModel.setNavController(rememberAnimatedNavController())
+                    appState.setNavController(rememberAnimatedNavController())
 
                     Scaffold(
                         snackbarHost = { SwipeableSnackbarHost(snackbarHostState) },
                     ) {
                         Navigation(
                             modifier = Modifier.padding(top = it.calculateTopPadding()),
-                            viewModel = viewModel
+                            appState = appState
                         )
                     }
                 }
@@ -136,22 +137,12 @@ fun resources(): Resources {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
+fun Navigation(modifier: Modifier, appState: AppState) {
     AnimatedNavHost(
         modifier = modifier,
-        navController = viewModel.navController,
+        navController = appState.navController,
         startDestination = AppRoutes.Splash.route
     ) {
-        composable("test") {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
-            ) {
-
-            }
-        }
-
         composable(
             route = AppRoutes.Splash.route,
             exitTransition = {
@@ -160,7 +151,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            SplashUi(viewModel = viewModel)
+            SplashUi()
         }
         composable(
             route = AppRoutes.Landing.route,
@@ -210,7 +201,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            LandingUi(viewModel = viewModel)
+            LandingUi()
         }
         composable(
             route = AppRoutes.Main.route,
@@ -260,7 +251,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            MainUi(viewModel = viewModel)
+            MainUi(appState = appState)
         }
         composable(
             route = AppRoutes.SignUp.route,
@@ -310,7 +301,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            SignUpUi(viewModel = viewModel)
+            SignUpUi()
         }
         composable(
             route = AppRoutes.SignIn.route,
@@ -360,7 +351,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            SignInUi(viewModel = viewModel)
+            SignInUi()
         }
         composable(
             route = AppRoutes.OnBoarding.route,
@@ -410,7 +401,7 @@ fun Navigation(modifier: Modifier, viewModel: AppViewModel) {
                 )
             }
         ) {
-            OnBoarding(viewModel = viewModel)
+            OnBoarding()
         }
     }
 }

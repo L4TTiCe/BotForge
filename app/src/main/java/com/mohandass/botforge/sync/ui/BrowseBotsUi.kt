@@ -5,63 +5,86 @@
 package com.mohandass.botforge.sync.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.ui.components.NoMatches
 import com.mohandass.botforge.common.ui.components.SearchBar
 import com.mohandass.botforge.sync.ui.components.BotCard
+import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.slaviboy.composeunits.adh
 
 @Composable
-fun BrowseBotsUi(viewModel: AppViewModel) {
-    val searchText by viewModel.browse.searchQuery
-    val communityBots = viewModel.browse.fetchedBots
+fun BrowseBotsUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    browseViewModel: BrowseViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+) {
+    val searchText by browseViewModel.searchQuery
+    val communityBots = browseViewModel.fetchedBots
 
-    val topBots = viewModel.browse.topBots
-    val recentBots = viewModel.browse.recentBots
-    val randomBots = viewModel.browse.randomBots
+    val topBots = browseViewModel.topBots
+    val recentBots = browseViewModel.recentBots
+    val randomBots = browseViewModel.randomBots
 
     var isUserGeneratedContentEnabled by remember {
         mutableStateOf(false)
     }
 
-    val userPreferences by viewModel.userPreferences.observeAsState()
+    val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
 
         if (!isUserGeneratedContentEnabled) {
-            viewModel.persona.clearSelection()
-            viewModel.persona.setChatType(ChatType.CREATE)
-            viewModel.persona.updateExpandCustomizePersona(true)
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+            personaViewModel.clearSelection()
+            personaViewModel.setChatType(ChatType.CREATE)
+            personaViewModel.updateExpandCustomizePersona(true)
+            appViewModel.appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 popUpTo(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) { inclusive = true }
             }
         }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.persona.setChatType(ChatType.BROWSE)
-        viewModel.browse.fetchBots()
-        viewModel.browse.syncWithDatabase()
+        personaViewModel.setChatType(ChatType.BROWSE)
+        browseViewModel.fetchBots()
+        browseViewModel.syncWithDatabase()
     }
 
     BackHandler {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
+        appViewModel.appState.navControllerPersona.popBackStack()
     }
 
     Surface(
@@ -94,7 +117,7 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        viewModel.browse.syncWithDatabase()
+                        browseViewModel.syncWithDatabase()
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_cloud_sync_24),
@@ -110,11 +133,11 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                 SearchBar(
                     searchQuery = searchText,
                     onClear = {
-                        viewModel.browse.updateSearchQuery("")
+                        browseViewModel.updateSearchQuery("")
                     },
                     label = stringResource(id = R.string.community_search)
                 ) {
-                    viewModel.browse.updateSearchQuery(it)
+                    browseViewModel.updateSearchQuery(it)
                 }
             }
 
@@ -151,16 +174,16 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                             BotCard(
                                 botE = communityBots[idx],
                                 onClickButton = {
-                                    viewModel.browse.makePersona(communityBots[idx])
+                                    browseViewModel.makePersona(communityBots[idx])
                                 },
                                 onUpVote = {
-                                    viewModel.browse.upVote(communityBots[idx].uuid)
+                                    browseViewModel.upVote(communityBots[idx].uuid)
                                 },
                                 onDownVote = {
-                                    viewModel.browse.downVote(communityBots[idx].uuid)
+                                    browseViewModel.downVote(communityBots[idx].uuid)
                                 },
                                 onReport = {
-                                    viewModel.browse.report(communityBots[idx].uuid)
+                                    browseViewModel.report(communityBots[idx].uuid)
                                 }
                             )
                         }
@@ -196,16 +219,16 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                         BotCard(
                             botE = topBots[idx],
                             onClickButton = {
-                                viewModel.browse.makePersona(topBots[idx])
+                                browseViewModel.makePersona(topBots[idx])
                             },
                             onUpVote = {
-                                viewModel.browse.upVote(topBots[idx].uuid)
+                                browseViewModel.upVote(topBots[idx].uuid)
                             },
                             onDownVote = {
-                                viewModel.browse.downVote(topBots[idx].uuid)
+                                browseViewModel.downVote(topBots[idx].uuid)
                             },
                             onReport = {
-                                viewModel.browse.report(topBots[idx].uuid)
+                                browseViewModel.report(topBots[idx].uuid)
                             }
                         )
                     }
@@ -237,16 +260,16 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                         BotCard(
                             botE = randomBots[idx],
                             onClickButton = {
-                                viewModel.browse.makePersona(randomBots[idx])
+                                browseViewModel.makePersona(randomBots[idx])
                             },
                             onUpVote = {
-                                viewModel.browse.upVote(randomBots[idx].uuid)
+                                browseViewModel.upVote(randomBots[idx].uuid)
                             },
                             onDownVote = {
-                                viewModel.browse.downVote(randomBots[idx].uuid)
+                                browseViewModel.downVote(randomBots[idx].uuid)
                             },
                             onReport = {
-                                viewModel.browse.report(randomBots[idx].uuid)
+                                browseViewModel.report(randomBots[idx].uuid)
                             }
                         )
                     }
@@ -278,16 +301,16 @@ fun BrowseBotsUi(viewModel: AppViewModel) {
                         BotCard(
                             botE = recentBots[idx],
                             onClickButton = {
-                                viewModel.browse.makePersona(recentBots[idx])
+                                browseViewModel.makePersona(recentBots[idx])
                             },
                             onUpVote = {
-                                viewModel.browse.upVote(recentBots[idx].uuid)
+                                browseViewModel.upVote(recentBots[idx].uuid)
                             },
                             onDownVote = {
-                                viewModel.browse.downVote(recentBots[idx].uuid)
+                                browseViewModel.downVote(recentBots[idx].uuid)
                             },
                             onReport = {
-                                viewModel.browse.report(recentBots[idx].uuid)
+                                browseViewModel.report(recentBots[idx].uuid)
                             }
                         )
                     }

@@ -15,8 +15,10 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import com.mohandass.botforge.common.Utils
 import io.noties.markwon.Markwon
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.ext.tables.TableTheme
+import io.noties.markwon.html.HtmlPlugin
 
 /**
  * This class wraps the PdfDocument class and provides methods to write
@@ -125,7 +127,9 @@ class PdfWriter(
             .tableCellPadding(0)
             .build()
 
-        val markwon: Markwon =  Markwon.builder(context)
+        val markwon: Markwon = Markwon.builder(context)
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TablePlugin.create(tableTheme))
             .build()
         val spanned = markwon.toMarkdown(markdown)

@@ -2,15 +2,28 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import android.os.Build
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -165,32 +178,36 @@ fun ApiUsageUi(
 
                     Spacer(modifier = Modifier.width(10.dp))
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Spacer(modifier = Modifier.weight(1f))
 
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_attach_money_24),
-                        contentDescription = stringResource(id = R.string.dollars),
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.error
-                    )
+                // Show cost only if API level is 29+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
 
-                    Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_attach_money_24),
+                            contentDescription = stringResource(id = R.string.dollars),
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.error
+                        )
 
-                    Text(
-                        text = DecimalFormat("0.0000")
-                            .format(
-                                resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens) *
-                                        settingsViewModel.getUsageTokens().div(1000)
-                            ).toString(),
-                        modifier = Modifier.padding(end = 10.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.error
-                    )
+                        Spacer(modifier = Modifier.width(4.dp))
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = DecimalFormat("0.0000")
+                                .format(
+                                    resources().getFloat(R.dimen.gpt_3_5_turbo_cost_per_1k_tokens) *
+                                            settingsViewModel.getUsageTokens().div(1000)
+                                ).toString(),
+                            modifier = Modifier.padding(end = 10.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.error
+                        )
+
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
                 }
             }
         }
@@ -215,7 +232,7 @@ fun ApiUsageUi(
             Spacer(modifier = Modifier.width(5.dp))
         }
 
-        SettingsCategory(title = "External Links")
+        SettingsCategory(title = stringResource(id = R.string.external_links))
 
         SettingsItem(
             title = resources().getString(R.string.usage_summary),

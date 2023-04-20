@@ -85,7 +85,7 @@ interface BotDao {
         limit: Int = 15,
         offset: Int = 0
     )
-    : List<BotE>
+            : List<BotE>
 
     @Query(
         """

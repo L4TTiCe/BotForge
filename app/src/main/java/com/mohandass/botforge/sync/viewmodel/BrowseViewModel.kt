@@ -10,10 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.perf.metrics.AddTrace
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
-import com.mohandass.botforge.chat.services.implementation.PersonaServiceImpl
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
@@ -23,6 +23,7 @@ import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
 import com.mohandass.botforge.sync.service.FirestoreService
 import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,10 +33,11 @@ import javax.inject.Inject
  * Handles fetching and searching of bots from the Community, stored locally in the Room database.
  * Also handles the syncing of bots from the Community to the local database.
  */
+@HiltViewModel
 class BrowseViewModel @Inject constructor(
-    private val viewModel: AppViewModel,
+    private val appState: AppState,
     private val botService: BotService,
-    private val personaService: PersonaServiceImpl,
+    private val personaService: PersonaRepository,
     private val firebaseDatabaseService: FirebaseDatabaseServiceImpl,
     private val firestoreService: FirestoreService,
     private val accountService: AccountService,
@@ -78,7 +80,7 @@ class BrowseViewModel @Inject constructor(
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
-        viewModel.browse.search()
+        search()
     }
 
     private val _fetchedBots = mutableStateListOf<BotE>()
@@ -100,7 +102,6 @@ class BrowseViewModel @Inject constructor(
         analytics.logCommunityBotDownloaded()
         viewModelScope.launch {
             personaService.addPersona(bot.toPersona())
-            viewModel.persona.fetchPersonas()
         }
     }
 
@@ -138,7 +139,7 @@ class BrowseViewModel @Inject constructor(
     // Syncs bots from the Community to the local database
     @AddTrace(name = "syncWithDatabase", enabled = true)
     fun syncWithDatabase() {
-        val lastSyncedAt = viewModel.userPreferences.value?.lastSuccessfulSync
+        val lastSyncedAt = appState.userPreferences.value?.lastSuccessfulSync
         logger.log(TAG, "syncWithDatabase: lastSyncedAt: $lastSyncedAt")
         analytics.logCommunitySyncWithRemote(lastSyncedAt!!)
         viewModelScope.launch {
@@ -158,9 +159,11 @@ class BrowseViewModel @Inject constructor(
     // Deletes bots from the local database that have been marked for deletion in the Community
     private fun applyContentModeration() {
         val lastModerationIndexProcessed =
-            viewModel.userPreferences.value?.lastModerationIndexProcessed
-        logger.log(TAG, "applyContentModeration: " +
-                "lastModerationIndexProcessed: $lastModerationIndexProcessed")
+            appState.userPreferences.value?.lastModerationIndexProcessed
+        logger.log(
+            TAG, "applyContentModeration: " +
+                    "lastModerationIndexProcessed: $lastModerationIndexProcessed"
+        )
         viewModelScope.launch {
             val deletionRecords = firebaseDatabaseService.fetchBotsDeletedAfter(
                 lastModerationIndexProcessed!!
@@ -171,8 +174,10 @@ class BrowseViewModel @Inject constructor(
                     deletionRecord.botId?.let { botService.deleteBot(it) }
                 }
 
-                logger.log(TAG, "applyContentModeration: " +
-                        "deletionRecordsCount: ${deletionRecords.size}")
+                logger.log(
+                    TAG, "applyContentModeration: " +
+                            "deletionRecordsCount: ${deletionRecords.size}"
+                )
 
                 // Find the largest index in the deletion records
                 val maxIndex = deletionRecords.maxByOrNull { it.index!! }?.index

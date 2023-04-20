@@ -2,26 +2,40 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.header
+package com.mohandass.botforge.chat.ui.components.header.top
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.ui.components.header.ActiveIndicator
+import com.mohandass.botforge.chat.ui.components.header.VerticalDivider
 import com.mohandass.botforge.chat.ui.components.icons.AvatarBarIcon
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
 import com.mohandass.botforge.chat.ui.components.icons.TintedIconButton
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.R.string as AppText
@@ -29,16 +43,19 @@ import com.mohandass.botforge.R.string as AppText
 @Composable
 fun AvatarsBar(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
 ) {
-    val personas = viewModel.persona.personas
-    val chatType by viewModel.persona.chatType
+    val personas by personaViewModel.personas.observeAsState(initial = emptyList())
+    val chatType by personaViewModel.chatType
+
+    val activePersona by personaViewModel.personaUuid.collectAsState()
 
     var isUserGeneratedContentEnabled by remember {
         mutableStateOf(false)
     }
 
-    val userPreferences by viewModel.userPreferences.observeAsState()
+    val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
     }
@@ -57,7 +74,7 @@ fun AvatarsBar(
                         .padding(6.dp),
                     isAnimated = chatType == ChatType.CREATE,
                     contentDescription = stringResource(id = AppText.create_persona),
-                    onClick = { viewModel.persona.showCreate() }
+                    onClick = { personaViewModel.showCreate() }
                 )
 
                 if (chatType == ChatType.CREATE) {
@@ -78,7 +95,7 @@ fun AvatarsBar(
                             .padding(6.dp),
                         isAnimated = chatType == ChatType.BROWSE || chatType == ChatType.SHARE,
                         contentDescription = stringResource(id = AppText.community_ab_icon_cd),
-                        onClick = { viewModel.persona.showMarketplace() }
+                        onClick = { personaViewModel.showMarketplace() }
                     )
 
                     if (chatType == ChatType.BROWSE || chatType == ChatType.SHARE) {
@@ -101,7 +118,7 @@ fun AvatarsBar(
                 verticalArrangement = Arrangement.Center,
             ) {
 
-                if (viewModel.persona.selectedPersona.value == personas[index].uuid) {
+                if (activePersona == personas[index].uuid) {
                     RoundedIconFromStringAnimated(
                         text = (
                                 if (personas[index].alias != "")
@@ -110,7 +127,7 @@ fun AvatarsBar(
                                     personas[index].name
                                 ),
                         modifier = Modifier.size(Constants.ICONS_SIZE.dp),
-                        onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
+                        onClick = { personaViewModel.selectPersona(personas[index].uuid) }
                     )
 
                     ActiveIndicator()
@@ -124,7 +141,7 @@ fun AvatarsBar(
                                     personas[index].name
                                 ),
                         modifier = Modifier.size(Constants.ICONS_SIZE.dp),
-                        onClick = { viewModel.persona.selectPersona(personas[index].uuid) }
+                        onClick = { personaViewModel.selectPersona(personas[index].uuid) }
                     )
 
                     ActiveIndicator(modifier = Modifier.alpha(0f))
@@ -161,7 +178,7 @@ fun AvatarsBar(
                     icon = painterResource(id = R.drawable.baseline_bookmarks_24),
                     iconContentDescription = stringResource(id = AppText.show_bookmarks_cd)
                 ) {
-                    viewModel.persona.showHistory()
+                    personaViewModel.showHistory()
                 }
 
                 if (chatType == ChatType.HISTORY) {
@@ -178,7 +195,7 @@ fun AvatarsBar(
                     icon = painterResource(id = R.drawable.list),
                     iconContentDescription = "List View"
                 ) {
-                    viewModel.persona.showList()
+                    personaViewModel.showList()
                 }
 
                 if (chatType == ChatType.LIST) {

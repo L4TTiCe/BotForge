@@ -5,7 +5,14 @@
 package com.mohandass.botforge.chat.ui.components.header.top
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,21 +24,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.ui.components.header.AvatarsBar
-import com.mohandass.botforge.chat.ui.components.header.modifierWithFadeEdges
 import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adw
 
 @Composable
 fun DefaultHeader(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel
+    appViewModel: AppViewModel = hiltViewModel(),
 ) {
-    val title by viewModel.topBar.title
-    val overrideMenu by viewModel.topBar.overrideMenu
-    val menu by viewModel.topBar.menu
+    val title by appViewModel.appState.topBar.title
+    val overrideMenu by appViewModel.appState.topBar.overrideMenu
+    val menu by appViewModel.appState.topBar.menu
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -53,7 +59,8 @@ fun DefaultHeader(
         if (1.adw > Constants.FOLDABLE_THRESHOLD.dp
             // If overrideMenu is true, don't show the avatars bar
             // As the App is in a different screen (Settings, About, etc.) than Chat
-            && !overrideMenu) {
+            && !overrideMenu
+        ) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -61,7 +68,6 @@ fun DefaultHeader(
             ) {
                 AvatarsBar(
                     modifier = modifierWithFadeEdges,
-                    viewModel = viewModel
                 )
             }
         } else {
@@ -81,7 +87,7 @@ fun DefaultHeader(
 
             Spacer(modifier = Modifier.width(0.02.adw))
         } else {
-            DefaultDropdownMenu(viewModel)
+            DefaultDropdownMenu()
         }
 
     }

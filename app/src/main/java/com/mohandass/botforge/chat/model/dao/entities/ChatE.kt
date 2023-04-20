@@ -7,7 +7,7 @@ package com.mohandass.botforge.chat.model.dao.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.Chat
-import java.util.*
+import java.util.UUID
 
 /**
  * A data class to represent a Chat

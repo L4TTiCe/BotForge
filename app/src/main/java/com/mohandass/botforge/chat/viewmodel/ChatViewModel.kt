@@ -12,12 +12,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.perf.metrics.AddTrace
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
+import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
+import com.mohandass.botforge.chat.repositories.ActiveMessagesRepository
+import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
 import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.Utils
@@ -27,6 +30,7 @@ import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessage
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,8 +41,12 @@ import javax.inject.Inject
 /*
  * A ViewModel to handle the chat Screen
  */
+@HiltViewModel
 class ChatViewModel @Inject constructor(
-    private val viewModel: AppViewModel,
+    private val appState: AppState,
+    private val activePersonaRepository: ActivePersonaRepository,
+    private val activeMessagesRepository: ActiveMessagesRepository,
+    private val accountService: AccountService,
     private val openAiService: OpenAiService,
     private val chatService: ChatServiceImpl,
     private val logger: Logger,
@@ -126,7 +134,7 @@ class ChatViewModel @Inject constructor(
         setLoading(true)
 
         // Construct the request
-        val messages = getAllMessages(
+        val messages = activeMessagesRepository.getAllMessages(
             includeSystemMessage = true,
             includeInactiveMessages = false
         )
@@ -142,7 +150,7 @@ class ChatViewModel @Inject constructor(
                     logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
                     SnackbarManager.showMessage(
                         e.toSnackbarMessageWithAction(R.string.settings) {
-                            viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
+                            appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                         })
                 } else {
                     logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
@@ -155,16 +163,18 @@ class ChatViewModel @Inject constructor(
                                 R.string.invalid_api_key,
                                 R.string.settings
                             ) {
-                                viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
+                                appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                             }
                         }
+
                         Utils.INTERRUPTED_ERROR_MESSAGE -> {
                             SnackbarManager.showMessage(R.string.request_cancelled)
                         }
+
                         else -> {
                             SnackbarManager.showMessage(
                                 message.toSnackbarMessageWithAction(R.string.settings) {
-                                    viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
+                                    appState.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
                                 })
                         }
                     }
@@ -178,10 +188,7 @@ class ChatViewModel @Inject constructor(
     }
 
     // Message
-
-    private val _activeChat = mutableStateOf(listOf(Message()))
-    val activeChat: MutableState<List<Message>> = _activeChat
-
+    val activeChat = activeMessagesRepository.activeChat
     private var _activeChatBackup = mutableStateOf(listOf(Message()))
 
     private val _handleDelete = mutableStateOf(false)
@@ -194,46 +201,36 @@ class ChatViewModel @Inject constructor(
     fun autoAddMessage() {
         logger.log(TAG, "autoAddMessage()")
         val message = Message("", Role.USER)
-        _activeChat.value = _activeChat.value + message
+        activeMessagesRepository.addMessage(message)
     }
 
     private fun addMessage(message: Message) {
         logger.log(TAG, "addMessage()")
-        _activeChat.value = _activeChat.value + message
+        activeMessagesRepository.addMessage(message)
     }
 
     fun updateMessage(message: Message) {
-        _activeChat.value = _activeChat.value.map {
-            if (it.uuid == message.uuid) {
-                message
-            } else {
-                it
-            }
-        }
+        activeMessagesRepository.updateMessage(message)
     }
 
     fun deleteMessage(messageUuid: String) {
-        logger.log(TAG, "Deleting message: $messageUuid")
-        _activeChat.value = _activeChat.value.filter {
-            it.uuid != messageUuid
-        }
-        logger.logVerbose(TAG, "Messages: ${activeChat.value}")
+        activeMessagesRepository.deleteMessage(messageUuid)
     }
 
     // Clears all messages, and adds a new empty message
     // Also shows a snackbar with an undo action
     fun clearMessages() {
-        val isChatEmpty = _activeChat.value.isEmpty() || _activeChat.value[0].text.isBlank()
+        val isChatEmpty = activeChat.value.isEmpty() || activeChat.value[0].text.isBlank()
 
         // Make a copy (backup) of the current chat before clearing it
         // if not empty
         if (isChatEmpty.not()) {
-            _activeChatBackup.value = _activeChat.value
+            _activeChatBackup.value = activeChat.value
         }
 
         logger.log(TAG, "clearMessages()")
-        while (_activeChat.value.isNotEmpty()) {
-            deleteMessage(_activeChat.value.last().uuid)
+        while (activeChat.value.isNotEmpty()) {
+            deleteMessage(activeChat.value.last().uuid)
         }
 
         autoAddMessage()
@@ -251,12 +248,7 @@ class ChatViewModel @Inject constructor(
     // Restores the chat to the state before it was cleared
     private fun undoClearMessages() {
         logger.log(TAG, "undoClearMessages()")
-        _activeChat.value = _activeChatBackup.value
-    }
-
-    // Replace all messages with a new list of messages
-    fun setMessages(messages: List<Message>) {
-        _activeChat.value = messages
+        activeMessagesRepository.setMessages(_activeChatBackup.value)
     }
 
     private val _chatName = mutableStateOf("testChat")
@@ -265,47 +257,8 @@ class ChatViewModel @Inject constructor(
         _chatName.value = name
     }
 
-    private fun getAllMessages(
-        includeSystemMessage: Boolean,
-        includeInactiveMessages: Boolean
-    ): List<Message> {
-        val messages = mutableListOf<Message>()
-
-        if (includeSystemMessage) {
-            val personaSystemMessage = viewModel.persona.personaSystemMessage.value
-
-            if (personaSystemMessage == "") {
-                val systemMessage = Message(
-                    text = viewModel.resources.getString(R.string.system_message_default),
-                    role = Role.SYSTEM
-                )
-                messages.add(systemMessage)
-            } else {
-                val systemMessage = Message(
-                        text = personaSystemMessage,
-                        role = Role.SYSTEM
-                    )
-                messages.add(systemMessage)
-            }
-        }
-
-        for (message in _activeChat.value) {
-            if (message.text != "") {
-                if (includeInactiveMessages) {
-                    messages.add(message)
-                } else {
-                    if (message.isActive) {
-                        messages.add(message)
-                    }
-                }
-            }
-        }
-
-        return messages
-    }
-
     fun exportAsPdf(context: Context) {
-        val messages = getAllMessages(
+        val messages = activeMessagesRepository.getAllMessages(
             includeSystemMessage = true,
             includeInactiveMessages = true
         )
@@ -324,7 +277,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun exportChatAsJson(context: Context) {
-        val messages = getAllMessages(
+        val messages = activeMessagesRepository.getAllMessages(
             includeSystemMessage = true,
             includeInactiveMessages = true
         )
@@ -345,8 +298,8 @@ class ChatViewModel @Inject constructor(
     // Saves the current chat to the database
     @AddTrace(name = "saveChat", enabled = true)
     fun saveChat() {
-        val personaSelected = viewModel.persona.selectedPersona.value
-        val messages = getAllMessages(
+        val personaSelected = activePersonaRepository.activePersonaUuid.value
+        val messages = activeMessagesRepository.getAllMessages(
             includeSystemMessage = true,
             includeInactiveMessages = true
         )
@@ -368,7 +321,7 @@ class ChatViewModel @Inject constructor(
                 R.string.chat_saved,
                 R.string.bookmarks,
             ) {
-                viewModel.navControllerPersona
+                appState.navControllerPersona
                     .navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
             }
         }
@@ -379,20 +332,20 @@ class ChatViewModel @Inject constructor(
         onComplete: (String) -> Unit
     ) {
         val systemMessageInitial = Message(
-            text = viewModel.resources.getString(R.string.system_message_chat_name_initial),
+            text = appState.resources.getString(R.string.system_message_chat_name_initial),
             role = Role.SYSTEM
         )
 
         val messages = mutableListOf(systemMessageInitial)
         messages.addAll(
-            getAllMessages(
+            activeMessagesRepository.getAllMessages(
                 includeSystemMessage = false,
                 includeInactiveMessages = false
             )
         )
 
         val systemMessageFinal = Message(
-            text =viewModel.resources.getString(R.string.system_message_chat_name_final),
+            text = appState.resources.getString(R.string.system_message_chat_name_final),
             role = Role.SYSTEM
         )
         messages.add(systemMessageFinal)
@@ -405,9 +358,16 @@ class ChatViewModel @Inject constructor(
                 logger.logError(TAG, "Error generating chat name: ${e.message}")
                 onComplete("")
                 SnackbarManager.showMessage(
-                   e.toSnackbarMessage()
+                    e.toSnackbarMessage()
                 )
             }
+        }
+    }
+
+    fun signOut(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            accountService.signOut()
+            onSuccess()
         }
     }
 

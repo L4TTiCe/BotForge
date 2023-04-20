@@ -21,11 +21,13 @@ SPDX-License-Identifier: MIT
         - `Theme`: Contains the theme of the application.
             - Uses Material Design 3, with user configurable Light/Dark Mode and Dynamic Colors.
     - services:
-        - `Logger`: A simple logger service. Implementations: `AndroidLogger`, `FirebaseCrashylyticsLogger`
+        - `Logger`: A simple logger service. Implementations: `AndroidLogger`
+          , `FirebaseCrashylyticsLogger`
         - `LocalDatabase`: Room Database for the application. Contains all entities and DAOs.
         - `SnackbarManager` and `SnackbarLauncher`: To handle Snackbars.
             - Supports Actions, DismissLabels with Callbacks.
         - `Utils`: Contains utility functions.
-            - parseStackTraceForErrorMessage: To parse stack traces for error messages from OpenAI API.
+            - parseStackTraceForErrorMessage: To parse stack traces for error messages from OpenAI
+              API.
             - randomEmojiUnicode: To get a random emoji unicode.
             - containsMarkdown: To check if a string contains markdown.

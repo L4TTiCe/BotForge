@@ -18,13 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashUi(viewModel: AppViewModel) {
+fun SplashUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+) {
     val scale = remember {
         Animatable(0f)
     }
@@ -39,7 +42,7 @@ fun SplashUi(viewModel: AppViewModel) {
         )
 
         delay(1000)
-        viewModel.navController.navigate(AppRoutes.Landing.route) {
+        appViewModel.appState.navController.navigate(AppRoutes.Landing.route) {
             popUpTo(AppRoutes.Splash.route) { inclusive = true }
         }
     }

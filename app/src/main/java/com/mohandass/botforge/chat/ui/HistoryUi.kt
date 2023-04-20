@@ -5,7 +5,11 @@
 package com.mohandass.botforge.chat.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -16,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
@@ -23,37 +28,43 @@ import com.mohandass.botforge.chat.ui.components.ChatCard
 import com.mohandass.botforge.chat.ui.components.ImageWithMessage
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteHistoryDialog
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
+import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
+
 
 @Composable
-fun HistoryUi(viewModel: AppViewModel) {
+fun HistoryUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    historyViewModel: HistoryViewModel = hiltViewModel()
+) {
 
     val context = LocalContext.current
 
-    val openDeleteDialog by viewModel.history.openDeleteHistoryDialog
+    val openDeleteDialog by historyViewModel.openDeleteHistoryDialog
     if (openDeleteDialog) {
         DeleteHistoryDialog(
             onDismiss = {
-                viewModel.history.updateDeleteDialogState(false)
+                historyViewModel.updateDeleteDialogState(false)
             },
             onConfirm = {
-                viewModel.history.deleteAllChats()
-                viewModel.history.updateDeleteDialogState(false)
+                historyViewModel.deleteAllChats()
+                historyViewModel.updateDeleteDialogState(false)
             }
         )
     }
 
 
-    val chats = viewModel.history.chats
-    val personas = viewModel.persona.personas
+    val chats = historyViewModel.chats
+    val personas = personaViewModel.personas
 
     LaunchedEffect(Unit) {
-        viewModel.persona.setChatType(ChatType.HISTORY)
-        viewModel.history.fetchChats(onSuccess = {})
+        personaViewModel.setChatType(ChatType.HISTORY)
+        historyViewModel.fetchChats(onSuccess = {})
     }
 
     BackHandler {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
+        appViewModel.appState.navControllerPersona.popBackStack()
     }
 
     Surface(
@@ -73,7 +84,7 @@ fun HistoryUi(viewModel: AppViewModel) {
                 trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
                 trailingIconContentDescription = stringResource(id = R.string.clear_all_cd),
                 trailingIconOnClick = {
-                    viewModel.history.updateDeleteDialogState(true)
+                    historyViewModel.updateDeleteDialogState(true)
                 }
             )
 
@@ -101,21 +112,21 @@ fun HistoryUi(viewModel: AppViewModel) {
                     // Each chat as a card
                     ChatCard(
                         chat = chats[index],
-                        persona = personas.firstOrNull { it.uuid == chats[index].personaUuid },
+                        persona = personas.value?.firstOrNull { it.uuid == chats[index].personaUuid },
                         getMessage = { onSuccess ->
-                            viewModel.history.getMessagesCount(
+                            historyViewModel.getMessagesCount(
                                 chats[index].uuid,
                                 onSuccess = onSuccess
                             )
                         },
                         onClick = {
-                            viewModel.history.selectChat(chats[index])
+                            historyViewModel.selectChat(chats[index])
                         },
                         onDelete = {
-                            viewModel.history.deleteChat(chats[index].uuid)
+                            historyViewModel.deleteChat(chats[index].uuid)
                         },
                         onExport = {
-                            viewModel.history.exportChat(chats[index].uuid, context)
+                            historyViewModel.exportChat(chats[index].uuid, context)
                         },
                     )
                 }

@@ -59,7 +59,7 @@ fun PersonaInfo(
 
     val textLayoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
     val hasOverflow = textLayoutResult.value?.hasVisualOverflow ?: false
-    val isEllipsized = 
+    val isEllipsized =
         try {
             textLayoutResult.value?.isLineEllipsized(1) ?: false
         } catch (e: Exception) {
@@ -124,7 +124,7 @@ fun PersonaInfo(
                         color = MaterialTheme.colorScheme.secondary
                     )
 
-                    Text (
+                    Text(
                         modifier = Modifier
                             .animateContentSize()
                             .clickable {

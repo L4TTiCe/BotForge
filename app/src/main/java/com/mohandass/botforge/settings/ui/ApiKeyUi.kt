@@ -6,7 +6,15 @@ package com.mohandass.botforge.settings.ui
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,7 +22,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
@@ -38,7 +55,7 @@ import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ApiKeyUi(
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel,
 ) {
     val apiKey = remember { mutableStateOf(settingsViewModel.getApiKey()) }
@@ -49,11 +66,11 @@ fun ApiKeyUi(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.topBar.title.value = R.string.settings
-        viewModel.topBar.overrideMenu.value = true
-        viewModel.topBar.menu.value = {
+        appViewModel.appState.topBar.title.value = R.string.settings
+        appViewModel.appState.topBar.overrideMenu.value = true
+        appViewModel.appState.topBar.menu.value = {
             IconButton(onClick = {
-                viewModel.navControllerMain.popBackStack()
+                appViewModel.appState.navControllerMain.popBackStack()
             }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,

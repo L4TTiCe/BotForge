@@ -11,26 +11,35 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.Chat
 import com.mohandass.botforge.chat.model.ExportedChat
 import com.mohandass.botforge.chat.model.Message
+import com.mohandass.botforge.chat.repositories.ActiveMessagesRepository
+import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
+import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /*
  * A ViewModel to handle the History Screen
  */
-class HistoryViewModel(
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+    private val appState: AppState,
     private val chatService: ChatServiceImpl,
-    private val viewModel: AppViewModel,
+    private val personaRepository: PersonaRepository,
+    private val activePersonaRepository: ActivePersonaRepository,
+    private val activeMessagesRepository: ActiveMessagesRepository,
     private val logger: Logger,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -58,7 +67,7 @@ class HistoryViewModel(
     }
 
     private fun isPersonaDeleted(personaUuid: String): Boolean {
-        val personas = viewModel.persona.personas
+        val personas = personaRepository.personas.value
         personas.firstOrNull { it.uuid == personaUuid } ?: return true
         return false
     }
@@ -72,19 +81,25 @@ class HistoryViewModel(
             val messages: List<Message> = chatService.getMessagesFromChat(chatUUID)
 
             logger.logVerbose(TAG, "fetchMessages() chat: $chat")
-            logger.logVerbose(TAG, "fetchMessages() messages: $messages")
 
-            viewModel.chat.setMessages(messages)
+            activeMessagesRepository.setMessages(messages)
 
 
             if (chat?.personaUuid == null || isPersonaDeleted(chat.personaUuid)) {
-                viewModel.persona.clearSelection()
-                viewModel.persona.updatePersonaSystemMessage(messages.first().text)
-                viewModel.chat.setMessages(messages.subList(1, messages.size))
+                activePersonaRepository.clear()
+                activePersonaRepository.updateActivePersonaSystemMessage(messages.first().text)
+                activeMessagesRepository.setMessages(messages.subList(1, messages.size))
             } else {
                 // ignore first message
-                viewModel.chat.setMessages(messages.subList(1, messages.size))
-                viewModel.persona.selectPersona(chat.personaUuid)
+                activeMessagesRepository.setMessages(messages.subList(1, messages.size))
+
+                // Set active persona to the persona of the chat
+                val persona = personaRepository.getPersona(chat.personaUuid)
+                activePersonaRepository.updateActivePersonaName(persona.name)
+                activePersonaRepository.updateActivePersonaUuid(persona.uuid)
+                activePersonaRepository.updateActivePersonaAlias(persona.alias)
+                activePersonaRepository.updateActivePersonaSystemMessage(persona.systemMessage)
+                activePersonaRepository.updateActivePersonaParentUuid(persona.parentUuid)
             }
             onSuccess()
 
@@ -97,7 +112,7 @@ class HistoryViewModel(
         logger.log(TAG, "selectChat()")
 
         fetchMessages(chat.uuid) {
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
 
     }
