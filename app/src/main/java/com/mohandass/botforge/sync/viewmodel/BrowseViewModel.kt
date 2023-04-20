@@ -80,7 +80,7 @@ class BrowseViewModel @Inject constructor(
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
-       search()
+        search()
     }
 
     private val _fetchedBots = mutableStateListOf<BotE>()
@@ -160,8 +160,10 @@ class BrowseViewModel @Inject constructor(
     private fun applyContentModeration() {
         val lastModerationIndexProcessed =
             appState.userPreferences.value?.lastModerationIndexProcessed
-        logger.log(TAG, "applyContentModeration: " +
-                "lastModerationIndexProcessed: $lastModerationIndexProcessed")
+        logger.log(
+            TAG, "applyContentModeration: " +
+                    "lastModerationIndexProcessed: $lastModerationIndexProcessed"
+        )
         viewModelScope.launch {
             val deletionRecords = firebaseDatabaseService.fetchBotsDeletedAfter(
                 lastModerationIndexProcessed!!
@@ -172,8 +174,10 @@ class BrowseViewModel @Inject constructor(
                     deletionRecord.botId?.let { botService.deleteBot(it) }
                 }
 
-                logger.log(TAG, "applyContentModeration: " +
-                        "deletionRecordsCount: ${deletionRecords.size}")
+                logger.log(
+                    TAG, "applyContentModeration: " +
+                            "deletionRecordsCount: ${deletionRecords.size}"
+                )
 
                 // Find the largest index in the deletion records
                 val maxIndex = deletionRecords.maxByOrNull { it.index!! }?.index

@@ -10,9 +10,9 @@ import com.google.firebase.auth.AuthCredential
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
 import com.mohandass.botforge.common.services.Analytics
+import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage
-import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme

@@ -18,7 +18,10 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
     SharedPreferencesService {
 
     private val sharedPreferences =
-        context.applicationContext.getSharedPreferences(SharedPreferencesService.USER_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        context.applicationContext.getSharedPreferences(
+            SharedPreferencesService.USER_PREFERENCES_NAME,
+            Context.MODE_PRIVATE
+        )
 
     override fun getApiKey(): String {
         return _apiKey
@@ -59,7 +62,10 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
 
     private val _onBoardingCompleted: Boolean
         get() {
-            return sharedPreferences.getBoolean(SharedPreferencesService.ON_BOARDING_COMPLETED, false)
+            return sharedPreferences.getBoolean(
+                SharedPreferencesService.ON_BOARDING_COMPLETED,
+                false
+            )
         }
 
     override fun getOnBoardingCompleted(): Boolean {

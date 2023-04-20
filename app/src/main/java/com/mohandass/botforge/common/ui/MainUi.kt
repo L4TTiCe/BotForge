@@ -4,9 +4,13 @@
 
 package com.mohandass.botforge.common.ui
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,10 +29,10 @@ import com.mohandass.botforge.chat.ui.components.header.top.TopBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.ui.ApiKeyUi
 import com.mohandass.botforge.settings.ui.IconCreditsUi
+import com.mohandass.botforge.settings.ui.ManageAccountUi
 import com.mohandass.botforge.settings.ui.SettingsUi
 import com.mohandass.botforge.ui.settings.ApiUsageUi
 import com.mohandass.botforge.ui.settings.AppInformationUi
-import com.mohandass.botforge.settings.ui.ManageAccountUi
 import com.mohandass.botforge.ui.settings.OpenSourceLibrariesUi
 
 /**

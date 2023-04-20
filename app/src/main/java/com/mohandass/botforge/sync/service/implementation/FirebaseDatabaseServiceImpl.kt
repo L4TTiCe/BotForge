@@ -46,8 +46,10 @@ class FirebaseDatabaseServiceImpl(
         val snapshot = deleteRef.orderByChild("index").startAt(index.toDouble()).get().await()
         logger.logVerbose(TAG, "fetchBotsDeletedAfter: ${snapshot.childrenCount}")
         snapshot.children.forEach {
-            logger.logVerbose(TAG, "fetchBotsDeletedAfter: " +
-                    "${it.getValue(DeleteRecord::class.java)}")
+            logger.logVerbose(
+                TAG, "fetchBotsDeletedAfter: " +
+                        "${it.getValue(DeleteRecord::class.java)}"
+            )
             records.add(it.getValue(DeleteRecord::class.java)!!)
         }
         return records

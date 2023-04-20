@@ -11,19 +11,19 @@ import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.settings.model.PreferredTheme
 
-class FirebaseAnalyticsImpl: Analytics {
+class FirebaseAnalyticsImpl : Analytics {
     private var firebaseAnalytics: FirebaseAnalytics = Firebase.analytics
 
     override fun logAppOpened() {
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN) {  }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN) { }
     }
 
     override fun logLinkedWithGoogle() {
-        firebaseAnalytics.logEvent(Analytics.LINKED_WITH_GOOGLE) {  }
+        firebaseAnalytics.logEvent(Analytics.LINKED_WITH_GOOGLE) { }
     }
 
     override fun logNameChanged() {
-        firebaseAnalytics.logEvent(Analytics.NAME_CHANGED) {  }
+        firebaseAnalytics.logEvent(Analytics.NAME_CHANGED) { }
     }
 
     override fun logIsAnalyticsEnabled(boolean: Boolean) {
@@ -81,19 +81,19 @@ class FirebaseAnalyticsImpl: Analytics {
     }
 
     override fun logBotSharedWithCommunity() {
-        firebaseAnalytics.logEvent(Analytics.BOT_SHARED_WITH_COMMUNITY) {  }
+        firebaseAnalytics.logEvent(Analytics.BOT_SHARED_WITH_COMMUNITY) { }
     }
 
     override fun logCommunityBotDownloaded() {
-        firebaseAnalytics.logEvent(Analytics.COMMUNITY_BOT_DOWNLOADED) {  }
+        firebaseAnalytics.logEvent(Analytics.COMMUNITY_BOT_DOWNLOADED) { }
     }
 
     override fun logJsonExported() {
-        firebaseAnalytics.logEvent(Analytics.JSON_EXPORTED) {  }
+        firebaseAnalytics.logEvent(Analytics.JSON_EXPORTED) { }
     }
 
     override fun logPdfExported() {
-        firebaseAnalytics.logEvent(Analytics.PDF_EXPORTED) {  }
+        firebaseAnalytics.logEvent(Analytics.PDF_EXPORTED) { }
     }
 
     companion object {

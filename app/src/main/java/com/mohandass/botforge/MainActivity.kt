@@ -60,9 +60,10 @@ import javax.inject.Inject
  * App Hierarchy: MainActivity -> MainUi -> PersonaUi -> ...
  */
 @AndroidEntryPoint
-class MainActivity: ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var appState: AppState
+    @Inject
+    lateinit var appState: AppState
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +83,7 @@ class MainActivity: ComponentActivity() {
         setContent {
             appState.resources = resources()
 
-            BotForgeTheme() {
+            BotForgeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier

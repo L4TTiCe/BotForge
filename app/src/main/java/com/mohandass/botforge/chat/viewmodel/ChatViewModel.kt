@@ -166,9 +166,11 @@ class ChatViewModel @Inject constructor(
                                 appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                             }
                         }
+
                         Utils.INTERRUPTED_ERROR_MESSAGE -> {
                             SnackbarManager.showMessage(R.string.request_cancelled)
                         }
+
                         else -> {
                             SnackbarManager.showMessage(
                                 message.toSnackbarMessageWithAction(R.string.settings) {
@@ -343,7 +345,7 @@ class ChatViewModel @Inject constructor(
         )
 
         val systemMessageFinal = Message(
-            text =appState.resources.getString(R.string.system_message_chat_name_final),
+            text = appState.resources.getString(R.string.system_message_chat_name_final),
             role = Role.SYSTEM
         )
         messages.add(systemMessageFinal)
@@ -356,7 +358,7 @@ class ChatViewModel @Inject constructor(
                 logger.logError(TAG, "Error generating chat name: ${e.message}")
                 onComplete("")
                 SnackbarManager.showMessage(
-                   e.toSnackbarMessage()
+                    e.toSnackbarMessage()
                 )
             }
         }

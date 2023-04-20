@@ -127,7 +127,7 @@ class PdfWriter(
             .tableCellPadding(0)
             .build()
 
-        val markwon: Markwon =  Markwon.builder(context)
+        val markwon: Markwon = Markwon.builder(context)
             .usePlugin(HtmlPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TablePlugin.create(tableTheme))

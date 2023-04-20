@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
  * This is used to pass the active chat between screens, and to
  * update the active chat
  */
-class ActiveMessagesRepository (
+class ActiveMessagesRepository(
     private val appState: AppState,
     private val activePersonaRepository: ActivePersonaRepository
 ) {

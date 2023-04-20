@@ -59,7 +59,8 @@ fun DefaultHeader(
         if (1.adw > Constants.FOLDABLE_THRESHOLD.dp
             // If overrideMenu is true, don't show the avatars bar
             // As the App is in a different screen (Settings, About, etc.) than Chat
-            && !overrideMenu) {
+            && !overrideMenu
+        ) {
             Box(
                 modifier = Modifier
                     .weight(1f)

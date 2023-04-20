@@ -38,15 +38,19 @@ class ActivePersonaRepository(
     fun updateActivePersonaUuid(value: String) {
         _activePersonaUuid.value = value
     }
+
     fun updateActivePersonaName(value: String) {
         _activePersonaName.value = value
     }
+
     fun updateActivePersonaAlias(value: String) {
         _activePersonaAlias.value = value
     }
+
     fun updateActivePersonaSystemMessage(value: String) {
         _activePersonaSystemMessage.value = value
     }
+
     fun updateActivePersonaParentUuid(uuid: String) {
         _activePersonaParentUuid.value = uuid
 
@@ -58,6 +62,7 @@ class ActivePersonaRepository(
             updateParentBot(null)
         }
     }
+
     private fun updateParentBot(bot: BotE?) {
         _activePersonaParent.value = bot
     }

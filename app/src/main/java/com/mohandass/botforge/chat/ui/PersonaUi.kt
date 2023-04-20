@@ -119,7 +119,8 @@ fun PersonaUi(
                 // and the screen size in small
                 // Else, Avatar Bar will be in Header
                 if (1.adw < Constants.FOLDABLE_THRESHOLD.dp &&
-                    preferredHeader == PreferredHeader.DEFAULT_HEADER) {
+                    preferredHeader == PreferredHeader.DEFAULT_HEADER
+                ) {
                     AvatarsBar()
                 }
 

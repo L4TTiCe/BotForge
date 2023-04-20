@@ -63,9 +63,11 @@ sealed class SnackbarMessage {
                 is StringSnackbar -> {
                     {}
                 }
+
                 is ResourceSnackbar -> {
                     {}
                 }
+
                 is ResourceSnackbarWithFormatArg -> {
                     {}
                 }

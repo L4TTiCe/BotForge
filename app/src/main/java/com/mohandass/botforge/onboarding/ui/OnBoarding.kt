@@ -66,6 +66,7 @@ fun OnBoarding(
                             }
                         }
                     )
+
                     2 -> OnBoardingUi3Api(
                         initialApiKey = onBoardingViewModel.getApiKey(),
                         saveApiKey = {
@@ -77,6 +78,7 @@ fun OnBoarding(
                             }
                         }
                     )
+
                     3 -> OnBoardingUi4Ugc(
                         saveUserGeneratedContent = {
                             onBoardingViewModel.setUserGeneratedContent(it)
@@ -88,6 +90,7 @@ fun OnBoarding(
                             }
                         }
                     )
+
                     else -> OnBoardingUi1Logo()
                 }
             }

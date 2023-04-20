@@ -10,4 +10,4 @@ Screenshots:
 | <img src="/assets/ui/auth/landing.png" width="400"/>      | 
 |-----------------------------------------------------------|
 | `LandingUi`: with Google Sign In and Anonymous Sign In.   | 
- | Components Used: `GoogleSignInButton`. `SkipSignInButton` |
+| Components Used: `GoogleSignInButton`. `SkipSignInButton` |

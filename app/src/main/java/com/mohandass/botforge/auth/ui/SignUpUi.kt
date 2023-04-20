@@ -33,7 +33,8 @@ import com.mohandass.botforge.R.string as AppText
 @Composable
 fun SignUpUi(
     appViewModel: AppViewModel = hiltViewModel(),
-    signUpViewModel: SignUpViewModel = hiltViewModel()) {
+    signUpViewModel: SignUpViewModel = hiltViewModel()
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()

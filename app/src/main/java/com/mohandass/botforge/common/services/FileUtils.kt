@@ -118,7 +118,8 @@ class FileUtils {
                 pdfWriter.write("Title: ${chatInfo.chatInfo.name}", messagePaint)
                 pdfWriter.write(
                     "Saved at: ${Utils.formatTimeLong(chatInfo.chatInfo.savedAt)}",
-                    messagePaint)
+                    messagePaint
+                )
                 pdfWriter.write("Messages Count: ${chatInfo.messages.size}", messagePaint)
 
                 pdfWriter.addPadding(16f)
@@ -182,7 +183,8 @@ class FileUtils {
                 }
             }
 
-            val pdfFile = File(filesDir, "exported_chats/${title}_${System.currentTimeMillis()}.pdf")
+            val pdfFile =
+                File(filesDir, "exported_chats/${title}_${System.currentTimeMillis()}.pdf")
             val pdfUri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.provider",
@@ -211,7 +213,8 @@ class FileUtils {
                 }
             }
 
-            val jsonFile = File(filesDir, "exported_chats/${title}_${System.currentTimeMillis()}.json")
+            val jsonFile =
+                File(filesDir, "exported_chats/${title}_${System.currentTimeMillis()}.json")
             val jsonUri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.provider",

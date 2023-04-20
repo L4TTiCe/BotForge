@@ -54,7 +54,7 @@ fun PersonaListUi(
 
     if (showDeleteAllPersonaDialog) {
         DeleteAllPersonasDialog(
-            onDismiss = {showDeleteAllPersonaDialog = false},
+            onDismiss = { showDeleteAllPersonaDialog = false },
             onConfirm = {
                 personaListViewModel.deleteAllPersonas()
             }
@@ -75,7 +75,7 @@ fun PersonaListUi(
             .fillMaxSize(),
         tonalElevation = 0.1.dp,
     ) {
-        Column{
+        Column {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -126,7 +126,7 @@ fun PersonaListUi(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
-                item{
+                item {
                     if (searchQuery == "") {
                         return@item
                     }
@@ -140,7 +140,7 @@ fun PersonaListUi(
                     )
                 }
 
-                items (
+                items(
                     count = matchedPersonas.size,
                     key = { index -> matchedPersonas[index].uuid + "Matched" }
                 ) { index ->
@@ -181,7 +181,7 @@ fun PersonaListUi(
                     }
                 }
 
-                item{
+                item {
                     if (searchQuery == "") {
                         return@item
                     }

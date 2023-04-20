@@ -27,14 +27,15 @@ import javax.inject.Inject
  * A ViewModel to handle the Persona List Screen
  */
 @HiltViewModel
-class PersonaListViewModel @Inject constructor (
+class PersonaListViewModel @Inject constructor(
     private val appState: AppState,
     private val personaRepository: PersonaRepository,
     private val botService: BotService,
     private val logger: Logger
-): ViewModel() {
+) : ViewModel() {
     private var _personas = mutableStateListOf<Persona>()
     val personas = personaRepository.personas.asLiveData()
+
     // Reference:
     // https://stackoverflow.com/questions/48396092/should-i-include-lifecycleowner-in-viewmodel
     private val observer: (List<Persona>) -> Unit = {
@@ -50,6 +51,7 @@ class PersonaListViewModel @Inject constructor (
         personas.removeObserver(observer)
         super.onCleared()
     }
+
     var matchedPersonas = mutableStateListOf<Persona>()
 
     val showDeleteAllPersonaDialog = mutableStateOf(false)
@@ -125,7 +127,10 @@ class PersonaListViewModel @Inject constructor (
         for (persona in personas.value!!) {
             viewModelScope.launch {
                 bots[persona.parentUuid] = botService.getBot(persona.parentUuid)
-                logger.logVerbose(TAG, "fetchBots ${persona.parentUuid} ${bots[persona.parentUuid]}")
+                logger.logVerbose(
+                    TAG,
+                    "fetchBots ${persona.parentUuid} ${bots[persona.parentUuid]}"
+                )
             }
         }
     }
