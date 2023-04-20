@@ -2,12 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -233,7 +232,7 @@ fun ApiUsageUi(
             Spacer(modifier = Modifier.width(5.dp))
         }
 
-        SettingsCategory(title = "External Links")
+        SettingsCategory(title = stringResource(id = R.string.external_links))
 
         SettingsItem(
             title = resources().getString(R.string.usage_summary),

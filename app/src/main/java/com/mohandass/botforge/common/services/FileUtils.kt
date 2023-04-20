@@ -141,33 +141,10 @@ class FileUtils {
                 pdfWriter.write(message.role.toString(), rolePaint)
 
                 // split message into multiple parts if it has newlines
-//                val messageParts = message.text.split("\n\n")
-//                for (messagePart in messageParts) {
-//                    bgPaint.color = when (message.role) {
-//                        Role.USER -> context.getColor(R.color.primary)
-//                        Role.BOT -> context.getColor(R.color.tertiary)
-//                        Role.SYSTEM -> context.getColor(R.color.secondary)
-//                        else -> {
-//                            context.getColor(R.color.primary)
-//                        }
-//                    }
-//                    bgPaint.alpha = 50
-//
-//                    pdfConfig.writeMarkdown(
-//                        markdown = messagePart,
-//                        paint = messagePaint,
-//                        bgPaint = bgPaint,
-//                        context = context
-//                    )
-//                    pdfConfig.addPadding(10f)
-//                }
-
-
-                pdfWriter.writeMarkdown(
-                    markdown = message.text,
-                    paint = messagePaint,
-                    context = context
-                )
+                val messageParts = message.text.split("\n\n")
+                for (part in messageParts) {
+                    pdfWriter.writeMarkdown(part, messagePaint, context)
+                }
 
                 pdfWriter.addPadding(20f)
             }
