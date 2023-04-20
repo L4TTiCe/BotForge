@@ -7,7 +7,7 @@ package com.mohandass.botforge.common.services.implementation
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.settings.model.PreferredTheme
 
-class DisabledAnalytics: Analytics {
+class DisabledAnalytics : Analytics {
     override fun logAppOpened() {
         // Do nothing
     }

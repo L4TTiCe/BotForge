@@ -9,15 +9,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.LibraryDefaults
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 
 @Composable
-fun OpenSourceLibrariesUi(viewModel: AppViewModel) {
+fun OpenSourceLibrariesUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+) {
     LaunchedEffect(Unit) {
-        viewModel.topBar.title.value = R.string.open_source_libraries
+        appViewModel.appState.topBar.title.value = R.string.open_source_libraries
     }
     LibrariesContainer(
         modifier = Modifier

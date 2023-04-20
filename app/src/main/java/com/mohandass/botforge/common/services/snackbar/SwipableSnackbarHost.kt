@@ -32,7 +32,9 @@ enum class SwipeDirection {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SwipeableSnackbarHost(hostState: SnackbarHostState) {
-    if (hostState.currentSnackbarData == null) { return }
+    if (hostState.currentSnackbarData == null) {
+        return
+    }
     var size by remember { mutableStateOf(Size.Zero) }
     val swipeableState = rememberSwipeableState(SwipeDirection.Initial)
     val width = remember(size) {
@@ -51,6 +53,7 @@ fun SwipeableSnackbarHost(hostState: SnackbarHostState) {
                     SwipeDirection.Left -> {
                         hostState.currentSnackbarData?.dismiss()
                     }
+
                     else -> {
                         return@onDispose
                     }

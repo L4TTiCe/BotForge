@@ -29,8 +29,8 @@ android {
         applicationId = "com.mohandass.botforge"
         minSdk = 28
         targetSdk = 33
-        versionCode = 27
-        versionName = "1.2.7"
+        versionCode = 28
+        versionName = "1.2.8"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -43,6 +43,7 @@ android {
 
     buildTypes {
         named("debug") {
+            applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
         named("release") {
@@ -82,6 +83,9 @@ android {
     }
 }
 
+configurations {
+    implementation.get().exclude(group = "org.jetbrains", module = "annotations")
+}
 
 dependencies {
     val composeBomVersion = "2023.04.00"
@@ -187,9 +191,10 @@ dependencies {
     implementation("com.github.jeziellago:compose-markdown:$composeMarkdownVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
-
-    implementation("io.noties.markwon:core:${markwonVersion}")
-    implementation(group = "io.noties.markwon", name = "ext-tables", version = markwonVersion)
+    implementation("io.noties.markwon:core:$markwonVersion")
+    implementation("io.noties.markwon:ext-strikethrough:$markwonVersion")
+    implementation("io.noties.markwon:ext-tables:$markwonVersion")
+    implementation("io.noties.markwon:html:$markwonVersion")
 
     // LeakCanary for memory leak detection
     // https://square.github.io/leakcanary/

@@ -7,7 +7,11 @@ package com.mohandass.botforge.common.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,6 +20,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.settings.model.PreferredTheme
 
@@ -87,12 +92,12 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun BotForgeTheme(
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     var useDynamicColor = true
     var useDarkTheme = isSystemInDarkTheme()
-    val userPreferences = viewModel.userPreferences.observeAsState()
+    val userPreferences = appViewModel.appState.userPreferences.observeAsState()
 
     userPreferences.value?.let {
         useDarkTheme = when (it.preferredTheme) {
@@ -110,6 +115,7 @@ fun BotForgeTheme(
             if (useDarkTheme) dynamicDarkColorScheme(context)
             else dynamicLightColorScheme(context)
         }
+
         useDarkTheme -> DarkColors
         else -> LightColors
     }

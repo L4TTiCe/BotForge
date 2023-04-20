@@ -9,7 +9,8 @@ SPDX-License-Identifier: MIT
     - UI:
         - `SettingsUi`: Composable which leads to the following screens:
             - `ApiKeyUi`: to manage API Key. Links to OpenAI API Key Page.
-            - `ApiUsageUi`: displays estimated API Usage, links to OpenAI API Usage Page, allows user to reset API Usage.
+            - `ApiUsageUi`: displays estimated API Usage, links to OpenAI API Usage Page, allows
+              user to reset API Usage.
             - `ApperanceSettings`: Allows user to enable Dark Mode and Dynamic Colors.
             - `AppInformationUi`: Shows App Information.
             - `IconCreditsUi`: To attribute and show Icon used in the application.

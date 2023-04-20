@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoarding(
     onBoardingViewModel: OnBoardingViewModel = hiltViewModel(),
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
@@ -66,6 +66,7 @@ fun OnBoarding(
                             }
                         }
                     )
+
                     2 -> OnBoardingUi3Api(
                         initialApiKey = onBoardingViewModel.getApiKey(),
                         saveApiKey = {
@@ -77,17 +78,19 @@ fun OnBoarding(
                             }
                         }
                     )
+
                     3 -> OnBoardingUi4Ugc(
                         saveUserGeneratedContent = {
                             onBoardingViewModel.setUserGeneratedContent(it)
                         },
                         onComplete = {
                             onBoardingViewModel.setOnBoardingCompleted()
-                            viewModel.navController.navigate(AppRoutes.Main.route) {
+                            appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
                                 popUpTo(AppRoutes.OnBoarding.route) { inclusive = true }
                             }
                         }
                     )
+
                     else -> OnBoardingUi1Logo()
                 }
             }
@@ -120,5 +123,5 @@ fun OnBoarding(
 @Preview
 @Composable
 fun OnBoardingPreview() {
-    OnBoarding(viewModel = hiltViewModel())
+    OnBoarding()
 }

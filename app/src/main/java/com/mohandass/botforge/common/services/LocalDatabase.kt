@@ -11,7 +11,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.PersonaDao
-import com.mohandass.botforge.chat.model.dao.entities.*
+import com.mohandass.botforge.chat.model.dao.entities.ChatE
+import com.mohandass.botforge.chat.model.dao.entities.CustomTypeConverters
+import com.mohandass.botforge.chat.model.dao.entities.MessageE
+import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
+import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.sync.model.dao.BotDao
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotFts

@@ -19,6 +19,9 @@ interface PersonaDao {
     @Query("SELECT * FROM persona ORDER BY lastUsed DESC")
     suspend fun getAllPersonas(): List<Persona>
 
+    @Query("SELECT * FROM persona WHERE uuid = :uuid")
+    suspend fun getPersona(uuid: String): Persona
+
     @Update
     suspend fun updatePersona(persona: Persona)
 

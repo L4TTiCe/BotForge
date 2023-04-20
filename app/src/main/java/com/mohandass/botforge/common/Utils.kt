@@ -61,7 +61,7 @@ class Utils {
 
         fun formatTimeLong(time: Long = System.currentTimeMillis()): String {
             val format = SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a z")
-             return format.format(time)
+            return format.format(time)
         }
 
         // Randomly generates an emoji

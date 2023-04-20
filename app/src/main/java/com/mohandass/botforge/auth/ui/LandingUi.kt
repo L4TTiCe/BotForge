@@ -8,7 +8,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,25 +47,25 @@ private const val TAG = "LandingUi"
 @Composable
 fun LandingUi(
     modifier: Modifier = Modifier,
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
     landingViewModel: LandingViewModel = hiltViewModel()
 ) {
 
     val onLoginSuccess = {
         if (!landingViewModel.isOnBoardingCompleted()) {
-            viewModel.logger.logVerbose(
+            appViewModel.appState.logger.logVerbose(
                 TAG,
                 "checkAuthentication: Authenticated, navigating to OnBoardingUi"
             )
-            viewModel.navController.navigate(AppRoutes.OnBoarding.route) {
+            appViewModel.appState.navController.navigate(AppRoutes.OnBoarding.route) {
                 popUpTo(AppRoutes.Landing.route) { inclusive = true }
             }
         } else {
-            viewModel.logger.logVerbose(
+            appViewModel.appState.logger.logVerbose(
                 TAG,
                 "checkAuthentication: Authenticated, navigating to MainUi"
             )
-            viewModel.navController.navigate(AppRoutes.Main.route) {
+            appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
                 popUpTo(AppRoutes.Landing.route) { inclusive = true }
             }
         }
@@ -97,7 +101,7 @@ fun LandingUi(
 
                 onLoginSuccess()
             } catch (it: ApiException) {
-                viewModel.logger.logError(TAG, "Google sign in failed", it)
+                appViewModel.appState.logger.logError(TAG, "Google sign in failed", it)
             }
         }
 
@@ -142,7 +146,7 @@ fun LandingUi(
 
         SkipSignInButton {
             landingViewModel.onSkip {
-                viewModel.navController.navigate(AppRoutes.Landing.route) {
+                appViewModel.appState.navController.navigate(AppRoutes.Landing.route) {
                     popUpTo(AppRoutes.Landing.route) { inclusive = true }
                 }
             }

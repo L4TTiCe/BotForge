@@ -5,7 +5,12 @@
 package com.mohandass.botforge.settings.ui
 
 import android.os.Build
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
@@ -27,7 +33,10 @@ import com.mohandass.botforge.settings.ui.components.SettingsItem
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 
 @Composable
-fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewModel) {
+fun AppearanceSettings(
+    appViewModel: AppViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+) {
     var activeTheme = remember {
         PreferredTheme.AUTO
     }
@@ -38,7 +47,7 @@ fun AppearanceSettings(viewModel: AppViewModel, settingsViewModel: SettingsViewM
         mutableStateOf(false)
     }
 
-    val userPreferences = viewModel.userPreferences.observeAsState()
+    val userPreferences = appViewModel.appState.userPreferences.observeAsState()
     userPreferences.value?.let {
         activeTheme = it.preferredTheme
         useDynamicColors.value = it.useDynamicColors

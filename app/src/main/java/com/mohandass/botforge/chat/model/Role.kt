@@ -76,10 +76,12 @@ class Role(val ordinal: Int) {
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
             )
+
             SYSTEM -> CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
+
             else -> {
                 throw IllegalArgumentException("Unknown role: $this")
             }
@@ -108,11 +110,13 @@ class Role(val ordinal: Int) {
                 cursorColor = MaterialTheme.colorScheme.tertiary,
                 focusedIndicatorColor = MaterialTheme.colorScheme.tertiary
             )
+
             SYSTEM -> TextFieldDefaults.textFieldColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 cursorColor = MaterialTheme.colorScheme.secondary,
                 focusedIndicatorColor = MaterialTheme.colorScheme.secondary
             )
+
             else -> {
                 throw IllegalArgumentException("Unknown role: $this")
             }

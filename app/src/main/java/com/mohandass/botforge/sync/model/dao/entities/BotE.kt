@@ -11,7 +11,8 @@ import androidx.room.PrimaryKey
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.sync.model.dao.entities.BotE.Companion.sampleBot1
 import com.mohandass.botforge.sync.model.dao.entities.BotE.Companion.sampleBot2
-import java.util.*
+import java.util.Date
+import java.util.UUID
 
 /**
  * A data class to represent a Bot
