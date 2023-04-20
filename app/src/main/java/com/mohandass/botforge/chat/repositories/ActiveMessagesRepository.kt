@@ -11,6 +11,12 @@ import com.mohandass.botforge.chat.model.Role
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/*
+ * A Repository to hold the active chat
+ *
+ * This is used to pass the active chat between screens, and to
+ * update the active chat
+ */
 class ActiveMessagesRepository (
     private val appState: AppState,
     private val activePersonaRepository: ActivePersonaRepository

@@ -12,6 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+/*
+ * A Repository to hold the active persona
+ *
+ * This is used to pass the active persona between screens, and to
+ * update the active persona
+ */
 class ActivePersonaRepository(
     private val botService: BotService
 ) {

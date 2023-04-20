@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * This Class calls the DAO to perform CRUD operations on the Persona table
+ * A Repository to hold the personas, and to operate on them
  */
 class PersonaRepository(
     private val personaDao: PersonaDao,
@@ -25,11 +25,13 @@ class PersonaRepository(
 
     init {
         // Launch a coroutine to update the personas
+        // on startup
         CoroutineScope(Dispatchers.IO).launch {
             updatePersonas()
         }
     }
 
+    // This function is called to update the personas
     private suspend fun updatePersonas() {
         _personas.value = personaDao.getAllPersonas()
     }

@@ -15,6 +15,19 @@ import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.settings.service.PreferencesDataStore
 
+/*
+ * AppState holds the state of the application, including
+ *   - User preferences
+ *   - NavHostController
+ *   - TopBarViewModel to control the top bar's title and actions
+ *   - Can also change active snackbar location
+ *
+ * AppState is a singleton, and is injected into the app using Hilt. It is also held in
+ * AppViewModel, which can be injected into any Composable.
+ *
+ * Inject AppState into any ViewModel using @Inject constructor(private val appState: AppState),
+ * and Inject AppViewModel into any Composable using appViewModel: AppViewModel = hiltViewModel()
+ */
 class AppState(
     preferencesDataStore: PreferencesDataStore,
     val logger: Logger
