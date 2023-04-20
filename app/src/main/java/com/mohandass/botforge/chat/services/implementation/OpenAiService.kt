@@ -32,7 +32,7 @@ class OpenAiServiceImpl private constructor(
 
         if (apiKey == "") {
             logger.logError(TAG, "getClient() No API key found")
-            throw Throwable("No API key found")
+            throw Exception("No API key found")
         }
 
         return OpenAI(apiKey)

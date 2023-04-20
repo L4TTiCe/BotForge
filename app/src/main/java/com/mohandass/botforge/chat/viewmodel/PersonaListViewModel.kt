@@ -9,20 +9,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
+import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.service.BotService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /*
  * A ViewModel to handle the Persona List Screen
  */
-class PersonaListViewModel (
-    private val viewModel: AppViewModel,
-    personaRepository: PersonaRepository,
+@HiltViewModel
+class PersonaListViewModel @Inject constructor (
+    private val appState: AppState,
+    private val personaRepository: PersonaRepository,
     private val botService: BotService,
     private val logger: Logger
 ): ViewModel() {
@@ -75,21 +82,41 @@ class PersonaListViewModel (
     }
 
     fun onBack() {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
+        appState.navControllerPersona.popBackStack()
     }
 
     fun deleteAllPersonas() {
         logger.logVerbose(TAG, "deleteAllPersonas")
-        viewModel.persona.deleteAllPersonas()
-        viewModel.persona.clearSelection()
+        viewModelScope.launch {
+            personaRepository.deleteAllPersonas()
+            SnackbarManager.showMessage(R.string.delete_all_personas_success)
+        }
         showDeleteAllPersonaDialog.value = false
     }
 
     fun deletePersona(uuid: String) {
-        logger.logVerbose(TAG, "deletePersona $uuid")
-        viewModelScope.launch {
-            viewModel.persona.deletePersona(uuid)
+        var deleteJob: Job = Job()
+
+        val persona = _personas.find { it.uuid == uuid }
+        if (persona != null) {
+            // Remove persona from the list
+            _personas.remove(persona)
+
+            SnackbarManager.showMessageWithAction(
+                R.string.deleted_persona,
+                R.string.undo
+            ) {
+                _personas.add(persona)
+                deleteJob.cancel()
+            }
+
+            deleteJob = viewModelScope.launch {
+                delay(5000)
+                personaRepository.deletePersona(persona)
+                logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
+            }
+        } else {
+            SnackbarManager.showMessage(R.string.generic_error)
         }
     }
 

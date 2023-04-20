@@ -10,14 +10,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.auth.services.AccountService
+import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.sync.model.Bot
 import com.mohandass.botforge.sync.service.implementation.FirebaseDatabaseServiceImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -28,17 +30,18 @@ import javax.inject.Inject
  *
  * Handles the sharing of a persona to the Community.
  */
+@HiltViewModel
 class SharePersonaViewModel @Inject constructor(
-    private val viewModel: AppViewModel,
+    private val appState: AppState,
     private val accountService: AccountService,
+    private val activePersonaRepository: ActivePersonaRepository,
     private val firebaseDatabaseServiceImpl: FirebaseDatabaseServiceImpl,
     private val logger: Logger,
     private val analytics: Analytics
 ) : ViewModel() {
 
     val backHandler = {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
+        appState.navControllerPersona.popBackStack()
     }
 
     private fun clear() {
@@ -83,10 +86,10 @@ class SharePersonaViewModel @Inject constructor(
     fun shareBot() {
         val bot = Bot(
             uuid = UUID.randomUUID().toString(),
-            parentUuid = viewModel.persona.selectedPersonaParentUuid.value.ifEmpty { "" },
-            name = viewModel.persona.personaName.value,
-            alias = viewModel.persona.personaAlias.value,
-            systemMessage = viewModel.persona.personaSystemMessage.value,
+            parentUuid = activePersonaRepository.activePersonaUuid.value,
+            name = activePersonaRepository.activePersonaName.value,
+            alias = activePersonaRepository.activePersonaAlias.value,
+            systemMessage = activePersonaRepository.activePersonaSystemMessage.value,
             description = _personaDescription.value,
             tags = _personaTags.toList().joinToString(","),
             createdBy = accountService.displayName,

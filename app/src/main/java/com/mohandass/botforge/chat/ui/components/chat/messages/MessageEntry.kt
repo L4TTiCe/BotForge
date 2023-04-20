@@ -4,11 +4,22 @@
 
 package com.mohandass.botforge.chat.ui.components.chat.messages
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -16,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
@@ -24,18 +36,19 @@ import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownCard
 import com.mohandass.botforge.chat.ui.components.chat.messages.markdown.MarkdownInfoCard
 import com.mohandass.botforge.chat.ui.components.dialogs.MarkdownDialog
-import com.mohandass.botforge.common.services.snackbar.SnackbarManager
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.ui.ShakeWithHaptic
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageEntry(
     modifier: Modifier = Modifier,
     message: Message = Message(),
-    viewModel: AppViewModel,
+    chatViewModel: ChatViewModel = hiltViewModel(),
+    appViewModel: AppViewModel = hiltViewModel(),
     startWithFocus: Boolean = false,
     startVisibility: Boolean = true,
 //    scrollToItem: () -> Unit = {}
@@ -49,7 +62,7 @@ fun MessageEntry(
     var messageContent by remember { mutableStateOf(TextFieldValue(text = message.text)) }
     var role by remember { mutableStateOf(message.role) }
 
-    val messageIsFocussed by viewModel.chat.isMessageInFocus
+    val messageIsFocussed by chatViewModel.isMessageInFocus
 
     var showMarkdownDialog by remember { mutableStateOf(false) }
     var showAsMarkdown by remember { mutableStateOf(true) }
@@ -61,7 +74,7 @@ fun MessageEntry(
         mutableStateOf(0f)
     }
 
-    val userPreferences = viewModel.userPreferences.observeAsState()
+    val userPreferences = appViewModel.appState.userPreferences.observeAsState()
     userPreferences.value?.let {
         isShakeToClearEnabled = it.enableShakeToClear
         shakeSensitivity = it.shakeToClearSensitivity
@@ -93,7 +106,7 @@ fun MessageEntry(
     }
 
     fun updateMessage() {
-        viewModel.chat.updateMessage(
+        chatViewModel.updateMessage(
             Message(
                 text = messageContent.text,
                 role = role,
@@ -115,9 +128,9 @@ fun MessageEntry(
         visibility = false
 
         // launch coroutine to delete message after animation
-        viewModel.viewModelScope.launch {
+        chatViewModel.viewModelScope.launch {
             delay(500)
-            viewModel.chat.deleteMessage(message.uuid)
+            chatViewModel.deleteMessage(message.uuid)
         }
     }
 

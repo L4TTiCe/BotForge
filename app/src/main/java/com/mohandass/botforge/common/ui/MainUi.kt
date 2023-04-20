@@ -19,16 +19,16 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.chat.ui.PersonaUi
-import com.mohandass.botforge.chat.ui.components.header.TopBar
+import com.mohandass.botforge.chat.ui.components.header.top.TopBar
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.ui.ApiKeyUi
 import com.mohandass.botforge.settings.ui.IconCreditsUi
 import com.mohandass.botforge.settings.ui.SettingsUi
 import com.mohandass.botforge.ui.settings.ApiUsageUi
 import com.mohandass.botforge.ui.settings.AppInformationUi
-import com.mohandass.botforge.ui.settings.ManageAccountUi
+import com.mohandass.botforge.settings.ui.ManageAccountUi
 import com.mohandass.botforge.ui.settings.OpenSourceLibrariesUi
 
 /**
@@ -42,15 +42,15 @@ import com.mohandass.botforge.ui.settings.OpenSourceLibrariesUi
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun MainUi(viewModel: AppViewModel) {
+fun MainUi(
+    appState: AppState,
+) {
     val navController = rememberAnimatedNavController()
-    viewModel.setNavControllerMain(navController)
+    appState.setNavControllerMain(navController)
 
     Scaffold(
         topBar = {
-            TopBar(
-                viewModel = viewModel
-            )
+            TopBar(appState = appState)
         },
         content = {
             Surface(
@@ -109,7 +109,7 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            PersonaUi(viewModel = viewModel)
+                            PersonaUi()
                         }
                         composable(
                             route = AppRoutes.MainRoutes.Settings.route,
@@ -159,7 +159,7 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            SettingsUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
+                            SettingsUi()
                         }
                         composable(
                             route = AppRoutes.MainRoutes.ApiKeySettings.route,
@@ -209,7 +209,7 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            ApiKeyUi(viewModel = viewModel, settingsViewModel = hiltViewModel())
+                            ApiKeyUi(settingsViewModel = hiltViewModel())
                         }
                         composable(
                             route = AppRoutes.MainRoutes.ApiUsageSettings.route,
@@ -310,7 +310,6 @@ fun MainUi(viewModel: AppViewModel) {
                             }
                         ) {
                             ManageAccountUi(
-                                viewModel = viewModel,
                                 settingsViewModel = hiltViewModel()
                             )
                         }
@@ -362,7 +361,7 @@ fun MainUi(viewModel: AppViewModel) {
                                 )
                             }
                         ) {
-                            OpenSourceLibrariesUi(viewModel = viewModel)
+                            OpenSourceLibrariesUi()
                         }
                         composable(
                             route = AppRoutes.MainRoutes.IconCredits.route,

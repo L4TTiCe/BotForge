@@ -11,23 +11,38 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.Constants
 import com.slaviboy.composeunits.adh
 import com.slaviboy.composeunits.adw
 
 @Composable
-fun DefaultDropdownMenu(viewModel: AppViewModel) {
+fun DefaultDropdownMenu(
+    appViewModel: AppViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel(),
+) {
     var displayOptionsMenu by remember { mutableStateOf(false) }
     val openDeleteConfirmationDialog = remember { mutableStateOf(false) }
 
@@ -35,8 +50,8 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
         DeleteAllPersonasDialog(
             onDismiss = { openDeleteConfirmationDialog.value = false },
             onConfirm = {
-                viewModel.persona.deleteAllPersonas()
-                viewModel.persona.clearSelection()
+                personaViewModel.deleteAllPersonas()
+                personaViewModel.clearSelection()
                 openDeleteConfirmationDialog.value = false
             }
         )
@@ -60,7 +75,7 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
     ) {
         DropdownMenuItem(
             onClick = {
-                viewModel.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
+                appViewModel.appState.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
                 displayOptionsMenu = false
             },
             text = {
@@ -75,7 +90,7 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
         )
         DropdownMenuItem(
             onClick = {
-                viewModel.persona.showHistory()
+                personaViewModel.showHistory()
                 displayOptionsMenu = false
             },
             text = {
@@ -90,7 +105,7 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
         )
         DropdownMenuItem(
             onClick = {
-                viewModel.persona.showList()
+                personaViewModel.showList()
                 displayOptionsMenu = false
             },
             text = {
@@ -107,8 +122,8 @@ fun DefaultDropdownMenu(viewModel: AppViewModel) {
         )
         DropdownMenuItem(
             onClick = {
-                viewModel.chat.signOut {
-                    viewModel.navController.navigate(AppRoutes.Landing.route)
+                chatViewModel.signOut {
+                    appViewModel.appState.navController.navigate(AppRoutes.Landing.route)
                 }
                 displayOptionsMenu = false
             },

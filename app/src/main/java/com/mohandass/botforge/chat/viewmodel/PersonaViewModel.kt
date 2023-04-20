@@ -14,18 +14,16 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.mohandass.botforge.AppRoutes
-import com.mohandass.botforge.AppViewModel
+import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.model.dao.entities.Persona
+import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
 import com.mohandass.botforge.chat.repositories.PersonaRepository
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
-import com.mohandass.botforge.sync.model.dao.entities.BotE
-import com.mohandass.botforge.sync.service.BotService
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -33,70 +31,42 @@ import javax.inject.Inject
 /*
  * A ViewModel to handle active, and available personas
  */
+@HiltViewModel
 class PersonaViewModel @Inject constructor(
-    private val viewModel: AppViewModel,
-    private val personaService: PersonaRepository,
-    private val botService: BotService,
+    private val appState: AppState,
+    private val personaRepository: PersonaRepository,
+    private val activePersonaRepository: ActivePersonaRepository,
     private val logger: Logger,
 ) : ViewModel() {
-    private val _personaName = mutableStateOf("")
-    val personaName: MutableState<String> = _personaName
-
-    private val _personaAlias = mutableStateOf("")
-    val personaAlias: MutableState<String> = _personaAlias
-
-    private val _personaSystemMessage = mutableStateOf("")
-    val personaSystemMessage: MutableState<String> = _personaSystemMessage
-
-    private val _personaSelected = mutableStateOf("")
-    val selectedPersona: MutableState<String> = _personaSelected
-
-    private val _personaSelectedParentUuid = mutableStateOf("")
-    val selectedPersonaParentUuid: State<String> = _personaSelectedParentUuid
+    val personaName = activePersonaRepository.activePersonaName
+    val personaAlias = activePersonaRepository.activePersonaAlias
+    val personaSystemMessage = activePersonaRepository.activePersonaSystemMessage
+    val personaUuid = activePersonaRepository.activePersonaUuid
+    val personaParentUuid = activePersonaRepository.activePersonaParentUuid
 
     private val _openDeletePersonaDialog = mutableStateOf(false)
     val openDeleteDialog: State<Boolean> = _openDeletePersonaDialog
 
-    private val _parentBot: MutableState<BotE?> = mutableStateOf(null)
-    val parentBot: State<BotE?> = _parentBot
+    val parentBot = activePersonaRepository.activePersonaParent
 
-    val personas = personaService.personas.asLiveData()
+    val personas = personaRepository.personas.asLiveData()
     private var _personas = mutableStateListOf<Persona>()
 
     // Reference:
     // https://stackoverflow.com/questions/48396092/should-i-include-lifecycleowner-in-viewmodel
-    private val observer: (List<Persona>) -> Unit = {
+    private val personasObserver: (List<Persona>) -> Unit = {
         _personas.clear()
         _personas.addAll(it)
     }
 
     init {
-        personas.observeForever(observer)
+        personas.observeForever(personasObserver)
         _personas = personas.value?.toMutableStateList() ?: mutableStateListOf()
     }
 
     override fun onCleared() {
-        personas.removeObserver(observer)
+        personas.removeObserver(personasObserver)
         super.onCleared()
-    }
-
-
-    private fun updateParentBot(bot: BotE?) {
-        _parentBot.value = bot
-    }
-
-    private fun updateSelectedPersonaParentUuid(uuid: String) {
-        _personaSelectedParentUuid.value = uuid
-
-        if (uuid.isNotEmpty() || uuid.isNotBlank()) {
-            viewModelScope.launch {
-                updateParentBot(botService.getBot(uuid))
-                logger.logVerbose("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
-            }
-        } else {
-            updateParentBot(null)
-            logger.logVerbose("PersonaViewModel", "updateSelectedPersonaParentUuid: ${parentBot.value}")
-        }
     }
 
     fun updateDeletePersonaDialogState(state: Boolean) {
@@ -108,17 +78,6 @@ class PersonaViewModel @Inject constructor(
 
     fun updateExpandCustomizePersona(state: Boolean) {
         _expandCustomizePersona.value = state
-    }
-
-    private val _state = mutableStateOf(UiState())
-
-    // Represents the current state of the UI
-    class UiState {
-        var personaName: String = ""
-        var personaSystemMessage: String = ""
-        var personaAlias: String = ""
-        var personaSelected: String = ""
-        var personaSelectedParentUuid: String = ""
     }
 
     private val _chatType = mutableStateOf(ChatType.CREATE)
@@ -133,22 +92,22 @@ class PersonaViewModel @Inject constructor(
     // Move to List Screen
     fun showList() {
         logger.logVerbose(TAG, "showList()")
-        saveState()
+        // saveState()
         clearSelection()
         setChatType(ChatType.LIST)
-        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.List.route) {
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.List.route)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.List.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.List.route)
         }
     }
 
     // Move to the History screen
     fun showHistory() {
         logger.logVerbose(TAG, "showHistory()")
-        saveState()
+        // saveState()
         clearSelection()
         setChatType(ChatType.HISTORY)
-        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.History.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.History.route)
         }
     }
 
@@ -159,8 +118,8 @@ class PersonaViewModel @Inject constructor(
         setChatType(ChatType.CREATE)
         updateExpandCustomizePersona(true)
 
-        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
         }
     }
 
@@ -170,45 +129,23 @@ class PersonaViewModel @Inject constructor(
         clearSelection()
         setChatType(ChatType.BROWSE)
 
-        if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
-            viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route)
         }
     }
 
     // Move to the Share Persona screen
     fun showSharePersona() {
         logger.logVerbose(TAG, "showSavePersona()")
-        saveState()
+        // saveState()
         setChatType(ChatType.SHARE)
 
-        viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Share.route)
-    }
-
-    // Saves the current state of the UI
-    fun saveState() {
-        _state.value.personaName = personaName.value
-        _state.value.personaSystemMessage = personaSystemMessage.value
-        _state.value.personaAlias = personaAlias.value
-        _state.value.personaSelected = selectedPersona.value
-        _state.value.personaSelectedParentUuid = selectedPersonaParentUuid.value
-    }
-
-    // Restores the state of the UI from the last saved state
-    fun restoreState() {
-        personaName.value = _state.value.personaName
-        personaSystemMessage.value = _state.value.personaSystemMessage
-        personaAlias.value = _state.value.personaAlias
-        selectedPersona.value = _state.value.personaSelected
-        updateSelectedPersonaParentUuid(_state.value.personaSelectedParentUuid)
+        appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Share.route)
     }
 
     // Clears the currently selected persona
     val clearSelection: () -> Unit = {
-        _personaName.value = ""
-        _personaAlias.value = ""
-        _personaSystemMessage.value = ""
-        _personaSelected.value = ""
-        updateSelectedPersonaParentUuid("")
+        activePersonaRepository.clear()
     }
 
     // Marks a persona as selected
@@ -218,17 +155,17 @@ class PersonaViewModel @Inject constructor(
         val persona = _personas.find { it.uuid == uuid }
 
         if (persona != null) {
-            personaName.value = persona.name
-            personaAlias.value = persona.alias
-            personaSystemMessage.value = persona.systemMessage
-            _personaSelected.value = persona.uuid
-            updateSelectedPersonaParentUuid(persona.parentUuid)
+            activePersonaRepository.updateActivePersonaName(persona.name)
+            activePersonaRepository.updateActivePersonaUuid(persona.uuid)
+            activePersonaRepository.updateActivePersonaAlias(persona.alias)
+            activePersonaRepository.updateActivePersonaSystemMessage(persona.systemMessage)
+            activePersonaRepository.updateActivePersonaParentUuid(persona.parentUuid)
 
             chatType.value = ChatType.CHAT
             updateExpandCustomizePersona(false)
 
-            if (viewModel.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
-                viewModel.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
+            if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+                appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route)
             }
         } else {
             SnackbarManager.showMessage(R.string.generic_error)
@@ -239,16 +176,16 @@ class PersonaViewModel @Inject constructor(
     private fun savePersona(persona: Persona): Boolean {
         var customMessage = true
 
-        if (_personaName.value.isEmpty()) {
+        if (personaName.value.isEmpty()) {
             SnackbarManager.showMessage(R.string.persona_name_empty)
             return false
         }
-        if (_personaSystemMessage.value.trim().isEmpty()) {
+        if (personaSystemMessage.value.trim().isEmpty()) {
             customMessage = false
         }
 
         viewModelScope.launch {
-            personaService.addPersona(persona)
+            personaRepository.addPersona(persona)
             logger.log(TAG, "savePersona() _personas: $persona")
             if (customMessage) {
                 SnackbarManager.showMessage(R.string.saved_persona)
@@ -263,7 +200,7 @@ class PersonaViewModel @Inject constructor(
     // If the name ends with a number, increment it
     // Otherwise, append " v2" to the name
     fun saveAsNewPersona() {
-        var newName = _personaName.value
+        var newName = personaName.value
 
         // If name ends with a number, increment it
         if (newName.last().isDigit()) {
@@ -276,10 +213,10 @@ class PersonaViewModel @Inject constructor(
 
         // UUID is regenerated, but parent UUID is the same
         val persona = Persona(
-            parentUuid = selectedPersonaParentUuid.value,
+            parentUuid = personaParentUuid.value,
             name = newName,
-            alias = _personaAlias.value,
-            systemMessage = _personaSystemMessage.value,
+            alias = personaAlias.value,
+            systemMessage = personaSystemMessage.value,
         )
         savePersona(persona)
     }
@@ -287,11 +224,11 @@ class PersonaViewModel @Inject constructor(
     // Saves a new persona or Updates an existing to the database
     fun saveUpdatePersona() {
         val persona = Persona(
-            uuid = _personaSelected.value,
-            parentUuid = selectedPersonaParentUuid.value,
-            name = _personaName.value,
-            alias = _personaAlias.value,
-            systemMessage = _personaSystemMessage.value,
+            uuid = personaUuid.value,
+            parentUuid = personaParentUuid.value,
+            name = personaName.value,
+            alias = personaAlias.value,
+            systemMessage = personaSystemMessage.value,
         )
 
         logger.log(TAG, "savePersona() persona: $persona")
@@ -315,24 +252,24 @@ class PersonaViewModel @Inject constructor(
                 )
             )
             if (isSuccess) {
-                _personaSelected.value = uuid
+                activePersonaRepository.updateActivePersonaUuid(uuid)
                 chatType.value = ChatType.CHAT
             }
             return
         }
 
         viewModelScope.launch {
-            personaService.updatePersona(persona)
+            personaRepository.updatePersona(persona)
             SnackbarManager.showMessage(R.string.saved_persona)
         }
     }
 
     // Deletes a persona from the database
     fun deletePersona() {
-        val persona = _personas.find { it.uuid == _personaSelected.value }
+        val persona = _personas.find { it.uuid == personaUuid.value }
         if (persona != null) {
             viewModelScope.launch {
-                personaService.deletePersona(persona)
+                personaRepository.deletePersona(persona)
                 logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
                 SnackbarManager.showMessage(R.string.delete_persona_success, persona.name)
             }
@@ -342,50 +279,24 @@ class PersonaViewModel @Inject constructor(
         }
     }
 
-    fun deletePersona(uuid: String) {
-        var deleteJob: Job = Job()
-
-        val persona = _personas.find { it.uuid == uuid }
-        if (persona != null) {
-            // Remove persona from the list
-            _personas.remove(persona)
-
-            SnackbarManager.showMessageWithAction(
-                R.string.deleted_persona,
-                R.string.undo
-            ) {
-                _personas.add(persona)
-                deleteJob.cancel()
-            }
-
-            deleteJob = viewModelScope.launch {
-                delay(5000)
-                personaService.deletePersona(persona)
-                logger.logVerbose(TAG, "deletePersona() _personas: ${persona.name}")
-            }
-        } else {
-            SnackbarManager.showMessage(R.string.generic_error)
-        }
-    }
-
     // Deletes all personas saved in the database
     fun deleteAllPersonas() {
         viewModelScope.launch {
-            personaService.deleteAllPersonas()
+            personaRepository.deleteAllPersonas()
             SnackbarManager.showMessage(R.string.delete_all_personas_success)
         }
     }
 
     fun updatePersonaName(name: String) {
-        _personaName.value = name
+        activePersonaRepository.updateActivePersonaName(name)
     }
 
     fun updatePersonaAlias(alias: String) {
-        _personaAlias.value = alias
+        activePersonaRepository.updateActivePersonaAlias(alias)
     }
 
     fun updatePersonaSystemMessage(message: String) {
-        _personaSystemMessage.value = message
+        activePersonaRepository.updateActivePersonaSystemMessage(message)
     }
 
     companion object {

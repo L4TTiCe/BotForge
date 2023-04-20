@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoarding(
     onBoardingViewModel: OnBoardingViewModel = hiltViewModel(),
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
@@ -83,7 +83,7 @@ fun OnBoarding(
                         },
                         onComplete = {
                             onBoardingViewModel.setOnBoardingCompleted()
-                            viewModel.navController.navigate(AppRoutes.Main.route) {
+                            appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
                                 popUpTo(AppRoutes.OnBoarding.route) { inclusive = true }
                             }
                         }
@@ -120,5 +120,5 @@ fun OnBoarding(
 @Preview
 @Composable
 fun OnBoardingPreview() {
-    OnBoarding(viewModel = hiltViewModel())
+    OnBoarding()
 }

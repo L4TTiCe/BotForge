@@ -31,7 +31,9 @@ import com.mohandass.botforge.R.string as AppText
 // Sign In Using Email and Password
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltViewModel()) {
+fun SignInUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    signInViewModel: SignInViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,7 +106,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
         FilledTonalButton(
             onClick = {
                 signInViewModel.signIn {
-                    viewModel.navController.navigate(AppRoutes.Main.route) {
+                    appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
                         popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                     }
                 }
@@ -119,7 +121,7 @@ fun SignInUi(viewModel: AppViewModel, signInViewModel: SignInViewModel = hiltVie
         Spacer(modifier = Modifier.size(0.01.adh))
         TextButton(
             onClick = {
-                viewModel.navController.navigate(AppRoutes.SignUp.route) {
+                appViewModel.appState.navController.navigate(AppRoutes.SignUp.route) {
                     popUpTo(AppRoutes.SignIn.route) { inclusive = true }
                 }
             },

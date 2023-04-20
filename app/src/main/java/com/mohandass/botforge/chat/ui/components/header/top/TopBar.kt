@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.ui.components.header
+package com.mohandass.botforge.chat.ui.components.header.top
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.AppViewModel
-import com.mohandass.botforge.chat.ui.components.header.top.DefaultHeader
+import com.mohandass.botforge.AppState
+import com.mohandass.botforge.chat.ui.components.header.MinimalHeader
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.slaviboy.composeunits.adh
 
@@ -54,13 +54,13 @@ val modifierWithFadeEdges = Modifier
     }
 
 @Composable
-fun TopBar(viewModel: AppViewModel) {
+fun TopBar(appState: AppState) {
 
     var preferredHeader = remember {
         PreferredHeader.DEFAULT_HEADER
     }
 
-    val userPreferences = viewModel.userPreferences.observeAsState()
+    val userPreferences = appState.userPreferences.observeAsState()
     userPreferences.value?.let {
         preferredHeader = it.preferredHeader
     }
@@ -75,13 +75,9 @@ fun TopBar(viewModel: AppViewModel) {
                         .height(0.01.adh)
                         .fillMaxWidth()
                 )
-                MinimalHeader(
-                    viewModel = viewModel
-                )
+                MinimalHeader()
             } else {
-                DefaultHeader(
-                    viewModel = viewModel
-                )
+                DefaultHeader()
             }
         }
     }

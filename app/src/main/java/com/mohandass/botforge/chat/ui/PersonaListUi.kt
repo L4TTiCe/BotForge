@@ -5,9 +5,16 @@
 package com.mohandass.botforge.chat.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,26 +25,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.AppViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.ImageWithMessage
 import com.mohandass.botforge.chat.ui.components.PersonaInfo
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteAllPersonasDialog
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
+import com.mohandass.botforge.chat.viewmodel.PersonaListViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.ui.components.NoMatches
 import com.mohandass.botforge.common.ui.components.SearchBar
 import com.mohandass.botforge.sync.ui.components.BotDetailDialogConfig
+import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.slaviboy.composeunits.adh
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonaListUi(
-    viewModel: AppViewModel
+    personaListViewModel: PersonaListViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    browseViewModel: BrowseViewModel = hiltViewModel(),
 ) {
-    val personaListViewModel = viewModel.personaList
-
-    val personas by viewModel.persona.personas.observeAsState(initial = emptyList())
+    val personas by personaViewModel.personas.observeAsState(initial = emptyList())
     val matchedPersonas = personaListViewModel.matchedPersonas
 
     var showDeleteAllPersonaDialog by personaListViewModel.showDeleteAllPersonaDialog
@@ -53,7 +62,7 @@ fun PersonaListUi(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.persona.setChatType(ChatType.LIST)
+        personaViewModel.setChatType(ChatType.LIST)
         personaListViewModel.fetchBots()
     }
 
@@ -144,10 +153,10 @@ fun PersonaListUi(
                             BotDetailDialogConfig(
                                 bot = it,
                                 onUpVote = {
-                                    viewModel.browse.upVote(bot.uuid)
+                                    browseViewModel.upVote(bot.uuid)
                                 },
-                                onDownVote = { viewModel.browse.downVote(bot.uuid) },
-                                onReport = { viewModel.browse.report(bot.uuid) }
+                                onDownVote = { browseViewModel.downVote(bot.uuid) },
+                                onReport = { browseViewModel.report(bot.uuid) }
                             )
                         }
                     }
@@ -155,7 +164,7 @@ fun PersonaListUi(
                     PersonaInfo(
                         persona = matchedPersonas[index],
                         onClick = {
-                            viewModel.persona.selectPersona(matchedPersonas[index].uuid)
+                            personaViewModel.selectPersona(matchedPersonas[index].uuid)
                         },
                         onClickDelete = {
                             personaListViewModel.deletePersona(matchedPersonas[index].uuid)
@@ -199,10 +208,10 @@ fun PersonaListUi(
                             BotDetailDialogConfig(
                                 bot = it,
                                 onUpVote = {
-                                    viewModel.browse.upVote(bot.uuid)
+                                    browseViewModel.upVote(bot.uuid)
                                 },
-                                onDownVote = { viewModel.browse.downVote(bot.uuid) },
-                                onReport = { viewModel.browse.report(bot.uuid) }
+                                onDownVote = { browseViewModel.downVote(bot.uuid) },
+                                onReport = { browseViewModel.report(bot.uuid) }
                             )
                         }
                     }
@@ -210,7 +219,7 @@ fun PersonaListUi(
                     PersonaInfo(
                         persona = personas[index],
                         onClick = {
-                            viewModel.persona.selectPersona(personas[index].uuid)
+                            personaViewModel.selectPersona(personas[index].uuid)
                         },
                         onClickDelete = {
                             personaListViewModel.deletePersona(personas[index].uuid)

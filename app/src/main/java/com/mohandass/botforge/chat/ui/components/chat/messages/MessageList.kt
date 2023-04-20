@@ -7,36 +7,53 @@ package com.mohandass.botforge.chat.ui.components.chat.messages
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
-import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Locale
 
 @Composable
-fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
-    val messagesList by viewModel.chat.activeChat
-    val handleDelete by viewModel.chat.handleDelete
-    val messageIsFocussed by viewModel.chat.isMessageInFocus
+fun MessageList(
+    modifier: Modifier = Modifier,
+    chatViewModel: ChatViewModel = hiltViewModel(),
+) {
+    val messagesList by chatViewModel.activeChat.collectAsState()
+    val handleDelete by chatViewModel.handleDelete
+    val messageIsFocussed by chatViewModel.isMessageInFocus
 
-    val isLoading by viewModel.chat.isLoading
-    val timerMillis by viewModel.chat.timeMillis
+    val isLoading by chatViewModel.isLoading
+    val timerMillis by chatViewModel.timeMillis
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -46,13 +63,13 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
     fun handleClearAllMessages() {
         visibility = false
 
-        viewModel.viewModelScope.launch {
+        chatViewModel.viewModelScope.launch {
             delay(600)
-            viewModel.chat.clearMessages()
+            chatViewModel.clearMessages()
             visibility = true
         }
 
-        viewModel.chat.handleDelete(false)
+        chatViewModel.handleDelete(false)
     }
 
     if (handleDelete) {
@@ -71,7 +88,6 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                     MessageEntry(
                         modifier = Modifier,
                         message = item,
-                        viewModel = viewModel,
                         startWithFocus = (idx == (messagesList.size - 1)) && (idx != 0) && messageIsFocussed,
                         startVisibility = (idx != (messagesList.size - 1)) && item.text.isEmpty(),
                     )
@@ -113,11 +129,11 @@ fun MessageList(modifier: Modifier = Modifier, viewModel: AppViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(onClick = {
-                    viewModel.chat.isMessageInFocus.value = true
-                    viewModel.chat.autoAddMessage()
+                    chatViewModel.isMessageInFocus.value = true
+                    chatViewModel.autoAddMessage()
                     coroutineScope.launch {
                         delay(500)
-                        viewModel.chat.isMessageInFocus.value = false
+                        chatViewModel.isMessageInFocus.value = false
                     }
                 }) {
                     Icon(

@@ -21,30 +21,39 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.chat.CustomisePersona
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.chat.headers.CustomisePersonaHeader
-import com.mohandass.botforge.chat.ui.components.header.MessagesHeader
 import com.mohandass.botforge.chat.ui.components.chat.headers.PersonaChatHeader
 import com.mohandass.botforge.chat.ui.components.chat.messages.MessageList
 import com.mohandass.botforge.chat.ui.components.dialogs.DeletePersonaDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SaveChatDialog
 import com.mohandass.botforge.chat.ui.components.dialogs.SetPersonaAliasDialog
+import com.mohandass.botforge.chat.ui.components.header.MessagesHeader
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SwipeableSnackbarHost
 import com.mohandass.botforge.rememberSnackbarLauncher
 import com.mohandass.botforge.sync.ui.components.BotDetailDialog
 import com.mohandass.botforge.sync.ui.components.BotDetailDialogConfig
+import com.mohandass.botforge.sync.viewmodel.BrowseViewModel
 import com.slaviboy.composeunits.adh
 
 // Main Chat UI, with Customise Persona and Messages
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun ChatUi(viewModel: AppViewModel) {
+fun ChatUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    browseViewModel: BrowseViewModel = hiltViewModel(),
+) {
     val listState = rememberLazyListState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -52,16 +61,17 @@ fun ChatUi(viewModel: AppViewModel) {
     val focusManager = LocalFocusManager.current
     val hapticFeedback = LocalHapticFeedback.current
 
-    val expandCustomizePersona by viewModel.persona.expandCustomizePersona
+    val expandCustomizePersona by personaViewModel.expandCustomizePersona
 
-    val personaName by viewModel.persona.personaName
-    val personaSystemMessage by viewModel.persona.personaSystemMessage
-    val isLoading by viewModel.chat.isLoading
-    val parentBot by viewModel.persona.parentBot
+    val personaUuid by personaViewModel.personaUuid.collectAsState()
+    val personaName by personaViewModel.personaName.collectAsState()
+    val personaSystemMessage by personaViewModel.personaSystemMessage.collectAsState()
+    val isLoading by chatViewModel.isLoading
+    val parentBot by personaViewModel.parentBot.collectAsState()
 
-    val openDeleteDialog by viewModel.persona.openDeleteDialog
-    val openSaveChatDialog by viewModel.chat.openSaveChatDialog
-    val openAliasDialog by viewModel.chat.openAliasDialog
+    val openDeleteDialog by personaViewModel.openDeleteDialog
+    val openSaveChatDialog by chatViewModel.openSaveChatDialog
+    val openAliasDialog by chatViewModel.openAliasDialog
     val showDetailDialog = remember { mutableStateOf(false) }
 
     var isUserGeneratedContentEnabled by remember {
@@ -69,14 +79,14 @@ fun ChatUi(viewModel: AppViewModel) {
     }
 
     LaunchedEffect(Unit) {
-        if (viewModel.persona.selectedPersona.value == "") {
-            viewModel.persona.setChatType(ChatType.CREATE)
+        if (personaUuid == "") {
+            personaViewModel.setChatType(ChatType.CREATE)
         } else {
-            viewModel.persona.setChatType(ChatType.CHAT)
+            personaViewModel.setChatType(ChatType.CHAT)
         }
     }
 
-    val userPreferences by viewModel.userPreferences.observeAsState()
+    val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
     }
@@ -87,10 +97,10 @@ fun ChatUi(viewModel: AppViewModel) {
             val botDetailDialogConfig = BotDetailDialogConfig(
                 bot = it,
                 onUpVote = {
-                    viewModel.browse.upVote(it.uuid)
+                    browseViewModel.upVote(it.uuid)
                 },
-                onDownVote = { viewModel.browse.downVote(it.uuid) },
-                onReport = { viewModel.browse.report(it.uuid) },
+                onDownVote = { browseViewModel.downVote(it.uuid) },
+                onReport = { browseViewModel.report(it.uuid) },
             )
 
             BotDetailDialog(
@@ -108,11 +118,11 @@ fun ChatUi(viewModel: AppViewModel) {
     if (openDeleteDialog) {
         DeletePersonaDialog(
             onDismiss = {
-                viewModel.persona.updateDeletePersonaDialogState(false)
+                personaViewModel.updateDeletePersonaDialogState(false)
             },
             onConfirm = {
-                viewModel.persona.deletePersona()
-                viewModel.persona.updateDeletePersonaDialogState(false)
+                personaViewModel.deletePersona()
+                personaViewModel.updateDeletePersonaDialogState(false)
             })
     }
 
@@ -120,15 +130,15 @@ fun ChatUi(viewModel: AppViewModel) {
     if (openSaveChatDialog) {
         SaveChatDialog(
             onDismiss = {
-                viewModel.chat.updateSaveChatDialogState(false)
+                chatViewModel.updateSaveChatDialogState(false)
             },
             onConfirm = {
-                viewModel.chat.updateChatName(it)
-                viewModel.chat.saveChat()
-                viewModel.chat.updateSaveChatDialogState(false)
+                chatViewModel.updateChatName(it)
+                chatViewModel.saveChat()
+                chatViewModel.updateSaveChatDialogState(false)
             },
             isAutoGenerateChatNameEnabled = userPreferences?.autoGenerateChatTitle ?: true,
-            generateChatName = viewModel.chat::generateChatName
+            generateChatName = chatViewModel::generateChatName
         )
     }
 
@@ -136,21 +146,21 @@ fun ChatUi(viewModel: AppViewModel) {
     if (openAliasDialog) {
         SetPersonaAliasDialog(
             onDismiss = {
-                viewModel.chat.updateAliasDialogState(false)
+                chatViewModel.updateAliasDialogState(false)
             },
             onConfirm = {
-                viewModel.persona.updatePersonaAlias(it)
-                viewModel.persona.saveUpdatePersona()
-                viewModel.chat.updateAliasDialogState(false)
+                personaViewModel.updatePersonaAlias(it)
+                personaViewModel.saveUpdatePersona()
+                chatViewModel.updateAliasDialogState(false)
             }
         )
     }
 
     DisposableEffect(Unit) {
-        viewModel.setActiveSnackbar(SnackbarLauncherLocation.CHAT)
+        appViewModel.appState.setActiveSnackbar(SnackbarLauncherLocation.CHAT)
 
         onDispose {
-            viewModel.setActiveSnackbar(SnackbarLauncherLocation.MAIN)
+            appViewModel.appState.setActiveSnackbar(SnackbarLauncherLocation.MAIN)
         }
     }
 
@@ -167,14 +177,14 @@ fun ChatUi(viewModel: AppViewModel) {
             SendFloatingActionButton(
                 isLoading = isLoading,
                 onSend = {
-                    viewModel.chat.getChatCompletion {
+                    chatViewModel.getChatCompletion {
                         hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                     }
                     keyboardController?.hide()
                     focusManager.clearFocus()
                 },
                 onCancel = {
-                    viewModel.chat.handleInterrupt()
+                    chatViewModel.handleInterrupt()
                 }
             )
         },
@@ -196,9 +206,9 @@ fun ChatUi(viewModel: AppViewModel) {
                         expandCustomizePersona = expandCustomizePersona,
                         onExpandOrCollapse = {
                             if (expandCustomizePersona) {
-                                viewModel.persona.updateExpandCustomizePersona(false)
+                                personaViewModel.updateExpandCustomizePersona(false)
                             } else {
-                                viewModel.persona.updateExpandCustomizePersona(true)
+                                personaViewModel.updateExpandCustomizePersona(true)
                             }
                         }
                     )
@@ -228,7 +238,7 @@ fun ChatUi(viewModel: AppViewModel) {
                                     showDetailDialog.value = true
                                 },
                                 onEditPersonaClick = {
-                                    viewModel.chat.updateAliasDialogState(true)
+                                    chatViewModel.updateAliasDialogState(true)
                                 },
                             )
 
@@ -238,17 +248,17 @@ fun ChatUi(viewModel: AppViewModel) {
                             CustomisePersona(
                                 personaName = personaName,
                                 personaSystemMessage = personaSystemMessage,
-                                hasSelectedPersona = viewModel.persona.selectedPersona.value != "",
-                                onPersonaNameChange = { viewModel.persona.updatePersonaName(it) },
+                                hasSelectedPersona = personaUuid != "",
+                                onPersonaNameChange = { personaViewModel.updatePersonaName(it) },
                                 onPersonaSystemMessageChange = {
-                                    viewModel.persona.updatePersonaSystemMessage(it)
+                                    personaViewModel.updatePersonaSystemMessage(it)
                                 },
-                                onShare = { viewModel.persona.showSharePersona() },
-                                onSave = { viewModel.persona.saveUpdatePersona() },
+                                onShare = { personaViewModel.showSharePersona() },
+                                onSave = { personaViewModel.saveUpdatePersona() },
                                 onDelete = {
-                                    viewModel.persona.updateDeletePersonaDialogState(true)
+                                    personaViewModel.updateDeletePersonaDialogState(true)
                                 },
-                                onCopy = { viewModel.persona.saveAsNewPersona() },
+                                onCopy = { personaViewModel.saveAsNewPersona() },
                             )
                         }
                     }
@@ -265,16 +275,16 @@ fun ChatUi(viewModel: AppViewModel) {
                 item {
                     MessagesHeader(
                         onPdfExport = {
-                            viewModel.chat.exportAsPdf(context)
+                            chatViewModel.exportAsPdf(context)
                         },
                         onExportClick = {
-                            viewModel.chat.exportChatAsJson(context)
+                            chatViewModel.exportChatAsJson(context)
                         },
                         onBookmarkClick = {
-                            viewModel.chat.updateSaveChatDialogState(true)
+                            chatViewModel.updateSaveChatDialogState(true)
                         },
                         onClearAllClick = {
-                            viewModel.chat.handleDelete(true)
+                            chatViewModel.handleDelete(true)
                         }
                     )
 
@@ -285,7 +295,6 @@ fun ChatUi(viewModel: AppViewModel) {
                     MessageList(
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        viewModel = viewModel
                     )
 
                     Spacer(modifier = Modifier.height(0.2.adh))

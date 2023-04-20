@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,27 +23,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.mohandass.botforge.AppViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromString
 import com.mohandass.botforge.chat.ui.components.icons.RoundedIconFromStringAnimated
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
+import com.mohandass.botforge.sync.viewmodel.SharePersonaViewModel
 import com.slaviboy.composeunits.adh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharePersonaUi(
-    viewModel: AppViewModel
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    sharePersonaViewModel: SharePersonaViewModel = hiltViewModel(),
 ) {
-    val personaName by viewModel.persona.personaName
-    val personaAlias by viewModel.persona.personaAlias
-    val personaSystemMessage by viewModel.persona.personaSystemMessage
-    val personaDescription by viewModel.sharePersona.personaDescription
-    val currentTag by viewModel.sharePersona.currentTag
-    val personaTags = viewModel.sharePersona.personaTags
+    val personaName by personaViewModel.personaName.collectAsState()
+    val personaAlias by personaViewModel.personaAlias.collectAsState()
+    val personaSystemMessage by personaViewModel.personaSystemMessage.collectAsState()
+    val personaDescription by sharePersonaViewModel.personaDescription
+    val currentTag by sharePersonaViewModel.currentTag
+    val personaTags = sharePersonaViewModel.personaTags
 
 
     BackHandler {
-        viewModel.sharePersona.backHandler()
+        sharePersonaViewModel.backHandler()
     }
 
     Surface(
@@ -78,7 +82,7 @@ fun SharePersonaUi(
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        viewModel.sharePersona.backHandler()
+                        sharePersonaViewModel.backHandler()
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -146,7 +150,7 @@ fun SharePersonaUi(
 
                     OutlinedTextField(
                         value = personaAlias,
-                        onValueChange = { viewModel.persona.updatePersonaAlias(it) },
+                        onValueChange = { personaViewModel.updatePersonaAlias(it) },
                         label = {
                             Text(text = stringResource(id = R.string.alias))
                         },
@@ -182,7 +186,7 @@ fun SharePersonaUi(
             item {
                 OutlinedTextField(
                     value = personaName,
-                    onValueChange = { viewModel.persona.updatePersonaName(it) },
+                    onValueChange = { personaViewModel.updatePersonaName(it) },
                     label = {
                         Text(text = stringResource(id = R.string.persona_name))
                     },
@@ -201,7 +205,7 @@ fun SharePersonaUi(
             item {
                 OutlinedTextField(
                     value = personaDescription,
-                    onValueChange = { viewModel.sharePersona.updatePersonaDescription(it) },
+                    onValueChange = { sharePersonaViewModel.updatePersonaDescription(it) },
                     label = {
                         Text(text = stringResource(id = R.string.description))
                     },
@@ -246,7 +250,7 @@ fun SharePersonaUi(
                             modifier = Modifier.padding(4.dp),
                             trailingIcon = {
                                 IconButton(onClick = {
-                                    viewModel.sharePersona.removeTag(personaTags[idx])
+                                    sharePersonaViewModel.removeTag(personaTags[idx])
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
@@ -260,7 +264,7 @@ fun SharePersonaUi(
 
                 OutlinedTextField(
                     value = currentTag,
-                    onValueChange = { viewModel.sharePersona.updateCurrentTag(it) },
+                    onValueChange = { sharePersonaViewModel.updateCurrentTag(it) },
                     label = {
                         Text(text = stringResource(id = R.string.add_tags))
                     },
@@ -281,7 +285,7 @@ fun SharePersonaUi(
 
                 OutlinedTextField(
                     value = personaSystemMessage,
-                    onValueChange = { viewModel.persona.updatePersonaSystemMessage(it) },
+                    onValueChange = { personaViewModel.updatePersonaSystemMessage(it) },
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.system_message_hint)
@@ -302,7 +306,7 @@ fun SharePersonaUi(
 
                     Button(
                         onClick = {
-                            viewModel.sharePersona.shareBot()
+                            sharePersonaViewModel.shareBot()
                         },
                         modifier = Modifier
                             .padding(horizontal = 10.dp)

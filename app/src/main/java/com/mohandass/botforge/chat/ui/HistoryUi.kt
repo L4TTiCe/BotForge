@@ -29,9 +29,15 @@ import com.mohandass.botforge.chat.ui.components.ImageWithMessage
 import com.mohandass.botforge.chat.ui.components.dialogs.DeleteHistoryDialog
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
+
 
 @Composable
-fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel = hiltViewModel()) {
+fun HistoryUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
+    historyViewModel: HistoryViewModel = hiltViewModel()
+) {
 
     val context = LocalContext.current
 
@@ -50,16 +56,15 @@ fun HistoryUi(viewModel: AppViewModel, historyViewModel: HistoryViewModel = hilt
 
 
     val chats = historyViewModel.chats
-    val personas = viewModel.persona.personas
+    val personas = personaViewModel.personas
 
     LaunchedEffect(Unit) {
-        viewModel.persona.setChatType(ChatType.HISTORY)
+        personaViewModel.setChatType(ChatType.HISTORY)
         historyViewModel.fetchChats(onSuccess = {})
     }
 
     BackHandler {
-        viewModel.persona.restoreState()
-        viewModel.navControllerPersona.popBackStack()
+        appViewModel.appState.navControllerPersona.popBackStack()
     }
 
     Surface(

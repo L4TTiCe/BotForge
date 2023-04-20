@@ -13,12 +13,17 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.surfaceColorAtElevation
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,6 +32,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.top.AvatarsBar
+import com.mohandass.botforge.chat.viewmodel.ChatViewModel
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
@@ -44,15 +50,18 @@ import com.slaviboy.composeunits.adw
  * App Hierarchy: MainActivity -> MainUi -> PersonaUi -> ...
  */
 @Composable
-fun PersonaUi(viewModel: AppViewModel) {
+fun PersonaUi(
+    appViewModel: AppViewModel = hiltViewModel(),
+    chatViewModel: ChatViewModel = hiltViewModel(),
+) {
     val navController = rememberNavController()
-    viewModel.setNavControllerPersona(navController)
+    appViewModel.appState.setNavControllerPersona(navController)
 
-    val isLoading by viewModel.chat.isLoading
+    val isLoading by chatViewModel.isLoading
 
     LaunchedEffect(Unit) {
-        viewModel.topBar.title.value = R.string.app_name
-        viewModel.topBar.overrideMenu.value = false
+        appViewModel.appState.topBar.title.value = R.string.app_name
+        appViewModel.appState.topBar.overrideMenu.value = false
     }
 
     var activeTheme = remember {
@@ -62,7 +71,7 @@ fun PersonaUi(viewModel: AppViewModel) {
         PreferredHeader.DEFAULT_HEADER
     }
 
-    val userPreferences = viewModel.userPreferences.observeAsState()
+    val userPreferences = appViewModel.appState.userPreferences.observeAsState()
     userPreferences.value?.let {
         activeTheme = it.preferredTheme
         preferredHeader = it.preferredHeader
@@ -111,9 +120,7 @@ fun PersonaUi(viewModel: AppViewModel) {
                 // Else, Avatar Bar will be in Header
                 if (1.adw < Constants.FOLDABLE_THRESHOLD.dp &&
                     preferredHeader == PreferredHeader.DEFAULT_HEADER) {
-                    AvatarsBar(
-                        viewModel = viewModel
-                    )
+                    AvatarsBar()
                 }
 
                 Spacer(
@@ -134,19 +141,19 @@ fun PersonaUi(viewModel: AppViewModel) {
             startDestination = AppRoutes.MainRoutes.PersonaRoutes.Chat.route
         ) {
             composable(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
-                ChatUi(viewModel = viewModel)
+                ChatUi()
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
-                HistoryUi(viewModel = viewModel)
+                HistoryUi()
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.Marketplace.route) {
-                BrowseBotsUi(viewModel = viewModel)
+                BrowseBotsUi()
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.Share.route) {
-                SharePersonaUi(viewModel = viewModel)
+                SharePersonaUi()
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.List.route) {
-                PersonaListUi(viewModel = viewModel)
+                PersonaListUi()
             }
         }
     }

@@ -9,8 +9,8 @@ import com.mohandass.botforge.chat.model.dao.entities.Persona
 import com.mohandass.botforge.common.services.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -21,7 +21,7 @@ class PersonaRepository(
     private val logger: Logger
 ) {
     private val _personas = MutableStateFlow<List<Persona>>(emptyList())
-    val personas: Flow<List<Persona>> = _personas
+    val personas: StateFlow<List<Persona>> = _personas
 
     init {
         // Launch a coroutine to update the personas
@@ -43,6 +43,10 @@ class PersonaRepository(
 
         // emit the new list of personas
         updatePersonas()
+    }
+
+    suspend fun getPersona(uuid: String): Persona {
+        return personaDao.getPersona(uuid)
     }
 
     suspend fun updatePersona(persona: Persona) {

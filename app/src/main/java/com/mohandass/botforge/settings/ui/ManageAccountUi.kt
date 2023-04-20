@@ -2,22 +2,31 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.ui.settings
+package com.mohandass.botforge.settings.ui
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -33,7 +42,7 @@ import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 
 @Composable
 fun ManageAccountUi(
-    viewModel: AppViewModel,
+    appViewModel: AppViewModel = hiltViewModel(),
     settingsViewModel: SettingsViewModel,
 ) {
     val user by settingsViewModel.getCurrentUser().collectAsState(User())
@@ -59,7 +68,7 @@ fun ManageAccountUi(
                     isAnonymous = false
                 }
             } catch (it: ApiException) {
-                Log.e("GoogleSignIn", "Google sign in failed", it)
+                appViewModel.appState.logger.logError("GoogleSignIn", "Google sign in failed", it)
             }
         }
 
@@ -77,7 +86,7 @@ fun ManageAccountUi(
             confirmButton = {
                 TextButton(onClick = {
                     settingsViewModel.deleteAccount {
-                        viewModel.navController.navigate(AppRoutes.Landing.route)
+                        appViewModel.appState.navController.navigate(AppRoutes.Landing.route)
                         openDeleteDialog.value = false
                     }
                 }) {
@@ -168,7 +177,7 @@ fun ManageAccountUi(
             painter = painterResource(id = R.drawable.baseline_logout_24),
         ) {
             settingsViewModel.signOut {
-                viewModel.navController.navigate(AppRoutes.Landing.route)
+                appViewModel.appState.navController.navigate(AppRoutes.Landing.route)
             }
         }
 
