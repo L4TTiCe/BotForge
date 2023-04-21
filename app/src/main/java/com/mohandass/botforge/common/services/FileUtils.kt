@@ -93,6 +93,12 @@ class FileUtils {
             val textSize = 14f
             val headingSize = 18f
 
+            val margin = 72f
+            val padding = 20f
+
+            val pageWidth = 595
+            val pageHeight = 842
+
             val messagePaint = TextPaint()
             messagePaint.textSize = textSize
             messagePaint.isAntiAlias = true
@@ -107,9 +113,9 @@ class FileUtils {
 
             val pdfWriter = PdfWriter(
                 pdfDocument = pdfDocument,
-                margin = 72f,
-                pageWidth = 595,
-                pageHeight = 842,
+                margin = margin,
+                pageWidth = pageWidth,
+                pageHeight = pageHeight,
             )
 
             if (chatInfo.chatInfo != null) {
@@ -127,7 +133,7 @@ class FileUtils {
 
             pdfWriter.write("Message Log", headingPaint)
 
-            pdfWriter.addPadding(16f)
+            pdfWriter.addPadding(padding)
 
             for (message in chatInfo.messages) {
                 rolePaint.color = when (message.role) {
@@ -144,9 +150,10 @@ class FileUtils {
                 val messageParts = message.text.split("\n\n")
                 for (part in messageParts) {
                     pdfWriter.writeMarkdown(part, messagePaint, context)
+                    pdfWriter.addPadding(padding / 2)
                 }
 
-                pdfWriter.addPadding(20f)
+                pdfWriter.addPadding(padding)
             }
 
             pdfWriter.finish()
