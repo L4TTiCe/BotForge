@@ -83,6 +83,27 @@ fun AvatarsBar(
             }
         }
 
+        item {
+            Column {
+                TintedIconButton(
+                    icon = R.drawable.picture,
+                    iconTint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .size(Constants.ICONS_SIZE.dp)
+                        .padding(6.dp),
+                    isAnimated = chatType == ChatType.IMAGE,
+                    contentDescription = null,
+                    onClick = {
+                        personaViewModel.showImage()
+                    }
+                )
+
+                if (chatType == ChatType.IMAGE) {
+                    ActiveIndicator()
+                }
+            }
+        }
+
         if (isUserGeneratedContentEnabled) {
             item {
                 Column {
@@ -151,7 +172,7 @@ fun AvatarsBar(
 
         }
 
-        if (personas.size == 0) {
+        if (personas.isEmpty()) {
             item {
                 var tint = MaterialTheme.colorScheme.onSurfaceVariant
                 tint = tint.copy(alpha = 1f)

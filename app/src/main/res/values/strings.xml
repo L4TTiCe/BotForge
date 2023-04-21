@@ -324,5 +324,8 @@
     <string name="save_chat_dialog_chat_title">Chat Title</string>
     <string name="save_chat_dialog_chat_title_hint">Generated Title:</string>
 
+    <!--   Image  -->
+    <string name="prompt_cannot_be_empty">Prompt cannot be empty!</string>
+
     <string name="account_linked">Account linked!</string>
 </resources>

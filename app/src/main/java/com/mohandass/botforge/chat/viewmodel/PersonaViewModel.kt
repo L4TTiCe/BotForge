@@ -89,6 +89,17 @@ class PersonaViewModel @Inject constructor(
         FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
     }
 
+    // Move to the Image screen
+    fun showImage() {
+        logger.logVerbose(TAG, "showImage()")
+        // saveState()
+        clearSelection()
+        setChatType(ChatType.IMAGE)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Image.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Image.route)
+        }
+    }
+
     // Move to List Screen
     fun showList() {
         logger.logVerbose(TAG, "showList()")

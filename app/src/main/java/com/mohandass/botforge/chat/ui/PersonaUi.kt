@@ -33,6 +33,7 @@ import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.top.AvatarsBar
 import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.chat.viewmodel.ImageViewModel
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
@@ -53,11 +54,13 @@ import com.slaviboy.composeunits.adw
 fun PersonaUi(
     appViewModel: AppViewModel = hiltViewModel(),
     chatViewModel: ChatViewModel = hiltViewModel(),
+    imageViewModel: ImageViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     appViewModel.appState.setNavControllerPersona(navController)
 
-    val isLoading by chatViewModel.isLoading
+    val isLoadingChat by chatViewModel.isLoading
+    val isLoadingImage by imageViewModel.isLoading
 
     LaunchedEffect(Unit) {
         appViewModel.appState.topBar.title.value = R.string.app_name
@@ -130,7 +133,7 @@ fun PersonaUi(
 
                 LinearProgressIndicator(
                     modifier = Modifier
-                        .alpha(if (isLoading) 0.9f else 0f)
+                        .alpha(if (isLoadingChat || isLoadingImage) 0.9f else 0f)
                         .fillMaxWidth(),
                 )
             }
@@ -143,6 +146,9 @@ fun PersonaUi(
         ) {
             composable(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
                 ChatUi()
+            }
+            composable(AppRoutes.MainRoutes.PersonaRoutes.Image.route) {
+                ImageUi()
             }
             composable(AppRoutes.MainRoutes.PersonaRoutes.History.route) {
                 HistoryUi()

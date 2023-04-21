@@ -14,6 +14,7 @@
         <item>Phone Vibration Icon, Vibration icons created by Bharat Icons - Flaticon, https://www.flaticon.com/free-icon/phone-vibration_7167854</item>
         <item>No Results Icon, No results icons created by Design Circle - Flaticon, https://www.flaticon.com/free-icon/no-results_7465664</item>
         <item>List Icon, List icons created by torskaya - Flaticon, https://www.flaticon.com/free-icon/list_2874812</item>
+        <item>Picture Icon, Image Comics icons created by Freepik - Flaticon, https://www.flaticon.com/free-icon/insert-picture-icon_16410</item>
     </string-array>
 
     <integer-array name="attribution_icons">
@@ -30,5 +31,6 @@
         <item>@drawable/phone_vibration</item>
         <item>@drawable/no_results</item>
         <item>@drawable/list</item>
+        <item>@drawable/picture</item>
     </integer-array>
 </resources>

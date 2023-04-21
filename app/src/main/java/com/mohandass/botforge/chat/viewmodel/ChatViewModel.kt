@@ -68,8 +68,6 @@ class ChatViewModel @Inject constructor(
         _openSaveChatDialog.value = state
     }
 
-    private val _requestInProgress = mutableStateOf(false)
-
     private val _isMessageInFocus = mutableStateOf(false)
     val isMessageInFocus: MutableState<Boolean> = _isMessageInFocus
 
@@ -77,9 +75,6 @@ class ChatViewModel @Inject constructor(
 
     // Interrupts the current request, if any, to the OpenAI API
     private fun interruptRequest() {
-        if (_requestInProgress.value) {
-            _requestInProgress.value = false
-        }
         if (this::job.isInitialized) {
             job.cancel()
         }
@@ -178,8 +173,6 @@ class ChatViewModel @Inject constructor(
                                 })
                         }
                     }
-
-
                 }
             }
             onComplete()
