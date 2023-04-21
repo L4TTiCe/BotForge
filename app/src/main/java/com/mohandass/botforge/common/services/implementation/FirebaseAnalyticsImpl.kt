@@ -26,33 +26,43 @@ class FirebaseAnalyticsImpl : Analytics {
         firebaseAnalytics.logEvent(Analytics.NAME_CHANGED) { }
     }
 
-    override fun logIsAnalyticsEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_ANALYTICS_ENABLED) {
-            param(Analytics.IS_ANALYTICS_ENABLED, boolean.toString())
+    override fun logIsAnalyticsEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.ANALYTICS_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.ANALYTICS_DISABLED) { }
         }
     }
 
     override fun logPreferredTheme(theme: PreferredTheme) {
-        firebaseAnalytics.logEvent(Analytics.PREFERRED_THEME) {
-            param(Analytics.PREFERRED_THEME, theme.name)
+        when (theme) {
+            PreferredTheme.AUTO -> firebaseAnalytics.logEvent(Analytics.PREFERRED_THEME_AUTO) { }
+            PreferredTheme.LIGHT -> firebaseAnalytics.logEvent(Analytics.PREFERRED_THEME_LIGHT) { }
+            PreferredTheme.DARK -> firebaseAnalytics.logEvent(Analytics.PREFERRED_THEME_DARK) { }
         }
     }
 
-    override fun logIsMinimalHeaderEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_MINIMAL_HEADER_ENABLED) {
-            param(Analytics.IS_MINIMAL_HEADER_ENABLED, boolean.toString())
+    override fun logIsMinimalHeaderEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.MINIMAL_HEADER_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.MINIMAL_HEADER_DISABLED) { }
         }
     }
 
-    override fun logIsDynamicColorEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_DYNAMIC_COLOR_ENABLED) {
-            param(Analytics.IS_DYNAMIC_COLOR_ENABLED, boolean.toString())
+    override fun logIsDynamicColorEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.DYNAMIC_COLOR_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.DYNAMIC_COLOR_DISABLED) { }
         }
     }
 
-    override fun logIsShakeToClearEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_SHAKE_TO_CLEAR_ENABLED) {
-            param(Analytics.IS_SHAKE_TO_CLEAR_ENABLED, boolean.toString())
+    override fun logIsShakeToClearEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.SHAKE_TO_CLEAR_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.SHAKE_TO_CLEAR_DISABLED) { }
         }
     }
 
@@ -62,15 +72,19 @@ class FirebaseAnalyticsImpl : Analytics {
         }
     }
 
-    override fun logIsUgcEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_UGC_ENABLED) {
-            param(Analytics.IS_UGC_ENABLED, boolean.toString())
+    override fun logIsUgcEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.UGC_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.UGC_DISABLED) { }
         }
     }
 
-    override fun logIsAutoGenerateChatTitleEnabled(boolean: Boolean) {
-        firebaseAnalytics.logEvent(Analytics.IS_AUTO_GENERATE_CHAT_TITLE_ENABLED) {
-            param(Analytics.IS_AUTO_GENERATE_CHAT_TITLE_ENABLED, boolean.toString())
+    override fun logIsAutoGenerateChatTitleEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.AUTO_GENERATE_CHAT_TITLE_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.AUTO_GENERATE_CHAT_TITLE_DISABLED) { }
         }
     }
 
