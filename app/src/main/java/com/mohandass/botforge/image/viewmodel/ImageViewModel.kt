@@ -1,5 +1,6 @@
-package com.mohandass.botforge.chat.viewmodel
+package com.mohandass.botforge.image.viewmodel
 
+import android.graphics.BitmapFactory
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,31 +11,54 @@ import com.aallam.openai.api.image.ImageSize
 import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
-import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
+import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
+import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
+import com.mohandass.botforge.image.model.dao.entities.relations.ImageGenerationRequestWithImages
+import com.mohandass.botforge.image.model.toInternal
+import com.mohandass.botforge.image.services.implementations.ImageGenerationService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.URL
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class ImageViewModel @Inject constructor(
     private val openAiService: OpenAiService,
+    private val imageGenerationService: ImageGenerationService,
     private val appState: AppState,
     private val logger: Logger,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     val prompt = mutableStateOf("")
     @OptIn(BetaOpenAI::class)
     val imageSize = mutableStateOf(ImageSize.is256x256)
     val n = mutableStateOf(1)
 
-    val isLoading = mutableStateOf(false)
+    val isLoading = appState.isImageLoading
     val showImage = mutableStateOf(false)
+
+    val history = mutableStateListOf<ImageGenerationRequestWithImages>()
+
+    init {
+        fetchHistory()
+    }
+
+    fun fetchHistory() {
+        viewModelScope.launch {
+            history.clear()
+            history.addAll(imageGenerationService.getPastImageGenerations())
+        }
+    }
 
     private fun setLoading(value: Boolean) {
         isLoading.value = value
@@ -81,12 +105,58 @@ class ImageViewModel @Inject constructor(
         _lastTimestamp.value = Date().time
     }
 
+    fun handleInterrupt() {
+        SnackbarManager.showMessageWithAction(R.string.waiting_for_response, R.string.cancel) {
+            interruptRequest()
+        }
+    }
+
     // Interrupts the current request, if any, to the OpenAI API
     private fun interruptRequest() {
         if (this::job.isInitialized) {
             job.cancel()
         }
         setLoading(false)
+    }
+
+    @OptIn(BetaOpenAI::class)
+    private fun saveGeneratedImages() {
+        val imageGenerationRequestE = ImageGenerationRequestE(
+            prompt = prompt.value,
+            n = n.value,
+            imageSize = imageSize.value.toInternal(),
+        )
+
+        viewModelScope.launch(ioDispatcher) {
+            val generatedImages = imageUriList.map {
+                // Create a URL object from the URL string
+                val url = URL(it)
+
+                // Open a connection to the URL and get an input stream
+                val inputStream = url.openStream()
+
+                // Decode the input stream into a bitmap
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+
+                // Close the input stream
+                inputStream.close()
+                GeneratedImageE(
+                    bitmap = bitmap,
+                    generationRequestUuid = imageGenerationRequestE.uuid,
+                )
+            }
+
+            logger.logVerbose(
+                TAG,
+                "saveGeneratedImages() imageGenerationRequestE: $imageGenerationRequestE"
+            )
+            logger.logVerbose(TAG, "saveGeneratedImages() generatedImages: $generatedImages")
+
+            imageGenerationService.saveImageGenerationRequestAndImages(
+                imageGenerationRequestE,
+                generatedImages
+            )
+        }
     }
 
     @OptIn(BetaOpenAI::class)
@@ -112,6 +182,9 @@ class ImageViewModel @Inject constructor(
                 maxImageCount.value = imageUriList.size
                 currentImageIndex.value = 0
                 imageUri.value = imageUriList[currentImageIndex.value]
+
+                saveGeneratedImages()
+                fetchHistory()
 
                 showImage.value = true
             } catch (e: Exception) {

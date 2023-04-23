@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.services
+package com.mohandass.botforge.common.services
 
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageSize

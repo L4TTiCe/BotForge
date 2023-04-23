@@ -21,7 +21,7 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.repositories.ActiveMessagesRepository
 import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
-import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Analytics
@@ -91,7 +91,7 @@ class ChatViewModel @Inject constructor(
     // Shows the time elapsed since starting the request
     private lateinit var timerJob: Job
 
-    private val _isLoading = mutableStateOf(false)
+    private val _isLoading = appState.isChatLoading
     val isLoading: State<Boolean>
         get() = _isLoading
 

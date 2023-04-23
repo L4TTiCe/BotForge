@@ -32,9 +32,8 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.header.top.AvatarsBar
-import com.mohandass.botforge.chat.viewmodel.ChatViewModel
-import com.mohandass.botforge.chat.viewmodel.ImageViewModel
 import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.image.ui.ImageUi
 import com.mohandass.botforge.settings.model.PreferredHeader
 import com.mohandass.botforge.settings.model.PreferredTheme
 import com.mohandass.botforge.sync.ui.BrowseBotsUi
@@ -53,14 +52,12 @@ import com.slaviboy.composeunits.adw
 @Composable
 fun PersonaUi(
     appViewModel: AppViewModel = hiltViewModel(),
-    chatViewModel: ChatViewModel = hiltViewModel(),
-    imageViewModel: ImageViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     appViewModel.appState.setNavControllerPersona(navController)
 
-    val isLoadingChat by chatViewModel.isLoading
-    val isLoadingImage by imageViewModel.isLoading
+    val isLoadingChat by appViewModel.appState.isChatLoading
+    val isLoadingImage by appViewModel.appState.isImageLoading
 
     LaunchedEffect(Unit) {
         appViewModel.appState.topBar.title.value = R.string.app_name

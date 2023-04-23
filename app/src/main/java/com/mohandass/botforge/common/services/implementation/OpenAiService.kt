@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.services.implementation
+package com.mohandass.botforge.common.services.implementation
 
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletion
@@ -15,7 +15,7 @@ import com.aallam.openai.client.OpenAI
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
