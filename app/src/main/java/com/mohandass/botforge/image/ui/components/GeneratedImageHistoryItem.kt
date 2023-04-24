@@ -43,6 +43,7 @@ import java.util.Locale
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GeneratedImageHistoryItem(
+    modifier: Modifier = Modifier,
     imageGenerationRequestWithImages: ImageGenerationRequestWithImages,
     onClickDelete: () -> Unit,
 ) {
@@ -61,7 +62,7 @@ fun GeneratedImageHistoryItem(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 10.dp)
             .fillMaxWidth()
     ) {
@@ -115,12 +116,6 @@ fun GeneratedImageHistoryItem(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row {
-//            Text(
-//                modifier = Modifier.padding(horizontal = 5.dp),
-//                text = imageGenerationRequestWithImages.imageGenerationRequest.imageSize.toString(),
-//                style = MaterialTheme.typography.labelMedium
-//            )
-
             Spacer(modifier = Modifier.weight(1f))
 
             Text(

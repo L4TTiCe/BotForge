@@ -22,16 +22,28 @@ class ImageGenerationService(
 
     suspend fun saveImageGenerationRequestAndImages(
         request: ImageGenerationRequestE,
-        images: List<GeneratedImageE>
+        images: List<GeneratedImageE>,
+        onSuccess: () -> Unit = {}
     ) {
         logger.logVerbose(TAG, "saveImageGenerationRequestAndImages()")
         saveImageGenerationRequest(request)
         images.forEach { saveGeneratedImage(it) }
+        onSuccess()
     }
 
     suspend fun getPastImageGenerations(): List<ImageGenerationRequestWithImages> {
         logger.logVerbose(TAG, "getPastImageGenerations()")
         return imageGenerationDao.getAllGeneratedImages()
+    }
+
+    suspend fun deleteImageGenerationRequestById(requestId: String) {
+        logger.logVerbose(TAG, "deleteImageGenerationRequest()")
+        imageGenerationDao.deleteImageGenerationRequestById(requestId)
+    }
+
+    suspend fun deleteAllImageGenerationRequests() {
+        logger.logVerbose(TAG, "deleteAllImageGenerationRequests()")
+        imageGenerationDao.deleteAllImageGenerationRequests()
     }
 
     companion object {

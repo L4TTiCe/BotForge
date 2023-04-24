@@ -1,6 +1,12 @@
 package com.mohandass.botforge.image.ui
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.core.InfiniteRepeatableSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,39 +16,45 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -50,23 +62,29 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.aallam.openai.api.BetaOpenAI
-import com.aallam.openai.api.image.ImageSize
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
+import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.common.Utils.Companion.formatDuration
+import com.mohandass.botforge.image.model.toInternal
 import com.mohandass.botforge.image.ui.components.GeneratedImageHistoryItem
+import com.mohandass.botforge.image.ui.components.dialogs.DeleteAllGeneratedImagesDialog
 import com.mohandass.botforge.image.viewmodel.ImageViewModel
 import com.slaviboy.composeunits.adh
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, BetaOpenAI::class, ExperimentalMaterialApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class, BetaOpenAI::class)
 @Composable
 fun ImageUi(
     imageViewModel: ImageViewModel = hiltViewModel(),
 ) {
     var prompt by imageViewModel.prompt
     var imageSize by imageViewModel.imageSize
+    val availableSizes = imageViewModel.availableSizes
     var n by imageViewModel.n
 
     val isLoading by imageViewModel.isLoading
@@ -77,20 +95,163 @@ fun ImageUi(
     val currentImageIndex by imageViewModel.currentImageIndex
     val maxImageCount by imageViewModel.maxImageCount
 
+    val openDeleteHistoryDialog by imageViewModel.openDeleteHistoryDialog
+
     val historyList = imageViewModel.history
 
     val focusManager = LocalFocusManager.current
 
-    BottomSheetScaffold(
-        modifier = Modifier
-            .fillMaxSize(),
-        sheetPeekHeight = 0.15.adh,
-        sheetShape = RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp),
-        sheetElevation = 4.dp,
-        sheetContent = {
-            Surface(
-                tonalElevation = 4.dp,
-            ) {
+    var showSizeList by remember {
+        mutableStateOf(false)
+    }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    if (openDeleteHistoryDialog) {
+        DeleteAllGeneratedImagesDialog(
+            onDismiss = {
+                imageViewModel.updateDeleteDialogState(false)
+            },
+            onDelete = {
+                imageViewModel.deleteAllGeneratedImages()
+            }
+        )
+    }
+
+    Scaffold(
+        floatingActionButton = {
+            // Sends or Cancels request
+            SendFloatingActionButton(
+                isLoading = isLoading,
+                onSend = {
+                    imageViewModel.generateImageFromPrompt()
+                    focusManager.clearFocus()
+                },
+                onCancel = {
+                    imageViewModel.handleInterrupt()
+                }
+            )
+        },
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 10.dp),
+            state = listState,
+        ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.picture),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.generate_images),
+                        modifier = Modifier.padding(10.dp),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    if (isLoading) {
+                        Text(
+                            text = formatDuration(timeMillis),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+
+            item {
+                Box(
+                    modifier = Modifier
+                        // Fill max width
+                        .fillMaxWidth()
+                        // Set height to match width
+                        .aspectRatio(1f)
+                        .padding(horizontal = 10.dp)
+                        .placeholder(
+                            visible = showImage.not(),
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                            highlight = PlaceholderHighlight.shimmer(
+                                animationSpec = InfiniteRepeatableSpec(
+                                    tween(
+                                        durationMillis = 2000,
+                                        delayMillis = 1000,
+                                        easing = LinearEasing
+                                    ),
+                                    RepeatMode.Restart
+                                )
+                            ),
+                            shape = MaterialTheme.shapes.medium
+                        ),
+                ) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(imageUri)
+                            .placeholder(R.drawable.picture)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null
+                    )
+                }
+            }
+
+            item {
+                if (maxImageCount > 1 && showImage) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+
+                        IconButton(
+                            onClick = {
+                                imageViewModel.previousImage()
+                            },
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = stringResource(id = R.string.previous_image_cd)
+                            )
+                        }
+
+                        Text(
+                            text = "${currentImageIndex + 1}/$maxImageCount",
+                            modifier = Modifier
+                                .padding(16.dp),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+
+                        IconButton(
+                            onClick = {
+                                imageViewModel.nextImage()
+                            },
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = stringResource(id = R.string.next_image_cd)
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
                 Column {
 
                     Spacer(modifier = Modifier.height(0.02.adh))
@@ -103,7 +264,7 @@ fun ImageUi(
                             value = prompt,
                             onValueChange = { prompt = it },
                             label = {
-                                Text(text = "Prompt")
+                                Text(text = stringResource(id = R.string.prompt))
                             },
                             trailingIcon = {
                                 if (prompt.isNotBlank() || prompt.isNotEmpty()) {
@@ -132,244 +293,141 @@ fun ImageUi(
                                 .weight(1f)
                                 .padding(horizontal = 20.dp)
                         )
+                    }
 
-                        if (isLoading) {
-                            IconButton(onClick = {
-                                imageViewModel.handleInterrupt()
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Close,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            }
-                        } else {
-                            IconButton(onClick = {
-                                imageViewModel.generateImageFromPrompt()
-                                focusManager.clearFocus()
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Send,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                )
-                            }
-                        }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.image_size),
+                            style = MaterialTheme.typography.titleMedium
+                        )
 
                         Spacer(modifier = Modifier.width(20.dp))
-                    }
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = imageSize.equals(ImageSize.is256x256),
-                                onClick = { imageSize = ImageSize.is256x256 }
-                            )
-                            Text(text = "256x256")
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = imageSize.equals(ImageSize.is512x512),
-                                onClick = { imageSize = ImageSize.is512x512 }
-                            )
-                            Text(text = "512x512")
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = imageSize.equals(ImageSize.is1024x1024),
-                                onClick = { imageSize = ImageSize.is1024x1024 }
-                            )
-                            Text(text = "1024x1024")
-                        }
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        IconButton(onClick = {
-                            if (n > 1) {
-                                n--
+                        Box {
+                            OutlinedButton(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { showSizeList = !showSizeList }
+                            ){
+                                Text (imageSize.toInternal().toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                Icon(
+                                    imageVector = Icons.Filled.ArrowDropDown,
+                                    contentDescription = null,
+                                )
                             }
-                        }) {
-                            Icon(
-                                painterResource(id = R.drawable.baseline_remove_24),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-
-                        Text(
-                            text = "$n",
-                            modifier = Modifier.padding(10.dp),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-
-                        IconButton(onClick = {
-                            if (n < 5) {
-                                n++
+                            DropdownMenu(
+                                expanded = showSizeList,
+                                onDismissRequest = { showSizeList = false },
+                            ) {
+                                availableSizes.forEach { item ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            showSizeList = false
+                                            imageSize = item.toImageSize()
+                                        },
+                                        text = { Text (item.toString()) }
+                                    )
+                                }
                             }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Add,
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                            )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(0.05.adh))
-                }
-            }
-        }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 10.dp),
-        ) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.picture),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        text = "Image Generation",
-                        modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    if (isLoading) {
-                        Text(
-                            text = formatDuration(timeMillis),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-            }
-
-            item {
-                Box(
-                    modifier = Modifier
-                        // Fill max width
-                        .fillMaxWidth()
-                        // Set height to match width
-                        .aspectRatio(1f)
-                        .padding(horizontal = 10.dp)
-                        .placeholder(
-                            visible = showImage.not(),
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                            highlight = PlaceholderHighlight.shimmer(),
-                            shape = MaterialTheme.shapes.medium
-                        ),
-                ) {
-                    AsyncImage(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageUri)
-                            .placeholder(R.drawable.picture)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null
-                    )
-                }
-            }
-
-            item {
-                if (maxImageCount > 1) {
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceAround
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-
-                        IconButton(
-                            onClick = {
-                                imageViewModel.previousImage()
-                            },
-                            modifier = Modifier
-                                .padding(16.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Previous"
-                            )
-                        }
-
                         Text(
-                            text = "${currentImageIndex + 1}/$maxImageCount",
-                            modifier = Modifier
-                                .padding(16.dp),
-                            style = MaterialTheme.typography.bodyMedium
+                            text = stringResource(id = R.string.number_of_images),
+                            style = MaterialTheme.typography.titleMedium
                         )
 
-                        IconButton(
-                            onClick = {
-                                imageViewModel.nextImage()
-                            },
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        Row(
                             modifier = Modifier
-                                .padding(16.dp)
+                                .weight(1f),
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowForward,
-                                contentDescription = "Next"
-                            )
+                            OutlinedButton(
+                                onClick = {
+                                    if (n > 1) {
+                                        n--
+                                    }
+                                },
+                                shape = MaterialTheme.shapes.extraLarge.copy(
+                                    topEnd = CornerSize(0.dp),
+                                    bottomEnd = CornerSize(0.dp)
+                                ),
+                            ) {
+                                Icon(
+                                    painterResource(id = R.drawable.baseline_remove_24),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+
+                            OutlinedButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .offset((-1 * 1).dp, 0.dp),
+                                onClick = {},
+                                shape = RoundedCornerShape(
+                                    topStart = 0.dp,
+                                    topEnd = 0.dp,
+                                    bottomStart = 0.dp,
+                                    bottomEnd = 0.dp
+                                )
+                            ) {
+                                Text(text = n.toString())
+                            }
+
+                            OutlinedButton(
+                                modifier = Modifier
+                                    .offset((-1 * 2).dp, 0.dp),
+                                onClick = {
+                                    if (n < 5) {
+                                        n++
+                                    }
+                                },
+                                shape = MaterialTheme.shapes.extraLarge.copy(
+                                    topStart = CornerSize(0.dp),
+                                    bottomStart = CornerSize(0.dp)
+                                ),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Add,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(0.01.adh))
                 }
             }
 
             item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_history_24),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        text = "History",
-                        modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                }
-
                 Divider()
+
+                HeaderWithActionIcon(
+                    text = stringResource(id = R.string.history),
+                    leadingIcon = painterResource(id = R.drawable.baseline_history_24),
+                    trailingIcon = painterResource(id = R.drawable.baseline_clear_all_24),
+                    trailingIconOnClick = {
+                        imageViewModel.updateDeleteDialogState(true)
+                    }
+                )
             }
 
             items(
@@ -377,10 +435,20 @@ fun ImageUi(
                 key = { index -> historyList[index].imageGenerationRequest.uuid }
             ) { idx ->
                 GeneratedImageHistoryItem(
+                    modifier = Modifier
+                        .clickable {
+                            imageViewModel.selectGeneratedImageGroup(historyList[idx].imageGenerationRequest.uuid)
+                            // Scroll to top
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(0)
+                            }
+                        },
                     imageGenerationRequestWithImages = historyList[idx],
                     onClickDelete = {
-                        // TODO
-                    }
+                        imageViewModel.deleteGeneratedImageGroup(
+                            historyList[idx].imageGenerationRequest.uuid
+                        )
+                    },
                 )
             }
 

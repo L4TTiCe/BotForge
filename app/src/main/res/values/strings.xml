@@ -325,7 +325,17 @@
     <string name="save_chat_dialog_chat_title_hint">Generated Title:</string>
 
     <!--   Image  -->
+    <string name="history">History</string>
+    <string name="prompt">Prompt</string>
+    <string name="image_size">Image Size:</string>
+    <string name="number_of_images"># of Images:</string>
+    <string name="generate_images">Generate Images</string>
+    <string name="next_image_cd">Next Image</string>
+    <string name="previous_image_cd">Previous Image</string>
     <string name="prompt_cannot_be_empty">Prompt cannot be empty!</string>
+    <string name="image_group_deleted">Images deleted!</string>
+    <string name="delete_all_images">Delete all generated images?</string>
+    <string name="delete_all_images_message">This will delete all generated images stored locally</string>
 
     <string name="account_linked">Account linked!</string>
 </resources>

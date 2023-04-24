@@ -16,6 +16,7 @@ import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
 import com.mohandass.botforge.common.services.snackbar.SnackbarMessage.Companion.toSnackbarMessageWithAction
+import com.mohandass.botforge.image.model.ImageSizeInternal
 import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
 import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 import com.mohandass.botforge.image.model.dao.entities.relations.ImageGenerationRequestWithImages
@@ -44,19 +45,37 @@ class ImageViewModel @Inject constructor(
     val imageSize = mutableStateOf(ImageSize.is256x256)
     val n = mutableStateOf(1)
 
+    val availableSizes = listOf(
+        ImageSizeInternal.is256x256,
+        ImageSizeInternal.is512x512,
+        ImageSizeInternal.is1024x1024,
+    )
+
     val isLoading = appState.isImageLoading
     val showImage = mutableStateOf(false)
 
     val history = mutableStateListOf<ImageGenerationRequestWithImages>()
+    lateinit var deleteJob: Job
+
+    private val _openDeleteHistoryDialog = mutableStateOf(false)
+    val openDeleteHistoryDialog: State<Boolean> = _openDeleteHistoryDialog
+
+    fun updateDeleteDialogState(state: Boolean) {
+        _openDeleteHistoryDialog.value = state
+    }
 
     init {
         fetchHistory()
     }
 
-    fun fetchHistory() {
+    private fun fetchHistory(
+        onSuccess: () -> Unit = {}
+    ) {
+        logger.logVerbose(TAG, "fetchHistory()")
         viewModelScope.launch {
             history.clear()
             history.addAll(imageGenerationService.getPastImageGenerations())
+            onSuccess()
         }
     }
 
@@ -77,11 +96,11 @@ class ImageViewModel @Inject constructor(
         }
     }
 
-    private val imageUriList = mutableStateListOf<String>()
+    private val imageUriList = mutableStateListOf<Any>()
     var currentImageIndex = mutableStateOf(0)
     var maxImageCount = mutableStateOf(imageUriList.size)
 
-    val imageUri = mutableStateOf("")
+    val imageUri = mutableStateOf<Any>("")
 
     fun nextImage() {
         currentImageIndex.value = (currentImageIndex.value + 1) % imageUriList.size
@@ -120,7 +139,9 @@ class ImageViewModel @Inject constructor(
     }
 
     @OptIn(BetaOpenAI::class)
-    private fun saveGeneratedImages() {
+    private fun saveGeneratedImages(
+        onSuccess: () -> Unit = {},
+    ) {
         val imageGenerationRequestE = ImageGenerationRequestE(
             prompt = prompt.value,
             n = n.value,
@@ -130,7 +151,7 @@ class ImageViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val generatedImages = imageUriList.map {
                 // Create a URL object from the URL string
-                val url = URL(it)
+                val url = URL(it as String? ?: "")
 
                 // Open a connection to the URL and get an input stream
                 val inputStream = url.openStream()
@@ -153,9 +174,68 @@ class ImageViewModel @Inject constructor(
             logger.logVerbose(TAG, "saveGeneratedImages() generatedImages: $generatedImages")
 
             imageGenerationService.saveImageGenerationRequestAndImages(
-                imageGenerationRequestE,
-                generatedImages
+                request = imageGenerationRequestE,
+                images = generatedImages
+            ) {
+                fetchHistory() {
+                    selectGeneratedImageGroup(imageGenerationRequestE.uuid)
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    @OptIn(BetaOpenAI::class)
+    fun selectGeneratedImageGroup(requestId: String) {
+        logger.logVerbose(TAG, "selectGeneratedImageGroup() requestId: $requestId")
+        val imageGenerationRequestWithImages = history.firstOrNull {
+            it.imageGenerationRequest.uuid == requestId
+        } ?: return
+
+        val images = imageGenerationRequestWithImages.generatedImages.map { it.bitmap }
+
+        imageUriList.clear()
+
+        images.forEach {
+            imageUriList.add(it!!)
+        }
+
+        logger.logVerbose(TAG, "selectGeneratedImageGroup() imageUriList: $imageUriList")
+
+        prompt.value = imageGenerationRequestWithImages.imageGenerationRequest.prompt
+        imageSize.value = imageGenerationRequestWithImages.imageGenerationRequest.imageSize!!.toImageSize()
+
+        maxImageCount.value = imageUriList.size
+        currentImageIndex.value = 0
+        imageUri.value = imageUriList[currentImageIndex.value]
+        showImage.value = true
+    }
+
+    fun deleteGeneratedImageGroup(requestId: String) {
+        deleteJob = viewModelScope.launch(ioDispatcher) {
+            logger.logVerbose(TAG, "deleteGeneratedImage() requestId: $requestId")
+            history.removeIf { it.imageGenerationRequest.uuid == requestId }
+
+            delay(5000)
+            imageGenerationService.deleteImageGenerationRequestById(
+                requestId
             )
+        }
+
+        SnackbarManager.showMessageWithAction(
+            R.string.image_group_deleted,
+            R.string.undo
+        ) {
+            deleteJob.cancel()
+            fetchHistory()
+        }
+    }
+
+    fun deleteAllGeneratedImages() {
+        logger.logVerbose(TAG, "deleteAllGeneratedImages()")
+        viewModelScope.launch {
+            imageGenerationService.deleteAllImageGenerationRequests()
+            fetchHistory()
         }
     }
 
@@ -166,6 +246,7 @@ class ImageViewModel @Inject constructor(
             return
         }
 
+        showImage.value = false
         setLoading(true)
 
         job = viewModelScope.launch {
@@ -179,14 +260,10 @@ class ImageViewModel @Inject constructor(
                 imageUriList.clear()
                 imageUriList.addAll(images.map { it.url })
 
-                maxImageCount.value = imageUriList.size
-                currentImageIndex.value = 0
-                imageUri.value = imageUriList[currentImageIndex.value]
+                saveGeneratedImages() {
+                    setLoading(false)
+                }
 
-                saveGeneratedImages()
-                fetchHistory()
-
-                showImage.value = true
             } catch (e: Exception) {
                 logger.logError(TAG, "getChatCompletion() error: $e", e)
                 if (e.message != null) {
@@ -197,6 +274,9 @@ class ImageViewModel @Inject constructor(
                         })
                 } else {
                     logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
+
+                    setLoading(false)
+
                     val message = Utils.parseStackTraceForErrorMessage(e)
 
                     // Attempt to parse the error message
@@ -223,8 +303,6 @@ class ImageViewModel @Inject constructor(
                     }
                 }
             }
-
-            setLoading(false)
         }
 
     }
