@@ -16,18 +16,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
@@ -68,9 +64,11 @@ import com.google.accompanist.placeholder.material.shimmer
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.Utils.Companion.formatDuration
 import com.mohandass.botforge.image.model.toInternal
 import com.mohandass.botforge.image.ui.components.GeneratedImageHistoryItem
+import com.mohandass.botforge.image.ui.components.NumberPicker
 import com.mohandass.botforge.image.ui.components.dialogs.DeleteAllGeneratedImagesDialog
 import com.mohandass.botforge.image.viewmodel.ImageViewModel
 import com.slaviboy.composeunits.adh
@@ -353,64 +351,21 @@ fun ImageUi(
 
                         Spacer(modifier = Modifier.width(20.dp))
 
-                        Row(
+                        NumberPicker(
                             modifier = Modifier
                                 .weight(1f),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            OutlinedButton(
-                                onClick = {
-                                    if (n > 1) {
-                                        n--
-                                    }
-                                },
-                                shape = MaterialTheme.shapes.extraLarge.copy(
-                                    topEnd = CornerSize(0.dp),
-                                    bottomEnd = CornerSize(0.dp)
-                                ),
-                            ) {
-                                Icon(
-                                    painterResource(id = R.drawable.baseline_remove_24),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(24.dp)
-                                )
+                            n = n,
+                            onIncrement = {
+                                if (n < Constants.MAX_IMAGE_GENERATION_COUNT) {
+                                    n++
+                                }
+                            },
+                            onDecrement = {
+                                if (n > 1) {
+                                    n--
+                                }
                             }
-
-                            OutlinedButton(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .offset((-1 * 1).dp, 0.dp),
-                                onClick = {},
-                                shape = RoundedCornerShape(
-                                    topStart = 0.dp,
-                                    topEnd = 0.dp,
-                                    bottomStart = 0.dp,
-                                    bottomEnd = 0.dp
-                                )
-                            ) {
-                                Text(text = n.toString())
-                            }
-
-                            OutlinedButton(
-                                modifier = Modifier
-                                    .offset((-1 * 2).dp, 0.dp),
-                                onClick = {
-                                    if (n < 5) {
-                                        n++
-                                    }
-                                },
-                                shape = MaterialTheme.shapes.extraLarge.copy(
-                                    topStart = CornerSize(0.dp),
-                                    bottomStart = CornerSize(0.dp)
-                                ),
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Add,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
-                        }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(0.01.adh))
