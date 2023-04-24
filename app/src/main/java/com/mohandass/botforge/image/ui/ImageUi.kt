@@ -47,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,9 +69,13 @@ import com.aallam.openai.api.BetaOpenAI
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import com.mohandass.botforge.AppRoutes
+import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
+import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.Utils.Companion.formatDuration
 import com.mohandass.botforge.common.services.snackbar.SwipeDirection
@@ -87,6 +92,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ImageUi(
     imageViewModel: ImageViewModel = hiltViewModel(),
+    appViewModel: AppViewModel = hiltViewModel(),
+    personaViewModel: PersonaViewModel = hiltViewModel(),
 ) {
     var prompt by imageViewModel.prompt
     var imageSize by imageViewModel.imageSize
@@ -142,6 +149,17 @@ fun ImageUi(
     }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+
+    val userPreferences by appViewModel.appState.userPreferences.observeAsState()
+    userPreferences?.let {
+        if(it.enableImageGeneration.not()) {
+            personaViewModel.clearSelection()
+            personaViewModel.setChatType(ChatType.CREATE)
+            appViewModel.appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
+                popUpTo(AppRoutes.MainRoutes.PersonaRoutes.Image.route) { inclusive = true }
+            }
+        }
+    }
 
     if (openDeleteHistoryDialog) {
         DeleteAllGeneratedImagesDialog(

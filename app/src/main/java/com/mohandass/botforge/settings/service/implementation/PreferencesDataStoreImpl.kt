@@ -61,6 +61,10 @@ class PreferencesDataStoreImpl(
             floatPreferencesKey(PreferencesDataStore.SHAKE_TO_CLEAR_SENSITIVITY)
         val AUTO_GENERATE_CHAT_TITLE =
             booleanPreferencesKey(PreferencesDataStore.AUTO_GENERATE_CHAT_TITLE)
+
+        // Image Generation
+        val ENABLE_IMAGE_GENERATION =
+            booleanPreferencesKey(PreferencesDataStore.ENABLE_IMAGE_GENERATION)
     }
 
     /**
@@ -149,6 +153,13 @@ class PreferencesDataStoreImpl(
         }
     }
 
+    override suspend fun setEnableImageGeneration(newValue: Boolean) {
+        logger.logVerbose(TAG, "setEnableImageGeneration() newValue: $newValue")
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ENABLE_IMAGE_GENERATION] = newValue
+        }
+    }
+
     override suspend fun fetchInitialPreferences() =
         mapUserPreferences(dataStore.data.first().toPreferences())
 
@@ -174,6 +185,9 @@ class PreferencesDataStoreImpl(
         val shakeToClearSensitivity = preferences[PreferencesKeys.SHAKE_TO_CLEAR_SENSITIVITY] ?: 0f
         val autoGenerateChatTitle = preferences[PreferencesKeys.AUTO_GENERATE_CHAT_TITLE] ?: true
 
+        // Image Generation
+        val enableImageGeneration = preferences[PreferencesKeys.ENABLE_IMAGE_GENERATION] ?: true
+
         return UserPreferences(
             preferredTheme = preferredTheme,
             useDynamicColors = useDynamicColors,
@@ -183,7 +197,8 @@ class PreferencesDataStoreImpl(
             enableShakeToClear = enableShakeToClear,
             shakeToClearSensitivity = shakeToClearSensitivity,
             lastModerationIndexProcessed = lastModerationIndexProcessed,
-            autoGenerateChatTitle = autoGenerateChatTitle
+            autoGenerateChatTitle = autoGenerateChatTitle,
+            enableImageGeneration = enableImageGeneration
         )
     }
 

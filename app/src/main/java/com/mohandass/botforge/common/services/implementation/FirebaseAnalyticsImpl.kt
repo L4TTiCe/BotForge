@@ -80,6 +80,14 @@ class FirebaseAnalyticsImpl : Analytics {
         }
     }
 
+    override fun logIsImageGenerationEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            firebaseAnalytics.logEvent(Analytics.IMAGE_GENERATION_ENABLED) { }
+        } else {
+            firebaseAnalytics.logEvent(Analytics.IMAGE_GENERATION_DISABLED) { }
+        }
+    }
+
     override fun logIsAutoGenerateChatTitleEnabled(isEnabled: Boolean) {
         if (isEnabled) {
             firebaseAnalytics.logEvent(Analytics.AUTO_GENERATE_CHAT_TITLE_ENABLED) { }

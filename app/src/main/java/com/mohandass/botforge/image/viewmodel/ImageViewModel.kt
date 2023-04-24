@@ -106,11 +106,13 @@ class ImageViewModel @Inject constructor(
     val imageUri = mutableStateOf<Any>("")
 
     fun nextImage() {
+        if (showImage.value.not()) return
         currentImageIndex.value = (currentImageIndex.value + 1) % imageUriList.size
         imageUri.value = imageUriList[currentImageIndex.value]
     }
 
     fun previousImage() {
+        if (showImage.value.not()) return
         currentImageIndex.value = (currentImageIndex.value - 1) % imageUriList.size
         if (currentImageIndex.value < 0) currentImageIndex.value += imageUriList.size
         imageUri.value = imageUriList[currentImageIndex.value]

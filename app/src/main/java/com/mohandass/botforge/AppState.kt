@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.mohandass.botforge.chat.model.ChatType
 import com.mohandass.botforge.chat.viewmodel.TopBarViewModel
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.snackbar.SnackbarLauncherLocation
@@ -81,6 +82,9 @@ class AppState(
     // Loading State
     val isChatLoading = mutableStateOf(false)
     val isImageLoading = mutableStateOf(false)
+
+    // Chat Type
+    val chatType = mutableStateOf(ChatType.CREATE)
 
     companion object {
         private const val TAG = "AppState"

@@ -24,15 +24,15 @@ class DisabledAnalytics : Analytics {
         // Do nothing
     }
 
-    override fun logIsMinimalHeaderEnabled(boolean: Boolean) {
+    override fun logIsMinimalHeaderEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
-    override fun logIsDynamicColorEnabled(boolean: Boolean) {
+    override fun logIsDynamicColorEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
-    override fun logIsShakeToClearEnabled(boolean: Boolean) {
+    override fun logIsShakeToClearEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
@@ -40,15 +40,19 @@ class DisabledAnalytics : Analytics {
         // Do nothing
     }
 
-    override fun logIsAnalyticsEnabled(boolean: Boolean) {
+    override fun logIsAnalyticsEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
-    override fun logIsUgcEnabled(boolean: Boolean) {
+    override fun logIsUgcEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
-    override fun logIsAutoGenerateChatTitleEnabled(boolean: Boolean) {
+    override fun logIsImageGenerationEnabled(isEnabled: Boolean) {
+        // Do nothing
+    }
+
+    override fun logIsAutoGenerateChatTitleEnabled(isEnabled: Boolean) {
         // Do nothing
     }
 
