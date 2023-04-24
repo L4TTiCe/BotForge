@@ -3,6 +3,8 @@ package com.mohandass.botforge.image.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -99,24 +101,11 @@ class ImageViewModel @Inject constructor(
         }
     }
 
-    private val imageUriList = mutableStateListOf<Any>()
-    var currentImageIndex = mutableStateOf(0)
+    val imageUriList = mutableStateListOf<Any>()
     var maxImageCount = mutableStateOf(imageUriList.size)
 
-    val imageUri = mutableStateOf<Any>("")
-
-    fun nextImage() {
-        if (showImage.value.not()) return
-        currentImageIndex.value = (currentImageIndex.value + 1) % imageUriList.size
-        imageUri.value = imageUriList[currentImageIndex.value]
-    }
-
-    fun previousImage() {
-        if (showImage.value.not()) return
-        currentImageIndex.value = (currentImageIndex.value - 1) % imageUriList.size
-        if (currentImageIndex.value < 0) currentImageIndex.value += imageUriList.size
-        imageUri.value = imageUriList[currentImageIndex.value]
-    }
+    @OptIn(ExperimentalFoundationApi::class)
+    val pagerState = mutableStateOf(PagerState())
 
     private lateinit var job: Job
     private lateinit var timerJob: Job
@@ -211,8 +200,6 @@ class ImageViewModel @Inject constructor(
         imageSize.value = imageGenerationRequestWithImages.imageGenerationRequest.imageSize!!.toImageSize()
 
         maxImageCount.value = imageUriList.size
-        currentImageIndex.value = 0
-        imageUri.value = imageUriList[currentImageIndex.value]
         showImage.value = true
     }
 
@@ -244,11 +231,12 @@ class ImageViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     fun shareImage(context: Context) {
         logger.logVerbose(TAG, "shareImage()")
         FileUtils.exportBitmapAsPng(
             title = prompt.value,
-            bitmap = imageUri.value as Bitmap,
+            bitmap = imageUriList[pagerState.value.currentPage] as Bitmap,
             context = context
         )
     }
