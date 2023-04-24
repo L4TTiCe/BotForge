@@ -1,5 +1,7 @@
 package com.mohandass.botforge.image.viewmodel
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -12,6 +14,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.snackbar.SnackbarManager
@@ -237,6 +240,15 @@ class ImageViewModel @Inject constructor(
             imageGenerationService.deleteAllImageGenerationRequests()
             fetchHistory()
         }
+    }
+
+    fun shareImage(context: Context) {
+        logger.logVerbose(TAG, "shareImage()")
+        FileUtils.exportBitmapAsPng(
+            title = prompt.value,
+            bitmap = imageUri.value as Bitmap,
+            context = context
+        )
     }
 
     @OptIn(BetaOpenAI::class)

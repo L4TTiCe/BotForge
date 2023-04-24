@@ -7,6 +7,7 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,11 +24,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.swipeable
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -40,6 +45,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +53,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -66,6 +73,7 @@ import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.common.Utils.Companion.formatDuration
+import com.mohandass.botforge.common.services.snackbar.SwipeDirection
 import com.mohandass.botforge.image.model.toInternal
 import com.mohandass.botforge.image.ui.components.GeneratedImageHistoryItem
 import com.mohandass.botforge.image.ui.components.NumberPicker
@@ -75,7 +83,7 @@ import com.slaviboy.composeunits.adh
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, BetaOpenAI::class)
+@OptIn(ExperimentalMaterial3Api::class, BetaOpenAI::class, ExperimentalMaterialApi::class)
 @Composable
 fun ImageUi(
     imageViewModel: ImageViewModel = hiltViewModel(),
@@ -89,6 +97,35 @@ fun ImageUi(
     val showImage by imageViewModel.showImage
     val timeMillis by imageViewModel.timeMillis
 
+    var size by remember { mutableStateOf(Size.Zero) }
+    val swipeableState = rememberSwipeableState(SwipeDirection.Initial)
+    val width = remember(size) {
+        if (size.width == 0f) {
+            1f
+        } else {
+            size.width
+        }
+    }
+
+    if (swipeableState.isAnimationRunning) {
+        DisposableEffect(Unit) {
+            onDispose {
+                when (swipeableState.currentValue) {
+                    SwipeDirection.Right -> {
+                        imageViewModel.previousImage()
+                    }
+                    SwipeDirection.Left -> {
+                        imageViewModel.nextImage()
+                    }
+
+                    else -> {
+                        return@onDispose
+                    }
+                }
+            }
+        }
+    }
+
     val imageUri by imageViewModel.imageUri
     val currentImageIndex by imageViewModel.currentImageIndex
     val maxImageCount by imageViewModel.maxImageCount
@@ -97,6 +134,7 @@ fun ImageUi(
 
     val historyList = imageViewModel.history
 
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var showSizeList by remember {
@@ -193,7 +231,17 @@ fun ImageUi(
                 ) {
                     AsyncImage(
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .swipeable(
+                                state = swipeableState,
+                                anchors = mapOf(
+                                    -width to SwipeDirection.Left,
+                                    0f to SwipeDirection.Initial,
+                                    width to SwipeDirection.Right,
+                                ),
+                                thresholds = { _, _ -> FractionalThreshold(0.3f) },
+                                orientation = Orientation.Horizontal
+                            ),
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(imageUri)
                             .placeholder(R.drawable.picture)
@@ -205,7 +253,7 @@ fun ImageUi(
             }
 
             item {
-                if (maxImageCount > 1 && showImage) {
+                if (showImage) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -213,36 +261,53 @@ fun ImageUi(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
 
-                        IconButton(
-                            onClick = {
-                                imageViewModel.previousImage()
-                            },
-                            modifier = Modifier
-                                .padding(16.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = stringResource(id = R.string.previous_image_cd)
+                        if (maxImageCount > 1 ) {
+                            IconButton(
+                                onClick = {
+                                    imageViewModel.previousImage()
+                                },
+                                modifier = Modifier
+                                    .padding(16.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = stringResource(id = R.string.previous_image_cd)
+                                )
+                            }
+
+                            Text(
+                                text = "${currentImageIndex + 1}/$maxImageCount",
+                                modifier = Modifier
+                                    .padding(16.dp),
+                                style = MaterialTheme.typography.bodyMedium
                             )
+
+                            IconButton(
+                                onClick = {
+                                    imageViewModel.nextImage()
+                                },
+                                modifier = Modifier
+                                    .padding(16.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = stringResource(id = R.string.next_image_cd)
+                                )
+                            }
                         }
 
-                        Text(
-                            text = "${currentImageIndex + 1}/$maxImageCount",
-                            modifier = Modifier
-                                .padding(16.dp),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-
                         IconButton(
-                            onClick = {
-                                imageViewModel.nextImage()
-                            },
                             modifier = Modifier
                                 .padding(16.dp)
+                                .padding(bottom = 10.dp)
+                            ,
+                            onClick = {
+                                imageViewModel.shareImage(context)
+                            }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ArrowForward,
-                                contentDescription = stringResource(id = R.string.next_image_cd)
+                                painter = painterResource(id = R.drawable.baseline_share_24),
+                                contentDescription = stringResource(id = R.string.share),
                             )
                         }
                     }

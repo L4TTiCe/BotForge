@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.text.TextPaint
@@ -79,6 +80,28 @@ class FileUtils {
             }
 
             context.startActivity(chooser)
+        }
+
+        fun exportBitmapAsPng(
+            title: String = "Image",
+            bitmap: Bitmap,
+            context: Context
+        ) {
+            val cacheDir = context.cacheDir
+
+            val pngFile =
+                File(cacheDir, "${title}_${System.currentTimeMillis()}.png")
+            val pngUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                pngFile
+            )
+
+            val fileOutputStream = FileOutputStream(pngFile)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.close()
+
+            shareUri(context, pngUri, "image/png", title)
         }
 
         // Export a chat as a PDF file
