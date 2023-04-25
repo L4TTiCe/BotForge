@@ -10,7 +10,7 @@ import com.mohandass.botforge.chat.model.Role
 /**
  * A class to convert custom types to and from the Database
  */
-class CustomTypeConverters {
+class CustomTypeConvertersChat {
     @TypeConverter
     fun fromRole(role: Role): Int {
         return role.ordinal

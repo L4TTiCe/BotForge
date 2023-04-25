@@ -9,6 +9,11 @@ import com.mohandass.botforge.BuildConfig
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * A class that contains utility functions
@@ -92,6 +97,20 @@ class Utils {
             }
             val queryWithEscapedQuotes = query.replace(Regex.fromLiteral("\""), "\"\"")
             return "*$queryWithEscapedQuotes*"
+        }
+
+        fun formatDuration(time: Long): String {
+            val localDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(time),
+                ZoneId.systemDefault()
+            )
+
+            val formatter = DateTimeFormatter.ofPattern(
+                "s",
+                Locale.getDefault()
+            )
+
+            return localDateTime.format(formatter)
         }
 
         private const val TAG = "Utils"

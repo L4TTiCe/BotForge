@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.text.TextPaint
@@ -81,6 +82,28 @@ class FileUtils {
             context.startActivity(chooser)
         }
 
+        fun exportBitmapAsPng(
+            title: String = "Image",
+            bitmap: Bitmap,
+            context: Context
+        ) {
+            val cacheDir = context.cacheDir
+
+            val pngFile =
+                File(cacheDir, "${title}_${System.currentTimeMillis()}.png")
+            val pngUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                pngFile
+            )
+
+            val fileOutputStream = FileOutputStream(pngFile)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.close()
+
+            shareUri(context, pngUri, "image/png", title)
+        }
+
         // Export a chat as a PDF file
         // Constructs a PDF file using the PdfWriter class
         fun exportChatAsPdf(
@@ -92,6 +115,12 @@ class FileUtils {
 
             val textSize = 14f
             val headingSize = 18f
+
+            val margin = 72f
+            val padding = 20f
+
+            val pageWidth = 595
+            val pageHeight = 842
 
             val messagePaint = TextPaint()
             messagePaint.textSize = textSize
@@ -107,9 +136,9 @@ class FileUtils {
 
             val pdfWriter = PdfWriter(
                 pdfDocument = pdfDocument,
-                margin = 72f,
-                pageWidth = 595,
-                pageHeight = 842,
+                margin = margin,
+                pageWidth = pageWidth,
+                pageHeight = pageHeight,
             )
 
             if (chatInfo.chatInfo != null) {
@@ -127,7 +156,7 @@ class FileUtils {
 
             pdfWriter.write("Message Log", headingPaint)
 
-            pdfWriter.addPadding(16f)
+            pdfWriter.addPadding(padding)
 
             for (message in chatInfo.messages) {
                 rolePaint.color = when (message.role) {
@@ -144,9 +173,10 @@ class FileUtils {
                 val messageParts = message.text.split("\n\n")
                 for (part in messageParts) {
                     pdfWriter.writeMarkdown(part, messagePaint, context)
+                    pdfWriter.addPadding(padding / 2)
                 }
 
-                pdfWriter.addPadding(20f)
+                pdfWriter.addPadding(padding)
             }
 
             pdfWriter.finish()

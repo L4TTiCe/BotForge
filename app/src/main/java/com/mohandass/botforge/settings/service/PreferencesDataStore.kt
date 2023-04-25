@@ -32,6 +32,9 @@ interface PreferencesDataStore {
     suspend fun setLastModerationIndexProcessed(newValue: Int)
     suspend fun setAutoGenerateChatTitle(newValue: Boolean)
 
+    //Image Generation
+    suspend fun setEnableImageGeneration(newValue: Boolean)
+
     companion object {
         const val PREFERENCES_NAME = "botforge_preferences"
         const val PREFERRED_THEME_KEY = "theme"
@@ -43,5 +46,6 @@ interface PreferencesDataStore {
         const val SHAKE_TO_CLEAR_SENSITIVITY = "shake_to_clear_sensitivity"
         const val LAST_MODERATION_INDEX_PROCESSED = "last_moderation_index_processed"
         const val AUTO_GENERATE_CHAT_TITLE = "auto_generate_chat_title"
+        const val ENABLE_IMAGE_GENERATION = "enable_image_generation"
     }
 }

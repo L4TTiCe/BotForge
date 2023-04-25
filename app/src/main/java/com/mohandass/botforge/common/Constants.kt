@@ -12,6 +12,8 @@ class Constants {
         const val ICONS_SIZE = 90
         const val FOLDABLE_THRESHOLD = 600
 
+        const val MAX_IMAGE_GENERATION_COUNT = 5
+
         const val MAX_SENSITIVITY_THRESHOLD = 5f
     }
 }

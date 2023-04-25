@@ -25,6 +25,7 @@ This project has the following packages:
 - `auth`: Contains the authentication related code.
 - `chat`: Contains the chat related code. (Main)
 - `common`: Contains the common code used by the application.
+- `image`: Contains Image Generation related code
 - `onboarding`: OnBoarding Screens shown on first launch.
 - `settings`: Contains the settings related code.
 - `sync`: Handles syncing, and sharing Bots.
@@ -47,6 +48,10 @@ The following list shows the navigation graph of the application.
         - `PersonaUi` (from `chat` package) [Contains NavHost]
             - `ChatUi` (from `chat` package)
             - `HistoryUi` (from `chat` package)
+            - `PersonaListUi` (from `chat` package)
+            - `ImageUi` (from `image` package)
+            - `BrowseBotsUi` (from `sync` package)
+            - `SharePersonaUi` (from `sync` package)
     - ~~`SignUpUi` (from `auth` package)~~ (Not Used)
     - ~~`SignInUi` (from `auth` package)~~ (Not Used)
     - `OnBoardingUi` (from `onboarding` package) [Contains VerticalPager]

@@ -97,6 +97,9 @@ fun SettingsUi(
     val isAutoChatNameEnabled = remember {
         mutableStateOf(true)
     }
+    val isImageGenerationEnabled = remember {
+        mutableStateOf(true)
+    }
     var shakeSensitivity by remember { mutableStateOf(0f) }
 
     var statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp)
@@ -115,6 +118,7 @@ fun SettingsUi(
         isShakeToClearEnabled.value = it.enableShakeToClear
         shakeSensitivity = it.shakeToClearSensitivity
         isAutoChatNameEnabled.value = it.autoGenerateChatTitle
+        isImageGenerationEnabled.value = it.enableImageGeneration
     }
 
     DisposableEffect(
@@ -183,6 +187,17 @@ fun SettingsUi(
                 onClick = ({
                     appViewModel.appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                 })
+            )
+        }
+        item{
+            SettingsItem(
+                title = "Enable Image Generation",
+                description = "Allows generating Images using the API",
+                icon = painterResource(id = R.drawable.picture),
+                switchState = isImageGenerationEnabled,
+                onCheckChange = {
+                    settingsViewModel.updateImageGenerationEnabled(it)
+                }
             )
         }
         item {

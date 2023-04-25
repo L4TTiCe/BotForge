@@ -9,6 +9,7 @@ package com.mohandass.botforge.chat.model
  */
 enum class ChatType {
     CREATE,
+    IMAGE,
     LIST,
     SHARE,
     BROWSE,

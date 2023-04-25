@@ -16,7 +16,8 @@ data class UserPreferences(
     val enableShakeToClear: Boolean,
     val shakeToClearSensitivity: Float = 0f,
     val lastModerationIndexProcessed: Int,
-    val autoGenerateChatTitle: Boolean
+    val autoGenerateChatTitle: Boolean,
+    val enableImageGeneration: Boolean,
 ) {
     override fun toString(): String {
         return "UserPreferences(" +
@@ -29,6 +30,7 @@ data class UserPreferences(
                 "shakeToClearSensitivity=$shakeToClearSensitivity" +
                 "lastModerationIndex=$lastModerationIndexProcessed" +
                 "autoGenerateChatTitle=$autoGenerateChatTitle" +
+                "enableImageGeneration=$enableImageGeneration" +
                 ")"
     }
 }

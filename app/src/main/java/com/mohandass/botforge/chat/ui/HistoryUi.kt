@@ -31,7 +31,6 @@ import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.chat.viewmodel.HistoryViewModel
 import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
 
-
 @Composable
 fun HistoryUi(
     appViewModel: AppViewModel = hiltViewModel(),
