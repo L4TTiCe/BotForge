@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -53,11 +54,15 @@ fun NumberPicker(
                 .weight(1f)
                 .offset((-1 * 1).dp, 0.dp),
             onClick = {},
+            enabled = false,
             shape = RoundedCornerShape(
                 topStart = 0.dp,
                 topEnd = 0.dp,
                 bottomStart = 0.dp,
                 bottomEnd = 0.dp
+            ),
+            colors = ButtonDefaults.outlinedButtonColors(
+                disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {
             Text(text = n.toString())
