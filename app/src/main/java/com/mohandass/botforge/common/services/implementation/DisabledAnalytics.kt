@@ -68,11 +68,19 @@ class DisabledAnalytics : Analytics {
         // Do nothing
     }
 
+    override fun logImageGenerated() {
+        // Do nothing
+    }
+
     override fun logJsonExported() {
         // Do nothing
     }
 
     override fun logPdfExported() {
+        // Do nothing
+    }
+
+    override fun logImageExported() {
         // Do nothing
     }
 }

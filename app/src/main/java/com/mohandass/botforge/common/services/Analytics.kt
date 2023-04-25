@@ -26,8 +26,11 @@ interface Analytics {
     fun logBotSharedWithCommunity()
     fun logCommunityBotDownloaded()
 
+    fun logImageGenerated()
+
     fun logJsonExported()
     fun logPdfExported()
+    fun logImageExported()
 
     companion object {
         const val LINKED_WITH_GOOGLE = "linked_with_google"
@@ -56,7 +59,10 @@ interface Analytics {
         const val BOT_SHARED_WITH_COMMUNITY = "bot_shared_with_community"
         const val COMMUNITY_BOT_DOWNLOADED = "community_bot_downloaded"
 
+        const val IMAGE_GENERATED = "image_generated"
+
         const val JSON_EXPORTED = "json_exported"
         const val PDF_EXPORTED = "pdf_exported"
+        const val IMAGE_EXPORTED = "image_exported"
     }
 }

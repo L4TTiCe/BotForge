@@ -16,6 +16,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppState
 import com.mohandass.botforge.R
 import com.mohandass.botforge.common.Utils
+import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.FileUtils
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.common.services.OpenAiService
@@ -43,6 +44,7 @@ class ImageViewModel @Inject constructor(
     private val imageGenerationService: ImageGenerationService,
     private val appState: AppState,
     private val logger: Logger,
+    private val analytics: Analytics,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): ViewModel() {
     val prompt = mutableStateOf("")
@@ -239,6 +241,8 @@ class ImageViewModel @Inject constructor(
             bitmap = imageUriList[pagerState.value.currentPage] as Bitmap,
             context = context
         )
+
+        analytics.logImageExported()
     }
 
     @OptIn(BetaOpenAI::class)
@@ -264,6 +268,7 @@ class ImageViewModel @Inject constructor(
 
                 saveGeneratedImages() {
                     setLoading(false)
+                    analytics.logImageGenerated()
                 }
 
             } catch (e: Exception) {

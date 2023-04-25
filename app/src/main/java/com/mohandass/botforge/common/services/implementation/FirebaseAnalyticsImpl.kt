@@ -110,12 +110,20 @@ class FirebaseAnalyticsImpl : Analytics {
         firebaseAnalytics.logEvent(Analytics.COMMUNITY_BOT_DOWNLOADED) { }
     }
 
+    override fun logImageGenerated() {
+        firebaseAnalytics.logEvent(Analytics.IMAGE_GENERATED) { }
+    }
+
     override fun logJsonExported() {
         firebaseAnalytics.logEvent(Analytics.JSON_EXPORTED) { }
     }
 
     override fun logPdfExported() {
         firebaseAnalytics.logEvent(Analytics.PDF_EXPORTED) { }
+    }
+
+    override fun logImageExported() {
+        firebaseAnalytics.logEvent(Analytics.IMAGE_EXPORTED) { }
     }
 
     companion object {
