@@ -32,7 +32,7 @@ import java.util.*
         )],
     indices = [Index("chatUuid"), Index("metadataOpenAiId")]
 )
-@TypeConverters(CustomTypeConverters::class)
+@TypeConverters(CustomTypeConvertersChat::class)
 data class MessageE(
     @PrimaryKey val uuid: String = UUID.randomUUID().toString(),
     val text: String = "",

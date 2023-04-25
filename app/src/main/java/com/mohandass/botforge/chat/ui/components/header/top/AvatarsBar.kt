@@ -54,10 +54,14 @@ fun AvatarsBar(
     var isUserGeneratedContentEnabled by remember {
         mutableStateOf(false)
     }
+    var isImageGenerationEnabled by remember {
+        mutableStateOf(true)
+    }
 
     val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
         isUserGeneratedContentEnabled = it.enableUserGeneratedContent
+        isImageGenerationEnabled = it.enableImageGeneration
     }
 
     LazyRow(modifier = modifier) {
@@ -79,6 +83,29 @@ fun AvatarsBar(
 
                 if (chatType == ChatType.CREATE) {
                     ActiveIndicator()
+                }
+            }
+        }
+
+        if (isImageGenerationEnabled) {
+            item {
+                Column {
+                    TintedIconButton(
+                        icon = R.drawable.picture,
+                        iconTint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .size(Constants.ICONS_SIZE.dp)
+                            .padding(6.dp),
+                        isAnimated = chatType == ChatType.IMAGE,
+                        contentDescription = null,
+                        onClick = {
+                            personaViewModel.showImage()
+                        }
+                    )
+
+                    if (chatType == ChatType.IMAGE) {
+                        ActiveIndicator()
+                    }
                 }
             }
         }
@@ -151,7 +178,7 @@ fun AvatarsBar(
 
         }
 
-        if (personas.size == 0) {
+        if (personas.isEmpty()) {
             item {
                 var tint = MaterialTheme.colorScheme.onSurfaceVariant
                 tint = tint.copy(alpha = 1f)

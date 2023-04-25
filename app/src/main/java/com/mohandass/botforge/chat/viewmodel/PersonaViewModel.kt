@@ -4,7 +4,6 @@
 
 package com.mohandass.botforge.chat.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -80,13 +79,23 @@ class PersonaViewModel @Inject constructor(
         _expandCustomizePersona.value = state
     }
 
-    private val _chatType = mutableStateOf(ChatType.CREATE)
-    val chatType: MutableState<ChatType>
-        get() = _chatType
+    private val _chatType = appState.chatType
+    val chatType: State<ChatType> = _chatType
 
     fun setChatType(chatType: ChatType) {
         _chatType.value = chatType
         FirebaseCrashlytics.getInstance().setCustomKey("chatType", chatType.toString())
+    }
+
+    // Move to the Image screen
+    fun showImage() {
+        logger.logVerbose(TAG, "showImage()")
+        // saveState()
+        clearSelection()
+        setChatType(ChatType.IMAGE)
+        if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Image.route) {
+            appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Image.route)
+        }
     }
 
     // Move to List Screen
@@ -161,7 +170,7 @@ class PersonaViewModel @Inject constructor(
             activePersonaRepository.updateActivePersonaSystemMessage(persona.systemMessage)
             activePersonaRepository.updateActivePersonaParentUuid(persona.parentUuid)
 
-            chatType.value = ChatType.CHAT
+            setChatType(ChatType.CHAT)
             updateExpandCustomizePersona(false)
 
             if (appState.navControllerPersona.currentDestination?.route != AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
@@ -253,7 +262,7 @@ class PersonaViewModel @Inject constructor(
             )
             if (isSuccess) {
                 activePersonaRepository.updateActivePersonaUuid(uuid)
-                chatType.value = ChatType.CHAT
+                setChatType(ChatType.CHAT)
             }
             return
         }

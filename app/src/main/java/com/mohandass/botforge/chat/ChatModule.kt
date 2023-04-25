@@ -10,12 +10,9 @@ import com.mohandass.botforge.chat.model.dao.PersonaDao
 import com.mohandass.botforge.chat.repositories.ActiveMessagesRepository
 import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
 import com.mohandass.botforge.chat.repositories.PersonaRepository
-import com.mohandass.botforge.chat.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
-import com.mohandass.botforge.chat.services.implementation.OpenAiServiceImpl
 import com.mohandass.botforge.common.services.LocalDatabase
 import com.mohandass.botforge.common.services.Logger
-import com.mohandass.botforge.settings.service.SharedPreferencesService
 import com.mohandass.botforge.sync.service.BotService
 import dagger.Module
 import dagger.Provides
@@ -41,13 +38,6 @@ class ChatModule {
         personaDao: PersonaDao,
         logger: Logger,
     ) = PersonaRepository(personaDao, logger)
-
-    @Provides
-    @Singleton
-    fun provideOpenAiService(
-        sharedPreferencesService: SharedPreferencesService,
-        logger: Logger,
-    ): OpenAiService = OpenAiServiceImpl.getInstance(sharedPreferencesService, logger)
 
     @Provides
     @Singleton

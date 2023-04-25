@@ -35,13 +35,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.viewmodel.ChatViewModel
+import com.mohandass.botforge.common.Utils.Companion.formatDuration
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 @Composable
 fun MessageList(
@@ -115,7 +111,7 @@ fun MessageList(
                     Spacer(modifier = modifier.weight(1f))
 
                     Text(
-                        text = formatTime(timerMillis),
+                        text = formatDuration(timerMillis),
                         modifier = Modifier,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.tertiary,
@@ -145,18 +141,4 @@ fun MessageList(
             }
         }
     }
-}
-
-private fun formatTime(time: Long): String {
-    val localDateTime = LocalDateTime.ofInstant(
-        Instant.ofEpochMilli(time),
-        ZoneId.systemDefault()
-    )
-
-    val formatter = DateTimeFormatter.ofPattern(
-        "s",
-        Locale.getDefault()
-    )
-
-    return localDateTime.format(formatter)
 }

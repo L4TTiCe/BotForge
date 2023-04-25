@@ -30,7 +30,6 @@ class PdfWriter(
     val pageWidth: Int,
     val pageHeight: Int,
 ) {
-    private val TAG = "PdfConfig"
     private var pageNumber: Int = 1
     private var pageInfo: PdfDocument.PageInfo =
         PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
@@ -181,5 +180,9 @@ class PdfWriter(
     fun finish(): PdfDocument {
         pdfDocument.finishPage(currentPage)
         return pdfDocument
+    }
+
+    companion object {
+        const val TAG = "PdfConfig"
     }
 }

@@ -12,10 +12,13 @@ import androidx.room.TypeConverters
 import com.mohandass.botforge.chat.model.dao.ChatDao
 import com.mohandass.botforge.chat.model.dao.PersonaDao
 import com.mohandass.botforge.chat.model.dao.entities.ChatE
-import com.mohandass.botforge.chat.model.dao.entities.CustomTypeConverters
+import com.mohandass.botforge.chat.model.dao.entities.CustomTypeConvertersChat
 import com.mohandass.botforge.chat.model.dao.entities.MessageE
 import com.mohandass.botforge.chat.model.dao.entities.MessageMetadataE
 import com.mohandass.botforge.chat.model.dao.entities.Persona
+import com.mohandass.botforge.image.model.dao.ImageGenerationDao
+import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
+import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 import com.mohandass.botforge.sync.model.dao.BotDao
 import com.mohandass.botforge.sync.model.dao.entities.BotE
 import com.mohandass.botforge.sync.model.dao.entities.BotFts
@@ -37,18 +40,24 @@ import com.mohandass.botforge.sync.model.dao.entities.CustomSyncTypeConverters
         // Bots
         BotE::class,
         BotFts::class,
+
+        // Generated Images
+        GeneratedImageE::class,
+        ImageGenerationRequestE::class,
     ],
-    version = 2,
+    version = 3,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3),
     ],
     exportSchema = true
 )
-@TypeConverters(CustomTypeConverters::class, CustomSyncTypeConverters::class)
+@TypeConverters(CustomTypeConvertersChat::class, CustomSyncTypeConverters::class)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun personaService(): PersonaDao
     abstract fun chatDao(): ChatDao
     abstract fun botDao(): BotDao
+    abstract fun imageDao(): ImageGenerationDao
 
     companion object {
         private const val DB_NAME = "botforge_db"

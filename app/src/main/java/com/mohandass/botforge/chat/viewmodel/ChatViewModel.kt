@@ -21,7 +21,7 @@ import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.Role
 import com.mohandass.botforge.chat.repositories.ActiveMessagesRepository
 import com.mohandass.botforge.chat.repositories.ActivePersonaRepository
-import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.chat.services.implementation.ChatServiceImpl
 import com.mohandass.botforge.common.Utils
 import com.mohandass.botforge.common.services.Analytics
@@ -68,8 +68,6 @@ class ChatViewModel @Inject constructor(
         _openSaveChatDialog.value = state
     }
 
-    private val _requestInProgress = mutableStateOf(false)
-
     private val _isMessageInFocus = mutableStateOf(false)
     val isMessageInFocus: MutableState<Boolean> = _isMessageInFocus
 
@@ -77,9 +75,6 @@ class ChatViewModel @Inject constructor(
 
     // Interrupts the current request, if any, to the OpenAI API
     private fun interruptRequest() {
-        if (_requestInProgress.value) {
-            _requestInProgress.value = false
-        }
         if (this::job.isInitialized) {
             job.cancel()
         }
@@ -96,7 +91,7 @@ class ChatViewModel @Inject constructor(
     // Shows the time elapsed since starting the request
     private lateinit var timerJob: Job
 
-    private val _isLoading = mutableStateOf(false)
+    private val _isLoading = appState.isChatLoading
     val isLoading: State<Boolean>
         get() = _isLoading
 
@@ -178,8 +173,6 @@ class ChatViewModel @Inject constructor(
                                 })
                         }
                     }
-
-
                 }
             }
             onComplete()

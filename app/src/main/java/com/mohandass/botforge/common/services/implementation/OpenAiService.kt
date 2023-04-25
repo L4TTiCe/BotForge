@@ -2,17 +2,20 @@
 //
 // SPDX-License-Identifier: MIT
 
-package com.mohandass.botforge.chat.services.implementation
+package com.mohandass.botforge.common.services.implementation
 
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
+import com.aallam.openai.api.image.ImageCreation
+import com.aallam.openai.api.image.ImageSize
+import com.aallam.openai.api.image.ImageURL
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.chat.services.OpenAiService
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.Logger
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
@@ -77,6 +80,31 @@ class OpenAiServiceImpl private constructor(
             )
         } catch (e: Exception) {
             logger.logError(TAG, "getChatCompletion() ${e.printStackTrace()}", e)
+            throw e
+        }
+    }
+
+    @OptIn(BetaOpenAI::class)
+    override suspend fun generateImage(
+        prompt: String,
+        n: Int,
+        imageSize: ImageSize,
+    ): List<ImageURL> {
+        logger.logVerbose(TAG, "generateImage() $prompt")
+        try {
+            logger.logVerbose(TAG, "generateImage() start request")
+            val images = getClient().imageURL( // or openAI.imageJSON
+                creation = ImageCreation(
+                    prompt = prompt,
+                    n = n,
+                    size = imageSize
+                )
+            )
+
+            logger.logVerbose(TAG, "generateImage() $images")
+            return images
+        } catch (e: Exception) {
+            logger.logError(TAG, "generateImage() ${e.printStackTrace()}", e)
             throw e
         }
     }

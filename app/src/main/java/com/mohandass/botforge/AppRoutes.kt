@@ -41,6 +41,7 @@ sealed class AppRoutes(val route: String) {
     sealed class MainRoutes(route: String) : AppRoutes(route) {
         sealed class PersonaRoutes(route: String) : MainRoutes(route) {
             object Chat : PersonaRoutes("chat_persona")
+            object Image : PersonaRoutes("image_persona")
             object History : PersonaRoutes("history_persona")
             object Marketplace : PersonaRoutes("share_persona")
             object Share : PersonaRoutes("create_persona")

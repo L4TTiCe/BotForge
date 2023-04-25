@@ -43,6 +43,14 @@ class SettingsViewModel @Inject constructor(
         SnackbarManager.showMessage(R.string.api_key_saved)
     }
 
+    fun updateImageGenerationEnabled(value: Boolean) {
+        logger.log(TAG, "updateImageGenerationEnabled() value: $value")
+        viewModelScope.launch {
+            preferencesDataStore.setEnableImageGeneration(value)
+            analytics.logIsImageGenerationEnabled(value)
+        }
+    }
+
     fun getCurrentUser() = accountService.currentUser
 
     fun getDisplayName() = accountService.displayName

@@ -10,14 +10,17 @@ import com.google.firebase.ktx.Firebase
 import com.mohandass.botforge.common.services.Analytics
 import com.mohandass.botforge.common.services.LocalDatabase
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.implementation.AndroidLogger
 import com.mohandass.botforge.common.services.implementation.DisabledAnalytics
 import com.mohandass.botforge.common.services.implementation.FirebaseAnalyticsImpl
+import com.mohandass.botforge.common.services.implementation.OpenAiServiceImpl
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 /**
@@ -43,6 +46,13 @@ class CommonModule {
 
     @Provides
     @Singleton
+    fun provideOpenAiService(
+        sharedPreferencesService: SharedPreferencesService,
+        logger: Logger,
+    ): OpenAiService = OpenAiServiceImpl.getInstance(sharedPreferencesService, logger)
+
+    @Provides
+    @Singleton
     fun provideAnalyticsService(
         logger: Logger,
         preferences: SharedPreferencesService
@@ -56,6 +66,9 @@ class CommonModule {
         logger.log(TAG, "Analytics Enabled")
         return FirebaseAnalyticsImpl()
     }
+
+    @Provides
+    fun provideIoDispatcher() = Dispatchers.IO
 
     companion object {
         const val TAG = "AppModule"
