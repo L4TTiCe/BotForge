@@ -68,6 +68,7 @@ import com.mohandass.botforge.AppRoutes
 import com.mohandass.botforge.AppViewModel
 import com.mohandass.botforge.R
 import com.mohandass.botforge.chat.model.ChatType
+import com.mohandass.botforge.chat.ui.components.ImageWithMessage
 import com.mohandass.botforge.chat.ui.components.chat.SendFloatingActionButton
 import com.mohandass.botforge.chat.ui.components.header.HeaderWithActionIcon
 import com.mohandass.botforge.chat.viewmodel.PersonaViewModel
@@ -428,6 +429,15 @@ fun ImageUi(
                     trailingIconOnClick = {
                         imageViewModel.updateDeleteDialogState(true)
                     }
+                )
+            }
+
+            item {
+                ImageWithMessage(
+                    visible = historyList.isEmpty(),
+                    painter = painterResource(id = R.drawable.empty_box),
+                    imageContentDescription = null,
+                    message = stringResource(id = R.string.no_images_yet),
                 )
             }
 

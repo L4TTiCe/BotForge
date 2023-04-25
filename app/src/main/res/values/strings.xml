@@ -336,6 +336,9 @@
     <string name="image_group_deleted">Images deleted!</string>
     <string name="delete_all_images">Delete all generated images?</string>
     <string name="delete_all_images_message">This will delete all generated images stored locally</string>
+    <string name="no_images_yet">No images yet.</string>
+    <string name="image_deleted">Image deleted!</string>
+
 
     <string name="account_linked">Account linked!</string>
 </resources>
