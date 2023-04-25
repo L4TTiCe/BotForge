@@ -9,6 +9,11 @@ import androidx.room.Relation
 import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
 import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 
+/**
+ * A data class to represent a ImageGenerationRequest with its GeneratedImages
+ *
+ * This relation is used to get a reference to the ImageGenerationRequest and its GeneratedImages
+ */
 data class ImageGenerationRequestWithImages(
     @Embedded val imageGenerationRequest: ImageGenerationRequestE,
 

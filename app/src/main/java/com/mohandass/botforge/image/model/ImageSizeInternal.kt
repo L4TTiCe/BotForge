@@ -7,6 +7,9 @@ package com.mohandass.botforge.image.model
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageSize
 
+/**
+ * A wrapper class around com.aallam.openai.api.image.ImageSize
+ */
 @OptIn(BetaOpenAI::class)
 class ImageSizeInternal(size: ImageSize) {
     fun toImageSize(): ImageSize {

@@ -11,6 +11,11 @@ import com.mohandass.botforge.image.model.ImageSizeInternal
 import java.sql.Timestamp
 import java.util.UUID
 
+/**
+ * A data class to represent a ImageGenerationRequest
+ *
+ * This entity is used to store the ImageGenerationRequest
+ */
 @Entity(tableName = "imageGenerationRequests")
 @TypeConverters(CustomTypeConvertersImage::class)
 data class ImageGenerationRequestE(

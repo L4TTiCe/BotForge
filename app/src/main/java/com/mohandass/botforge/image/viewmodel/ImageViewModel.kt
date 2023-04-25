@@ -42,6 +42,9 @@ import java.net.URL
 import java.util.Date
 import javax.inject.Inject
 
+/**
+ * A ViewModel for the Image screen
+ */
 @HiltViewModel
 class ImageViewModel @Inject constructor(
     private val openAiService: OpenAiService,

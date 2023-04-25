@@ -12,6 +12,12 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import java.util.UUID
 
+/**
+ * A data class to represent a GeneratedImage
+ *
+ * This entity is used to store the GeneratedImage.
+ * Contains a foreign key to the ImageGenerationRequest
+ */
 @Entity(
     tableName = "generatedImages",
     foreignKeys = [

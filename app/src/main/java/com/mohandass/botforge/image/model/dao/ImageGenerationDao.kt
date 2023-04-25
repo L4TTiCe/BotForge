@@ -13,6 +13,11 @@ import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
 import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 import com.mohandass.botforge.image.model.dao.entities.relations.ImageGenerationRequestWithImages
 
+/**
+ * A DAO to represent a ImageGenerationRequest
+ *
+ * This DAO is used to perform CRUD operations on the ImageGenerationRequest and its GeneratedImages
+ */
 @Dao
 interface ImageGenerationDao {
 

@@ -10,6 +10,13 @@ import androidx.room.TypeConverter
 import com.mohandass.botforge.image.model.ImageSizeInternal
 import java.io.ByteArrayOutputStream
 
+/**
+ * A class to convert custom types to and from their database representations
+ *
+ * This class contains Image related TypeConverters:
+ *   - ImageSize to String
+ *   - Bitmap to ByteArray
+ */
 class CustomTypeConvertersImage {
     @TypeConverter
     fun fromImageSize(imageSize: ImageSizeInternal): String {

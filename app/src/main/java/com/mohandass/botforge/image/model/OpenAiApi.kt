@@ -7,6 +7,7 @@ package com.mohandass.botforge.image.model
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageSize
 
+// Converts ImageSize to ImageSizeInternal
 @OptIn(BetaOpenAI::class)
 fun ImageSize.toInternal(): ImageSizeInternal {
     return when (this) {

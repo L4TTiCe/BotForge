@@ -10,6 +10,11 @@ import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
 import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 import com.mohandass.botforge.image.model.dao.entities.relations.ImageGenerationRequestWithImages
 
+/**
+ * A service to handle ImageGenerationRequest and GeneratedImage entities
+ *
+ * This service is used to handle the ImageGenerationRequest and GeneratedImage entities
+ */
 class ImageGenerationService(
     private val imageGenerationDao: ImageGenerationDao,
     private val logger: Logger
