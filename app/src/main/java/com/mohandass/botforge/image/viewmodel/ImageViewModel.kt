@@ -46,8 +46,9 @@ class ImageViewModel @Inject constructor(
     private val logger: Logger,
     private val analytics: Analytics,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-): ViewModel() {
+) : ViewModel() {
     val prompt = mutableStateOf("")
+
     @OptIn(BetaOpenAI::class)
     val imageSize = mutableStateOf(ImageSize.is256x256)
     val n = mutableStateOf(1)
@@ -173,7 +174,7 @@ class ImageViewModel @Inject constructor(
                 request = imageGenerationRequestE,
                 images = generatedImages
             ) {
-                fetchHistory() {
+                fetchHistory {
                     selectGeneratedImageGroup(imageGenerationRequestE.uuid)
                     onSuccess()
                 }
@@ -199,7 +200,8 @@ class ImageViewModel @Inject constructor(
         logger.logVerbose(TAG, "selectGeneratedImageGroup() imageUriList: $imageUriList")
 
         prompt.value = imageGenerationRequestWithImages.imageGenerationRequest.prompt
-        imageSize.value = imageGenerationRequestWithImages.imageGenerationRequest.imageSize!!.toImageSize()
+        imageSize.value =
+            imageGenerationRequestWithImages.imageGenerationRequest.imageSize!!.toImageSize()
 
         maxImageCount.value = imageUriList.size
         showImage.value = true
@@ -266,7 +268,7 @@ class ImageViewModel @Inject constructor(
                 imageUriList.clear()
                 imageUriList.addAll(images.map { it.url })
 
-                saveGeneratedImages() {
+                saveGeneratedImages {
                     setLoading(false)
                     analytics.logImageGenerated()
                 }

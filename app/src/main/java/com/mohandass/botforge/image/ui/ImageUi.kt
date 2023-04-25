@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -83,8 +82,8 @@ import com.slaviboy.composeunits.adh
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, BetaOpenAI::class, ExperimentalMaterialApi::class,
-    ExperimentalFoundationApi::class
+@OptIn(
+    ExperimentalMaterial3Api::class, BetaOpenAI::class, ExperimentalFoundationApi::class
 )
 @Composable
 fun ImageUi(
@@ -120,7 +119,7 @@ fun ImageUi(
 
     val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
-        if(it.enableImageGeneration.not()) {
+        if (it.enableImageGeneration.not()) {
             personaViewModel.clearSelection()
             personaViewModel.setChatType(ChatType.CREATE)
             appViewModel.appState.navControllerPersona.navigate(AppRoutes.MainRoutes.PersonaRoutes.Chat.route) {
@@ -245,7 +244,7 @@ fun ImageUi(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
 
-                        if (maxImageCount > 1 ) {
+                        if (maxImageCount > 1) {
                             IconButton(
                                 onClick = {
                                     coroutineScope.launch {
@@ -359,8 +358,8 @@ fun ImageUi(
                             OutlinedButton(
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = { showSizeList = !showSizeList }
-                            ){
-                                Text (imageSize.toInternal().toString())
+                            ) {
+                                Text(imageSize.toInternal().toString())
                                 Spacer(modifier = Modifier.weight(1f))
                                 Icon(
                                     imageVector = Icons.Filled.ArrowDropDown,
@@ -377,7 +376,7 @@ fun ImageUi(
                                             showSizeList = false
                                             imageSize = item.toImageSize()
                                         },
-                                        text = { Text (item.toString()) }
+                                        text = { Text(item.toString()) }
                                     )
                                 }
                             }

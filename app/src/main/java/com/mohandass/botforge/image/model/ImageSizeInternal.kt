@@ -4,7 +4,7 @@ import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageSize
 
 @OptIn(BetaOpenAI::class)
-class ImageSizeInternal (size: ImageSize) {
+class ImageSizeInternal(size: ImageSize) {
     fun toImageSize(): ImageSize {
         return when (this) {
             is256x256 -> ImageSize.is256x256
@@ -33,7 +33,7 @@ class ImageSizeInternal (size: ImageSize) {
         val is1024x1024 = ImageSizeInternal(ImageSize.is1024x1024)
 
         @OptIn(BetaOpenAI::class)
-        fun from(size: ImageSize): ImageSizeInternal{
+        fun from(size: ImageSize): ImageSizeInternal {
             return when (size) {
                 ImageSize.is256x256 -> is256x256
                 ImageSize.is512x512 -> is512x512

@@ -6,7 +6,7 @@ import androidx.room.TypeConverter
 import com.mohandass.botforge.image.model.ImageSizeInternal
 import java.io.ByteArrayOutputStream
 
-class CustomTypeConvertersImage{
+class CustomTypeConvertersImage {
     @TypeConverter
     fun fromImageSize(imageSize: ImageSizeInternal): String {
         return when (imageSize) {

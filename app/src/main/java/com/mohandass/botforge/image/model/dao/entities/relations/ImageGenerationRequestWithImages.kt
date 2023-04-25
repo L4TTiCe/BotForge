@@ -5,7 +5,7 @@ import androidx.room.Relation
 import com.mohandass.botforge.image.model.dao.entities.GeneratedImageE
 import com.mohandass.botforge.image.model.dao.entities.ImageGenerationRequestE
 
-data class ImageGenerationRequestWithImages (
+data class ImageGenerationRequestWithImages(
     @Embedded val imageGenerationRequest: ImageGenerationRequestE,
 
     @Relation(
