@@ -19,8 +19,14 @@ interface SharedPreferencesService {
 
     // Usage
     fun getUsageTokens(): Long
+    fun getUsageImageSmallCount(): Long
+    fun getUsageImageMediumCount(): Long
+    fun getUsageImageLargeCount(): Long
     fun incrementUsageTokens(tokens: Int)
-    fun resetUsageTokens()
+    fun incrementUsageImageSmallCount(count: Int)
+    fun incrementUsageImageMediumCount(count: Int)
+    fun incrementUsageImageLargeCount(count: Int)
+    fun resetUsage()
 
     // Analytics
     fun getAnalyticsOptOut(): Boolean
@@ -30,6 +36,9 @@ interface SharedPreferencesService {
         const val USER_PREFERENCES_NAME = "user_preferences"
         const val API_KEY = "open_ai_api_key"
         const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
+        const val API_USAGE_IMAGE_SMALL_COUNT = "open_ai_api_usage_image_small_count"
+        const val API_USAGE_IMAGE_MEDIUM_COUNT = "open_ai_api_usage_image_medium_count"
+        const val API_USAGE_IMAGE_LARGE_COUNT = "open_ai_api_usage_image_large_count"
         const val ON_BOARDING_COMPLETED = "on_boarding_completed"
         const val ANALYTICS_OPT_OUT = "analytics_opt_out"
     }

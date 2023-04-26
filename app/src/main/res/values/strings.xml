@@ -105,10 +105,16 @@
     <string name="open_ai_pricing">OpenAI Pricing</string>
     <string name="open_ai_pricing_message">"Learn more about OpenAI's pricing"</string>
     <string name="open_ai_pricing_link">https://openai.com/pricing</string>
-    <string name="your_usage">Your Usage (Tokens)</string>
+    <string name="your_usage">Your Usage</string>
     <string name="open_ai_usage_link">https://platform.openai.com/account/usage</string>
     <string name="reset_usage">Reset Usage</string>
     <string name="usage_tokens_reset">Local token counter reset!</string>
+
+    <string name="image_generation">Image Generation</string>
+    <string name="image_small">Small (256x256)</string>
+    <string name="image_medium">Medium (512x512)</string>
+    <string name="image_large">Large (1024x1024)</string>
+
 
     <string name="delete_account">Delete Account</string>
     <string name="delete_account_message">Are you sure you want to delete your account?</string>

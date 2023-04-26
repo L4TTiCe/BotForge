@@ -15,8 +15,8 @@ import com.aallam.openai.client.OpenAI
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
 /**
@@ -100,6 +100,21 @@ class OpenAiServiceImpl private constructor(
                     size = imageSize
                 )
             )
+
+            // Update usage image count
+            when (imageSize) {
+                ImageSize.is256x256 -> {
+                    sharedPreferencesService.incrementUsageImageSmallCount(n)
+                }
+
+                ImageSize.is512x512 -> {
+                    sharedPreferencesService.incrementUsageImageMediumCount(n)
+                }
+
+                ImageSize.is1024x1024 -> {
+                    sharedPreferencesService.incrementUsageImageLargeCount(n)
+                }
+            }
 
             logger.logVerbose(TAG, "generateImage() $images")
             return images
