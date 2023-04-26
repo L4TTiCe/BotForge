@@ -344,6 +344,8 @@
     <string name="delete_all_images_message">This will delete all generated images stored locally</string>
     <string name="no_images_yet">No images yet.</string>
     <string name="image_deleted">Image deleted!</string>
+    <string name="generate_variant">Generate Variant</string>
+    <string name="generate_variant_message">This will generate a new variant of the image.</string>
 
 
     <string name="account_linked">Account linked!</string>

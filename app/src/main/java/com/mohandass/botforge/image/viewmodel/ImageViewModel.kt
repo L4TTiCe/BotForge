@@ -38,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.util.Date
 import javax.inject.Inject
@@ -254,6 +255,73 @@ class ImageViewModel @Inject constructor(
         analytics.logImageExported()
     }
 
+    @OptIn(BetaOpenAI::class, ExperimentalFoundationApi::class)
+    fun generateImageVariant() {
+        val originalBitmap = imageUriList[pagerState.value.currentPage] as Bitmap
+        val stream = ByteArrayOutputStream()
+        originalBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+
+        showImage.value = false
+        setLoading(true)
+
+        job = viewModelScope.launch {
+            try {
+                val images = openAiService.generateImageVariant(
+                original = stream.toByteArray(),
+                imageSize = imageSize.value,
+                n = n.value
+            )
+
+                imageUriList.clear()
+                imageUriList.addAll(images.map { it.url })
+
+                saveGeneratedImages {
+                    setLoading(false)
+                    analytics.logImageGenerated()
+                }
+
+            } catch (e: Exception) {
+                logger.logError(TAG, "generateImageVariant() error: $e", e)
+                if (e.message != null) {
+                    logger.logError(TAG, "generateImageVariant() error m: ${e.message}", e)
+                    SnackbarManager.showMessage(
+                        e.toSnackbarMessageWithAction(R.string.settings) {
+                            appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
+                        })
+                } else {
+                    logger.logError(TAG, "generateImageVariant() error st: ${e.stackTrace}", e)
+
+                    setLoading(false)
+
+                    val message = Utils.parseStackTraceForErrorMessage(e)
+
+                    // Attempt to parse the error message
+                    when (message.message) {
+                        Utils.INVALID_API_KEY_ERROR_MESSAGE -> {
+                            SnackbarManager.showMessageWithAction(
+                                R.string.invalid_api_key,
+                                R.string.settings
+                            ) {
+                                appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
+                            }
+                        }
+
+                        Utils.INTERRUPTED_ERROR_MESSAGE -> {
+                            SnackbarManager.showMessage(R.string.request_cancelled)
+                        }
+
+                        else -> {
+                            SnackbarManager.showMessage(
+                                message.toSnackbarMessageWithAction(R.string.settings) {
+                                    appState.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
+                                })
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @OptIn(BetaOpenAI::class)
     fun generateImageFromPrompt() {
         if (prompt.value.isBlank()) {
@@ -281,15 +349,15 @@ class ImageViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
-                logger.logError(TAG, "getChatCompletion() error: $e", e)
+                logger.logError(TAG, "generateImageFromPrompt() error: $e", e)
                 if (e.message != null) {
-                    logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
+                    logger.logError(TAG, "generateImageFromPrompt() error m: ${e.message}", e)
                     SnackbarManager.showMessage(
                         e.toSnackbarMessageWithAction(R.string.settings) {
                             appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
                         })
                 } else {
-                    logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
+                    logger.logError(TAG, "generateImageFromPrompt() error st: ${e.stackTrace}", e)
 
                     setLoading(false)
 

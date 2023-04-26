@@ -288,6 +288,17 @@ fun ImageUi(
 
                         IconButton(
                             onClick = {
+                                imageViewModel.generateImageVariant()
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_refresh_24),
+                                contentDescription = stringResource(id = R.string.generate_variant),
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
                                 imageViewModel.shareImage(context)
                             }
                         ) {

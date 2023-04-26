@@ -118,6 +118,7 @@ dependencies {
     val coilVersion = "2.3.0"
     val markwonVersion = "4.6.2"
     val leakCanaryVersion = "2.10"
+    val okioVersion = "3.3.0"
 
     val playServicesAuthVersion = "20.5.0"
 
@@ -209,6 +210,8 @@ dependencies {
     // LeakCanary for memory leak detection
     // https://square.github.io/leakcanary/
     debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion")
+
+    implementation("com.squareup.okio:okio:$okioVersion")
 }
 
 // Dependency Injection with Hilt
