@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -273,6 +274,8 @@ fun SettingsUi(
             ) {
                 Column {
                     Row {
+                        Spacer(modifier = Modifier.width(70.dp))
+
                         Text(
                             text = resources().getString(R.string.shake_sensitivity),
                             modifier = Modifier.padding(10.dp),
@@ -297,7 +300,7 @@ fun SettingsUi(
                             settingsViewModel.setShakeToClearSensitivity(shakeSensitivity)
                         },
                         valueRange = 0f..Constants.MAX_SENSITIVITY_THRESHOLD,
-                        modifier = Modifier.padding(horizontal = 15.dp)
+                        modifier = Modifier.padding(start = 75.dp, end = 15.dp)
                     )
                 }
             }
