@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,14 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.mohandass.botforge.R
 import com.mohandass.botforge.resources
 import com.mohandass.botforge.settings.ui.components.SettingsCategory
 import com.mohandass.botforge.settings.ui.components.SettingsItem
+import com.mohandass.botforge.settings.ui.components.dialogs.TokenInfoDialog
 import com.mohandass.botforge.settings.viewmodel.SettingsViewModel
 import com.slaviboy.composeunits.adw
 import java.text.DecimalFormat
@@ -59,56 +55,9 @@ fun ApiUsageUi(
     val context = LocalContext.current
 
     if (showTokenInfoDialog.value) {
-        AlertDialog(onDismissRequest = { showTokenInfoDialog.value = false },
-            title = {
-                Text(text = stringResource(id = R.string.managing_tokens))
-            },
-            text = {
-                Column {
-                    Text(text = stringResource(id = R.string.managing_tokens_message))
-
-                    val annotatedStringManagingTokens = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-                            append(resources().getString(R.string.learn_more_managing_tokens) + " ")
-                        }
-                        addStringAnnotation(
-                            tag = "URL",
-                            annotation = resources().getString(R.string.open_ai_managing_tokens_link),
-                            start = length,
-                            end = length + resources().getString(R.string.open_ai_managing_tokens_link).length
-                        )
-                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                            append(resources().getString(R.string.open_ai_managing_tokens))
-                        }
-                    }
-
-                    ClickableText(
-                        text = annotatedStringManagingTokens,
-                        modifier = Modifier.padding(vertical = 10.dp),
-                        onClick = { offset ->
-                            annotatedStringManagingTokens.getStringAnnotations(
-                                tag = "URL",
-                                start = offset,
-                                end = offset
-                            )
-                                .firstOrNull()?.let { annotation ->
-                                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                                        data = Uri.parse(annotation.item)
-                                    }
-                                    context.startActivity(intent)
-                                }
-                        }
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    showTokenInfoDialog.value = false
-                }) {
-                    Text(text = stringResource(id = R.string.dismiss))
-                }
-            },
-            dismissButton = {}
+        TokenInfoDialog(
+            onDismiss = { showTokenInfoDialog.value = false },
+            context = context
         )
     }
 
