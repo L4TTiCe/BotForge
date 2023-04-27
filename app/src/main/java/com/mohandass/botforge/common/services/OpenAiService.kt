@@ -26,4 +26,11 @@ interface OpenAiService {
         n: Int = 1,
         imageSize: ImageSize = ImageSize.is256x256,
     ): List<ImageURL>
+
+    @OptIn(BetaOpenAI::class)
+    suspend fun generateImageVariant(
+        original: ByteArray,
+        n: Int,
+        imageSize: ImageSize,
+    ): List<ImageURL>
 }

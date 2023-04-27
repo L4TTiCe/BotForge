@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="gpt_3_5_turbo_cost_per_1k_tokens" type="dimen" format="float">0.0002</item>
+    <item name="gpt_3_5_turbo_cost_per_1k_tokens" format="float" type="dimen">0.0002</item>
+    <item name="dall_e_1024" format="float" type="dimen">0.020</item>
+    <item name="dall_e_512" format="float" type="dimen">0.018</item>
+    <item name="dall_e_256" format="float" type="dimen">0.016</item>
 </resources>

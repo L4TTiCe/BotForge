@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -189,10 +190,20 @@ fun SettingsUi(
                 })
             )
         }
+        item {
+            SettingsItem(
+                title = stringResource(id = R.string.advanced_api_settings),
+                description = stringResource(id = R.string.advanced_api_settings_message),
+                painter = painterResource(id = R.drawable.baseline_settings_24),
+                onClick = ({
+                    appViewModel.appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiAdvancedSettings.route)
+                })
+            )
+        }
         item{
             SettingsItem(
-                title = "Enable Image Generation",
-                description = "Allows generating Images using the API",
+                title = stringResource(id = R.string.enable_image_generation),
+                description = stringResource(id = R.string.enable_image_generation_message),
                 icon = painterResource(id = R.drawable.picture),
                 switchState = isImageGenerationEnabled,
                 onCheckChange = {
@@ -241,8 +252,8 @@ fun SettingsUi(
         }
         item {
             SettingsItem(
-                title = "Auto-Generate Chat Title",
-                description = "Automatically generates Title when saving Chats, uses OpenAI API",
+                title = stringResource(id = R.string.auto_generate_chat_title),
+                description = stringResource(id = R.string.auto_generate_chat_title_message),
                 icon = painterResource(id = R.drawable.baseline_title_24),
                 switchState = isAutoChatNameEnabled,
                 onCheckChange = {
@@ -273,6 +284,8 @@ fun SettingsUi(
             ) {
                 Column {
                     Row {
+                        Spacer(modifier = Modifier.width(70.dp))
+
                         Text(
                             text = resources().getString(R.string.shake_sensitivity),
                             modifier = Modifier.padding(10.dp),
@@ -297,7 +310,7 @@ fun SettingsUi(
                             settingsViewModel.setShakeToClearSensitivity(shakeSensitivity)
                         },
                         valueRange = 0f..Constants.MAX_SENSITIVITY_THRESHOLD,
-                        modifier = Modifier.padding(horizontal = 15.dp)
+                        modifier = Modifier.padding(start = 75.dp, end = 15.dp)
                     )
                 }
             }

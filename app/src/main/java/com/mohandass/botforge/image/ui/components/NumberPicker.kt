@@ -31,7 +31,7 @@ import com.mohandass.botforge.R
 @Composable
 fun NumberPicker(
     modifier: Modifier = Modifier,
-    n: Int,
+    numberAsString: String,
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
 ) {
@@ -69,7 +69,7 @@ fun NumberPicker(
                 disabledContentColor = MaterialTheme.colorScheme.primary
             )
         ) {
-            Text(text = n.toString())
+            Text(text = numberAsString)
         }
 
         OutlinedButton(
@@ -98,7 +98,7 @@ fun NumberPickerPreview() {
     }
 
     NumberPicker(
-        n = n,
+        numberAsString = n.toString(),
         onIncrement = {
             n += 1
         },

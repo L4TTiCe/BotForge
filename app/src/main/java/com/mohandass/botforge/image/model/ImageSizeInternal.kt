@@ -25,9 +25,9 @@ class ImageSizeInternal(size: ImageSize) {
 
     override fun toString(): String {
         return when (this) {
-            is256x256 -> "256x256"
-            is512x512 -> "512x512"
-            is1024x1024 -> "1024x1024"
+            is256x256 -> "Small (256x256)"
+            is512x512 -> "Medium (512x512)"
+            is1024x1024 -> "Large (1024x1024)"
             else -> {
                 throw IllegalArgumentException("Unknown image size: $this")
             }

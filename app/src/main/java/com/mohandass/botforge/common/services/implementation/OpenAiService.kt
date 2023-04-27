@@ -7,17 +7,25 @@ package com.mohandass.botforge.common.services.implementation
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
+import com.aallam.openai.api.file.FileSource
+import com.aallam.openai.api.http.Timeout
 import com.aallam.openai.api.image.ImageCreation
 import com.aallam.openai.api.image.ImageSize
 import com.aallam.openai.api.image.ImageURL
+import com.aallam.openai.api.image.ImageVariation
+import com.aallam.openai.api.logging.LogLevel
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import com.aallam.openai.client.OpenAIConfig
 import com.mohandass.botforge.chat.model.Message
 import com.mohandass.botforge.chat.model.MessageMetadata
 import com.mohandass.botforge.chat.model.Role
-import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.common.services.Logger
+import com.mohandass.botforge.common.services.OpenAiService
 import com.mohandass.botforge.settings.service.SharedPreferencesService
+import okio.Source
+import okio.source
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * An implementation of the OpenAiService interface
@@ -38,7 +46,13 @@ class OpenAiServiceImpl private constructor(
             throw Exception("No API key found")
         }
 
-        return OpenAI(apiKey)
+        val config = OpenAIConfig(
+            token = apiKey,
+            logLevel = LogLevel.Info,
+            timeout = Timeout(socket = sharedPreferencesService.getApiTimeout().seconds),
+        )
+
+        return OpenAI(config)
     }
 
     @OptIn(BetaOpenAI::class)
@@ -101,10 +115,67 @@ class OpenAiServiceImpl private constructor(
                 )
             )
 
+            // Update usage image count
+            when (imageSize) {
+                ImageSize.is256x256 -> {
+                    sharedPreferencesService.incrementUsageImageSmallCount(n)
+                }
+
+                ImageSize.is512x512 -> {
+                    sharedPreferencesService.incrementUsageImageMediumCount(n)
+                }
+
+                ImageSize.is1024x1024 -> {
+                    sharedPreferencesService.incrementUsageImageLargeCount(n)
+                }
+            }
+
             logger.logVerbose(TAG, "generateImage() $images")
             return images
         } catch (e: Exception) {
             logger.logError(TAG, "generateImage() ${e.printStackTrace()}", e)
+            throw e
+        }
+    }
+
+    @OptIn(BetaOpenAI::class)
+    override suspend fun generateImageVariant(
+        original: ByteArray,
+        n: Int,
+        imageSize: ImageSize,
+    ): List<ImageURL> {
+        logger.logVerbose(TAG, "generateImageVariant()")
+        try {
+            val source: Source = original.inputStream().source()
+
+            val fileSource = FileSource(name = "original.png", source = source)
+            val images = getClient().imageURL( // or openAI.imageJSON
+                variation = ImageVariation(
+                    image = fileSource,
+                    n = n,
+                    size = imageSize
+                )
+            )
+
+            // Update usage image count
+            when (imageSize) {
+                ImageSize.is256x256 -> {
+                    sharedPreferencesService.incrementUsageImageSmallCount(n)
+                }
+
+                ImageSize.is512x512 -> {
+                    sharedPreferencesService.incrementUsageImageMediumCount(n)
+                }
+
+                ImageSize.is1024x1024 -> {
+                    sharedPreferencesService.incrementUsageImageLargeCount(n)
+                }
+            }
+
+            logger.logVerbose(TAG, "generateImageVariant() $images")
+            return images
+        } catch (e: Exception) {
+            logger.logError(TAG, "generateImageVariant() ${e.printStackTrace()}", e)
             throw e
         }
     }

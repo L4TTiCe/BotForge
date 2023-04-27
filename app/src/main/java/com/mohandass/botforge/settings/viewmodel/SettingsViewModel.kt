@@ -4,6 +4,7 @@
 
 package com.mohandass.botforge.settings.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
@@ -56,15 +57,20 @@ class SettingsViewModel @Inject constructor(
     fun getDisplayName() = accountService.displayName
 
     // Usage
-    fun getUsageTokens(): Long {
-        logger.logVerbose(TAG, "getUsageTokens()")
-        return sharedPreferencesService.getUsageTokens()
-    }
+    val usageTokens = mutableStateOf(sharedPreferencesService.getUsageTokens())
+    val usageImageSmallCount = mutableStateOf(sharedPreferencesService.getUsageImageSmallCount())
+    val usageImageMediumCount = mutableStateOf(sharedPreferencesService.getUsageImageMediumCount())
+    val usageImageLargeCount = mutableStateOf(sharedPreferencesService.getUsageImageLargeCount())
 
-    fun resetUsageTokens() {
+    fun resetUsage() {
         logger.log(TAG, "resetUsageTokens()")
-        sharedPreferencesService.resetUsageTokens()
+        sharedPreferencesService.resetUsage()
         SnackbarManager.showMessage(R.string.usage_tokens_reset)
+
+        usageTokens.value = sharedPreferencesService.getUsageTokens()
+        usageImageSmallCount.value = sharedPreferencesService.getUsageImageSmallCount()
+        usageImageMediumCount.value = sharedPreferencesService.getUsageImageMediumCount()
+        usageImageLargeCount.value = sharedPreferencesService.getUsageImageLargeCount()
     }
 
     fun updateTheme(preferredTheme: PreferredTheme) {

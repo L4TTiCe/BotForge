@@ -105,10 +105,16 @@
     <string name="open_ai_pricing">OpenAI Pricing</string>
     <string name="open_ai_pricing_message">"Learn more about OpenAI's pricing"</string>
     <string name="open_ai_pricing_link">https://openai.com/pricing</string>
-    <string name="your_usage">Your Usage (Tokens)</string>
+    <string name="your_usage">Your Usage</string>
     <string name="open_ai_usage_link">https://platform.openai.com/account/usage</string>
     <string name="reset_usage">Reset Usage</string>
     <string name="usage_tokens_reset">Local token counter reset!</string>
+
+    <string name="image_generation">Image Generation</string>
+    <string name="image_small">Small (256x256)</string>
+    <string name="image_medium">Medium (512x512)</string>
+    <string name="image_large">Large (1024x1024)</string>
+
 
     <string name="delete_account">Delete Account</string>
     <string name="delete_account_message">Are you sure you want to delete your account?</string>
@@ -156,10 +162,22 @@
 
     <string name="api">API</string>
     <string name="api_settings_message">View or change your API Key.</string>
+    <string name="enable_image_generation">Enable Image Generation</string>
+    <string name="enable_image_generation_message">Allows generating Images using the API</string>
     <string name="usage_settings">Usage</string>
     <string name="tokens">Tokens</string>
     <string name="dollars">Dollars</string>
     <string name="usage_settings_message">Check your API usage information, and estimated cost.</string>
+    <string name="advanced_api_settings">Advanced API Settings</string>
+    <string name="advanced_api_settings_message">Manage Timeouts to accommodate longer responses to prompts</string>
+    <string name="api_timeout">API Timeout</string>
+    <string name="api_timeout_description">Timeout is the time in seconds that the app will wait for
+        a response from API before giving up. If your prompts require longer to generate, you can
+        try increasing this value.
+    </string>
+
+    <string name="auto_generate_chat_title">Auto-Generate Chat Title</string>
+    <string name="auto_generate_chat_title_message">Automatically generates Title when saving Chats, uses OpenAI API</string>
 
     <string name="manage_account">Manage Account</string>
     <string name="manage_account_message">View or change your account information.</string>
@@ -338,6 +356,8 @@
     <string name="delete_all_images_message">This will delete all generated images stored locally</string>
     <string name="no_images_yet">No images yet.</string>
     <string name="image_deleted">Image deleted!</string>
+    <string name="generate_variant">Generate Variant</string>
+    <string name="generate_variant_message">This will generate a new variant of the image.</string>
 
 
     <string name="account_linked">Account linked!</string>

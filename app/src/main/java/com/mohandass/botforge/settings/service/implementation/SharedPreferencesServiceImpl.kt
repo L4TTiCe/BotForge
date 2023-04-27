@@ -6,6 +6,7 @@ package com.mohandass.botforge.settings.service.implementation
 
 import android.content.Context
 import androidx.core.content.edit
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
 /**
@@ -39,8 +40,19 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
         }
     }
 
-    override fun getUsageTokens(): Long {
-        return _usageTokens
+    private val _timeout: Int
+        get() {
+            return sharedPreferences.getInt(SharedPreferencesService.API_TIMEOUT, Constants.DEFAULT_API_TIMEOUT)
+        }
+
+    override fun getApiTimeout(): Int {
+        return _timeout
+    }
+
+    override fun setApiTimeout(timeout: Int) {
+        sharedPreferences.edit {
+            putInt(SharedPreferencesService.API_TIMEOUT, timeout)
+        }
     }
 
     private val _usageTokens: Long
@@ -48,15 +60,85 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
             return sharedPreferences.getLong(SharedPreferencesService.API_USAGE_AS_TOKENS, 0)
         }
 
+    override fun getUsageTokens(): Long {
+        return _usageTokens
+    }
+
+    private val _usageImageSmallCount: Long
+        get() {
+            return sharedPreferences.getLong(
+                SharedPreferencesService.API_USAGE_IMAGE_SMALL_COUNT,
+                0
+            )
+        }
+
+    override fun getUsageImageSmallCount(): Long {
+        return _usageImageSmallCount
+    }
+
+    private val _usageImageMediumCount: Long
+        get() {
+            return sharedPreferences.getLong(
+                SharedPreferencesService.API_USAGE_IMAGE_MEDIUM_COUNT,
+                0
+            )
+        }
+
+    override fun getUsageImageMediumCount(): Long {
+        return _usageImageMediumCount
+    }
+
+    private val _usageImageLargeCount: Long
+        get() {
+            return sharedPreferences.getLong(
+                SharedPreferencesService.API_USAGE_IMAGE_LARGE_COUNT,
+                0
+            )
+        }
+
+    override fun getUsageImageLargeCount(): Long {
+        return _usageImageLargeCount
+    }
+
     override fun incrementUsageTokens(tokens: Int) {
         sharedPreferences.edit {
             putLong(SharedPreferencesService.API_USAGE_AS_TOKENS, _usageTokens + tokens)
         }
     }
 
-    override fun resetUsageTokens() {
+    override fun incrementUsageImageSmallCount(count: Int) {
+        sharedPreferences.edit {
+            putLong(
+                SharedPreferencesService.API_USAGE_IMAGE_SMALL_COUNT,
+                _usageImageSmallCount + count
+            )
+        }
+    }
+
+    override fun incrementUsageImageMediumCount(count: Int) {
+        sharedPreferences.edit {
+            putLong(
+                SharedPreferencesService.API_USAGE_IMAGE_MEDIUM_COUNT,
+                _usageImageMediumCount + count
+            )
+        }
+    }
+
+    override fun incrementUsageImageLargeCount(count: Int) {
+        sharedPreferences.edit {
+            putLong(
+                SharedPreferencesService.API_USAGE_IMAGE_LARGE_COUNT,
+                _usageImageLargeCount + count
+            )
+        }
+    }
+
+    override fun resetUsage() {
         sharedPreferences.edit {
             putLong(SharedPreferencesService.API_USAGE_AS_TOKENS, 0)
+            putLong(SharedPreferencesService.API_USAGE_IMAGE_SMALL_COUNT, 0)
+            putLong(SharedPreferencesService.API_USAGE_IMAGE_MEDIUM_COUNT, 0)
+            putLong(SharedPreferencesService.API_USAGE_IMAGE_LARGE_COUNT, 0)
         }
     }
 
