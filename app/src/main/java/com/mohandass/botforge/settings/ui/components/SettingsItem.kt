@@ -129,7 +129,7 @@ fun SettingsItemPreview() {
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SettingsItemSwitchPreview() {
     SettingsItem(

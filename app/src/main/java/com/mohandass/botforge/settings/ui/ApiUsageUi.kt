@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
@@ -63,6 +65,7 @@ fun ApiUsageUi(
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(10.dp)
     ) {
@@ -70,7 +73,7 @@ fun ApiUsageUi(
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = resources().getString(R.string.api_usage),
+            text = stringResource(R.string.api_usage),
             modifier = Modifier.padding(horizontal = 10.dp),
             style = MaterialTheme.typography.titleLarge,
         )
@@ -78,13 +81,13 @@ fun ApiUsageUi(
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = resources().getString(R.string.usage_quotas),
+            text = stringResource(R.string.usage_quotas),
             modifier = Modifier.padding(10.dp),
             style = MaterialTheme.typography.titleMedium
         )
 
         Text(
-            text = resources().getString(R.string.usage_quotas_message),
+            text = stringResource(R.string.usage_quotas_message),
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             style = MaterialTheme.typography.bodyMedium,
         )
@@ -95,7 +98,7 @@ fun ApiUsageUi(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = resources().getString(R.string.your_usage),
+                text = stringResource(R.string.your_usage),
                 modifier = Modifier.padding(start = 10.dp),
                 style = MaterialTheme.typography.titleMedium
             )
@@ -311,7 +314,7 @@ fun ApiUsageUi(
                 }
             ) {
                 Text(
-                    text = resources().getString(R.string.reset_usage),
+                    text = stringResource(R.string.reset_usage),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
@@ -322,8 +325,8 @@ fun ApiUsageUi(
         SettingsCategory(title = stringResource(id = R.string.external_links))
 
         SettingsItem(
-            title = resources().getString(R.string.usage_summary),
-            description = resources().getString(R.string.usage_summary_message),
+            title = stringResource(R.string.usage_summary),
+            description = stringResource(R.string.usage_summary_message),
             painter = painterResource(id = R.drawable.baseline_data_usage_24),
         ) {
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -333,8 +336,8 @@ fun ApiUsageUi(
         }
 
         SettingsItem(
-            title = resources().getString(R.string.open_ai_pricing),
-            description = resources().getString(R.string.open_ai_pricing_message),
+            title = stringResource(R.string.open_ai_pricing),
+            description = stringResource(R.string.open_ai_pricing_message),
             painter = painterResource(id = R.drawable.baseline_price_check_24),
         ) {
             val intent = Intent(Intent.ACTION_VIEW).apply {

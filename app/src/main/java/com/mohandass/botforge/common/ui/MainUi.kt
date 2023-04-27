@@ -27,6 +27,7 @@ import com.mohandass.botforge.AppState
 import com.mohandass.botforge.chat.ui.PersonaUi
 import com.mohandass.botforge.chat.ui.components.header.top.TopBar
 import com.mohandass.botforge.common.Constants
+import com.mohandass.botforge.settings.ui.ApiAdvancedUi
 import com.mohandass.botforge.settings.ui.ApiKeyUi
 import com.mohandass.botforge.settings.ui.IconCreditsUi
 import com.mohandass.botforge.settings.ui.ManageAccountUi
@@ -264,6 +265,56 @@ fun MainUi(
                             }
                         ) {
                             ApiUsageUi(settingsViewModel = hiltViewModel())
+                        }
+                        composable(
+                            route = AppRoutes.MainRoutes.ApiAdvancedSettings.route,
+                            enterTransition = {
+                                slideInHorizontally(
+                                    initialOffsetX = { Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeIn(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+
+                            },
+                            exitTransition = {
+                                slideOutHorizontally(
+                                    targetOffsetX = { -Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeOut(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            },
+                            popEnterTransition = {
+                                slideInHorizontally(
+                                    initialOffsetX = { -Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeIn(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            },
+                            popExitTransition = {
+                                slideOutHorizontally(
+                                    targetOffsetX = { Constants.ANIMATION_OFFSET },
+                                    animationSpec = tween(
+                                        durationMillis = Constants.ANIMATION_DURATION,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                ) + fadeOut(
+                                    animationSpec = tween(Constants.ANIMATION_DURATION)
+                                )
+                            }
+                        ) {
+                            ApiAdvancedUi()
                         }
                         composable(
                             route = AppRoutes.MainRoutes.ManageAccountSettings.route,

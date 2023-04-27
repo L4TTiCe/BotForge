@@ -6,6 +6,7 @@ package com.mohandass.botforge.settings.service.implementation
 
 import android.content.Context
 import androidx.core.content.edit
+import com.mohandass.botforge.common.Constants
 import com.mohandass.botforge.settings.service.SharedPreferencesService
 
 /**
@@ -36,6 +37,21 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
     override fun setAPIKey(apiKey: String) {
         sharedPreferences.edit {
             putString(SharedPreferencesService.API_KEY, apiKey)
+        }
+    }
+
+    private val _timeout: Int
+        get() {
+            return sharedPreferences.getInt(SharedPreferencesService.API_TIMEOUT, Constants.DEFAULT_API_TIMEOUT)
+        }
+
+    override fun getApiTimeout(): Int {
+        return _timeout
+    }
+
+    override fun setApiTimeout(timeout: Int) {
+        sharedPreferences.edit {
+            putInt(SharedPreferencesService.API_TIMEOUT, timeout)
         }
     }
 

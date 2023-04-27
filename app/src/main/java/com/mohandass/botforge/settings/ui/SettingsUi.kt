@@ -190,10 +190,20 @@ fun SettingsUi(
                 })
             )
         }
+        item {
+            SettingsItem(
+                title = stringResource(id = R.string.advanced_api_settings),
+                description = stringResource(id = R.string.advanced_api_settings_message),
+                painter = painterResource(id = R.drawable.baseline_settings_24),
+                onClick = ({
+                    appViewModel.appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiAdvancedSettings.route)
+                })
+            )
+        }
         item{
             SettingsItem(
-                title = "Enable Image Generation",
-                description = "Allows generating Images using the API",
+                title = stringResource(id = R.string.enable_image_generation),
+                description = stringResource(id = R.string.enable_image_generation_message),
                 icon = painterResource(id = R.drawable.picture),
                 switchState = isImageGenerationEnabled,
                 onCheckChange = {
@@ -242,8 +252,8 @@ fun SettingsUi(
         }
         item {
             SettingsItem(
-                title = "Auto-Generate Chat Title",
-                description = "Automatically generates Title when saving Chats, uses OpenAI API",
+                title = stringResource(id = R.string.auto_generate_chat_title),
+                description = stringResource(id = R.string.auto_generate_chat_title_message),
                 icon = painterResource(id = R.drawable.baseline_title_24),
                 switchState = isAutoChatNameEnabled,
                 onCheckChange = {

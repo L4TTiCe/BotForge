@@ -416,7 +416,7 @@ fun ImageUi(
                         NumberPicker(
                             modifier = Modifier
                                 .weight(1f),
-                            n = n,
+                            numberAsString = n.toString(),
                             onIncrement = {
                                 if (n < Constants.MAX_IMAGE_GENERATION_COUNT) {
                                     n++
