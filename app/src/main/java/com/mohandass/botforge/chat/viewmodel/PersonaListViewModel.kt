@@ -33,22 +33,22 @@ class PersonaListViewModel @Inject constructor(
     private val botService: BotService,
     private val logger: Logger
 ) : ViewModel() {
-    private var _personas = mutableStateListOf<Persona>()
-    val personas = personaRepository.personas.asLiveData()
+    var personas = mutableStateListOf<Persona>()
+    private val _personas = personaRepository.personas.asLiveData()
 
     // Reference:
     // https://stackoverflow.com/questions/48396092/should-i-include-lifecycleowner-in-viewmodel
     private val observer: (List<Persona>) -> Unit = {
-        _personas.clear()
-        _personas.addAll(it)
+        personas.clear()
+        personas.addAll(it)
     }
 
     init {
-        personas.observeForever(observer)
+        _personas.observeForever(observer)
     }
 
     override fun onCleared() {
-        personas.removeObserver(observer)
+        _personas.removeObserver(observer)
         super.onCleared()
     }
 
@@ -72,7 +72,7 @@ class PersonaListViewModel @Inject constructor(
         if (searchQuery.value.isEmpty() || searchQuery.value.isBlank()) {
             return
         }
-        personas.value!!.filterTo(matchedPersonas) { persona ->
+        _personas.value!!.filterTo(matchedPersonas) { persona ->
 
             persona.name.contains(searchQuery.value, ignoreCase = true) ||
                     persona.alias.contains(searchQuery.value, ignoreCase = true) ||
@@ -99,16 +99,16 @@ class PersonaListViewModel @Inject constructor(
     fun deletePersona(uuid: String) {
         var deleteJob: Job = Job()
 
-        val persona = _personas.find { it.uuid == uuid }
+        val persona = personas.find { it.uuid == uuid }
         if (persona != null) {
             // Remove persona from the list
-            _personas.remove(persona)
+            personas.remove(persona)
 
             SnackbarManager.showMessageWithAction(
                 R.string.deleted_persona,
                 R.string.undo
             ) {
-                _personas.add(persona)
+                personas.add(persona)
                 deleteJob.cancel()
             }
 
@@ -124,7 +124,7 @@ class PersonaListViewModel @Inject constructor(
 
     fun fetchBots() {
         logger.logVerbose(TAG, "fetchBots")
-        for (persona in personas.value!!) {
+        for (persona in _personas.value!!) {
             viewModelScope.launch {
                 bots[persona.parentUuid] = botService.getBot(persona.parentUuid)
                 logger.logVerbose(
