@@ -134,6 +134,8 @@
     <string name="delete_all_bookmarked_success">All bookmarked cleared!</string>
 
     <string name="invalid_api_key">Invalid API Key!</string>
+    <string name="timed_out">Request timed out.</string>
+    <string name="fix">Fix</string>
 
     <!-- Settings -->
     <string name="display">Display</string>

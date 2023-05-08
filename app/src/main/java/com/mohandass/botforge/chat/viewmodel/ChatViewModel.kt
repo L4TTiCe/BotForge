@@ -143,10 +143,20 @@ class ChatViewModel @Inject constructor(
                 logger.logError(TAG, "getChatCompletion() error: $e", e)
                 if (e.message != null) {
                     logger.logError(TAG, "getChatCompletion() error m: ${e.message}", e)
-                    SnackbarManager.showMessage(
-                        e.toSnackbarMessageWithAction(R.string.settings) {
-                            appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiKeySettings.route)
-                        })
+
+                    if (e.message!!.contains("Socket timeout")) {
+                        SnackbarManager.showMessageWithAction(
+                            R.string.timed_out,
+                            R.string.fix
+                        ) {
+                            appState.navControllerMain.navigate(AppRoutes.MainRoutes.ApiAdvancedSettings.route)
+                        }
+                    } else {
+                        SnackbarManager.showMessage(
+                            e.toSnackbarMessageWithAction(R.string.settings) {
+                                appState.navControllerMain.navigate(AppRoutes.MainRoutes.Settings.route)
+                            })
+                    }
                 } else {
                     logger.logError(TAG, "getChatCompletion() error st: ${e.stackTrace}", e)
                     val message = Utils.parseStackTraceForErrorMessage(e)
