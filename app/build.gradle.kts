@@ -37,8 +37,8 @@ android {
         applicationId = "com.mohandass.botforge"
         minSdk = 28
         targetSdk = 33
-        versionCode = 31
-        versionName = "1.3.1"
+        versionCode = 32
+        versionName = "1.3.2"
 
         vectorDrawables.useSupportLibrary = true
         signingConfig = signingConfigs.getByName("debug")
