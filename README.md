@@ -5,9 +5,12 @@
 
 BotForge is an unofficial OpenAI Chat API's Android client that allows you to create and share personas (prompts for the Chat API) with other users. You can also chat with different personas and have fun conversations.
 
+New: Now supports Image Generation using DALL-E
+
 ## Features
 
 - Uses Google Material Design 3 and Jetpack Compose for a modern and beautiful UI
+- Uses Coil for Image Loading
 - Completely supports Android 12's Dynamic Theming and adapts to your wallpaper colors
 - Built using Kotlin, a concise and powerful programming language for Android development
 - Uses Firebase's Realtime Database and Firestore to store personas, and allows users to upvote and downvote personas
