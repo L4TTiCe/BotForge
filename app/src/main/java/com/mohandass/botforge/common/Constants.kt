@@ -6,6 +6,8 @@ package com.mohandass.botforge.common
 
 class Constants {
     companion object {
+        const val DEFAULT_CHAT_MODEL = "gpt-3.5-turbo"
+
         const val DEFAULT_API_TIMEOUT = 60
         const val MAX_API_TIMEOUT = 300
         const val MIN_API_TIMEOUT = 15

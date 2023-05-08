@@ -107,7 +107,9 @@ class ImageViewModel @Inject constructor(
                 }
             }
         } else {
-            timerJob.cancel()
+            if (::timerJob.isInitialized) {
+                timerJob.cancel()
+            }
             _timeMillis.value = 0
         }
     }

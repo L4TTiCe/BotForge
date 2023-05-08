@@ -15,6 +15,10 @@ interface SharedPreferencesService {
     fun getApiTimeout(): Int
     fun setApiTimeout(timeout: Int)
 
+    // Chat Model
+    fun getChatModel(): String
+    fun setChatModel(model: String)
+
     // OnBoarding
     fun getOnBoardingCompleted(): Boolean
     fun setOnBoardingCompleted(value: Boolean)
@@ -38,6 +42,7 @@ interface SharedPreferencesService {
         const val USER_PREFERENCES_NAME = "user_preferences"
         const val API_KEY = "open_ai_api_key"
         const val API_TIMEOUT = "open_ai_api_timeout"
+        const val CHAT_MODEL = "open_ai_chat_model"
         const val API_USAGE_AS_TOKENS = "open_ai_api_usage_tokens"
         const val API_USAGE_IMAGE_SMALL_COUNT = "open_ai_api_usage_image_small_count"
         const val API_USAGE_IMAGE_MEDIUM_COUNT = "open_ai_api_usage_image_medium_count"

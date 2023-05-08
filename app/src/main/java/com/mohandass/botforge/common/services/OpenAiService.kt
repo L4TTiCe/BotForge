@@ -7,7 +7,7 @@ package com.mohandass.botforge.common.services
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageSize
 import com.aallam.openai.api.image.ImageURL
-import com.aallam.openai.api.model.ModelId
+import com.aallam.openai.api.model.Model
 import com.mohandass.botforge.chat.model.Message
 
 /**
@@ -15,9 +15,10 @@ import com.mohandass.botforge.chat.model.Message
  */
 interface OpenAiService {
 
+    suspend fun getAvailableModels(): List<Model>
+
     suspend fun getChatCompletion(
         messages: List<Message>,
-        modelId: ModelId = ModelId("gpt-3.5-turbo")
     ): Message
 
     @OptIn(BetaOpenAI::class)
