@@ -55,6 +55,21 @@ class SharedPreferencesServiceImpl private constructor(context: Context) :
         }
     }
 
+    private val _chatModel: String
+        get() {
+            return sharedPreferences.getString(SharedPreferencesService.CHAT_MODEL, Constants.DEFAULT_CHAT_MODEL) ?: Constants.DEFAULT_CHAT_MODEL
+        }
+
+    override fun getChatModel(): String {
+        return _chatModel
+    }
+
+    override fun setChatModel(model: String) {
+        sharedPreferences.edit {
+            putString(SharedPreferencesService.CHAT_MODEL, model)
+        }
+    }
+
     private val _usageTokens: Long
         get() {
             return sharedPreferences.getLong(SharedPreferencesService.API_USAGE_AS_TOKENS, 0)

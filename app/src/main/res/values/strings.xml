@@ -168,7 +168,10 @@
     <string name="tokens">Tokens</string>
     <string name="dollars">Dollars</string>
     <string name="usage_settings_message">Check your API usage information, and estimated cost.</string>
+
     <string name="advanced_api_settings">Advanced API Settings</string>
+    <string name="model">Model</string>
+    <string name="model_description">The model to use for generating responses.</string>
     <string name="advanced_api_settings_message">Manage Timeouts to accommodate longer responses to prompts</string>
     <string name="api_timeout">API Timeout</string>
     <string name="api_timeout_description">Timeout is the time in seconds that the app will wait for

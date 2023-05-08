@@ -14,6 +14,7 @@ import com.aallam.openai.api.image.ImageSize
 import com.aallam.openai.api.image.ImageURL
 import com.aallam.openai.api.image.ImageVariation
 import com.aallam.openai.api.logging.LogLevel
+import com.aallam.openai.api.model.Model
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import com.aallam.openai.client.OpenAIConfig
@@ -55,10 +56,20 @@ class OpenAiServiceImpl private constructor(
         return OpenAI(config)
     }
 
+    override suspend fun getAvailableModels(): List<Model> {
+        logger.logVerbose(TAG, "getAvailableModels()")
+        try {
+            logger.logVerbose(TAG, "getAvailableModels()")
+            return getClient().models()
+        } catch (e: Exception) {
+            logger.logError(TAG, "getAvailableModels() ${e.printStackTrace()}", e)
+            throw e
+        }
+    }
+
     @OptIn(BetaOpenAI::class)
     override suspend fun getChatCompletion(
         messages: List<Message>,
-        modelId: ModelId
     ): Message {
         logger.logVerbose(TAG, "getChatCompletion() ${messages.size}")
         val chatMessages = messages.map { it.toChatMessage() }
@@ -68,7 +79,7 @@ class OpenAiServiceImpl private constructor(
         }
 
         val chatCompletionRequest = ChatCompletionRequest(
-            model = modelId,
+            model = ModelId(sharedPreferencesService.getChatModel()),
             messages = chatMessages,
         )
 
