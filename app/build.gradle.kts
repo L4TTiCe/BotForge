@@ -23,14 +23,14 @@ plugins {
 
 android {
     namespace = "com.mohandass.botforge"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mohandass.botforge"
         minSdk = 28
-        targetSdk = 33
-        versionCode = 32
-        versionName = "1.3.2"
+        targetSdk = 34
+        versionCode = 33
+        versionName = "1.3.3"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -50,7 +50,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
 
-            @Suppress("UnstableApiUsage")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -67,13 +66,12 @@ android {
         jvmTarget = "1.8"
     }
 
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
 
     packaging {
@@ -89,18 +87,18 @@ configurations {
 
 dependencies {
     val composeBomVersion = "2023.04.00"
-    val activityVersion = "1.7.0"
-    val coreVersion = "1.10.0"
-    val lifecycleVersion = "2.6.1"
-    val navVersion = "2.5.3"
-    val composeRuntimeVersion = "1.4.1"
+    val activityVersion = "1.8.1"
+    val coreVersion = "1.12.0"
+    val lifecycleVersion = "2.6.2"
+    val navVersion = "2.7.5"
+    val composeRuntimeVersion = "1.5.4"
     val datastorePreferencesVersion = "1.0.0"
-    val roomVersion = "2.5.1"
-    val daggerHiltVersion = "2.45"
-    val hiltNavVersion = "1.0.0"
+    val roomVersion = "2.6.0"
+    val daggerHiltVersion = "2.48"
+    val hiltNavVersion = "1.1.0"
     val firebaseBomVersion = "31.5.0"
     val gsonVersion = "2.10.1"
-    val openaiKotlinVersion = "3.2.1"
+    val openaiKotlinVersion = "3.5.1"
     val percentageUnitsVersion = "1.0.0"
     val prettytimeVersion = "5.0.6.Final"
     val aboutLibsRelease = "10.6.2"
@@ -109,9 +107,9 @@ dependencies {
     val coilVersion = "2.3.0"
     val markwonVersion = "4.6.2"
     val leakCanaryVersion = "2.10"
-    val okioVersion = "3.3.0"
+    val okioVersion = "3.4.0"
 
-    val playServicesAuthVersion = "20.5.0"
+    val playServicesAuthVersion = "20.7.0"
 
     // Compose BOM
     implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))

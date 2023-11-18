@@ -1,8 +1,8 @@
 plugins {
-    val androidVersion = "8.0.0"
-    val kotlinVersion = "1.7.0"
+    val androidVersion = "8.1.4"
+    val kotlinVersion = "1.9.20"
 
-    val daggerHiltVersion = "2.44"
+    val daggerHiltVersion = "2.48.1"
     val aboutLibsRelease = "10.6.1"
 
     id("com.android.application") version androidVersion apply false
@@ -22,8 +22,8 @@ buildscript {
     }
 
     dependencies {
-        val googleServicesVersion = "4.3.15"
-        val firebaseCrashlyticsVersion = "2.9.4"
+        val googleServicesVersion = "4.4.0"
+        val firebaseCrashlyticsVersion = "2.9.9"
         val firebasePerformanceVersion = "1.4.2"
 
         // Google services Gradle plugin

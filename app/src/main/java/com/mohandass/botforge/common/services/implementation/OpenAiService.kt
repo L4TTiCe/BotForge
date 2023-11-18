@@ -67,7 +67,6 @@ class OpenAiServiceImpl private constructor(
         }
     }
 
-    @OptIn(BetaOpenAI::class)
     override suspend fun getChatCompletion(
         messages: List<Message>,
     ): Message {
@@ -89,7 +88,7 @@ class OpenAiServiceImpl private constructor(
 
             val metadata = MessageMetadata(
                 openAiId = completion.id,
-                finishReason = completion.choices[0].finishReason,
+                finishReason = completion.choices[0].finishReason.toString(),
                 promptTokens = completion.usage?.promptTokens,
                 completionTokens = completion.usage?.completionTokens,
                 totalTokens = completion.usage?.totalTokens,
@@ -99,7 +98,7 @@ class OpenAiServiceImpl private constructor(
             sharedPreferencesService.incrementUsageTokens(completion.usage?.totalTokens ?: 0)
 
             return Message(
-                text = completion.choices[0].message?.content?.trim() ?: "",
+                text = completion.choices[0].message.content?.trim() ?: "",
                 role = Role.BOT,
                 metadata = metadata,
             )
@@ -109,7 +108,6 @@ class OpenAiServiceImpl private constructor(
         }
     }
 
-    @OptIn(BetaOpenAI::class)
     override suspend fun generateImage(
         prompt: String,
         n: Int,

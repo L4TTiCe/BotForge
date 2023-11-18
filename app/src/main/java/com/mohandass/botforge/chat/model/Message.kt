@@ -38,8 +38,14 @@ data class Message(
     companion object {
         @OptIn(BetaOpenAI::class)
         fun from(message: ChatMessage): Message {
+            val text = message.content
+            var nonNullText = ""
+
+            if (text != null) {
+                nonNullText = text
+            }
             return Message(
-                text = message.content,
+                text = nonNullText,
                 role = Role.from(message.role),
                 uuid = UUID.randomUUID().toString(),
             )

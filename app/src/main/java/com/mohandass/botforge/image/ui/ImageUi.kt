@@ -12,9 +12,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,6 +29,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -112,7 +117,13 @@ fun ImageUi(
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val pagerState by imageViewModel.pagerState
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        // provide pageCount
+        maxImageCount
+    }
 
     val userPreferences by appViewModel.appState.userPreferences.observeAsState()
     userPreferences?.let {
@@ -215,20 +226,31 @@ fun ImageUi(
                     HorizontalPager(
                         modifier = Modifier
                             .fillMaxSize(),
-                        pageCount = maxImageCount,
                         state = pagerState,
-                    ) { position ->
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(imageUriList[position])
-                                .placeholder(R.drawable.picture)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = null
-                        )
-                    }
+                        pageSpacing = 0.dp,
+                        userScrollEnabled = true,
+                        reverseLayout = false,
+                        contentPadding = PaddingValues(0.dp),
+                        beyondBoundsPageCount = 0,
+                        pageSize = PageSize.Fill,
+                        flingBehavior = PagerDefaults.flingBehavior(state = pagerState),
+                        key = null,
+                        pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
+                            Orientation.Horizontal
+                        ),
+                        pageContent = { position ->
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(imageUriList[position])
+                                    .placeholder(R.drawable.picture)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = null
+                            )
+                        }
+                    )
                 }
             }
 
@@ -280,7 +302,9 @@ fun ImageUi(
 
                         IconButton(
                             onClick = {
-                                imageViewModel.generateImageVariant()
+                                imageViewModel.generateImageVariant(
+                                    pagerState.currentPage,
+                                )
                             }
                         ) {
                             Icon(
@@ -291,7 +315,7 @@ fun ImageUi(
 
                         IconButton(
                             onClick = {
-                                imageViewModel.shareImage(context)
+                                imageViewModel.shareImage(context, pagerState.currentPage)
                             }
                         ) {
                             Icon(

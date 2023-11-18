@@ -16,8 +16,14 @@ import java.util.*
 
 @OptIn(BetaOpenAI::class)
 fun ChatMessage.toMessage(): Message {
+    val text = this.content
+    var nonNullText = ""
+
+    if (text != null) {
+        nonNullText = text
+    }
     return Message(
-        text = this.content,
+        text = nonNullText,
         role = Role.from(this.role),
         uuid = UUID.randomUUID().toString(),
     )

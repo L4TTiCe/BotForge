@@ -34,9 +34,16 @@ fun OnBoarding(
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState()
 
     val pageCount = 4
+
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        // provide pageCount
+        pageCount
+    }
 
     LaunchedEffect(Unit) {
         delay(500)
@@ -54,46 +61,46 @@ fun OnBoarding(
         Column(modifier = Modifier.fillMaxSize()) {
             VerticalPager(
                 modifier = Modifier.weight(10f),
-                pageCount = pageCount,
                 state = pagerState,
-            ) { position ->
-                when (position) {
-                    0 -> OnBoardingUi1Logo()
-                    1 -> OnBoardingUi2Welcome(
-                        onNext = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(2)
+                pageContent = { position ->
+                    when (position) {
+                        0 -> OnBoardingUi1Logo()
+                        1 -> OnBoardingUi2Welcome(
+                            onNext = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(2)
+                                }
                             }
-                        }
-                    )
+                        )
 
-                    2 -> OnBoardingUi3Api(
-                        initialApiKey = onBoardingViewModel.getApiKey(),
-                        saveApiKey = {
-                            onBoardingViewModel.setApiKey(it)
-                        },
-                        onNext = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(3)
+                        2 -> OnBoardingUi3Api(
+                            initialApiKey = onBoardingViewModel.getApiKey(),
+                            saveApiKey = {
+                                onBoardingViewModel.setApiKey(it)
+                            },
+                            onNext = {
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(3)
+                                }
                             }
-                        }
-                    )
+                        )
 
-                    3 -> OnBoardingUi4Ugc(
-                        saveUserGeneratedContent = {
-                            onBoardingViewModel.setUserGeneratedContent(it)
-                        },
-                        onComplete = {
-                            onBoardingViewModel.setOnBoardingCompleted()
-                            appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
-                                popUpTo(AppRoutes.OnBoarding.route) { inclusive = true }
+                        3 -> OnBoardingUi4Ugc(
+                            saveUserGeneratedContent = {
+                                onBoardingViewModel.setUserGeneratedContent(it)
+                            },
+                            onComplete = {
+                                onBoardingViewModel.setOnBoardingCompleted()
+                                appViewModel.appState.navController.navigate(AppRoutes.Main.route) {
+                                    popUpTo(AppRoutes.OnBoarding.route) { inclusive = true }
+                                }
                             }
-                        }
-                    )
+                        )
 
-                    else -> OnBoardingUi1Logo()
+                        else -> OnBoardingUi1Logo()
+                    }
                 }
-            }
+            )
         }
         Row(
             Modifier

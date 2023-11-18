@@ -8,7 +8,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -116,9 +115,6 @@ class ImageViewModel @Inject constructor(
 
     val imageUriList = mutableStateListOf<Any>()
     var maxImageCount = mutableStateOf(imageUriList.size)
-
-    @OptIn(ExperimentalFoundationApi::class)
-    val pagerState = mutableStateOf(PagerState())
 
     private lateinit var job: Job
     private lateinit var timerJob: Job
@@ -245,21 +241,19 @@ class ImageViewModel @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
-    fun shareImage(context: Context) {
+    fun shareImage(context: Context, imageIndex: Int) {
         logger.logVerbose(TAG, "shareImage()")
         FileUtils.exportBitmapAsPng(
             title = prompt.value,
-            bitmap = imageUriList[pagerState.value.currentPage] as Bitmap,
+            bitmap = imageUriList[imageIndex] as Bitmap,
             context = context
         )
 
         analytics.logImageExported()
     }
 
-    @OptIn(BetaOpenAI::class, ExperimentalFoundationApi::class)
-    fun generateImageVariant() {
-        val originalBitmap = imageUriList[pagerState.value.currentPage] as Bitmap
+    fun generateImageVariant(imageIndex: Int) {
+        val originalBitmap = imageUriList[imageIndex] as Bitmap
         val stream = ByteArrayOutputStream()
         originalBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
 
